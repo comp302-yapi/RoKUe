@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import main.GamePanel;
+import views.BasePanel;
 
 public class SuperObject {
 
@@ -16,17 +17,17 @@ public class SuperObject {
 	public int solidAreaDefaultX = 0;
 	public int solidAreaDefaultY = 0;
 
-	public void draw(Graphics2D g2, GamePanel gp) {
+	public void draw(Graphics2D g2, BasePanel panel) {
 		
-		int screenX = worldX - gp.player.worldX + gp.player.screenX;
-		int screenY = worldY - gp.player.worldY + gp.player.screenY;
+		int screenX = worldX - panel.getPlayer().worldX + panel.getPlayer().screenX;
+		int screenY = worldY - panel.getPlayer().worldY + panel.getPlayer().screenY;
 		
-		if (worldX > gp.player.worldX - gp.tileSize - gp.player.screenX && 
-				worldX < gp.player.worldX + gp.tileSize + gp.player.screenX &&
-				worldY > gp.player.worldY - gp.tileSize - gp.player.screenY &&
-				worldY < gp.player.worldY + gp.tileSize + gp.player.screenY) {
+		if (worldX > panel.getPlayer().worldX - panel.tileSize - panel.getPlayer().screenX &&
+				worldX < panel.getPlayer().worldX + panel.tileSize + panel.getPlayer().screenX &&
+				worldY > panel.getPlayer().worldY - panel.tileSize - panel.getPlayer().screenY &&
+				worldY < panel.getPlayer().worldY + panel.tileSize + panel.getPlayer().screenY) {
 			
-			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+			g2.drawImage(image, screenX, screenY, panel.tileSize, panel.tileSize, null);
 			
 		}
 	}

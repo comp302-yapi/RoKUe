@@ -1,19 +1,24 @@
 package managers;
 
+import views.BasePanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViewManager {
+public class ViewManager implements Runnable {
 
     private final JFrame frame;
     private final Map<String, JPanel> panels;
     private JPanel currentPanel;
+    private final Thread gameThread;
 
     public ViewManager(JFrame frame) {
         this.frame = frame;
         this.panels = new HashMap<>();
+        this.gameThread = new Thread(this);
+        gameThread.start();
     }
 
     public void addPanel(String name, JPanel panel) {
@@ -37,4 +42,27 @@ public class ViewManager {
         frame.repaint();
     }
 
+    @Override
+    public void run() {
+
+        int FPS = 60;
+        double drawInterval = (double) 1000000000 / FPS;
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+
+        while(gameThread != null) {
+
+            currentTime = System.nanoTime();
+
+            delta += (currentTime - lastTime) / drawInterval;
+
+            lastTime = currentTime;
+
+            if (delta >= 1) {
+                currentPanel.repaint();
+                delta--;
+            }
+        }
+    }
 }

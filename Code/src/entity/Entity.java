@@ -4,15 +4,17 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.UtilityTool;
+import views.BasePanel;
 
 public class Entity {
 	
-	public GamePanel gp;
+	public BasePanel panel;
 	public int worldX, worldY;
 	public int speed;
 	
@@ -43,9 +45,8 @@ public class Entity {
 	public int life;
 	
 	
-	public Entity(GamePanel gp) {
-		
-		this.gp = gp;
+	public Entity(BasePanel panel) {
+		this.panel = panel;
 	}
 	
 	public void setAction() {
@@ -57,26 +58,26 @@ public class Entity {
 		setAction();
 		
 		collisionOn = false;
-		gp.cChecker.checkTile(this);
-		gp.cChecker.checkObject(this, false);
-		gp.cChecker.checkEntity(this, gp.monster);
-		boolean contactPlayer = gp.cChecker.checkPlayer(this);
+		panel.getCollisionChecker().checkTile(this);
+		panel.getCollisionChecker().checkObject(this, false);
+		panel.getCollisionChecker().checkEntity(this, panel.getMonsters());
+		boolean contactPlayer = panel.getCollisionChecker().checkPlayer(this);
 		
-		if (this.type == 2 && contactPlayer == true) {
-			if(gp.player.invincible == false) {
-				gp.player.life -= 1;
-				gp.player.invincible = true;
+		if (this.type == 2 && contactPlayer) {
+			if(!panel.getPlayer().invincible) {
+				panel.getPlayer().life -= 1;
+				panel.getPlayer().invincible = true;
 			}
 		}
 
 		
 		// IF COLLISION FALSE, PLAYER CAN MOVE
-		if (collisionOn == false) {
-			switch(direction) {
-			case "up": worldY -= speed; break;
-			case "down": worldY += speed; break;
-			case "left":worldX -= speed; break;
-			case "right":worldX += speed; break;
+		if (!collisionOn) {
+			switch (direction) {
+				case "up" -> worldY -= speed;
+				case "down" -> worldY += speed;
+				case "left" -> worldX -= speed;
+				case "right" -> worldX += speed;
 			}
 		} 
 
@@ -94,51 +95,50 @@ public class Entity {
 	public void draw(Graphics2D g2) {
 		
 		BufferedImage image = null;
-		int screenX = worldX - gp.player.worldX + gp.player.screenX;
-		int screenY = worldY - gp.player.worldY + gp.player.screenY;
+		int screenX = worldX - panel.getPlayer().worldX + panel.getPlayer().screenX;
+		int screenY = worldY - panel.getPlayer().worldY + panel.getPlayer().screenY;
 		
-		if (worldX > gp.player.worldX - gp.tileSize - gp.player.screenX && 
-				worldX < gp.player.worldX + gp.tileSize + gp.player.screenX &&
-				worldY > gp.player.worldY - gp.tileSize - gp.player.screenY &&
-				worldY < gp.player.worldY + gp.tileSize + gp.player.screenY) {
-			
-			switch(direction) {
-			
-			case "up": 
-				if (spriteNum == 1) {
-					image = up1;
+		if (worldX > panel.getPlayer().worldX - panel.tileSize - panel.getPlayer().screenX &&
+				worldX < panel.getPlayer().worldX + panel.tileSize + panel.getPlayer().screenX &&
+				worldY > panel.getPlayer().worldY - panel.tileSize - panel.getPlayer().screenY &&
+				worldY < panel.getPlayer().worldY + panel.tileSize + panel.getPlayer().screenY) {
+
+			switch (direction) {
+				case "up" -> {
+					if (spriteNum == 1) {
+						image = up1;
+					}
+					if (spriteNum == 2) {
+						image = up2;
+					}
 				}
-				if (spriteNum == 2) {
-					image = up2;
+				case "down" -> {
+					if (spriteNum == 1) {
+						image = down1;
+					}
+					if (spriteNum == 2) {
+						image = down2;
+					}
 				}
-				break;
-			case "down":
-				if (spriteNum == 1) {
-					image = down1;
+				case "left" -> {
+					if (spriteNum == 1) {
+						image = left1;
+					}
+					if (spriteNum == 2) {
+						image = left2;
+					}
 				}
-				if (spriteNum == 2) {
-					image = down2;
+				case "right" -> {
+					if (spriteNum == 1) {
+						image = right1;
+					}
+					if (spriteNum == 2) {
+						image = right2;
+					}
 				}
-				break;
-			case "left":
-				if (spriteNum == 1) {
-					image = left1;
-				}
-				if (spriteNum == 2) { 
-					image = left2;
-				}
-				break;
-			case "right":
-				if (spriteNum == 1) {
-					image = right1;
-				}
-				if (spriteNum == 2) {
-					image = right2;
-				}
-				break;
 			}
 			
-			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+			g2.drawImage(image, screenX, screenY, panel.tileSize, panel.tileSize, null);
 			
 		}
 	}
@@ -150,7 +150,7 @@ public class Entity {
 		BufferedImage image = null;
 		
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
+			image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath + ".png")));
 			image = uTool.scaleImage(image, width, height);
 			
 		} catch (IOException e) {

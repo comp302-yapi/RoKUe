@@ -12,7 +12,7 @@ import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
 
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel implements Runnable {
 
 	// SCREEN SETTINGS
 	final int originalTileSize = 16; // 16x16 tile
@@ -35,45 +35,39 @@ public class GamePanel extends JPanel implements Runnable{
 	int FPS = 60;
 	
 	// SYSTEM
-	TileManager tileM = new TileManager(this);
+	//TileManager tileM = new TileManager(this);
 	KeyHandler keyH = new KeyHandler(this);
 	Thread gameThread;
 	public UI ui = new UI(this);
-	public CollisionChecker cChecker = new CollisionChecker(this);
-	public AssetSetter aSetter = new AssetSetter(this);
+	//public CollisionChecker cChecker = new CollisionChecker(this);
+	//public AssetSetter aSetter = new AssetSetter(this);
 	
 	// ENTITY AND OBJECT
-	public Player player = new Player(this, keyH);
+	//public Player player = new Player(this, keyH);
 	public SuperObject obj[] = new SuperObject[10];
 	public Entity monster[] = new Entity[20];
 
-	
 	// GAME STATE
 	public int gameState;
 	public int titleState = 0;
 	public final int playState = 1;
 	public final int pauseState = 2;
-	
-	
+
 	public GamePanel() {
-		
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setBackground(Color.black);
 		this.setDoubleBuffered(true); // Enhances rendering performance
 		this.addKeyListener(keyH);
 		this.setFocusable(true);
-		
 	}
 	
 	public void setupGame() {
-		
-		aSetter.setObject();
-		aSetter.spawnMonster();
+		//aSetter.setObject();
+		//aSetter.spawnMonster();
 		gameState = titleState;
 	}
 
 	public void startSession() {
-		
 		gameThread = new Thread(this);
 		gameThread.start();
 	}
@@ -108,7 +102,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 		if (gameState == playState) {
 			
-			player.move();
+			//player.move();
 			
 			for (int i = 0; i < monster.length; i++) {
 				
@@ -134,7 +128,7 @@ public class GamePanel extends JPanel implements Runnable{
 
 		} else {
 			// TILE
-			tileM.draw(g2);
+			//tileM.draw(g2);
 			
 			// OBJECTS
 			for (int i = 0; i < obj.length; i++) {
@@ -145,7 +139,7 @@ public class GamePanel extends JPanel implements Runnable{
 			}
 			
 			// PLAYER
-			player.draw(g2);
+			//player.draw(g2);
 			
 			// MONSTER
 			for (int i = 0; i < monster.length; i++) {
