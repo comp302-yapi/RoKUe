@@ -17,12 +17,10 @@ public class Player extends Entity{
 	public final int screenX;
 	public final int screenY;
 	public int hasKey = 0;
-	
-	public Player(BasePanel panel, BaseKeyListener keyH) {
-		
+
+	public Player(BasePanel panel) {
 		super(panel);
-		this.keyH = keyH;
-		
+
 		screenX = panel.screenWidth/2 - (panel.tileSize/2);
 		screenY = panel.screenHeight/2 - (panel.tileSize/2);
 		
@@ -32,7 +30,10 @@ public class Player extends Entity{
 		
 		setDefaultValues();
 		getPlayerImage();
-		
+	}
+
+	public void addKeyListener(BaseKeyListener keyListener) {
+		this.keyH = keyListener;
 	}
 	
 	public void setDefaultValues() {

@@ -3,12 +3,24 @@ package views;
 import entity.Entity;
 import entity.Player;
 import managers.CollisionChecker;
+import managers.ViewManager;
 import object.SuperObject;
 import managers.TileManager;
-
 import javax.swing.*;
+import java.awt.*;
 
-public abstract class NonPlayablePanel extends JPanel implements BasePanel {
+public class NonPlayablePanel extends JPanel implements BasePanel {
+
+    private final ViewManager viewManager;
+
+    public NonPlayablePanel(ViewManager viewManager) {
+        this.viewManager = viewManager;
+
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.setBackground(Color.black);
+        this.setDoubleBuffered(true);
+        this.setFocusable(true);
+    }
 
     @Override
     public CollisionChecker getCollisionChecker() {
@@ -35,4 +47,16 @@ public abstract class NonPlayablePanel extends JPanel implements BasePanel {
         return null;
     }
 
+    @Override
+    public ViewManager getViewManager() {
+        return viewManager;
+    }
+
+    @Override
+    public void update() {
+    }
+
+    @Override
+    public void showMessage(String message) {
+    }
 }

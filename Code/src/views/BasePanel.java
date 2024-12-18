@@ -3,8 +3,10 @@ package views;
 import entity.Entity;
 import entity.Player;
 import managers.CollisionChecker;
+import managers.ViewManager;
 import object.SuperObject;
 import managers.TileManager;
+import java.awt.*;
 
 
 public interface BasePanel {
@@ -25,6 +27,10 @@ public interface BasePanel {
     int worldWidth = tileSize * maxWorldCol;
     int worldHeight = tileSize * maxWorldRow;
 
+    Font arial_80B = new Font("Arial", Font.BOLD, 80);
+    Font arial_40 = new Font("Arial", Font.PLAIN, 40);
+    Font arial_20 = new Font("Arial", Font.PLAIN, 20);
+
     void update();
     void showMessage(String message);
     CollisionChecker getCollisionChecker();
@@ -32,5 +38,6 @@ public interface BasePanel {
     Entity[] getMonsters();
     SuperObject[] getSuperObjects();
     TileManager getTileManager();
+    ViewManager getViewManager();
 
 }

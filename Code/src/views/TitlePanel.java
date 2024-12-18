@@ -1,33 +1,20 @@
 package views;
 
-import entity.Entity;
-import entity.Player;
 import listeners.keylisteners.TitlePanelKeyListener;
-import managers.CollisionChecker;
 import managers.ViewManager;
-import object.SuperObject;
-import managers.TileManager;
 import utils.PanelUtils;
-
-import javax.swing.*;
 import java.awt.*;
 
-public class TitlePanel extends JPanel implements BasePanel {
+public class TitlePanel extends NonPlayablePanel {
 
     private int commandNum;
     private final TitlePanelKeyListener titlePanelKeyListener;
-    private final ViewManager viewManager;
 
     public TitlePanel(ViewManager viewManager) {
+        super(viewManager);
         setCommandNum(0);
         this.titlePanelKeyListener = new TitlePanelKeyListener(this);
         this.addKeyListener(titlePanelKeyListener);
-        this.viewManager = viewManager;
-
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.black);
-        this.setDoubleBuffered(true);
-        this.setFocusable(true);
     }
 
     public int getCommandNum() {
@@ -39,48 +26,11 @@ public class TitlePanel extends JPanel implements BasePanel {
     }
 
     @Override
-    public void update() {
-    }
-
-    @Override
-    public void showMessage(String message) {
-    }
-
-    @Override
-    public CollisionChecker getCollisionChecker() {
-        return null;
-    }
-
-    @Override
-    public Player getPlayer() {
-        return null;
-    }
-
-    @Override
-    public Entity[] getMonsters() {
-        return new Entity[0];
-    }
-
-    @Override
-    public SuperObject[] getSuperObjects() {
-        return new SuperObject[0];
-    }
-
-    @Override
-    public TileManager getTileManager() {
-        return null;
-    }
-
-    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
         drawTitleScreen(g2, this);
-    }
-
-    public ViewManager getViewManager() {
-        return viewManager;
     }
 
     public void drawTitleScreen(Graphics2D g2, BasePanel panel) {
