@@ -1,11 +1,13 @@
 package views;
 
+import entity.Arrow;
 import entity.Entity;
 import entity.Player;
 import managers.CollisionChecker;
 import managers.TileManager;
 import managers.ViewManager;
 import object.SuperObject;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -61,4 +63,11 @@ public abstract class PlayablePanel extends JPanel implements BasePanel {
     public ViewManager getViewManager() {
         return viewManager;
     }
+
+    private final Arrow[] arrows = new Arrow[20];
+
+    public Arrow[] getArrows() {
+        return arrows;
+    }
 }
+

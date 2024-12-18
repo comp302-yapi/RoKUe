@@ -1,11 +1,13 @@
 package views;
 
+import entity.Arrow;
 import entity.Entity;
 import entity.Player;
 import managers.CollisionChecker;
+import managers.TileManager;
 import managers.ViewManager;
 import object.SuperObject;
-import managers.TileManager;
+
 import java.awt.*;
 
 
@@ -39,5 +41,6 @@ public interface BasePanel {
     SuperObject[] getSuperObjects();
     TileManager getTileManager();
     ViewManager getViewManager();
+    Arrow[] getArrows();
 
 }
