@@ -2,6 +2,9 @@
 .idea
 tmp
 
+# out folder
+out
+
 # Compiled class file
 *.class
 

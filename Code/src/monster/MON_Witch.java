@@ -2,24 +2,23 @@ package monster;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Random;
-
 import javax.imageio.ImageIO;
-
 import entity.Entity;
-import main.GamePanel;
+import views.BasePanel;
 
 public class MON_Witch extends Entity{
 
-	GamePanel gp;
+	BasePanel panel;
 	public BufferedImage allTiles;
 	public BufferedImage witchImage;
 
 
-	public MON_Witch(GamePanel gp) {
-		super(gp);
+	public MON_Witch(BasePanel panel) {
+		super(panel);
 		
-		this.gp = gp;
+		this.panel = panel;
 		
 		type = 2;
 		name = "Witch";
@@ -40,7 +39,7 @@ public class MON_Witch extends Entity{
 	public void getImage() {
 		
 		try {
-			allTiles = ImageIO.read(getClass().getResourceAsStream("/res/tiles/0x72_16x16DungeonTileset.v5.png"));
+			allTiles = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/tiles/0x72_16x16DungeonTileset.v5.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -75,7 +74,7 @@ public class MON_Witch extends Entity{
 			else if (i <= 75) {
 				direction = "left";
 			}
-			else if (i <= 100) {
+			else {
 				direction = "right";
 			}
 			

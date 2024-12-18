@@ -1,6 +1,9 @@
 package main;
 
-import javax.swing.JFrame;
+import managers.ViewManager;
+import views.TitlePanel;
+import views.GamePanel;
+import javax.swing.*;
 
 public class Main {
 	
@@ -10,18 +13,19 @@ public class Main {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		window.setTitle("RokueLike Game");
-		
-		GamePanel gamePanel = new GamePanel();
-		window.add(gamePanel);
-		
+
+		ViewManager viewManager = new ViewManager(window);
+		JPanel gamePanel = new GamePanel(viewManager);
+		JPanel titlePanel = new TitlePanel(viewManager);
+
+		viewManager.addPanel("TitlePanel", titlePanel);
+		viewManager.addPanel("GamePanel", gamePanel);
+		viewManager.switchTo("TitlePanel", true);
+		viewManager.startThread();
+
 		window.pack();
-		
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
-		
-		gamePanel.setupGame();
-		gamePanel.startSession();
-		
 	}
 
 }
