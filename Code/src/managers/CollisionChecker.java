@@ -1,9 +1,8 @@
-package main;
+package managers;
 
 import entity.Entity;
 import entity.Player;
 import object.SuperObject;
-import tile.TileManager;
 import views.BasePanel;
 
 public class CollisionChecker {

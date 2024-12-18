@@ -1,0 +1,47 @@
+package listeners.keylisteners;
+
+import listeners.BaseKeyListener;
+import views.TitlePanel;
+
+import java.awt.event.KeyEvent;
+
+public class TitlePanelKeyListener extends BaseKeyListener {
+
+    private final TitlePanel titlePanel;
+
+    public TitlePanelKeyListener(TitlePanel titlePanel) {
+        this.titlePanel = titlePanel;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int code = e.getKeyCode();
+
+        if (code == KeyEvent.VK_W && titlePanel.getCommandNum() > 0) {
+            titlePanel.setCommandNum(titlePanel.getCommandNum() - 1);
+        }
+
+        if (code == KeyEvent.VK_S && titlePanel.getCommandNum() < 2) {
+            titlePanel.setCommandNum(titlePanel.getCommandNum() + 1);
+        }
+
+        if (code == KeyEvent.VK_ENTER) {
+            if (titlePanel.getCommandNum() == 0) {
+                titlePanel.getViewManager().switchTo("GamePanel", true);
+            }
+
+            if (titlePanel.getCommandNum() == 2) {
+                System.exit(0);
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+}

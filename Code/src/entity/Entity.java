@@ -5,11 +5,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
-
 import javax.imageio.ImageIO;
-
-import main.GamePanel;
-import main.UtilityTool;
+import utils.ImageUtils;
 import views.BasePanel;
 
 public class Entity {
@@ -146,7 +143,7 @@ public class Entity {
 	
 	public BufferedImage setup(String imagePath, int width, int height) {
 		
-		UtilityTool uTool = new UtilityTool();
+		ImageUtils uTool = new ImageUtils();
 		BufferedImage image = null;
 		
 		try {

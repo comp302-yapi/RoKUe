@@ -1,6 +1,8 @@
 package main;
 
 import managers.ViewManager;
+import views.TitlePanel;
+import views.GamePanel;
 import javax.swing.*;
 
 public class Main {
@@ -13,9 +15,13 @@ public class Main {
 		window.setTitle("RokueLike Game");
 
 		ViewManager viewManager = new ViewManager(window);
-		JPanel gamePanel = new GamePanel();
+		JPanel gamePanel = new GamePanel(viewManager);
+		JPanel titlePanel = new TitlePanel(viewManager);
+
+		viewManager.addPanel("TitlePanel", titlePanel);
 		viewManager.addPanel("GamePanel", gamePanel);
-		viewManager.switchTo("GamePanel", true);
+		viewManager.switchTo("TitlePanel", true);
+		viewManager.startThread();
 
 		window.pack();
 		window.setLocationRelativeTo(null);

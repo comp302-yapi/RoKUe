@@ -2,9 +2,9 @@ package views;
 
 import entity.Entity;
 import entity.Player;
-import main.CollisionChecker;
+import managers.CollisionChecker;
 import object.SuperObject;
-import tile.TileManager;
+import managers.TileManager;
 
 
 public interface BasePanel {

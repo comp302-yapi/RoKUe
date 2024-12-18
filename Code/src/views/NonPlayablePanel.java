@@ -2,11 +2,13 @@ package views;
 
 import entity.Entity;
 import entity.Player;
-import main.CollisionChecker;
+import managers.CollisionChecker;
 import object.SuperObject;
-import tile.TileManager;
+import managers.TileManager;
 
-public abstract class NonPlayablePanel implements BasePanel {
+import javax.swing.*;
+
+public abstract class NonPlayablePanel extends JPanel implements BasePanel {
 
     @Override
     public CollisionChecker getCollisionChecker() {

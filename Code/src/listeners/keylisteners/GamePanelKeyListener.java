@@ -7,8 +7,11 @@ import java.awt.event.KeyEvent;
 
 public class GamePanelKeyListener extends BaseKeyListener {
 
-    public GamePanelKeyListener(GamePanel gp) {
-        super(gp);
+    private final GamePanel gamePanel;
+
+    public GamePanelKeyListener(GamePanel gamePanel) {
+        super();
+        this.gamePanel = gamePanel;
     }
 
     @Override
@@ -33,6 +36,10 @@ public class GamePanelKeyListener extends BaseKeyListener {
 
         if (code == KeyEvent.VK_D) {
             rightPressed = true;
+        }
+
+        if (code == KeyEvent.VK_P) {
+            gamePanel.setPaused(!gamePanel.isPaused());
         }
     }
 

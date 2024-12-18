@@ -1,7 +1,5 @@
 package managers;
 
-import views.BasePanel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -18,7 +16,6 @@ public class ViewManager implements Runnable {
         this.frame = frame;
         this.panels = new HashMap<>();
         this.gameThread = new Thread(this);
-        gameThread.start();
     }
 
     public void addPanel(String name, JPanel panel) {
@@ -40,6 +37,11 @@ public class ViewManager implements Runnable {
         frame.add(panelToSwitch, BorderLayout.CENTER);
         frame.revalidate();
         frame.repaint();
+        panelToSwitch.requestFocusInWindow();
+    }
+
+    public void startThread() {
+        gameThread.start();
     }
 
     @Override
@@ -52,15 +54,14 @@ public class ViewManager implements Runnable {
         long currentTime;
 
         while(gameThread != null) {
-
             currentTime = System.nanoTime();
-
             delta += (currentTime - lastTime) / drawInterval;
-
             lastTime = currentTime;
 
             if (delta >= 1) {
-                currentPanel.repaint();
+                if (currentPanel != null) {
+                    currentPanel.repaint();
+                }
                 delta--;
             }
         }

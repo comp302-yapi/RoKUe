@@ -1,4 +1,4 @@
-package main;
+package managers;
 
 import monster.MON_GreenSlime;
 import monster.MON_Witch;
