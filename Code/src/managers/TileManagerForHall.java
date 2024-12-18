@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
+import object.OBJ_Door;
+import object.OBJ_Key;
 import object.SuperObject;
 import tile.Tile;
 import views.BasePanel;
@@ -18,10 +20,7 @@ public class TileManagerForHall {
 	BasePanel panel;
 	public Tile[] tile;
 	public int mapTileNum[][];
-	public SuperObject[] objectsWater = new SuperObject[20];// oyuna eklenen objeler burada olacak
-	public SuperObject[] objectsEarth = new SuperObject[20];
-	public SuperObject[] objectsAir = new SuperObject[20];
-	public SuperObject[] objectsFire = new SuperObject[20];
+	public SuperObject[] objects = new SuperObject[50];
 	
 	public BufferedImage allTiles;
 	public BufferedImage pinkTile;
@@ -32,7 +31,8 @@ public class TileManagerForHall {
 	public BufferedImage boxTileTop, boxTileBottom;
 	public BufferedImage buildModeChest;
 	
-	public int maxCol,maxRow;
+	public int maxCol,maxRow,idx;
+	
 	
 	
 	
@@ -45,6 +45,7 @@ public class TileManagerForHall {
 		this.maxRow = maxRow;
 		tile = new Tile[20];
 		mapTileNum = new int[BasePanel.maxWorldCol][BasePanel.maxWorldRow];
+		idx = 0;
 		getTileImage();
 		loadMap(path);
 	}
@@ -189,6 +190,7 @@ public class TileManagerForHall {
 
 			br.close();
 
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -207,8 +209,10 @@ public class TileManagerForHall {
 			int worldX = worldCol * BasePanel.tileSize;
 			int worldY = worldRow * BasePanel.tileSize;
 				
-				g2.drawImage(tile[tileNum].image, worldX + 300, worldY + 100, BasePanel.tileSize, BasePanel.tileSize, null);
-				
+			
+			if(checkObject(worldX + 300, worldY + 100)) {
+				g2.drawImage(tile[tileNum].image, worldX + 336, worldY + 96, BasePanel.tileSize, BasePanel.tileSize, null);
+			}
 			
 			
 			worldCol++;
@@ -220,9 +224,47 @@ public class TileManagerForHall {
 			
 		}
 		
+		
+		
+		for(int i = 0;i < this.objects.length;i++) {
+			if(this.objects[i] != null) {
+				g2.drawImage(this.objects[i].image, this.objects[i].worldX, this.objects[i].worldY, BasePanel.tileSize, BasePanel.tileSize, null);
+			}
+			}
+		
 	}
 	
+	public boolean checkObject(int x,int y) {
+		
+		
+		for(int i = 0 ;i < this.objects.length;i++) {
+			if(this.objects[i] != null) {
+				if(this.objects[i].worldX == x && this.objects[i].worldY == y) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+		
+	}
 	
+	public void addObject(SuperObject obj, int x, int y) {
+		
+		
+		if(idx < this.objects.length - 1) {
+			//System.out.println(idx);
+			this.objects[idx] = obj;
+			this.objects[idx].worldX = x;
+			this.objects[idx].worldY = y;
+			idx++;
+		}
+		
+		
+		
+	}
+	
+
 }
 
 
