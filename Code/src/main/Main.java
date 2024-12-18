@@ -1,8 +1,7 @@
 package main;
 
 import managers.ViewManager;
-import views.TitlePanel;
-import views.GamePanel;
+import views.*;
 import javax.swing.*;
 
 public class Main {
@@ -17,9 +16,11 @@ public class Main {
 		ViewManager viewManager = new ViewManager(window);
 		JPanel gamePanel = new GamePanel(viewManager);
 		JPanel titlePanel = new TitlePanel(viewManager);
+		JPanel buildPanel = new BuildPanel(viewManager);
 
 		viewManager.addPanel("TitlePanel", titlePanel);
 		viewManager.addPanel("GamePanel", gamePanel);
+		viewManager.addPanel("BuildPanel", buildPanel);
 		viewManager.switchTo("TitlePanel", true);
 		viewManager.startThread();
 

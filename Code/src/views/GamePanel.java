@@ -97,7 +97,7 @@ public class GamePanel extends PlayablePanel {
         int x, y;
         String text = "PAUSED";
         x = PanelUtils.getXForCenteredText(text, this, g2);
-        y = this.screenHeight / 2;
+        y = BasePanel.screenHeight / 2;
         g2.drawString(text, x, y);
     }
 }

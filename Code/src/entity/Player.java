@@ -21,8 +21,8 @@ public class Player extends Entity{
 	public Player(BasePanel panel) {
 		super(panel);
 
-		screenX = panel.screenWidth/2 - (panel.tileSize/2);
-		screenY = panel.screenHeight/2 - (panel.tileSize/2);
+		screenX = BasePanel.screenWidth/2 - (BasePanel.tileSize/2);
+		screenY = BasePanel.screenHeight/2 - (BasePanel.tileSize/2);
 		
 		solidArea = new Rectangle(8, 16, 32, 32);
 		solidAreaDefaultX = solidArea.x;
@@ -38,8 +38,8 @@ public class Player extends Entity{
 	
 	public void setDefaultValues() {
 		
-		worldX = panel.tileSize*23;
-		worldY = panel.tileSize*21;
+		worldX = BasePanel.tileSize*23;
+		worldY = BasePanel.tileSize*21;
 		speed = 4;
 		direction = "down";
 		
@@ -185,7 +185,7 @@ public class Player extends Entity{
 			}
 		}
 		
-		g2.drawImage(image, screenX, screenY, panel.tileSize, panel.tileSize, null);
+		g2.drawImage(image, screenX, screenY, BasePanel.tileSize, BasePanel.tileSize, null);
 		g2.setColor(Color.red);
 //		g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 	}
