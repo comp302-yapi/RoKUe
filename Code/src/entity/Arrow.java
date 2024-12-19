@@ -34,10 +34,10 @@ public class Arrow extends Entity {
 
     private void getArrowImage() {
         // Load arrow images for different directions
-        up1 = setup("/res/projectiles/arrow", 16, 16);
-        down1 = setup("/res/projectiles/arrow", 16, 16);
-        left1 = setup("/res/projectiles/arrow", 16, 16);
-        right1 = setup("/res/projectiles/arrow", 16, 16);
+        up1 = setup("/res/projectiles/arrow_up", 16, 16);
+        down1 = setup("/res/projectiles/arrow_down", 16, 16);
+        left1 = setup("/res/projectiles/arrow_left", 16, 16);
+        right1 = setup("/res/projectiles/arrow_right", 16, 16);
     }
 
     @Override
