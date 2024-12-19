@@ -1,7 +1,7 @@
 package managers;
 
 import monster.MON_GreenSlime;
-import monster.MON_Witch;
+import monster.MON_Wizard;
 import object.OBJ_Chest;
 import object.OBJ_Door;
 import object.OBJ_Key;
@@ -48,9 +48,10 @@ public class AssetSetter {
 		panel.getMonsters()[1].worldX = panel.tileSize*18;
 		panel.getMonsters()[1].worldY = panel.tileSize*23;
 		
-		panel.getMonsters()[2] = new MON_Witch(panel);
+		panel.getMonsters()[2] = new MON_Wizard(panel);
 		panel.getMonsters()[2].worldX = panel.tileSize*20;
 		panel.getMonsters()[2].worldY = panel.tileSize*25;
+
 
 	}
 	
