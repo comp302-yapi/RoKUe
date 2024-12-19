@@ -9,8 +9,7 @@ import java.io.InputStreamReader;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
-import object.OBJ_Door;
-import object.OBJ_Key;
+import enums.Hall;
 import object.SuperObject;
 import tile.Tile;
 import views.BasePanel;
@@ -18,10 +17,10 @@ import views.BasePanel;
 public class TileManagerForHall {
 
 	BasePanel panel;
+	public Hall hall;
 	public Tile[] tile;
-	public int mapTileNum[][];
+	public int[][] mapTileNum;
 	public SuperObject[] objects = new SuperObject[50];
-	
 	public BufferedImage allTiles;
 	public BufferedImage pinkTile;
 	public BufferedImage rockyTile00, rockyTile01, rockyTile02, rockyTile03, rockyTile10, rockyTile11,
@@ -30,15 +29,9 @@ public class TileManagerForHall {
 	public BufferedImage columnTileTop, columnTileBottom, columnTileMiddle;
 	public BufferedImage boxTileTop, boxTileBottom;
 	public BufferedImage buildModeChest;
-	
 	public int maxCol,maxRow,idx;
-	
-	
-	
-	
-	
-	
-	public TileManagerForHall(BasePanel panel, String path, int maxCol, int maxRow) {
+
+	public TileManagerForHall(BasePanel panel, Hall hall, String path, int maxCol, int maxRow) {
 		 
 		this.panel = panel;
 		this.maxCol = maxCol;
@@ -149,7 +142,7 @@ public class TileManagerForHall {
 			tile[18].image = boxTileBottom; 
 			tile[18].collision = true;
 			
-			buildModeChest = ImageIO.read(getClass().getResourceAsStream("/res/rokue_like_assets/Buildmodechest.png"));
+			buildModeChest = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/rokue_like_assets/Buildmodechest.png")));
 			tile[19] = new Tile();
 			tile[19].image = buildModeChest;
 			
@@ -187,9 +180,7 @@ public class TileManagerForHall {
 					row++;
 				}
 			}
-
 			br.close();
-
 
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -203,17 +194,15 @@ public class TileManagerForHall {
 		int worldRow = 0;
 		
 		while (worldCol < maxCol && worldRow < maxRow) {
-			
+
 			int tileNum = mapTileNum[worldCol][worldRow];
 			
 			int worldX = worldCol * BasePanel.tileSize;
 			int worldY = worldRow * BasePanel.tileSize;
-				
-			
+
 			if(checkObject(worldX + 300, worldY + 100)) {
 				g2.drawImage(tile[tileNum].image, worldX + 336, worldY + 96, BasePanel.tileSize, BasePanel.tileSize, null);
 			}
-			
 			
 			worldCol++;
 
@@ -221,37 +210,30 @@ public class TileManagerForHall {
 				worldCol = 0;
 				worldRow++;
 			}
-			
 		}
-		
-		
-		
-		for(int i = 0;i < this.objects.length;i++) {
-			if(this.objects[i] != null) {
-				g2.drawImage(this.objects[i].image, this.objects[i].worldX, this.objects[i].worldY, BasePanel.tileSize, BasePanel.tileSize, null);
+
+		for (SuperObject object : objects) {
+			if (object != null) {
+				g2.drawImage(object.image, object.worldX, object.worldY, BasePanel.tileSize, BasePanel.tileSize, null);
 			}
-			}
-		
+		}
 	}
 	
 	public boolean checkObject(int x,int y) {
-		
-		
-		for(int i = 0 ;i < this.objects.length;i++) {
-			if(this.objects[i] != null) {
-				if(this.objects[i].worldX == x && this.objects[i].worldY == y) {
+
+		for (SuperObject object : objects) {
+			if (object != null) {
+				if (object.worldX == x && object.worldY == y) {
 					return false;
 				}
 			}
 		}
 		
 		return true;
-		
 	}
 	
 	public void addObject(SuperObject obj, int x, int y) {
-		
-		
+
 		if(idx < this.objects.length - 1) {
 			//System.out.println(idx);
 			this.objects[idx] = obj;
@@ -259,19 +241,5 @@ public class TileManagerForHall {
 			this.objects[idx].worldY = y;
 			idx++;
 		}
-		
-		
-		
 	}
-	
-
 }
-
-
-
-
-
-
-
-
-

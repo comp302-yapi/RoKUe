@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import enums.Hall;
 import listeners.keylisteners.*;
 import listeners.mouselisteners.BuildPanelMouseListener;
 import managers.*;
@@ -20,14 +21,14 @@ public class BuildPanel extends NonPlayablePanel{
 	private final BuildPanelKeyListener buildPanelKeyListener;
 	private final BuildPanelMouseListener buildPanelMouseListener;
 	public SuperObject[] objectsToDraw = new SuperObject[20]; // sadece kenarda objelerin görsellerni oluşturmak için
-	
-	private Hall currentHall;// enum oluşturabiliriz bunun için 
-	
+
+	private Hall currentHall;// enum oluşturabiliriz bunun için
+
 	public TileManagerForHall hallOfWater;
 	public TileManagerForHall hallOfEarth;
 	public TileManagerForHall hallOfAir;
 	public TileManagerForHall hallOfFire;
-	
+
 	public int mouseClickedX, mouseClickedY;
 	public int selectedIdx = -1;
 	public boolean selected = false;
@@ -41,17 +42,26 @@ public class BuildPanel extends NonPlayablePanel{
         this.buildPanelMouseListener = new BuildPanelMouseListener(this);
         this.addMouseListener(buildPanelMouseListener);
         
-        hallOfWater = new TileManagerForHall(this,"/res/maps/hallOfWater.txt", 14, 15);
-        hallOfEarth = new TileManagerForHall(this,"/res/maps/hallOfEarth.txt", 14, 15);
-        hallOfAir = new TileManagerForHall(this,"/res/maps/hallOfAir.txt", 14, 15);
-        hallOfFire = new TileManagerForHall(this,"/res/maps/hallOfFire.txt", 14, 15);
-        currentHall = Hall.HallOfWater;
+        hallOfWater = new TileManagerForHall(this, Hall.HallOfWater, "/res/maps/hallOfWater.txt", 14, 15);
+        hallOfEarth = new TileManagerForHall(this, Hall.HallOfEarth, "/res/maps/hallOfEarth.txt", 14, 15);
+        hallOfAir = new TileManagerForHall(this, Hall.HallOfAir, "/res/maps/hallOfAir.txt", 14, 15);
+        hallOfFire = new TileManagerForHall(this, Hall.HallOfFire, "/res/maps/hallOfFire.txt", 14, 15);
+        currentHall = Hall.HallOfEarth;
         loadObjects();
     
 	}
 	
 	public Hall getCurrentHall() {
 		return this.currentHall;
+	}
+
+	public TileManagerForHall getCurrentHallManager() {
+		return switch (currentHall) {
+			case HallOfWater -> hallOfWater;
+			case HallOfEarth -> hallOfEarth;
+			case HallOfAir -> hallOfAir;
+			case HallOfFire -> hallOfFire;
+		};
 	}
 	
 	public void setCurrentHall(Hall hall) {
@@ -102,51 +112,21 @@ public class BuildPanel extends NonPlayablePanel{
     }
     
     public boolean checkBorder(int x, int y) {
-    	
-    	
-    	if(x - (int)(BasePanel.tileSize / 2) > 384 && x + (int)(BasePanel.tileSize / 2) < 960
-    			&& y - (int)(BasePanel.tileSize / 2) > 144 && y + (int)(BasePanel.tileSize / 2) < 772) {
-    		return true;
-    	}
-    	
-    	return false;
-    	
-    }
+		return x - (int) (BasePanel.tileSize / 2) > 384 && x + (int) (BasePanel.tileSize / 2) < 960
+				&& y - (int) (BasePanel.tileSize / 2) > 144 && y + (int) (BasePanel.tileSize / 2) < 772;
+
+	}
     
     public void drawBuildScreen(Graphics2D g2,BasePanel panel) {
-    	
-    	
-    	
-    	switch(currentHall){
-    	
-	    	case HallOfWater:
-	    		this.hallOfWater.draw(g2);
-	    		break;
-	    	case HallOfEarth:
-	    		this.hallOfEarth.draw(g2);
-	    		break;
-	    	case HallOfAir:
-	    		this.hallOfAir.draw(g2);
-	    		break;
-	    	case HallOfFire:
-	    		this.hallOfFire.draw(g2);
-	    		break;
-    		
-    	
-    	}
+
+		getCurrentHallManager().draw(g2);
     	
     	if (checkBorder(mouseClickedX,mouseClickedY)){
             g2.setColor(Color.BLACK);
             g2.setStroke(new BasicStroke(2)); // Thicker border
             g2.drawRect(this.mouseClickedX - (int)(BasePanel.tileSize / 2), this.mouseClickedY - (int)(BasePanel.tileSize / 2), BasePanel.tileSize, BasePanel.tileSize);
     	}
-    	
-    	
 
-    	
-    	
-	
-		
 		g2.setColor(new Color(62, 41, 52));
 		//g2.fillRect(0, 0, BasePanel.screenWidth, BasePanel.screenHeight);
 		
@@ -154,7 +134,6 @@ public class BuildPanel extends NonPlayablePanel{
 		g2.fillRect(1008,0,BasePanel.screenWidth,BasePanel.screenHeight);
 		g2.fillRect(0,0,336,BasePanel.screenHeight);
 		g2.fillRect(0,816,BasePanel.screenWidth,BasePanel.screenHeight);
-		
 		
 		// TITLE NAME
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 72F));
@@ -171,58 +150,50 @@ public class BuildPanel extends NonPlayablePanel{
 		// MAIN COLOR
 		g2.setColor(new Color(26, 17, 23));
 		g2.drawString(text, x, y-75);
-		
-		switch(currentHall){
-    	
-    	case HallOfWater:
-    		
-    		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
-    		String text1 = "Hall Of Water";
-    		int x1, y1;
-    		x1 = PanelUtils.getXForCenteredText(text1, panel, g2) - BasePanel.tileSize*2;
-    		y1 = BasePanel.tileSize * 3;
-    		g2.setColor(new Color(20, 218, 34));
-    		g2.drawString(text1, x1 + 500, y1-75);
-    		
-    		break;
-    		
-    	case HallOfEarth:
-    		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
-    		String text2 = "Hall Of Earth";
-    		int x2, y2;
-    		x2 = PanelUtils.getXForCenteredText(text2, panel, g2) - BasePanel.tileSize*2;
-    		y2 = BasePanel.tileSize * 3;
-    		g2.setColor(new Color(20, 218, 34));
-    		g2.drawString(text2, x2 + 500, y2-75);
-    		break;
-    	case HallOfAir:
-    		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
-    		String text3 = "Hall of Air";
-    		int x3, y3;
-    		x3 = PanelUtils.getXForCenteredText(text3, panel, g2) - BasePanel.tileSize*2;
-    		y3 = BasePanel.tileSize * 3;
-    		g2.setColor(new Color(20, 218, 34));
-    		g2.drawString(text3, x3 + 500, y3-75);
-    		break;
-    	case HallOfFire:
-    		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
-    		String text4 = "Hall Of Fire";
-    		int x4, y4;
-    		x4 = PanelUtils.getXForCenteredText(text4, panel, g2) - BasePanel.tileSize*2;
-    		y4 = BasePanel.tileSize * 3;
-    		g2.setColor(new Color(20, 218, 34));
-    		g2.drawString(text4, x4 + 500, y4-75);
-    		break;
-    		
-	
-	}
+
+		switch (currentHall) {
+			case HallOfWater -> {
+				g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
+				String text1 = "Hall Of Water";
+				int x1, y1;
+				x1 = PanelUtils.getXForCenteredText(text1, panel, g2) - BasePanel.tileSize * 2;
+				y1 = BasePanel.tileSize * 3;
+				g2.setColor(new Color(20, 218, 34));
+				g2.drawString(text1, x1 + 500, y1 - 75);
+			}
+			case HallOfEarth -> {
+				g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
+				String text2 = "Hall Of Earth";
+				int x2, y2;
+				x2 = PanelUtils.getXForCenteredText(text2, panel, g2) - BasePanel.tileSize * 2;
+				y2 = BasePanel.tileSize * 3;
+				g2.setColor(new Color(20, 218, 34));
+				g2.drawString(text2, x2 + 500, y2 - 75);
+			}
+			case HallOfAir -> {
+				g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
+				String text3 = "Hall of Air";
+				int x3, y3;
+				x3 = PanelUtils.getXForCenteredText(text3, panel, g2) - BasePanel.tileSize * 2;
+				y3 = BasePanel.tileSize * 3;
+				g2.setColor(new Color(20, 218, 34));
+				g2.drawString(text3, x3 + 500, y3 - 75);
+			}
+			case HallOfFire -> {
+				g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
+				String text4 = "Hall Of Fire";
+				int x4, y4;
+				x4 = PanelUtils.getXForCenteredText(text4, panel, g2) - BasePanel.tileSize * 2;
+				y4 = BasePanel.tileSize * 3;
+				g2.setColor(new Color(20, 218, 34));
+				g2.drawString(text4, x4 + 500, y4 - 75);
+			}
+		}
 		
 		g2.drawImage(this.hallOfWater.tile[19].image, 1200, 100, BasePanel.tileSize*4, BasePanel.tileSize*15, null);
-		
 
-		for(int i = 0;i < objectsToDraw.length;i++) {
-			SuperObject obj = objectsToDraw[i];
-			if(obj != null) {
+		for (SuperObject obj : objectsToDraw) {
+			if (obj != null) {
 				g2.drawImage(obj.image, obj.worldX, obj.worldY, BasePanel.tileSize, BasePanel.tileSize, null);
 			}
 		}
@@ -232,34 +203,11 @@ public class BuildPanel extends NonPlayablePanel{
 	            g2.setStroke(new BasicStroke(2)); // Thicker border
 	            g2.drawRect(this.objectsToDraw[selectedIdx].worldX, this.objectsToDraw[selectedIdx].worldY, BasePanel.tileSize, BasePanel.tileSize);
 		}
-		
-		 
+
 		/*
 		g2.drawString(">", BasePanel.buildMode.objectToDraw[BasePanel.buildMode.selected].worldX - BasePanel.tileSize, 
 				BasePanel.buildMode.objectToDraw[BasePanel.buildMode.selected].worldY+BasePanel.tileSize);
 				
 		*/
     }
-    
-	public void addObject(SuperObject obj, int x, int y) {
-    	switch(currentHall){
-    	
-    	case HallOfWater:
-    		this.hallOfWater.addObject(obj,x,y);
-    		break;
-    	case HallOfEarth:
-    		this.hallOfEarth.addObject(obj,x,y);
-    		break;
-    	case HallOfAir:
-    		this.hallOfAir.addObject(obj,x,y);
-    		break;
-    	case HallOfFire:
-    		this.hallOfFire.addObject(obj,x,y);
-    		break;
-    		
-    	
-    	}
-    	
-	}
-
 }

@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 import listeners.BaseKeyListener;
 import views.BuildPanel;
-import views.Hall;
+import enums.Hall;
 
 public class BuildPanelKeyListener extends BaseKeyListener{
 	
