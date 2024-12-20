@@ -24,45 +24,64 @@ public class HallController {
         currentHall.addObject(obj, x, y);
     }
 
-    public void toNextHall(TileManagerForHall currentHall, BuildDirection direction) {
+    public boolean toNextHall(TileManagerForHall currentHall, BuildDirection direction) {
         switch (currentHall.hall) {
             case HallOfEarth -> {
-                if (direction == BuildDirection.Backward) { return; }
+                if (direction == BuildDirection.Backward) {
+                    return true;
+                }
                 else if(hallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
                     buildPanel.setCurrentHall(Hall.HallOfAir);
+                    return true;
                 }
                 else {
-                    System.out.println("Not enough objects");
+                    return false;
                 }
             }
             case HallOfAir -> {
-                if (direction == BuildDirection.Backward) { buildPanel.setCurrentHall(Hall.HallOfEarth); }
+                if (direction == BuildDirection.Backward) {
+                    buildPanel.setCurrentHall(Hall.HallOfEarth);
+                    return true;
+                }
                 else if(hallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
                     buildPanel.setCurrentHall(Hall.HallOfWater);
+                    return true;
                 }
                 else {
                     System.out.println("Not enough objects");
+                    return false;
                 }
             }
             case HallOfWater -> {
-                if (direction == BuildDirection.Backward) { buildPanel.setCurrentHall(Hall.HallOfAir); }
+                if (direction == BuildDirection.Backward) {
+                    buildPanel.setCurrentHall(Hall.HallOfAir);
+                    return true;
+                }
                 else if(hallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
                     buildPanel.setCurrentHall(Hall.HallOfFire);
+                    return true;
                 }
                 else {
                     System.out.println("Not enough objects");
+                    return false;
                 }
             }
             case HallOfFire -> {
-                if (direction == BuildDirection.Backward) { buildPanel.setCurrentHall(Hall.HallOfWater); }
+                if (direction == BuildDirection.Backward) {
+                    buildPanel.setCurrentHall(Hall.HallOfWater);
+                    return true;
+                }
                 else if(hallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
                     buildPanel.getViewManager().switchTo("GamePanel", true);
+                    return true;
                 }
                 else {
                     System.out.println("Not enough objects");
+                    return false;
                 }
             }
         }
+        return true;
     }
 
     public SuperObject getObjectSelectedInHall(TileManagerForHall currentHall, int mouseX, int mouseY) {

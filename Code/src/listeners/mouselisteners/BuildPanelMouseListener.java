@@ -37,11 +37,11 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 		buildPanel.mouseDraggedY = y;
 
 		if (buildPanel.isInPreviousButton(x, y)) {
-			hallController.toNextHall(buildPanel.getCurrentHallManager(), BuildDirection.Backward);
+			buildPanel.isHallValidated = hallController.toNextHall(buildPanel.getCurrentHallManager(), BuildDirection.Backward);
 		}
 
 		else if (buildPanel.isInNextButton(x, y)) {
-			hallController.toNextHall(buildPanel.getCurrentHallManager(), BuildDirection.Forward);
+			buildPanel.isHallValidated = hallController.toNextHall(buildPanel.getCurrentHallManager(), BuildDirection.Forward);
 		}
 
 		else if(buildPanel.selected) {

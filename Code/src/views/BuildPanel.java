@@ -35,6 +35,10 @@ public class BuildPanel extends NonPlayablePanel{
 	public int mouseDraggedX, mouseDraggedY;
 	public int selectedIdx = -1;
 	public boolean selected = false;
+	public boolean isHallValidated = true;
+
+	String errorMessageLine1 ="Hall does not fit the requirements";
+	String errorMessageLine2 = "Please add more objects";
 
 	// For button drawings
 	// TODO: Find a better way to store these values
@@ -225,6 +229,10 @@ public class BuildPanel extends NonPlayablePanel{
 			drawDraggedItem(g2, mouseDraggedX, mouseDraggedY);
 		}
 
+		if (!isHallValidated) {
+			drawErrorMessage(g2, nextButtonX);
+		}
+
 		/*
 		g2.drawString(">", BasePanel.buildMode.objectToDraw[BasePanel.buildMode.selected].worldX - BasePanel.tileSize,
 				BasePanel.buildMode.objectToDraw[BasePanel.buildMode.selected].worldY+BasePanel.tileSize);
@@ -261,6 +269,17 @@ public class BuildPanel extends NonPlayablePanel{
 		int textXNext = nextButtonX + (buttonWidth - g2.getFontMetrics().stringWidth(nextText)) / 2;
 		int textYNext = buttonY + (buttonHeight + g2.getFontMetrics().getAscent()) / 2 - 5;
 		g2.drawString(nextText, textXNext, textYNext);
+
+		if (!isHallValidated) {
+
+		}
+	}
+
+	private void drawErrorMessage(Graphics2D g2, int xStart) {
+		g2.setColor(new Color(180, 0,0));
+		g2.setFont(arial_20);
+		g2.drawString(errorMessageLine1, nextButtonX  - 50, buttonY + 75);
+		g2.drawString(errorMessageLine2, nextButtonX - 10, buttonY + 95);
 	}
 
 	public boolean isInPreviousButton(int mouseX, int mouseY) {
