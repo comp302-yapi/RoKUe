@@ -113,36 +113,54 @@ public class Player extends Entity{
 	}
 	
 	public void pickupObject(int i) {
-		
 		if (i != 999) {
-			
 			String objectName = panel.getSuperObjects()[i].name;
-			
+	
 			switch (objectName) {
-			
-			case "Key": 
-			hasKey++; 
-			panel.getSuperObjects()[i] = null;
-			panel.showMessage("You got a key!");
-			break;
-			
-			case "Door": 
-			if (hasKey > 0) {
-				panel.getSuperObjects()[i] = null;
-				hasKey--;
-				panel.showMessage("You opened the door!");
-
-			} else {
-				panel.showMessage("You need a key!");
-
+				case "Key": 
+					hasKey++; 
+					panel.getSuperObjects()[i] = null;
+					panel.showMessage("You got a key!");
+					break;
+	
+				case "Door": 
+					if (hasKey > 0) {
+						panel.getSuperObjects()[i] = null;
+						hasKey--;
+						panel.showMessage("You opened the door!");
+					} else {
+						panel.showMessage("You need a key!");
+					}
+					break;
+	
+				case "Chest":
+					panel.showMessage("a chest!");
+					break;
+	
+					case "Barrel":
+					case "Stone":
+					case "Pot":
+						// Kontrol: Bu objeden bir anahtar alındı mı?
+						if (!panel.getSuperObjects()[i].name.endsWith("_Used")) {
+							if (Math.random() > 0.5) { // %50 ihtimalle anahtar çıkar
+								hasKey++;
+								panel.showMessage(objectName + " contains a key!");
+								panel.getSuperObjects()[i].name = objectName + "_Used"; // Obje "kullanılmış" olarak işaretlenir
+							} else {
+								panel.showMessage(objectName + " is empty.");
+								panel.getSuperObjects()[i].name = objectName + "_Used"; // Obje "kullanılmış" olarak işaretlenir
+							}
+						} else {
+							panel.showMessage(objectName + " has already been searched.");
+						}
+						break;
+				case "Lantern":
+				case "Chain":
+				case "Cactus":
+					panel.showMessage(objectName);
+					break;
 			}
-			break;
-				
-			case "Chest":
-			//panel.ui.gameFinished = true;
-			break;
-			}
-		}				
+		}
 	}
 	
 	

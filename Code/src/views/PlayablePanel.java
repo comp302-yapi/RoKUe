@@ -21,7 +21,7 @@ public abstract class PlayablePanel extends JPanel implements BasePanel {
     protected PlayablePanel(ViewManager viewManager) {
         this.player = new Player(this);
         this.tileM = new TileManager(this);
-        this.obj = new SuperObject[10];
+        this.obj = new SuperObject[15];
         this.monsters = new Entity[20];
         this.cChecker = new CollisionChecker(this, tileM);
         this.viewManager = viewManager;
