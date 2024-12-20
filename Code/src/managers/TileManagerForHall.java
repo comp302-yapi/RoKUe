@@ -32,10 +32,10 @@ public class TileManagerForHall {
 	public int maxCol,maxRow,idx;
 
 	public TileManagerForHall(BasePanel panel, Hall hall, String path, int maxCol, int maxRow) {
-		 
 		this.panel = panel;
 		this.maxCol = maxCol;
 		this.maxRow = maxRow;
+		this.hall = hall;
 		tile = new Tile[20];
 		mapTileNum = new int[BasePanel.maxWorldCol][BasePanel.maxWorldRow];
 		idx = 0;

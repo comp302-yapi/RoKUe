@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
 import controllers.HallController;
+import enums.BuildDirection;
 import listeners.BaseMouseListener;
 import object.OBJ_Chest;
 import object.OBJ_Door;
@@ -30,7 +31,15 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 		int x = e.getX();
 		int y = e.getY();
 
-		if(buildPanel.selected) {
+		if (buildPanel.isInPreviousButton(x, y)) {
+			hallController.toNextHall(buildPanel.getCurrentHallManager(), BuildDirection.Backward);
+		}
+
+		else if (buildPanel.isInNextButton(x, y)) {
+			hallController.toNextHall(buildPanel.getCurrentHallManager(), BuildDirection.Forward);
+		}
+
+		else if(buildPanel.selected) {
 			buildPanel.mouseClickedX = x;
 			buildPanel.mouseClickedY = y;
 

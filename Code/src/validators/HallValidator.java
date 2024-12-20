@@ -2,6 +2,9 @@ package validators;
 
 import object.SuperObject;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class HallValidator {
 
     private final int EARTH_HALL_MIN_OBJECTS = 6;
@@ -27,19 +30,23 @@ public class HallValidator {
         }
     }
 
+    private int getNonNullElementCount(SuperObject[] hallObjects) {
+        return (int) Arrays.stream(hallObjects).filter(Objects::nonNull).count();
+    }
+
     public boolean validateEarthHall(SuperObject[] hallObjects) {
-        return hallObjects.length > EARTH_HALL_MIN_OBJECTS;
+        return getNonNullElementCount(hallObjects) >= EARTH_HALL_MIN_OBJECTS;
     }
 
     public boolean validateAirHall(SuperObject[] hallObjects) {
-        return hallObjects.length > AIR_HALL_MIN_OBJECTS;
+        return getNonNullElementCount(hallObjects) >= AIR_HALL_MIN_OBJECTS;
     }
 
     public boolean validateWaterHall(SuperObject[] hallObjects) {
-        return hallObjects.length > WATER_HALL_MIN_OBJECTS;
+        return getNonNullElementCount(hallObjects) >= WATER_HALL_MIN_OBJECTS;
     }
 
     public boolean validateFireHall(SuperObject[] hallObjects) {
-        return hallObjects.length > FIRE_HALL_MIN_OBJECTS;
+        return getNonNullElementCount(hallObjects) >= FIRE_HALL_MIN_OBJECTS;
     }
 }
