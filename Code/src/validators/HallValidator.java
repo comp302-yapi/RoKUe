@@ -1,52 +1,45 @@
 package validators;
 
-import object.SuperObject;
-
-import java.util.Arrays;
-import java.util.Objects;
+import enums.Hall;
 
 public class HallValidator {
 
-    private final int EARTH_HALL_MIN_OBJECTS = 6;
-    private final int AIR_HALL_MIN_OBJECTS = 9;
-    private final int WATER_HALL_MIN_OBJECTS = 13;
-    private final int FIRE_HALL_MIN_OBJECTS = 17;
+    private final int EARTH_HALL_MIN_OBJECTS = 1;
+    private final int AIR_HALL_MIN_OBJECTS = 2;
+    private final int WATER_HALL_MIN_OBJECTS = 3;
+    private final int FIRE_HALL_MIN_OBJECTS = 4;
 
-    public boolean validateHall(String hallName, SuperObject[] hallObjects) {
-        switch (hallName) {
-            case ("earth") -> {
-                return validateEarthHall(hallObjects);
+    public boolean validateHall(Hall hall, int hallObjectsCount) {
+        switch (hall) {
+            case HallOfEarth -> {
+                return validateEarthHall(hallObjectsCount);
             }
-            case ("air") -> {
-                return validateAirHall(hallObjects);
+            case HallOfAir -> {
+                return validateAirHall(hallObjectsCount);
             }
-            case ("water") -> {
-                return validateWaterHall(hallObjects);
+            case HallOfWater -> {
+                return validateWaterHall(hallObjectsCount);
             }
-            case ("fire") -> {
-                return validateFireHall(hallObjects);
+            case HallOfFire -> {
+                return validateFireHall(hallObjectsCount);
             }
-            default -> throw new IllegalStateException("Unexpected value: " + hallName);
+            default -> throw new IllegalStateException("Unexpected value: " + hall.name());
         }
     }
 
-    private int getNonNullElementCount(SuperObject[] hallObjects) {
-        return (int) Arrays.stream(hallObjects).filter(Objects::nonNull).count();
+    public boolean validateEarthHall(int hallObjectsCount) {
+        return hallObjectsCount >= EARTH_HALL_MIN_OBJECTS;
     }
 
-    public boolean validateEarthHall(SuperObject[] hallObjects) {
-        return getNonNullElementCount(hallObjects) >= EARTH_HALL_MIN_OBJECTS;
+    public boolean validateAirHall(int hallObjectsCount) {
+        return hallObjectsCount >= AIR_HALL_MIN_OBJECTS;
     }
 
-    public boolean validateAirHall(SuperObject[] hallObjects) {
-        return getNonNullElementCount(hallObjects) >= AIR_HALL_MIN_OBJECTS;
+    public boolean validateWaterHall(int hallObjectsCount) {
+        return hallObjectsCount >= WATER_HALL_MIN_OBJECTS;
     }
 
-    public boolean validateWaterHall(SuperObject[] hallObjects) {
-        return getNonNullElementCount(hallObjects) >= WATER_HALL_MIN_OBJECTS;
-    }
-
-    public boolean validateFireHall(SuperObject[] hallObjects) {
-        return getNonNullElementCount(hallObjects) >= FIRE_HALL_MIN_OBJECTS;
+    public boolean validateFireHall(int hallObjectsCount) {
+        return hallObjectsCount >= FIRE_HALL_MIN_OBJECTS;
     }
 }

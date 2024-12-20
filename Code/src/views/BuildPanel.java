@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import enums.BuildDirection;
 import enums.Hall;
@@ -21,7 +22,7 @@ public class BuildPanel extends NonPlayablePanel{
 	
 	private final BuildPanelKeyListener buildPanelKeyListener;
 	private final BuildPanelMouseListener buildPanelMouseListener;
-	public SuperObject[] objectsToDraw = new SuperObject[20]; // sadece kenarda objelerin görsellerni oluşturmak için
+	public ArrayList<SuperObject> objectsToDraw = new ArrayList<>();
 
 	private Hall currentHall;// enum oluşturabiliriz bunun için
 
@@ -31,6 +32,7 @@ public class BuildPanel extends NonPlayablePanel{
 	public TileManagerForHall hallOfFire;
 
 	public int mouseClickedX, mouseClickedY;
+	public int mouseDraggedX, mouseDraggedY;
 	public int selectedIdx = -1;
 	public boolean selected = false;
 
@@ -52,6 +54,7 @@ public class BuildPanel extends NonPlayablePanel{
         
         this.buildPanelMouseListener = new BuildPanelMouseListener(this);
         this.addMouseListener(buildPanelMouseListener);
+		this.addMouseMotionListener(buildPanelMouseListener);
         
         hallOfWater = new TileManagerForHall(this, Hall.HallOfWater, "/res/maps/hallOfWater.txt", 14, 15);
         hallOfEarth = new TileManagerForHall(this, Hall.HallOfEarth, "/res/maps/hallOfEarth.txt", 14, 15);
@@ -94,9 +97,9 @@ public class BuildPanel extends NonPlayablePanel{
 		door.worldX = BasePanel.tileSize * 25 + 16;
 		door.worldY = BasePanel.tileSize * 7;
 		
-		this.objectsToDraw[0] = chest;
-		this.objectsToDraw[1] = key;
-		this.objectsToDraw[2] = door;
+		objectsToDraw.add(chest);
+		objectsToDraw.add(key);
+		objectsToDraw.add(door);
 		
 		OBJ_Chest chest1 = new OBJ_Chest();
 		chest1.worldX = BasePanel.tileSize * 25 + 16;
@@ -110,10 +113,10 @@ public class BuildPanel extends NonPlayablePanel{
 		OBJ_Door door1 = new OBJ_Door();
 		door1.worldX = BasePanel.tileSize * 27 + 16;
 		door1.worldY = BasePanel.tileSize * 9;
-		
-		this.objectsToDraw[3] = chest1;
-		this.objectsToDraw[4] = key1;
-		this.objectsToDraw[5] = door1;
+
+		objectsToDraw.add(chest1);
+		objectsToDraw.add(key1);
+		objectsToDraw.add(door1);
 	}
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -215,17 +218,31 @@ public class BuildPanel extends NonPlayablePanel{
 		}
 
 		if(selected) {
-			 g2.setColor(Color.BLACK);
-	            g2.setStroke(new BasicStroke(2)); // Thicker border
-	            g2.drawRect(this.objectsToDraw[selectedIdx].worldX, this.objectsToDraw[selectedIdx].worldY, BasePanel.tileSize, BasePanel.tileSize);
+		 	g2.setColor(Color.BLACK);
+			g2.setStroke(new BasicStroke(2)); // Thicker border
+			g2.drawRect(objectsToDraw.get(selectedIdx).worldX, objectsToDraw.get(selectedIdx).worldY, BasePanel.tileSize, BasePanel.tileSize);
+
+			drawDraggedItem(g2, mouseDraggedX, mouseDraggedY);
 		}
 
 		/*
 		g2.drawString(">", BasePanel.buildMode.objectToDraw[BasePanel.buildMode.selected].worldX - BasePanel.tileSize,
 				BasePanel.buildMode.objectToDraw[BasePanel.buildMode.selected].worldY+BasePanel.tileSize);
-
 		*/
     }
+
+	private void drawDraggedItem(Graphics2D g2, int mouseX, int mouseY) {
+		SuperObject selectedObj = objectsToDraw.get(selectedIdx);
+
+		g2.drawImage(
+				selectedObj.image,
+				mouseX - selectedObj.image.getWidth() / 2 * scale,
+				mouseY - selectedObj.image.getHeight() / 2 * scale,
+				BasePanel.tileSize,
+				BasePanel.tileSize, null
+		);
+	}
+
 	private void drawHallControlButtons(Graphics2D g2, String prevText, String nextText) {
 		if(prevText != null) {
 			g2.setColor(buttonColor);

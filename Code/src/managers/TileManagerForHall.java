@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
@@ -20,7 +21,7 @@ public class TileManagerForHall {
 	public Hall hall;
 	public Tile[] tile;
 	public int[][] mapTileNum;
-	public SuperObject[] objects = new SuperObject[50];
+	public ArrayList<SuperObject> objects = new ArrayList<>();
 	public BufferedImage allTiles;
 	public BufferedImage pinkTile;
 	public BufferedImage rockyTile00, rockyTile01, rockyTile02, rockyTile03, rockyTile10, rockyTile11,
@@ -233,13 +234,12 @@ public class TileManagerForHall {
 	}
 	
 	public void addObject(SuperObject obj, int x, int y) {
+		obj.worldX = x;
+		obj.worldY = y;
+		objects.add(obj);
+	}
 
-		if(idx < this.objects.length - 1) {
-			//System.out.println(idx);
-			this.objects[idx] = obj;
-			this.objects[idx].worldX = x;
-			this.objects[idx].worldY = y;
-			idx++;
-		}
+	public void removeObject(SuperObject obj) {
+		objects.remove(obj);
 	}
 }

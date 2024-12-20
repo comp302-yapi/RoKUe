@@ -15,7 +15,7 @@ import object.SuperObject;
 import views.BasePanel;
 import views.BuildPanel;
 
-public class BuildPanelMouseListener extends BaseMouseListener implements  MouseMotionListener{
+public class BuildPanelMouseListener extends BaseMouseListener implements  MouseMotionListener {
 
 	private final BuildPanel buildPanel;
 	private final HallController hallController;
@@ -31,6 +31,11 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 		int x = e.getX();
 		int y = e.getY();
 
+		buildPanel.mouseClickedX = x;
+		buildPanel.mouseClickedY = y;
+		buildPanel.mouseDraggedX = x;
+		buildPanel.mouseDraggedY = y;
+
 		if (buildPanel.isInPreviousButton(x, y)) {
 			hallController.toNextHall(buildPanel.getCurrentHallManager(), BuildDirection.Backward);
 		}
@@ -40,21 +45,18 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 		}
 
 		else if(buildPanel.selected) {
-			buildPanel.mouseClickedX = x;
-			buildPanel.mouseClickedY = y;
-
 			if(checkBorder(x,y)) {
 				SuperObject newObj = null; 
 				
-				if(buildPanel.objectsToDraw[buildPanel.selectedIdx] instanceof OBJ_Key) {
+				if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Key) {
 					newObj = new OBJ_Key();
 				}
 				
-				else if(buildPanel.objectsToDraw[buildPanel.selectedIdx]instanceof OBJ_Chest) {
+				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Chest) {
 					newObj = new OBJ_Chest();
 				}
 
-				else if(buildPanel.objectsToDraw[buildPanel.selectedIdx] instanceof OBJ_Door) {
+				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Door) {
 					newObj = new OBJ_Door();
 				}
 				
@@ -63,19 +65,36 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 					hallController.addObject(buildPanel.getCurrentHallManager(), newObj, x - (int)(BasePanel.tileSize / 2), y - (int)(BasePanel.tileSize / 2));
 				}
 
-				buildPanel.selected = false;
-				buildPanel.selectedIdx = -1; // gerek yok ama dursun
 			}
+
+			buildPanel.selected = false;
+			buildPanel.selectedIdx = -1; // gerek yok ama dursun
 		}
 
 		else {
-			for(int i = 0;i < buildPanel.objectsToDraw.length;i++) {
-				if(buildPanel.objectsToDraw[i] != null) {
-					SuperObject obj = buildPanel.objectsToDraw[i];
-					if (x > obj.worldX && x < obj.worldX + BasePanel.tileSize
-							&& y > obj.worldY && y < obj.worldY + BasePanel.tileSize) {
+			// If selected an object in map
+			SuperObject objInMap = hallController.getObjectSelectedInHall(buildPanel.getCurrentHallManager(), x, y);
+			if (objInMap != null) {
+				// If selected an object on the map
+				buildPanel.getCurrentHallManager().removeObject(objInMap);
+
+				for(int i = 0; i < buildPanel.objectsToDraw.size(); i++) {
+					if(buildPanel.objectsToDraw.get(i).getClass() == objInMap.getClass()) {
 						buildPanel.selectedIdx = i;
 						buildPanel.selected = true;
+					}
+				}
+			}
+			else {
+				// If selected an object in the menu
+				for(int i = 0; i < buildPanel.objectsToDraw.size(); i++) {
+					if(buildPanel.objectsToDraw.get(i) != null) {
+						SuperObject obj = buildPanel.objectsToDraw.get(i);
+						if (x > obj.worldX && x < obj.worldX + BasePanel.tileSize
+								&& y > obj.worldY && y < obj.worldY + BasePanel.tileSize) {
+							buildPanel.selectedIdx = i;
+							buildPanel.selected = true;
+						}
 					}
 				}
 			}
@@ -116,7 +135,10 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if (buildPanel.selected) {
+			buildPanel.mouseDraggedX = e.getX();
+			buildPanel.mouseDraggedY = e.getY();
+		}
 	}
 
 }

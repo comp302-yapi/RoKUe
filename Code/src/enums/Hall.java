@@ -1,5 +1,8 @@
 package enums;
 
 public enum Hall {
-	HallOfWater, HallOfEarth, HallOfAir, HallOfFire
+	HallOfWater,
+	HallOfEarth,
+	HallOfAir,
+	HallOfFire
 }
