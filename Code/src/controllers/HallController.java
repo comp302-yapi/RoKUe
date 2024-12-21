@@ -48,7 +48,7 @@ public class HallController {
                     return true;
                 }
                 else {
-                    System.out.println("Not enough objects");
+                    //System.out.println("Not enough objects");
                     return false;
                 }
             }
@@ -62,7 +62,7 @@ public class HallController {
                     return true;
                 }
                 else {
-                    System.out.println("Not enough objects");
+                    //System.out.println("Not enough objects");
                     return false;
                 }
             }
@@ -76,7 +76,7 @@ public class HallController {
                     return true;
                 }
                 else {
-                    System.out.println("Not enough objects");
+                    //System.out.println("Not enough objects");
                     return false;
                 }
             }

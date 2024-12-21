@@ -139,11 +139,13 @@ public class BuildPanel extends NonPlayablePanel{
 
 		getCurrentHallManager().draw(g2);
 
+		/*
     	if (checkObjectBorder(mouseClickedX,mouseClickedY)){
             g2.setColor(Color.BLACK);
             g2.setStroke(new BasicStroke(2)); // Thicker border
             g2.drawRect(this.mouseClickedX - (int)(BasePanel.tileSize / 2), this.mouseClickedY - (int)(BasePanel.tileSize / 2), BasePanel.tileSize, BasePanel.tileSize);
     	}
+    	*/
 
 		g2.setColor(new Color(62, 41, 52));
 		//g2.fillRect(0, 0, BasePanel.screenWidth, BasePanel.screenHeight);
@@ -222,9 +224,9 @@ public class BuildPanel extends NonPlayablePanel{
 		}
 
 		if(selected) {
-		 	g2.setColor(Color.BLACK);
-			g2.setStroke(new BasicStroke(2)); // Thicker border
-			g2.drawRect(objectsToDraw.get(selectedIdx).worldX, objectsToDraw.get(selectedIdx).worldY, BasePanel.tileSize, BasePanel.tileSize);
+		 	//g2.setColor(Color.BLACK);
+			//g2.setStroke(new BasicStroke(2)); // Thicker border
+			//g2.drawRect(objectsToDraw.get(selectedIdx).worldX, objectsToDraw.get(selectedIdx).worldY, BasePanel.tileSize, BasePanel.tileSize);
 
 			drawDraggedItem(g2, mouseDraggedX, mouseDraggedY);
 		}
