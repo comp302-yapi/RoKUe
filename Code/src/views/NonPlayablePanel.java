@@ -1,5 +1,6 @@
 package views;
 
+import entity.Arrow;
 import entity.Entity;
 import entity.Player;
 import managers.CollisionChecker;
@@ -50,6 +51,11 @@ public class NonPlayablePanel extends JPanel implements BasePanel {
     @Override
     public ViewManager getViewManager() {
         return viewManager;
+    }
+
+    @Override
+    public Arrow[] getArrows() {
+        return new Arrow[0];
     }
 
     @Override

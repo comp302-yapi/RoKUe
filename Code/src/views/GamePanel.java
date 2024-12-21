@@ -1,11 +1,13 @@
 package views;
 
+import entity.Arrow;
 import entity.Entity;
 import listeners.keylisteners.GamePanelKeyListener;
 import managers.AssetSetter;
 import managers.ViewManager;
 import object.SuperObject;
 import utils.PanelUtils;
+
 import java.awt.*;
 
 
@@ -32,15 +34,28 @@ public class GamePanel extends PlayablePanel {
 
     @Override
     public void update() {
-        if (!isPaused()) {
-            getPlayer().move();
+        getPlayer().move();
 
-            for (Entity monster : getMonsters()) {
-                if (monster != null) {
-                    monster.update();
+        // Update monsters
+        for (Entity monster : getMonsters()) {
+            if (monster != null) {
+                monster.update();
+            }
+        }
+
+        // Update arrows
+        for (int i = 0; i < getArrows().length; i++) {
+            if (getArrows()[i] != null) {
+                getArrows()[i].update();
+
+                // Remove expired arrows
+                if (getArrows()[i].isExpired()) {
+                    getArrows()[i] = null;
                 }
             }
         }
+
+
     }
 
     @Override
@@ -79,6 +94,12 @@ public class GamePanel extends PlayablePanel {
         for (Entity monster : getMonsters()) {
             if (monster != null) {
                 monster.draw(g2);
+            }
+        }
+        // Draw arrows
+        for (Arrow arrow : getArrows()) {
+            if (arrow != null) {
+                arrow.draw(g2);
             }
         }
 
