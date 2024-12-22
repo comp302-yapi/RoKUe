@@ -6,18 +6,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
+import enums.Hall;
+import object.SuperObject;
 import tile.Tile;
 import views.BasePanel;
 
-public class TileManager {
+public class TileManagerForHall {
 
 	BasePanel panel;
+	public Hall hall;
 	public Tile[] tile;
-	public int mapTileNum[][];
-	
+	public int[][] mapTileNum;
+	public ArrayList<SuperObject> objects = new ArrayList<>();
 	public BufferedImage allTiles;
 	public BufferedImage pinkTile;
 	public BufferedImage rockyTile00, rockyTile01, rockyTile02, rockyTile03, rockyTile10, rockyTile11,
@@ -25,18 +29,19 @@ public class TileManager {
 	public BufferedImage wallTile;
 	public BufferedImage columnTileTop, columnTileBottom, columnTileMiddle;
 	public BufferedImage boxTileTop, boxTileBottom;
-	
-	
-	
-	
-	public TileManager(BasePanel panel) {
-		 
+	public BufferedImage buildModeChest;
+	public int maxCol,maxRow,idx;
+
+	public TileManagerForHall(BasePanel panel, Hall hall, String path, int maxCol, int maxRow) {
 		this.panel = panel;
-		
+		this.maxCol = maxCol;
+		this.maxRow = maxRow;
+		this.hall = hall;
 		tile = new Tile[20];
 		mapTileNum = new int[BasePanel.maxWorldCol][BasePanel.maxWorldRow];
+		idx = 0;
 		getTileImage();
-		loadMap("/res/maps/world01.txt");
+		loadMap(path);
 	}
 	
 	public void getTileImage() {
@@ -138,6 +143,10 @@ public class TileManager {
 			tile[18].image = boxTileBottom; 
 			tile[18].collision = true;
 			
+			buildModeChest = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/rokue_like_assets/Buildmodechest.png")));
+			tile[19] = new Tile();
+			tile[19].image = buildModeChest;
+			
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -153,11 +162,11 @@ public class TileManager {
 			int col = 0;
 			int row = 0;
 			
-			while (col < BasePanel.maxWorldCol && row < BasePanel.maxWorldRow) {
+			while (col < maxCol && row < maxRow) {
 				
 				String line = br.readLine();
 				
-				while (col < BasePanel.maxWorldCol) {
+				while (col < maxCol) {
 					
 					String[] numbers = line.split(" ");
 					
@@ -167,12 +176,11 @@ public class TileManager {
 					col++;
 				}
 				
-				if (col == BasePanel.maxWorldCol) {
+				if (col == maxCol) {
 					col = 0;
 					row++;
 				}
 			}
-
 			br.close();
 
 		} catch(Exception e) {
@@ -186,43 +194,52 @@ public class TileManager {
 		int worldCol = 0;
 		int worldRow = 0;
 		
-		while (worldCol < BasePanel.maxWorldCol && worldRow < BasePanel.maxWorldRow) {
-			
+		while (worldCol < maxCol && worldRow < maxRow) {
+
 			int tileNum = mapTileNum[worldCol][worldRow];
 			
 			int worldX = worldCol * BasePanel.tileSize;
 			int worldY = worldRow * BasePanel.tileSize;
-			int screenX = worldX - panel.getPlayer().worldX + panel.getPlayer().screenX;
-			int screenY = worldY - panel.getPlayer().worldY + panel.getPlayer().screenY;
-			
-			if (worldX > panel.getPlayer().worldX - BasePanel.tileSize - panel.getPlayer().screenX &&
-					worldX < panel.getPlayer().worldX + BasePanel.tileSize + panel.getPlayer().screenX &&
-					worldY > panel.getPlayer().worldY - BasePanel.tileSize - panel.getPlayer().screenY &&
-					worldY < panel.getPlayer().worldY + BasePanel.tileSize + panel.getPlayer().screenY) {
-				
-				g2.drawImage(tile[tileNum].image, screenX, screenY, BasePanel.tileSize, BasePanel.tileSize, null);
-				
+
+			if(checkObject(worldX + 300, worldY + 100)) {
+				g2.drawImage(tile[tileNum].image, worldX + 336, worldY + 96, BasePanel.tileSize, BasePanel.tileSize, null);
 			}
 			
 			worldCol++;
 
-			if (worldCol == BasePanel.maxWorldCol) {
+			if (worldCol == maxCol) {
 				worldCol = 0;
 				worldRow++;
 			}
-			
 		}
-		
+
+		for (SuperObject object : objects) {
+			if (object != null) {
+				g2.drawImage(object.image, object.worldX, object.worldY, BasePanel.tileSize, BasePanel.tileSize, null);
+			}
+		}
 	}
 	
+	public boolean checkObject(int x,int y) {
+
+		for (SuperObject object : objects) {
+			if (object != null) {
+				if (object.worldX == x && object.worldY == y) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
 	
+	public void addObject(SuperObject obj, int x, int y) {
+		obj.worldX = x;
+		obj.worldY = y;
+		objects.add(obj);
+	}
+
+	public void removeObject(SuperObject obj) {
+		objects.remove(obj);
+	}
 }
-
-
-
-
-
-
-
-
-
