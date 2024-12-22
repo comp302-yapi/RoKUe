@@ -18,28 +18,27 @@ public class AssetSetter {
 	public void setObject() {
 		
 		panel.getSuperObjects()[0] = new OBJ_Key();
-		panel.getSuperObjects()[0].worldX = 23 * panel.tileSize;
-		panel.getSuperObjects()[0].worldY = 7 * panel.tileSize;
+		panel.getSuperObjects()[0].worldX = 23 * BasePanel.tileSize;
+		panel.getSuperObjects()[0].worldY = 7 * BasePanel.tileSize;
 		
 		panel.getSuperObjects()[1] = new OBJ_Key();
-		panel.getSuperObjects()[1].worldX = 23 * panel.tileSize;
-		panel.getSuperObjects()[1].worldY = 40 * panel.tileSize;
+		panel.getSuperObjects()[1].worldX = 23 * BasePanel.tileSize;
+		panel.getSuperObjects()[1].worldY = 40 * BasePanel.tileSize;
 		
 		panel.getSuperObjects()[2] = new OBJ_Key();
-		panel.getSuperObjects()[2].worldX = 38 * panel.tileSize;
-		panel.getSuperObjects()[2].worldY = 8 * panel.tileSize;
+		panel.getSuperObjects()[2].worldX = 38 * BasePanel.tileSize;
+		panel.getSuperObjects()[2].worldY = 8 * BasePanel.tileSize;
 		
 		panel.getSuperObjects()[3] = new OBJ_Door();
-		panel.getSuperObjects()[3].worldX = 10 * panel.tileSize;
-		panel.getSuperObjects()[3].worldY = 11 * panel.tileSize;
+		panel.getSuperObjects()[3].worldX = 10 * BasePanel.tileSize;
+		panel.getSuperObjects()[3].worldY = 11 * BasePanel.tileSize;
 		
 		panel.getSuperObjects()[6] = new OBJ_Chest();
-		panel.getSuperObjects()[6].worldX = 10 * panel.tileSize;
-		panel.getSuperObjects()[6].worldY = 7 * panel.tileSize;
+		panel.getSuperObjects()[6].worldX = 10 * BasePanel.tileSize;
+		panel.getSuperObjects()[6].worldY = 7 * BasePanel.tileSize;
 	}
 	
 	public void spawnMonster() {
-		
 		panel.getMonsters()[0] = new MON_Archer(panel);
 		panel.getMonsters()[0].worldX = panel.tileSize*24;
 		panel.getMonsters()[0].worldY = panel.tileSize*21;
@@ -51,8 +50,6 @@ public class AssetSetter {
 		panel.getMonsters()[2] = new MON_Wizard(panel);
 		panel.getMonsters()[2].worldX = panel.tileSize*20;
 		panel.getMonsters()[2].worldY = panel.tileSize*25;
-
-
 	}
 	
 }

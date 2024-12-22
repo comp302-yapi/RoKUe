@@ -26,16 +26,16 @@ public class CollisionChecker {
 		int entityTopWorldY = entity.worldY + entity.solidArea.y;
 		int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
 		
-		int entityLeftCol = entityLeftWorldX/panel.tileSize;
-		int entityRightCol = entityRightWorldX/panel.tileSize;
-		int entityTopRow = entityTopWorldY/panel.tileSize;
-		int entityBottomRow = entityBottomWorldY/panel.tileSize;
+		int entityLeftCol = entityLeftWorldX/BasePanel.tileSize;
+		int entityRightCol = entityRightWorldX/BasePanel.tileSize;
+		int entityTopRow = entityTopWorldY/BasePanel.tileSize;
+		int entityBottomRow = entityBottomWorldY/BasePanel.tileSize;
 		
 		int tileNum1, tileNum2;
 
 		switch (entity.direction) {
 			case "up" -> {
-				entityTopRow = (entityTopWorldY - entity.speed) / panel.tileSize;
+				entityTopRow = (entityTopWorldY - entity.speed) / BasePanel.tileSize;
 				tileNum1 = tileM.mapTileNum[entityLeftCol][entityTopRow];
 				tileNum2 = tileM.mapTileNum[entityRightCol][entityTopRow];
 				if (tileM.tile[tileNum1].collision || tileM.tile[tileNum2].collision) {
@@ -44,7 +44,7 @@ public class CollisionChecker {
 			}
 
 			case "down" -> {
-				entityBottomRow = (entityBottomWorldY + entity.speed) / panel.tileSize;
+				entityBottomRow = (entityBottomWorldY + entity.speed) / BasePanel.tileSize;
 				tileNum1 = tileM.mapTileNum[entityLeftCol][entityBottomRow];
 				tileNum2 = tileM.mapTileNum[entityRightCol][entityBottomRow];
 				if (tileM.tile[tileNum1].collision || tileM.tile[tileNum2].collision) {
@@ -53,7 +53,7 @@ public class CollisionChecker {
 			}
 
 			case "left" -> {
-				entityLeftCol = (entityLeftWorldX - entity.speed) / panel.tileSize;
+				entityLeftCol = (entityLeftWorldX - entity.speed) / BasePanel.tileSize;
 				tileNum1 = tileM.mapTileNum[entityLeftCol][entityTopRow];
 				tileNum2 = tileM.mapTileNum[entityLeftCol][entityBottomRow];
 				if (tileM.tile[tileNum1].collision || tileM.tile[tileNum2].collision) {
@@ -62,7 +62,7 @@ public class CollisionChecker {
 			}
 
 			case "right" -> {
-				entityRightCol = (entityRightWorldX + entity.speed) / panel.tileSize;
+				entityRightCol = (entityRightWorldX + entity.speed) / BasePanel.tileSize;
 				tileNum1 = tileM.mapTileNum[entityRightCol][entityTopRow];
 				tileNum2 = tileM.mapTileNum[entityRightCol][entityBottomRow];
 				if (tileM.tile[tileNum1].collision || tileM.tile[tileNum2].collision) {

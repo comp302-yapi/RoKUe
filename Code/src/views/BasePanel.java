@@ -18,10 +18,12 @@ public interface BasePanel {
     int scale = 3;
 
     int tileSize = originalTileSize * scale;
-    int maxScreenCol = 40;
-    int maxScreenRow = 20;
-    int screenWidth = tileSize * maxScreenCol; // 1920p
-    int screenHeight = tileSize * maxScreenRow; // 1056p
+    int maxScreenCol = 30;
+    int maxScreenRow = 18;
+    
+    // bunları dynamic yapmaya çalışalım
+    int screenWidth = tileSize * maxScreenCol;
+    int screenHeight = tileSize * maxScreenRow; 
 
     // WORLD SETTINGS
     int maxWorldCol = 75;

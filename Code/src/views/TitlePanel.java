@@ -26,7 +26,7 @@ public class TitlePanel extends NonPlayablePanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) { 
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
@@ -36,14 +36,14 @@ public class TitlePanel extends NonPlayablePanel {
     public void drawTitleScreen(Graphics2D g2, BasePanel panel) {
 
         g2.setColor(new Color(62, 41, 52));
-        g2.fillRect(0, 0, panel.screenWidth, panel.screenHeight);
+        g2.fillRect(0, 0, BasePanel.screenWidth, BasePanel.screenHeight);
 
         // TITLE NAME
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 72F));
         String text = "RoKue Like";
         int x, y;
-        x = PanelUtils.getXForCenteredText(text, panel, g2) - panel.tileSize*2;
-        y = panel.tileSize * 3;
+        x = PanelUtils.getXForCenteredText(text, panel, g2) - BasePanel.tileSize*2;
+        y = BasePanel.tileSize * 3;
 
         // SHADOW
         g2.setColor(new Color(40, 35, 38));
@@ -63,27 +63,27 @@ public class TitlePanel extends NonPlayablePanel {
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F));
 
         text = "NEW GAME";
-        x = PanelUtils.getXForCenteredText(text, panel, g2) - panel.tileSize*2;
-        y += panel.tileSize*5;
+        x = PanelUtils.getXForCenteredText(text, panel, g2) - BasePanel.tileSize*2;
+        y += BasePanel.tileSize*5;
         g2.drawString(text, x, y);
         if (commandNum == 0) {
-            g2.drawString(">", x - panel.tileSize, y);
+            g2.drawString(">", x - BasePanel.tileSize, y);
         }
 
         text = "LOAD GAME";
-        x = PanelUtils.getXForCenteredText(text, panel, g2) - panel.tileSize*2;
-        y += panel.tileSize*3;
+        x = PanelUtils.getXForCenteredText(text, panel, g2) - BasePanel.tileSize*2;
+        y += BasePanel.tileSize*3;
         g2.drawString(text, x, y);
         if (commandNum == 1) {
-            g2.drawString(">", x - panel.tileSize, y);
+            g2.drawString(">", x - BasePanel.tileSize, y);
         }
 
         text = "QUIT GAME";
-        x = PanelUtils.getXForCenteredText(text, panel, g2) - panel.tileSize*2;
-        y += panel.tileSize*3;
+        x = PanelUtils.getXForCenteredText(text, panel, g2) - BasePanel.tileSize*2;
+        y += BasePanel.tileSize*3;
         g2.drawString(text, x, y);
         if (commandNum == 2) {
-            g2.drawString(">", x - panel.tileSize, y);
+            g2.drawString(">", x - BasePanel.tileSize, y);
         }
     }
 }
