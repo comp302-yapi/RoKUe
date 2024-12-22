@@ -31,7 +31,7 @@ public class TitlePanelKeyListener extends BaseKeyListener {
 
         if (code == KeyEvent.VK_ENTER) {
             if (titlePanel.getCommandNum() == 0) {
-                titlePanel.getViewManager().switchTo("GamePanel", true);
+                titlePanel.getViewManager().switchTo("BuildPanel", true);
             }
 
             if (titlePanel.getCommandNum() == 2) {
