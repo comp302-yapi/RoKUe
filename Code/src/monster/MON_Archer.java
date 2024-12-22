@@ -5,13 +5,13 @@ import entity.Entity;
 import views.BasePanel;
 import java.util.Random;
 
-public class MON_GreenSlime extends Entity {
+public class MON_Archer extends Entity {
 
 	BasePanel gp;
 	private int shootCounter = 0;
 	private boolean spawned = false;
 
-	public MON_GreenSlime(BasePanel gp) {
+	public MON_Archer(BasePanel gp) {
 		super(gp);
 
 		this.gp = gp;
@@ -35,8 +35,8 @@ public class MON_GreenSlime extends Entity {
 
 	public void getImage() {
 		// Load archer monster images
-		up1 = setup("/res/monster/greenslime_down_1", gp.tileSize, gp.tileSize);
-		up2 = setup("/res/monster/greenslime_down_2", gp.tileSize, gp.tileSize);
+		up1 = setup("/res/monster/archer", gp.tileSize, gp.tileSize);
+		up2 = setup("/res/monster/archer", gp.tileSize, gp.tileSize);
 		down1 = up1;
 		down2 = up2;
 		left1 = up1;

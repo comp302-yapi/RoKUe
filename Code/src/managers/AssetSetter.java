@@ -1,7 +1,7 @@
 package managers;
 
-import monster.MON_GreenSlime;
-import monster.MON_Witch;
+import monster.MON_Archer;
+import monster.MON_Wizard;
 import object.OBJ_Chest;
 import object.OBJ_Door;
 import object.OBJ_Key;
@@ -39,19 +39,17 @@ public class AssetSetter {
 	}
 	
 	public void spawnMonster() {
+		panel.getMonsters()[0] = new MON_Archer(panel);
+		panel.getMonsters()[0].worldX = panel.tileSize*24;
+		panel.getMonsters()[0].worldY = panel.tileSize*21;
 		
-		panel.getMonsters()[0] = new MON_GreenSlime(panel);
-		panel.getMonsters()[0].worldX = BasePanel.tileSize*24;
-		panel.getMonsters()[0].worldY = BasePanel.tileSize*21;
+		panel.getMonsters()[1] = new MON_Archer(panel);
+		panel.getMonsters()[1].worldX = panel.tileSize*18;
+		panel.getMonsters()[1].worldY = panel.tileSize*23;
 		
-		panel.getMonsters()[1] = new MON_GreenSlime(panel);
-		panel.getMonsters()[1].worldX = BasePanel.tileSize*18;
-		panel.getMonsters()[1].worldY = BasePanel.tileSize*23;
-		
-		panel.getMonsters()[2] = new MON_Witch(panel);
-		panel.getMonsters()[2].worldX = BasePanel.tileSize*20;
-		panel.getMonsters()[2].worldY = BasePanel.tileSize*25;
-
+		panel.getMonsters()[2] = new MON_Wizard(panel);
+		panel.getMonsters()[2].worldX = panel.tileSize*20;
+		panel.getMonsters()[2].worldY = panel.tileSize*25;
 	}
 	
 }
