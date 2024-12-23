@@ -17,7 +17,6 @@ import views.BasePanel;
 
 public class TileManagerForHall {
 
-	BasePanel panel;
 	public Hall hall;
 	public Tile[] tile;
 	public int[][] mapTileNum;
@@ -32,8 +31,7 @@ public class TileManagerForHall {
 	public BufferedImage buildModeChest;
 	public int maxCol,maxRow,idx;
 
-	public TileManagerForHall(BasePanel panel, Hall hall, String path, int maxCol, int maxRow) {
-		this.panel = panel;
+	public TileManagerForHall( Hall hall, String path, int maxCol, int maxRow) {
 		this.maxCol = maxCol;
 		this.maxRow = maxRow;
 		this.hall = hall;
