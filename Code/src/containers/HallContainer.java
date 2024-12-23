@@ -1,8 +1,7 @@
-
-
-package managers;
+package containers;
 
 import enums.Hall;
+import managers.TileManagerForHall;
 
 public class HallContainer {
 
@@ -26,6 +25,6 @@ public class HallContainer {
 		return hallOfFire;
 	}
 	
-    
 
 }
+

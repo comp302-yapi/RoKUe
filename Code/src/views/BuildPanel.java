@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import containers.HallContainer;
+import containers.TileContainer;
 import enums.BuildDirection;
 import enums.Hall;
 import listeners.keylisteners.*;
@@ -213,7 +215,7 @@ public class BuildPanel extends NonPlayablePanel{
 		}
 
 		//TODO: Tilelar için ayrı bir container yapmalıyız. 
-		g2.drawImage(HallContainer.getHallOfWater().tile[19].image, 1075, 100, BasePanel.tileSize*7, BasePanel.tileSize*12, null);
+		g2.drawImage(TileContainer.getTile()[19].image, 1075, 100, BasePanel.tileSize*7, BasePanel.tileSize*12, null);
 
 		for (SuperObject obj : objectsToDraw) {
 			if (obj != null) {
