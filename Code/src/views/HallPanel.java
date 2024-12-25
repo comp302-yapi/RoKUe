@@ -2,9 +2,7 @@ package views;
 
 import containers.HallContainer;
 import enums.Hall;
-import listeners.keylisteners.GamePanelKeyListener;
 import listeners.keylisteners.HallPanelKeyListener;
-import managers.CollisionChecker;
 import managers.CollisionCheckerForHall;
 import managers.TileManagerForHall;
 import managers.ViewManager;
@@ -43,16 +41,13 @@ public class HallPanel extends PlayablePanel{
     	m.worldX = BasePanel.tileSize*10;
     	m.worldY = BasePanel.tileSize*10;
     	m.spawned = true;
-    	
-
-
+        getMonsters()[0] = m;
     }
 
     @Override
     public void update() {
         getPlayer().move();
         m.update();
-
     }
 
     public TileManagerForHall getTileM(){ return this.tileM;}

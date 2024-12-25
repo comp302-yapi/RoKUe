@@ -6,16 +6,16 @@ import entity.Player;
 import object.SuperObject;
 import views.BasePanel;
 
+import java.util.ArrayList;
+
 public class CollisionCheckerForHall {
 
     private final TileManagerForHall tileM;
     private final Player player;
-    private final SuperObject[] obj;
 
     public CollisionCheckerForHall(BasePanel panel, TileManagerForHall tileM) {
         this.tileM = tileM;
         this.player = panel.getPlayer();
-        this.obj = tileM.convertToArray();
     }
 
     public void checkTile(Entity entity) {
@@ -84,59 +84,46 @@ public class CollisionCheckerForHall {
 
     public int checkObject(Entity entity, boolean player) {
         int index = 999;
-        for (int i = 0; i < obj.length; i++) {
+        for (SuperObject obj: tileM.objects) {
 
-            if (obj[i] != null) {
+            if (player) {
+                Player e = (Player)entity;
+                entity.solidArea.x = e.screenX + entity.solidArea.x;
+                entity.solidArea.y = e.screenY + entity.solidArea.y;
+            }
 
-//                 Get entity's solid area position
-                if (player) {
-                  //System.out.println(0);
-                    Player e = (Player)entity;
-                    entity.solidArea.x = e.screenX + entity.solidArea.x;
-                    entity.solidArea.y = e.screenY + entity.solidArea.y;
-                }
-                
-                else {
-               	 entity.solidArea.x = entity.worldX  + entity.solidArea.x;
-                    entity.solidArea.y = entity.worldY + entity.solidArea.y;
-               }
-                
-
-                // Get the object's solid area position
-                obj[i].solidArea.x = obj[i].worldX + obj[i].solidArea.x;
-                obj[i].solidArea.y = obj[i].worldY + obj[i].solidArea.y;
-
-                switch (entity.direction) {
-                    case "up" -> entity.solidArea.y -= entity.speed;
-                    case "down" -> entity.solidArea.y += entity.speed;
-                    case "left" -> entity.solidArea.x -= entity.speed;
-                    case "right" -> entity.solidArea.x += entity.speed;
-                }
-
-//                if (obj[i].name.equals("Door")) {
-//                    System.out.println("PLAYER: " + entity.solidArea.x + " | " + entity.solidArea.y);
-//                    System.out.println("OBJECT: " + obj[i].solidArea.x + " | " + obj[i].solidArea.y);
-//                }
-
-                if (entity.solidArea.intersects(obj[i].solidArea)) {
-                    if (obj[i].collision) {
-                        entity.collisionOn = true;
-                    }
-
-                    if (player) {
-                        index = i;
-                    }
-                }
-
-                entity.solidArea.x = entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.solidAreaDefaultY;
-                obj[i].solidArea.x = obj[i].solidAreaDefaultX;
-                obj[i].solidArea.y = obj[i].solidAreaDefaultY;
+            else {
+                entity.solidArea.x = entity.worldX  + entity.solidArea.x;
+                entity.solidArea.y = entity.worldY + entity.solidArea.y;
             }
 
 
-        }
+            // Get the object's solid area position
+            obj.solidArea.x = obj.worldX + obj.solidArea.x;
+            obj.solidArea.y = obj.worldY + obj.solidArea.y;
 
+            switch (entity.direction) {
+                case "up" -> entity.solidArea.y -= entity.speed;
+                case "down" -> entity.solidArea.y += entity.speed;
+                case "left" -> entity.solidArea.x -= entity.speed;
+                case "right" -> entity.solidArea.x += entity.speed;
+            }
+
+            if (entity.solidArea.intersects(obj.solidArea)) {
+                if (obj.collision) {
+                    entity.collisionOn = true;
+                }
+
+                if (player) {
+                    index = tileM.objects.indexOf(obj);
+                }
+            }
+
+            entity.solidArea.x = entity.solidAreaDefaultX;
+            entity.solidArea.y = entity.solidAreaDefaultY;
+            obj.solidArea.x = obj.solidAreaDefaultX;
+            obj.solidArea.y = obj.solidAreaDefaultY;
+        }
         return index;
     }
 
@@ -148,8 +135,13 @@ public class CollisionCheckerForHall {
 
             if (target[i] != null) {
                 // Get entity's solid area position
-                entity.solidArea.x = entity.worldX + entity.solidArea.x;
-                entity.solidArea.y = entity.worldY + entity.solidArea.y;
+                if (entity instanceof Player e) {
+                    entity.solidArea.x = e.screenX + entity.solidArea.x;
+                    entity.solidArea.y = e.screenY + entity.solidArea.y;
+                } else {
+                    entity.solidArea.x = entity.worldX  + entity.solidArea.x;
+                    entity.solidArea.y = entity.worldY + entity.solidArea.y;
+                }
 
                 // Get the object's solid are position
                 target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
@@ -187,8 +179,8 @@ public class CollisionCheckerForHall {
         entity.solidArea.y = entity.worldY + entity.solidArea.y;
 
         // Get the object's solid are position
-        player.solidArea.x = player.worldX + player.solidArea.x;
-        player.solidArea.y = player.worldY + player.solidArea.y;
+        player.solidArea.x = player.screenX + player.solidArea.x;
+        player.solidArea.y = player.screenY + player.solidArea.y;
 
         switch (entity.direction) {
             case "up" -> entity.solidArea.y -= entity.speed;
