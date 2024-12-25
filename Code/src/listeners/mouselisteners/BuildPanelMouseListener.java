@@ -42,65 +42,6 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 		else if (buildPanel.isInNextButton(x, y)) {
 			buildPanel.isHallValidated = hallController.toNextHall(buildPanel.getCurrentHallManager(), BuildDirection.Forward);
 		}
-		
-		/*
-		else if(buildPanel.selected) {
-			if(checkBorder(x,y)) {
-				SuperObject newObj = null; 
-				
-				if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Key) {
-					newObj = new OBJ_Key();
-				}
-				
-				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Chest) {
-					newObj = new OBJ_Chest();
-				}
-
-				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Door) {
-					newObj = new OBJ_Door();
-				}
-				
-				
-				if (newObj != null) {
-					hallController.addObject(buildPanel.getCurrentHallManager(), newObj, x - (int)(BasePanel.tileSize / 2), y - (int)(BasePanel.tileSize / 2));
-				}
-
-			}
-
-			buildPanel.selected = false;
-			buildPanel.selectedIdx = -1; // gerek yok ama dursun
-		}
-
-		else {
-			// If selected an object in map
-			SuperObject objInMap = hallController.getObjectSelectedInHall(buildPanel.getCurrentHallManager(), x, y);
-			if (objInMap != null) {
-				// If selected an object on the map
-				buildPanel.getCurrentHallManager().removeObject(objInMap);
-
-				for(int i = 0; i < buildPanel.objectsToDraw.size(); i++) {
-					if(buildPanel.objectsToDraw.get(i).getClass() == objInMap.getClass()) {
-						buildPanel.selectedIdx = i;
-						buildPanel.selected = true;
-					}
-				}
-			}
-			else {
-				// If selected an object in the menu
-				for(int i = 0; i < buildPanel.objectsToDraw.size(); i++) {
-					if(buildPanel.objectsToDraw.get(i) != null) {
-						SuperObject obj = buildPanel.objectsToDraw.get(i);
-						if (x > obj.worldX && x < obj.worldX + BasePanel.tileSize
-								&& y > obj.worldY && y < obj.worldY + BasePanel.tileSize) {
-							buildPanel.selectedIdx = i;
-							buildPanel.selected = true;
-						}
-					}
-				}
-			}
-		}
-		
-		*/
 	}
 	
 	

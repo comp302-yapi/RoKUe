@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 import enums.Hall;
 import listeners.BaseKeyListener;
+import object.SuperObject;
 import views.BasePanel;
 import views.GamePanel;
 import views.HallPanel;
@@ -194,76 +195,19 @@ public class Player extends Entity{
 
 		}
 	}
-	
+
 	public void pickupObject(int i) {
+		if (panel instanceof HallPanel hallPanel) {
+			if (i != 999) { // 999 - no object found nearby
+				SuperObject[] objects = hallPanel.getTileM().convertToArray(); // Retrieve all objects
+				SuperObject obj = objects[i];
 
-		if (panel instanceof GamePanel){
-			if (i != 999) {
-
-				String objectName = panel.getSuperObjects()[i].name;
-
-				switch (objectName) {
-
-					case "Key":
-						hasKey++;
-						panel.getSuperObjects()[i] = null;
-						panel.showMessage("You got a key!");
-						break;
-
-					case "Door":
-						if (hasKey > 0) {
-							panel.getSuperObjects()[i] = null;
-							hasKey--;
-							panel.showMessage("You opened the door!");
-
-						} else {
-							panel.showMessage("You need a key!");
-
-						}
-						break;
-
-					case "Chest":
-						//panel.ui.gameFinished = true;
-						break;
-				}
-			}
-
-
-
-		}
-
-		else if (panel instanceof HallPanel hallPanel){
-			if (i != 999) {
-
-				String objectName = hallPanel.getTileM().convertToArray()[i].name;
-
-				switch (objectName) {
-
-					case "Key":
-						hasKey++;
-						hallPanel.getTileM().convertToArray()[i] = null;
-						panel.showMessage("You got a key!");
-						break;
-
-					case "Door":
-						if (hasKey > 0) {
-							hallPanel.getTileM().convertToArray()[i] = null;
-							hasKey--;
-							panel.showMessage("You opened the door!");
-
-						} else {
-							panel.showMessage("You need a key!");
-
-						}
-						break;
-
-					case "Chest":
-						//panel.ui.gameFinished = true;
-						break;
+				// Call the interact method
+				if (obj != null) {
+					obj.interact(hallPanel);
 				}
 			}
 		}
-
 	}
 	
 	
