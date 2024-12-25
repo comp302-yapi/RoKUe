@@ -73,34 +73,36 @@ public class HallPanel extends PlayablePanel{
 
     @Override
     public void update() {
-        getPlayer().move();
+        if (!isPaused()) {
+            getPlayer().move();
 
-        for (Entity monster : monsters) {
-            if (monster != null) {
-                monster.update();
+            for (Entity monster : monsters) {
+                if (monster != null) {
+                    monster.update();
 
-            }
-        }
-
-        spawnCounter++;
-
-        //Update Arrows
-        for (int i = 0; i < getArrows().length; i++) {
-            if (getArrows()[i] != null) {
-                getArrows()[i].update();
-
-                // Remove expired arrows
-                if (getArrows()[i].isExpired()) {
-                    getArrows()[i] = null;
                 }
             }
-        }
 
-        HallController.shouldSwitchHallsInGame(getTileM(), getPlayer(), this);
+            spawnCounter++;
 
-        if (spawnCounter >= 180) {
-            generateMonster();
-            spawnCounter = 0;
+            //Update Arrows
+            for (int i = 0; i < getArrows().length; i++) {
+                if (getArrows()[i] != null) {
+                    getArrows()[i].update();
+
+                    // Remove expired arrows
+                    if (getArrows()[i].isExpired()) {
+                        getArrows()[i] = null;
+                    }
+                }
+            }
+
+            HallController.shouldSwitchHallsInGame(getTileM(), getPlayer(), this);
+
+            if (spawnCounter >= 180) {
+                generateMonster();
+                spawnCounter = 0;
+            }
         }
     }
 
