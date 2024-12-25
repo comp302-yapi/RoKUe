@@ -1,15 +1,15 @@
 package views;
 
-import java.awt.BasicStroke;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-
+import containers.HallContainer;
+import containers.TileContainer;
 import enums.BuildDirection;
 import enums.Hall;
-import listeners.keylisteners.*;
 import listeners.mouselisteners.BuildPanelMouseListener;
 import managers.*;
 import object.OBJ_Chest;
@@ -18,18 +18,12 @@ import object.OBJ_Key;
 import object.SuperObject;
 import utils.PanelUtils;
 
-public class BuildPanel extends NonPlayablePanel{
-	
-	private final BuildPanelKeyListener buildPanelKeyListener;
+
+public class BuildPanel extends NonPlayablePanel {
 	private final BuildPanelMouseListener buildPanelMouseListener;
 	public ArrayList<SuperObject> objectsToDraw = new ArrayList<>();
 
 	private Hall currentHall;// enum oluşturabiliriz bunun için
-
-	public TileManagerForHall hallOfWater;
-	public TileManagerForHall hallOfEarth;
-	public TileManagerForHall hallOfAir;
-	public TileManagerForHall hallOfFire;
 
 	public int mouseClickedX, mouseClickedY;
 	public int mouseDraggedX, mouseDraggedY;
@@ -53,67 +47,61 @@ public class BuildPanel extends NonPlayablePanel{
 
 	public BuildPanel(ViewManager viewManager) {
 		super(viewManager);
-		this.buildPanelKeyListener = new BuildPanelKeyListener(this);
-        this.addKeyListener(buildPanelKeyListener);
-        
+
         this.buildPanelMouseListener = new BuildPanelMouseListener(this);
         this.addMouseListener(buildPanelMouseListener);
 		this.addMouseMotionListener(buildPanelMouseListener);
-        
-        hallOfWater = new TileManagerForHall(this, Hall.HallOfWater, "/res/maps/hallOfWater.txt", 14, 15);
-        hallOfEarth = new TileManagerForHall(this, Hall.HallOfEarth, "/res/maps/hallOfEarth.txt", 14, 15);
-        hallOfAir = new TileManagerForHall(this, Hall.HallOfAir, "/res/maps/hallOfAir.txt", 14, 15);
-        hallOfFire = new TileManagerForHall(this, Hall.HallOfFire, "/res/maps/hallOfFire.txt", 14, 15);
+
         currentHall = Hall.HallOfEarth;
         loadObjects();
-    
+
 	}
-	
+
 	public Hall getCurrentHall() {
 		return this.currentHall;
 	}
 
 	public TileManagerForHall getCurrentHallManager() {
 		return switch (currentHall) {
-			case HallOfWater -> hallOfWater;
-			case HallOfEarth -> hallOfEarth;
-			case HallOfAir -> hallOfAir;
-			case HallOfFire -> hallOfFire;
+			case HallOfWater -> HallContainer.getHallOfWater();
+			case HallOfEarth -> HallContainer.getHallOfEarth();
+			case HallOfAir -> HallContainer.getHallOfAir();
+			case HallOfFire -> HallContainer.getHallOfFire();
 		};
 	}
-	
+
 	public void setCurrentHall(Hall hall) {
 		this.currentHall = hall;
 	}
-	
+
 	protected void loadObjects() {
-		
+
 		OBJ_Chest chest = new OBJ_Chest();
 		chest.worldX = BasePanel.tileSize * 23 + 16;
 		chest.worldY = BasePanel.tileSize * 7;
-		
+
 		OBJ_Key key = new OBJ_Key();
 		key.worldX = BasePanel.tileSize * 23 + 16;
 		key.worldY = BasePanel.tileSize * 9;
 
-		
+
 		OBJ_Door door = new OBJ_Door();
 		door.worldX = BasePanel.tileSize * 25 + 16;
 		door.worldY = BasePanel.tileSize * 7;
-		
+
 		objectsToDraw.add(chest);
 		objectsToDraw.add(key);
 		objectsToDraw.add(door);
-		
+
 		OBJ_Chest chest1 = new OBJ_Chest();
 		chest1.worldX = BasePanel.tileSize * 25 + 16;
 		chest1.worldY = BasePanel.tileSize * 9;
-		
+
 		OBJ_Key key1 = new OBJ_Key();
 		key1.worldX = BasePanel.tileSize * 27 + 16;
 		key1.worldY = BasePanel.tileSize * 7;
 
-		
+
 		OBJ_Door door1 = new OBJ_Door();
 		door1.worldX = BasePanel.tileSize * 27 + 16;
 		door1.worldY = BasePanel.tileSize * 9;
@@ -128,13 +116,13 @@ public class BuildPanel extends NonPlayablePanel{
 
         drawBuildScreen(g2, this);
     }
-    
+
     public boolean checkObjectBorder(int x, int y) {
 		return x - (int) (BasePanel.tileSize / 2) > 384 && x + (int) (BasePanel.tileSize / 2) < 960
 				&& y - (int) (BasePanel.tileSize / 2) > 144 && y + (int) (BasePanel.tileSize / 2) < 772;
 
 	}
-    
+
     public void drawBuildScreen(Graphics2D g2,BasePanel panel) {
 
 		getCurrentHallManager().draw(g2);
@@ -150,10 +138,14 @@ public class BuildPanel extends NonPlayablePanel{
 		g2.setColor(new Color(62, 41, 52));
 		//g2.fillRect(0, 0, BasePanel.screenWidth, BasePanel.screenHeight);
 
+
+		//TODO: bunun düzeltilmesi gerekiyor
 		g2.fillRect(0,0,BasePanel.screenWidth,96);
 		g2.fillRect(1008,0,BasePanel.screenWidth,BasePanel.screenHeight);
 		g2.fillRect(0,0,336,BasePanel.screenHeight);
 		g2.fillRect(0,816,BasePanel.screenWidth,BasePanel.screenHeight);
+
+
 
 		// TITLE NAME
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 72F));
@@ -215,7 +207,8 @@ public class BuildPanel extends NonPlayablePanel{
 			}
 		}
 
-		g2.drawImage(this.hallOfWater.tile[19].image, 1075, 100, BasePanel.tileSize*7, BasePanel.tileSize*12, null);
+		//TODO: Tilelar için ayrı bir container yapmalıyız. 
+		g2.drawImage(TileContainer.getTile()[19].image, 1075, 100, BasePanel.tileSize*7, BasePanel.tileSize*12, null);
 
 		for (SuperObject obj : objectsToDraw) {
 			if (obj != null) {

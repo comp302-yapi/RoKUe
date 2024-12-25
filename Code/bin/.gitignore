@@ -8,3 +8,7 @@
 /object/
 /tile/
 /controllers/
+/enums/
+/utils/
+/validators/
+/containers/
