@@ -1,13 +1,17 @@
 package controllers;
 
 import containers.HallContainer;
+import entity.Player;
 import enums.BuildDirection;
 import enums.Hall;
 import managers.TileManagerForHall;
+import managers.ViewManager;
 import object.SuperObject;
 import validators.HallValidator;
 import views.BasePanel;
 import views.BuildPanel;
+import views.HallPanel;
+
 import java.util.List;
 import java.util.Random;
 
@@ -125,6 +129,31 @@ public class HallController {
 
             // Assign a rune to the object
             objects[randomIndex].hasRune = true;
+        }
+    }
+
+    public static void shouldSwitchHallsInGame(TileManagerForHall currentHall, Player player, HallPanel hallPanel) {
+        if (player.screenY > currentHall.getBottomWorldBorder()) {
+            switch (currentHall.hall) {
+                case HallOfEarth -> {
+                    hallPanel.currentHall = Hall.HallOfAir;
+                    player.screenX = 500;
+                    player.screenY = 96 + BasePanel.tileSize * 15 - 300;
+                }
+                case HallOfAir -> {
+                    hallPanel.currentHall = Hall.HallOfWater;
+                    player.screenX = 500;
+                    player.screenY = 96 + BasePanel.tileSize * 15 - 300;
+                }
+                case HallOfWater -> {
+                    hallPanel.currentHall = Hall.HallOfFire;
+                    player.screenX = 500;
+                    player.screenY = 96 + BasePanel.tileSize * 15 - 300;
+                }
+                case HallOfFire -> {
+                    System.out.println("finished");
+                }
+            }
         }
     }
 }

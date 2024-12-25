@@ -1,6 +1,7 @@
 package views;
 
 import containers.HallContainer;
+import controllers.HallController;
 import entity.Arrow;
 import enums.Hall;
 import listeners.keylisteners.HallPanelKeyListener;
@@ -11,7 +12,6 @@ import managers.ViewManager;
 import monster.MON_Archer;
 import object.SuperObject;
 import java.awt.*;
-import java.util.Random;
 
 public class HallPanel extends PlayablePanel{
 
@@ -59,6 +59,7 @@ public class HallPanel extends PlayablePanel{
             }
         }
 
+        HallController.shouldSwitchHallsInGame(getTileM(), getPlayer(), this);
     }
 
     public TileManagerForHall getTileM(){ return this.tileM;}
@@ -74,30 +75,6 @@ public class HallPanel extends PlayablePanel{
     }
 
     public CollisionCheckerForHall getCollisionCheckerForHall(){ return this.cChecker;}
-
-    private void assignRunesToObjects() {
-        Random random = new Random();
-
-        // Get all objects in the current hall (for example purposes, using HallOfEarth)
-        SuperObject[] objects = HallContainer.getHallOfEarth().objects.toArray(new SuperObject[20]);
-
-        // Number of objects that can have runes (you can adjust this number as needed)
-        int runeObjectCount = 1;
-
-        // Randomly assign 'rune' to the specified number of objects
-        for (int i = 0; i < runeObjectCount; i++) {
-            int randomIndex;
-
-            // Find a random object that does not already have a rune
-            do {
-                randomIndex = random.nextInt(objects.length);
-            } while (objects[randomIndex] == null || objects[randomIndex].hasRune);
-
-            // Assign a rune to the object
-            objects[randomIndex].hasRune = true;
-        }
-    }
-
 
     public void paintComponent(Graphics g) {
 
@@ -123,8 +100,7 @@ public class HallPanel extends PlayablePanel{
                 getPlayer().draw(g2);
                 
 
-                	// draw the monster image
-                
+                // draw the monster image
                 m.draw(g2);
 
                 for (Arrow arrow : getArrows()) {

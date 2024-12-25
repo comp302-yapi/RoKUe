@@ -18,10 +18,8 @@ import views.HallPanel;
 public class Player extends Entity{
 
 	BaseKeyListener keyH;
-	
 	public int screenX;
 	public int screenY;
-	public int hasKey = 0;
 
 	public Player(BasePanel panel) {
 		super(panel);
@@ -91,12 +89,9 @@ public class Player extends Entity{
 				panel.getCollisionChecker().checkTile(this);
 
 				// CHECK OBJECT COLLISION
-
-
 				this.solidArea.x = this.solidAreaDefaultX;
 				this.solidArea.y = this.solidAreaDefaultY;
 				int objIndex = panel.getCollisionChecker().checkObject(this, true);
-				pickupObject(objIndex);
 
 				// CHECK MONSTER COLLISION
 				int monsterIndex = panel.getCollisionChecker().checkEntity(this, panel.getMonsters());
@@ -150,9 +145,6 @@ public class Player extends Entity{
 				this.solidArea.y = 16;
 				int objIndex = hallPanel.getCollisionCheckerForHall().checkObject(this, true);
 
-
-				pickupObject(objIndex);
-
 				this.solidArea.x = 8;
 				this.solidArea.y = 16;
 				// CHECK MONSTER COLLISION
@@ -196,20 +188,6 @@ public class Player extends Entity{
 		}
 	}
 
-	public void pickupObject(int i) {
-		if (panel instanceof HallPanel hallPanel) {
-			if (i != 999) { // 999 - no object found nearby
-				SuperObject[] objects = hallPanel.getTileM().convertToArray(); // Retrieve all objects
-				SuperObject obj = objects[i];
-
-				// Call the interact method
-				if (obj != null) {
-					obj.interact(hallPanel);
-				}
-			}
-		}
-	}
-	
 	
 	public void draw(Graphics2D g2) {
 		

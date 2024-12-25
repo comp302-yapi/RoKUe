@@ -24,14 +24,15 @@ public class SuperObject {
 	 * Handles the player's interaction when they click this object.
 	 * For example, if the object contains a rune, it prints a message.
 	 */
-	public void interact(HallPanel panel) {
+	public boolean interact(HallPanel panel) {
 		if (hasRune) {
 			panel.showMessage("Rune found!");
-			System.out.println("Rune found!");
 			// Rune logic, e.g., remove rune after discovery
 			hasRune = false;  //  Prevent rediscovery of the same rune
+			return true;
 		} else {
 			System.out.println("No rune here.");
+			return false;
 		}
 	}
 

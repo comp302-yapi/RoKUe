@@ -21,6 +21,8 @@ public class TileContainer {
 	public static BufferedImage boxTileTop, boxTileBottom;
 	public static BufferedImage buildModeChest;
 	public static BufferedImage entrance;
+	public static BufferedImage openDoorTopLeft, openDoorTopRight, openDoorBottomLeft, openDoorBottomRight;
+	public static BufferedImage closeDoorTopLeft, closeDoorTopRight, closeDoorBottomLeft, closeDoorBottomRight;
 	
 	
 	public TileContainer() {
@@ -57,7 +59,15 @@ public class TileContainer {
 			wallTile = allTiles.getSubimage(0, 12, 16, 16);
 
 			entrance = allTiles.getSubimage(288, 112, 16, 16);
-			
+			closeDoorTopLeft = allTiles.getSubimage(368, 16, 16, 16);
+			closeDoorTopRight = allTiles.getSubimage(384, 16, 16, 16);
+			closeDoorBottomLeft = allTiles.getSubimage(368, 32, 16, 16);
+			closeDoorBottomRight = allTiles.getSubimage(384, 32, 16, 16);
+			openDoorTopLeft = allTiles.getSubimage(432, 16, 16, 16);
+			openDoorTopRight = allTiles.getSubimage(448, 16, 16, 16);
+			openDoorBottomLeft = allTiles.getSubimage(432, 32, 16, 16);
+			openDoorBottomRight = allTiles.getSubimage(448, 32, 16, 16);
+
 			// ROCKY TILE
 			
 			tile[0] = new Tile();
@@ -137,7 +147,30 @@ public class TileContainer {
 			tile[20] = new Tile();
 			tile[20].image = entrance;
 
-			
+			tile[21] = new Tile();
+			tile[21].image = openDoorTopLeft;
+
+			tile[22] = new Tile();
+			tile[22].image = openDoorTopRight;
+
+			tile[23] = new Tile();
+			tile[23].image = openDoorBottomLeft;
+
+			tile[24] = new Tile();
+			tile[24].image = openDoorBottomRight;
+
+			tile[25] = new Tile();
+			tile[25].image = closeDoorTopLeft;
+
+			tile[26] = new Tile();
+			tile[26].image = closeDoorTopRight;
+
+			tile[27] = new Tile();
+			tile[27].image = closeDoorBottomLeft;
+
+			tile[28] = new Tile();
+			tile[28].image = closeDoorBottomRight;
+
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

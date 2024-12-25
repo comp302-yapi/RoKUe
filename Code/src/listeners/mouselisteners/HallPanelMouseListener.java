@@ -26,7 +26,10 @@ public class HallPanelMouseListener extends BaseMouseListener {
         // Use the hallController instance to call getObjectSelectedInHall
         SuperObject clickedObject = HallController.getObjectSelectedInHall(tileM, mouseX, mouseY);
         if (clickedObject != null) {
-            clickedObject.interact(hallPanel); // Call interact method to handle rune detection
+            boolean foundRune = clickedObject.interact(hallPanel); // Call interact method to handle rune detection
+            if (foundRune) {
+                tileM.openDoor();
+            }
         }
     }
 
