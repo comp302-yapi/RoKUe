@@ -77,18 +77,18 @@ public class BuildPanel extends NonPlayablePanel {
 		chest.worldX = BasePanel.tileSize * 23 + 16;
 		chest.worldY = BasePanel.tileSize * 7;
 
-		OBJ_Key key = new OBJ_Key();
-		key.worldX = BasePanel.tileSize * 23 + 16;
-		key.worldY = BasePanel.tileSize * 9;
+		OBJ_Lantern lantern = new OBJ_Lantern();
+		lantern.worldX = BasePanel.tileSize * 23 + 16;
+		lantern.worldY = BasePanel.tileSize * 9;
 
 
-		OBJ_Door door = new OBJ_Door();
-		door.worldX = BasePanel.tileSize * 25 + 16;
-		door.worldY = BasePanel.tileSize * 7;
+		OBJ_Cactus cactus = new OBJ_Cactus();
+		cactus.worldX = BasePanel.tileSize * 25 + 16;
+		cactus.worldY = BasePanel.tileSize * 7;
 
 		objectsToDraw.add(chest);
-		objectsToDraw.add(key);
-		objectsToDraw.add(door);
+		objectsToDraw.add(lantern);
+		objectsToDraw.add(cactus);
 
 		OBJ_Barrel barrel1 = new OBJ_Barrel();
 		barrel1.worldX = BasePanel.tileSize * 25 + 16;
