@@ -1,4 +1,4 @@
-package Code.src.object;
+package object;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -24,14 +24,32 @@ public class SuperObject {
 	 * Handles the player's interaction when they click this object.
 	 * For example, if the object contains a rune, it prints a message.
 	 */
+	
+	
+	private int calculateDistanceToPlayer(HallPanel hp) {
+		int playerX = hp.getPlayer().screenX;
+		int playerY = hp.getPlayer().screenY;
+
+		return (int) Math.sqrt(
+				Math.pow(worldX - playerX, 2) +
+						Math.pow(worldY - playerY, 2)
+		);
+	}
 	public void interact(HallPanel panel) {
-		if (hasRune) {
-			panel.showMessage("Rune found!");
-			System.out.println("Rune found!");
-			// Rune logic, e.g., remove rune after discovery
-			hasRune = false;  //  Prevent rediscovery of the same rune
+		
+		int dist = this.calculateDistanceToPlayer(panel);
+		if (dist <= 45) {
+			if (hasRune) {
+				panel.showMessage("Rune found!");
+				System.out.println("Rune found!");
+				hasRune = false;  
+			}
+			else {
+				System.out.println("No rune");
+			}
+
 		} else {
-			System.out.println("No rune here.");
+			System.out.println("Too far");
 		}
 	}
 

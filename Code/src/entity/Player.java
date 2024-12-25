@@ -151,7 +151,7 @@ public class Player extends Entity{
 				int objIndex = hallPanel.getCollisionCheckerForHall().checkObject(this, true);
 
 
-				pickupObject(objIndex);
+				//pickupObject(objIndex);
 
 				this.solidArea.x = 8;
 				this.solidArea.y = 16;
