@@ -38,7 +38,7 @@ public class SuperObject {
 	public boolean interact(HallPanel panel) {
 
 		int dist = this.calculateDistanceToPlayer(panel);
-		if (dist <= 45) {
+		if (dist <= 65) {
 			if (hasRune) {
 				panel.showMessage("Rune found!");
 				System.out.println("Rune found!");

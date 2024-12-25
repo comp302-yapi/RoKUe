@@ -9,7 +9,6 @@ import listeners.mouselisteners.HallPanelMouseListener;
 import managers.CollisionCheckerForHall;
 import managers.TileManagerForHall;
 import managers.ViewManager;
-import monster.MON_Archer;
 import object.SuperObject;
 import utils.PanelUtils;
 
@@ -20,7 +19,6 @@ public class HallPanel extends PlayablePanel{
     public Hall currentHall = Hall.HallOfEarth;
     private final HallPanelKeyListener keyListener;
     private final HallPanelMouseListener mouseListener;
-    private final MON_Archer m;
     public TileManagerForHall tileM;
     final CollisionCheckerForHall cChecker;
     private boolean isPaused;
@@ -34,16 +32,9 @@ public class HallPanel extends PlayablePanel{
 
         this.mouseListener = new HallPanelMouseListener(this, getTileM());
         this.addMouseListener(mouseListener);
-        this.cChecker = new CollisionCheckerForHall(this, tileM);
+        this.cChecker = new CollisionCheckerForHall(this);
 
         getPlayer().panel = this;
-
-        m = new MON_Archer(this);
-
-        m.worldX = BasePanel.tileSize*10;
-        m.worldY = BasePanel.tileSize*10;
-        m.spawned = true;
-        getMonsters()[0] = m;
     }
 
     @Override
@@ -55,7 +46,6 @@ public class HallPanel extends PlayablePanel{
     @Override
     public void update() {
         getPlayer().move();
-        m.update();
 
         //Update Arrows
         for (int i = 0; i < getArrows().length; i++) {
@@ -118,9 +108,6 @@ public class HallPanel extends PlayablePanel{
                     }
                 }
                 getPlayer().draw(g2);
-
-                // draw the monster image
-                m.draw(g2);
 
                 for (Arrow arrow : getArrows()) {
                     if (arrow != null) {
