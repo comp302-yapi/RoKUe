@@ -137,15 +137,15 @@ public class HallController {
             switch (currentHall.hall) {
                 case HallOfEarth -> {
                     hallPanel.currentHall = Hall.HallOfAir;
-                    initNewHall(currentHall, player);
+                    initNewHall(hallPanel.currentHall, player, hallPanel);
                 }
                 case HallOfAir -> {
                     hallPanel.currentHall = Hall.HallOfWater;
-                    initNewHall(currentHall, player);
+                    initNewHall(hallPanel.currentHall, player, hallPanel);
                 }
                 case HallOfWater -> {
                     hallPanel.currentHall = Hall.HallOfFire;
-                    initNewHall(currentHall, player);
+                    initNewHall(hallPanel.currentHall, player, hallPanel);
                 }
                 case HallOfFire -> {
                     System.out.println("finished");
@@ -154,10 +154,11 @@ public class HallController {
         }
     }
 
-    private static void initNewHall(TileManagerForHall currentHall, Player player) {
+    private static void initNewHall(Hall nextHall, Player player, HallPanel hallPanel) {
         player.screenX = 700;
         player.screenY = 96 + BasePanel.tileSize * 15 - 100;
-        assignRunesToObjects(currentHall);
+        hallPanel.tileM = HallContainer.getCurrentHallManager(nextHall);
+        assignRunesToObjects(hallPanel.tileM);
     }
 
     public static void movePlayerIfCollision(TileManagerForHall currentHall, Player player) {
