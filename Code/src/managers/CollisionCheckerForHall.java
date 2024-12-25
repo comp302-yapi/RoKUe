@@ -25,6 +25,10 @@ public class CollisionCheckerForHall {
             entity.solidArea.x = e.screenX - 336 + entity.solidArea.x;
             entity.solidArea.y = e.screenY - 96 + entity.solidArea.y;
         }
+        else {
+        	 entity.solidArea.x = entity.worldX - 336 + entity.solidArea.x;
+             entity.solidArea.y = entity.worldY - 96 + entity.solidArea.y;
+        }
 
        int entityLeftWorldX = entity.solidArea.x;
         int entityRightWorldX = entity.solidArea.x + entity.solidArea.width;
@@ -86,11 +90,17 @@ public class CollisionCheckerForHall {
 
 //                 Get entity's solid area position
                 if (player) {
-                    System.out.println(0);
+                  //System.out.println(0);
                     Player e = (Player)entity;
                     entity.solidArea.x = e.screenX + entity.solidArea.x;
                     entity.solidArea.y = e.screenY + entity.solidArea.y;
-                } 
+                }
+                
+                else {
+               	 entity.solidArea.x = entity.worldX  + entity.solidArea.x;
+                    entity.solidArea.y = entity.worldY + entity.solidArea.y;
+               }
+                
 
                 // Get the object's solid area position
                 obj[i].solidArea.x = obj[i].worldX + obj[i].solidArea.x;

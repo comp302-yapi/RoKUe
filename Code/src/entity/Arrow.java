@@ -91,10 +91,7 @@ public class Arrow extends Entity {
         int screenY = worldY - panel.getPlayer().worldY + panel.getPlayer().screenY;
 
         // Draw arrow if within screen bounds
-        if (worldX > panel.getPlayer().worldX - panel.tileSize - panel.getPlayer().screenX &&
-                worldX < panel.getPlayer().worldX + panel.tileSize + panel.getPlayer().screenX &&
-                worldY > panel.getPlayer().worldY - panel.tileSize - panel.getPlayer().screenY &&
-                worldY < panel.getPlayer().worldY + panel.tileSize + panel.getPlayer().screenY) {
+        if (true) {
 
             g2.drawImage(image, screenX, screenY, panel.tileSize, panel.tileSize, null);
         }

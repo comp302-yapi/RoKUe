@@ -24,6 +24,8 @@ public class Main {
 		JPanel titlePanel = new TitlePanel(viewManager);
 		JPanel buildPanel = new BuildPanel(viewManager);
 
+        JPanel hallPanel = new HallPanel(viewManager);
+        viewManager.addPanel("HallPanel", hallPanel);
 
 		viewManager.addPanel("TitlePanel", titlePanel);
 		viewManager.addPanel("GamePanel", gamePanel);

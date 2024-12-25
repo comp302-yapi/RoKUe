@@ -8,6 +8,7 @@ import managers.CollisionChecker;
 import managers.CollisionCheckerForHall;
 import managers.TileManagerForHall;
 import managers.ViewManager;
+import monster.MON_Archer;
 import object.SuperObject;
 
 import java.awt.*;
@@ -20,9 +21,12 @@ public class HallPanel extends PlayablePanel{
     public TileManagerForHall tileM;
 
     final CollisionCheckerForHall cChecker;
+    MON_Archer m;
+
 
 
     public HallPanel(ViewManager viewManager) {
+    	
         super(viewManager);
         this.keyListener = new HallPanelKeyListener(this);
 
@@ -33,6 +37,13 @@ public class HallPanel extends PlayablePanel{
         this.cChecker = new CollisionCheckerForHall(this,tileM);
 
         getPlayer().panel = this;
+        
+        m = new  MON_Archer(this);
+
+    	m.worldX = BasePanel.tileSize*10;
+    	m.worldY = BasePanel.tileSize*10;
+    	m.spawned = true;
+    	
 
 
     }
@@ -40,6 +51,7 @@ public class HallPanel extends PlayablePanel{
     @Override
     public void update() {
         getPlayer().move();
+        m.update();
 
     }
 
@@ -74,6 +86,24 @@ public class HallPanel extends PlayablePanel{
                     }
                 }
                 getPlayer().draw(g2);
+                
+
+                	// draw the monster image
+                
+                m.draw(g2);
+                
+                for (int i = 0; i < getArrows().length; i++) {
+                    if (getArrows()[i] != null) {
+                        getArrows()[i].update();
+
+                        // Remove expired arrows
+                        if (getArrows()[i].isExpired()) {
+                            getArrows()[i] = null;
+                        }
+                    }
+                }
+                	
+
 
                 g2.dispose();
 

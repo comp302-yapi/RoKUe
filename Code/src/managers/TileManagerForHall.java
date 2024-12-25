@@ -11,6 +11,7 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 
 import containers.TileContainer;
+import entity.Entity;
 import enums.Hall;
 import object.SuperObject;
 import tile.Tile;
@@ -23,6 +24,8 @@ public class TileManagerForHall{
 
 	public int[][] mapTileNum;
 	public ArrayList<SuperObject> objects = new ArrayList<>();
+	//public ArrayList<Entity> monsters = new ArrayList<>();
+	
 	public int maxCol,maxRow,idx;
 
 	public TileManagerForHall(Hall hall, String path, int maxCol, int maxRow) {

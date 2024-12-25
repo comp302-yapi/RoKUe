@@ -46,8 +46,6 @@ public class GamePanelKeyListener extends BaseKeyListener {
 
         if (code == KeyEvent.VK_H) {
 
-            JPanel hallPanel = new HallPanel(gamePanel.getViewManager());
-            gamePanel.getViewManager().addPanel("HallPanel", hallPanel);
             gamePanel.getViewManager().switchTo("HallPanel", true);
         }
     }
