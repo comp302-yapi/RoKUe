@@ -11,10 +11,8 @@ import java.awt.event.MouseEvent;
 public class HallPanelMouseListener extends BaseMouseListener {
 
     private HallPanel hallPanel;
-    private TileManagerForHall tileM;
 
     public HallPanelMouseListener(HallPanel hallPanel, TileManagerForHall tileM) {
-        this.tileM = tileM;
         this.hallPanel = hallPanel;
     }
 
@@ -24,9 +22,12 @@ public class HallPanelMouseListener extends BaseMouseListener {
         int mouseY = e.getY();
 
         // Use the hallController instance to call getObjectSelectedInHall
-        SuperObject clickedObject = HallController.getObjectSelectedInHall(tileM, mouseX, mouseY);
+        SuperObject clickedObject = HallController.getObjectSelectedInHall(hallPanel.getTileM(), mouseX, mouseY);
         if (clickedObject != null) {
-            clickedObject.interact(hallPanel); // Call interact method to handle rune detection
+            boolean foundRune = clickedObject.interact(hallPanel); // Call interact method to handle rune detection
+            if (foundRune) {
+                hallPanel.getTileM().openDoor();
+            }
         }
     }
 

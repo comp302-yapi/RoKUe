@@ -25,8 +25,9 @@ public class TileManagerForHall{
 	public int[][] mapTileNum;
 	public ArrayList<SuperObject> objects = new ArrayList<>();
 	//public ArrayList<Entity> monsters = new ArrayList<>();
-	
 	public int maxCol,maxRow,idx;
+	private boolean isOpened = false;
+	private final int bottomWorldBorder;
 
 	public TileManagerForHall(Hall hall, String path, int maxCol, int maxRow) {
         this.maxCol = maxCol;
@@ -34,7 +35,9 @@ public class TileManagerForHall{
 		this.hall = hall;
 		mapTileNum = new int[BasePanel.maxWorldCol][BasePanel.maxWorldRow];
 		idx = 0;
+		isOpened = false;
 		loadMap(path);
+		bottomWorldBorder = 96 + BasePanel.tileSize * 15;
 	}
 	
 
@@ -74,7 +77,16 @@ public class TileManagerForHall{
 		}
 		
 	}
-	
+
+	public void openDoor() {
+		mapTileNum[5][13] = 21;
+		mapTileNum[6][13] = 22;
+		mapTileNum[5][14] = 23;
+		mapTileNum[6][14] = 24;
+
+		isOpened = true;
+	}
+
 	public void draw(Graphics2D g2) {
 
 		int worldCol = 0;
@@ -107,8 +119,12 @@ public class TileManagerForHall{
 			}
 		}
 	}
-	
-	public boolean checkObject(int x,int y) {
+
+	public int getBottomWorldBorder() {
+		return bottomWorldBorder;
+	}
+
+	public boolean checkObject(int x, int y) {
 
 		for (SuperObject object : objects) {
 			if (object != null) {
@@ -129,10 +145,7 @@ public class TileManagerForHall{
 	}
 
 	public SuperObject[] convertToArray() {
-
-
 		return objects.toArray(new SuperObject[30]);
-
 	}
 
 	public void removeObject(SuperObject obj) {

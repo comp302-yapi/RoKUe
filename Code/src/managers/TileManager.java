@@ -16,13 +16,8 @@ import views.BasePanel;
 public class TileManager {
 
 	BasePanel panel;
-
 	public int mapTileNum[][];
-	
-	
-	
-	 
-	
+
 	public TileManager(BasePanel panel) {
 		 
 		this.panel = panel;
@@ -98,12 +93,8 @@ public class TileManager {
 				worldCol = 0;
 				worldRow++;
 			}
-			
 		}
-		
 	}
-	
-	
 }
 
 

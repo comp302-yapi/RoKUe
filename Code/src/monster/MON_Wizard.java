@@ -8,7 +8,7 @@ import java.util.Random;
 public class MON_Wizard extends Entity {
 
 	private int teleportCounter = 0;
-	private boolean spawned = false;
+	public boolean spawned = false;
 	private final int TELEPORT_INTERVAL = 300; // 5 seconds at 60 FPS
 
 	public MON_Wizard(BasePanel panel) {
@@ -46,6 +46,7 @@ public class MON_Wizard extends Entity {
 
 	@Override
 	public void setAction() {
+
 		// Initial spawn logic
 		if (!spawned) {
 			Random random = new Random();
@@ -75,6 +76,7 @@ public class MON_Wizard extends Entity {
 				// Update rune position
 				panel.getSuperObjects()[i].worldX = newX;
 				panel.getSuperObjects()[i].worldY = newY;
+				System.out.println(newX + " | " + newY);
 				break;
 			}
 		}

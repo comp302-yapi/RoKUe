@@ -79,6 +79,9 @@ public class Entity {
 			}
 		}
 
+		if (life == 0) {
+			panel.getViewManager().switchTo("TitlePanel", true);
+		}
 		
 		// IF COLLISION FALSE, PLAYER CAN MOVE
 		if (!collisionOn) {

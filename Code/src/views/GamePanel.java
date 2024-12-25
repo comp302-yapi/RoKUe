@@ -115,7 +115,8 @@ public class GamePanel extends PlayablePanel {
 
         // Draw player
         getPlayer().draw(g2);
-        
+
+
         drawPlayerLife(g2);
 
         // If paused

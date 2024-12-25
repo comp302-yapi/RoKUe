@@ -21,4 +21,22 @@ public class HallContainer {
 	public static TileManagerForHall getHallOfFire() {
 		return hallOfFire;
 	}
+
+	public static TileManagerForHall getCurrentHallManager(Hall hall) {
+		switch (hall) {
+			case HallOfEarth -> {
+				return getHallOfEarth();
+			}
+			case HallOfAir -> {
+				return getHallOfAir();
+			}
+			case HallOfWater -> {
+				return getHallOfWater();
+			}
+			case HallOfFire -> {
+				return getHallOfFire();
+			}
+		}
+		return null;
+	}
 }

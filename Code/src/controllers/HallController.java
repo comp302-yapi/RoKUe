@@ -1,13 +1,18 @@
 package controllers;
 
 import containers.HallContainer;
+import entity.Entity;
+import entity.Player;
 import enums.BuildDirection;
 import enums.Hall;
 import managers.TileManagerForHall;
+import managers.ViewManager;
 import object.SuperObject;
 import validators.HallValidator;
 import views.BasePanel;
 import views.BuildPanel;
+import views.HallPanel;
+
 import java.util.List;
 import java.util.Random;
 
@@ -125,6 +130,46 @@ public class HallController {
 
             // Assign a rune to the object
             objects[randomIndex].hasRune = true;
+        }
+    }
+
+    public static void shouldSwitchHallsInGame(TileManagerForHall currentHall, Player player, HallPanel hallPanel) {
+        if (player.screenY > currentHall.getBottomWorldBorder()) {
+            switch (currentHall.hall) {
+                case HallOfEarth -> {
+                    hallPanel.currentHall = Hall.HallOfAir;
+                    initNewHall(hallPanel.currentHall, player, hallPanel);
+                }
+                case HallOfAir -> {
+                    hallPanel.currentHall = Hall.HallOfWater;
+                    initNewHall(hallPanel.currentHall, player, hallPanel);
+                }
+                case HallOfWater -> {
+                    hallPanel.currentHall = Hall.HallOfFire;
+                    initNewHall(hallPanel.currentHall, player, hallPanel);
+                }
+                case HallOfFire -> {
+                    hallPanel.getViewManager().switchTo("TitlePanel", true);
+                }
+            }
+        }
+    }
+
+    private static void initNewHall(Hall nextHall, Player player, HallPanel hallPanel) {
+        player.screenX = 700;
+        player.screenY = 96 + BasePanel.tileSize * 15 - 100;
+        hallPanel.tileM = HallContainer.getCurrentHallManager(nextHall);
+        assignRunesToObjects(hallPanel.tileM);
+        hallPanel.getHallMonsters().clear();
+        hallPanel.zeroMonsters();
+        player.life = 6;
+    }
+
+    public static void movePlayerIfCollision(TileManagerForHall currentHall, Player player) {
+        SuperObject objectCollided = getObjectSelectedInHall(currentHall, player.screenX + BasePanel.tileSize / 2, player.screenY + BasePanel.tileSize / 2);
+        if (objectCollided != null) {
+            player.screenX += objectCollided.worldX - player.screenX + objectCollided.image.getWidth() + 15;
+            player.screenY += objectCollided.worldY - player.screenY + objectCollided.image.getHeight() + 15;
         }
     }
 }

@@ -1,20 +1,22 @@
 package managers;
 
+import containers.HallContainer;
 import containers.TileContainer;
 import entity.Entity;
 import entity.Player;
 import object.SuperObject;
 import views.BasePanel;
+import views.HallPanel;
 
 import java.util.ArrayList;
 
 public class CollisionCheckerForHall {
 
-    private final TileManagerForHall tileM;
+    private final HallPanel hallPanel;
     private final Player player;
 
-    public CollisionCheckerForHall(BasePanel panel, TileManagerForHall tileM) {
-        this.tileM = tileM;
+    public CollisionCheckerForHall(HallPanel panel) {
+        hallPanel = panel;
         this.player = panel.getPlayer();
     }
 
@@ -45,8 +47,8 @@ public class CollisionCheckerForHall {
         switch (entity.direction) {
             case "up" -> {
                 entityTopRow = (entityTopWorldY - entity.speed) / BasePanel.tileSize;
-                tileNum1 = tileM.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = tileM.mapTileNum[entityRightCol][entityTopRow];
+                tileNum1 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityLeftCol][entityTopRow];
+                tileNum2 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityRightCol][entityTopRow];
                 if (TileContainer.getTile()[tileNum1].collision || TileContainer.getTile()[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
@@ -54,8 +56,8 @@ public class CollisionCheckerForHall {
 
             case "down" -> {
                 entityBottomRow = (entityBottomWorldY + entity.speed) / BasePanel.tileSize;
-                tileNum1 = tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                tileNum2 = tileM.mapTileNum[entityRightCol][entityBottomRow];
+                tileNum1 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityLeftCol][entityBottomRow];
+                tileNum2 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityRightCol][entityBottomRow];
                 if (TileContainer.getTile()[tileNum1].collision || TileContainer.getTile()[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
@@ -63,8 +65,8 @@ public class CollisionCheckerForHall {
 
             case "left" -> {
                 entityLeftCol = (entityLeftWorldX - entity.speed) / BasePanel.tileSize;
-                tileNum1 = tileM.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = tileM.mapTileNum[entityLeftCol][entityBottomRow];
+                tileNum1 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityLeftCol][entityTopRow];
+                tileNum2 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityLeftCol][entityBottomRow];
                 if (TileContainer.getTile()[tileNum1].collision || TileContainer.getTile()[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
@@ -72,8 +74,8 @@ public class CollisionCheckerForHall {
 
             case "right" -> {
                 entityRightCol = (entityRightWorldX + entity.speed) / BasePanel.tileSize;
-                tileNum1 = tileM.mapTileNum[entityRightCol][entityTopRow];
-                tileNum2 = tileM.mapTileNum[entityRightCol][entityBottomRow];
+                tileNum1 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityRightCol][entityTopRow];
+                tileNum2 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityRightCol][entityBottomRow];
                 if (TileContainer.getTile()[tileNum1].collision || TileContainer.getTile()[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
@@ -84,7 +86,7 @@ public class CollisionCheckerForHall {
 
     public int checkObject(Entity entity, boolean player) {
         int index = 999;
-        for (SuperObject obj: tileM.objects) {
+        for (SuperObject obj: HallContainer.getCurrentHallManager(hallPanel.currentHall).objects) {
 
             if (player) {
                 Player e = (Player)entity;
@@ -115,7 +117,7 @@ public class CollisionCheckerForHall {
                 }
 
                 if (player) {
-                    index = tileM.objects.indexOf(obj);
+                    index = HallContainer.getCurrentHallManager(hallPanel.currentHall).objects.indexOf(obj);
                 }
             }
 

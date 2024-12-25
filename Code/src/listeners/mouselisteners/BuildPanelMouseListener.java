@@ -8,10 +8,7 @@ import java.awt.event.MouseMotionListener;
 import controllers.HallController;
 import enums.BuildDirection;
 import listeners.BaseMouseListener;
-import object.OBJ_Chest;
-import object.OBJ_Door;
-import object.OBJ_Key;
-import object.SuperObject;
+import object.*;
 import views.BasePanel;
 import views.BuildPanel;
 
@@ -106,16 +103,28 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 			if(checkBorder(x,y)) {
 				SuperObject newObj = null; 
 				
-				if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Key) {
-					newObj = new OBJ_Key();
+				if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Barrel) {
+					newObj = new OBJ_Barrel();
 				}
 				
 				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Chest) {
 					newObj = new OBJ_Chest();
 				}
 
-				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Door) {
-					newObj = new OBJ_Door();
+				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Cactus) {
+					newObj = new OBJ_Cactus();
+				}
+				
+				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Lantern) {
+					newObj = new OBJ_Lantern();
+				}
+				
+				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Chain) {
+					newObj = new OBJ_Chain();
+				}
+
+				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Pot) {
+					newObj = new OBJ_Pot();
 				}
 				
 				
