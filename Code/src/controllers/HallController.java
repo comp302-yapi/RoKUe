@@ -28,6 +28,12 @@ public class HallController {
     }
 
     public void addObject(TileManagerForHall currentHall, SuperObject obj, int x, int y) {
+
+        x -= x % 48;
+        y -= y % 48;
+
+        System.out.println(x + " | " + y);
+
         currentHall.addObject(obj, x, y);
     }
 

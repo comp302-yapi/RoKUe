@@ -167,9 +167,12 @@ public class TileContainer {
 
 			tile[27] = new Tile();
 			tile[27].image = closeDoorBottomLeft;
+			tile[27].collision = true;
 
 			tile[28] = new Tile();
 			tile[28].image = closeDoorBottomRight;
+			tile[28].collision = true;
+
 
 		} catch(IOException e) {
 			e.printStackTrace();

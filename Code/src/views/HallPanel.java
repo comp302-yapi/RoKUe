@@ -34,8 +34,9 @@ public class HallPanel extends PlayablePanel{
     boolean wizardChecker = false;
     BufferedImage heart_full, heart_half, heart_blank;
     SuperObject heart = new OBJ_Heart();
-
-
+    public SuperObject[][] gridWorld = new SuperObject[13][13];
+    public int[][] gridWorldAll = new int[13][13];
+    boolean availableSpot = false;
 
     public int spawnCounter;
 
@@ -99,7 +100,7 @@ public class HallPanel extends PlayablePanel{
 
             HallController.shouldSwitchHallsInGame(getTileM(), getPlayer(), this);
 
-            if (spawnCounter >= 60 * 8) {
+            if (spawnCounter >= 60 * 2) {
                 generateMonster();
                 spawnCounter = 0;
             }
@@ -107,6 +108,28 @@ public class HallPanel extends PlayablePanel{
     }
 
     public TileManagerForHall getTileM(){ return this.tileM;}
+
+    public void setGridWorld() {
+
+        for (int i = 0; i < gridWorld.length; i++) {
+            for (int j = 0; j < gridWorld[i].length; j++) {
+                gridWorldAll[i][j] = (gridWorld[i][j] != null) ? 1 : 0;
+            }
+        }
+
+        for (Entity monster : monsters) {
+
+            int row = monster.worldX / BasePanel.tileSize;
+            int column = monster.worldY / BasePanel.tileSize;
+
+            if (row > 13) {row = 13;}
+            if (column > 13) {column = 13;}
+
+            gridWorldAll[row - 7][column - 2] = 1;
+
+        }
+
+    }
 
     public void generateMonster(){
 
@@ -116,11 +139,19 @@ public class HallPanel extends PlayablePanel{
         int locationX = random.nextInt(1,13) + 7;
         int locationY = random.nextInt(1,14) + 2;
 
+        setGridWorld();
+
+        while (gridWorldAll[locationX - 8][locationY - 3] != 0)  {
+            locationX = random.nextInt(1,13) + 7;
+            locationY = random.nextInt(1,14) + 2;
+        }
+
         switch (pickMonster) {
             case "Archer":
                 MON_Archer archer = new MON_Archer(this);
                 archer.worldX = BasePanel.tileSize*locationX;
                 archer.worldY = BasePanel.tileSize*locationY;
+
                 archer.spawned = true;
 
                 for (int i = 0; i < getMonsters().length; i++) {
@@ -151,7 +182,6 @@ public class HallPanel extends PlayablePanel{
                         break;
                     }
                 }
-
 
                     monsters.add(wizard);
                     wizardChecker = true;
