@@ -24,16 +24,36 @@ public class SuperObject {
 	 * Handles the player's interaction when they click this object.
 	 * For example, if the object contains a rune, it prints a message.
 	 */
+
+
+	private int calculateDistanceToPlayer(HallPanel hp) {
+		int playerX = hp.getPlayer().screenX;
+		int playerY = hp.getPlayer().screenY;
+
+		return (int) Math.sqrt(
+				Math.pow(worldX - playerX, 2) +
+						Math.pow(worldY - playerY, 2)
+		);
+	}
 	public boolean interact(HallPanel panel) {
-		if (hasRune) {
-			panel.showMessage("Rune found!");
-			// Rune logic, e.g., remove rune after discovery
-			hasRune = false;  //  Prevent rediscovery of the same rune
-			return true;
+
+		int dist = this.calculateDistanceToPlayer(panel);
+		if (dist <= 45) {
+			if (hasRune) {
+				panel.showMessage("Rune found!");
+				System.out.println("Rune found!");
+				hasRune = false;
+				return true;
+			}
+			else {
+				System.out.println("No rune");
+				return false;
+			}
+
 		} else {
-			System.out.println("No rune here.");
-			return false;
+			System.out.println("Too far");
 		}
+		return false;
 	}
 
 	/**
