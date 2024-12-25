@@ -10,6 +10,8 @@ import managers.TileManagerForHall;
 import managers.ViewManager;
 import monster.MON_Archer;
 import object.SuperObject;
+import utils.PanelUtils;
+
 import java.awt.*;
 import java.util.Random;
 
@@ -21,6 +23,8 @@ public class HallPanel extends PlayablePanel{
     private final MON_Archer m;
     public TileManagerForHall tileM;
     final CollisionCheckerForHall cChecker;
+    private boolean isPaused;
+
     public HallPanel(ViewManager viewManager) {
         super(viewManager);
         this.tileM = HallContainer.getHallOfEarth();
@@ -98,17 +102,26 @@ public class HallPanel extends PlayablePanel{
         }
     }
 
+    public void setPaused(boolean paused) {
+        isPaused = paused;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
 
     public void paintComponent(Graphics g) {
 
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D)g;
+
+        if (!isPaused()) {
+            update();
+        }
+
         switch (currentHall) {
             case HallOfEarth -> {
-                // Update game
-                update();
-
                 // Repaint game
-                super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D)g;
                 g2.setFont(arial_40);
 
                 // Draw tiles
@@ -121,10 +134,8 @@ public class HallPanel extends PlayablePanel{
                     }
                 }
                 getPlayer().draw(g2);
-                
 
-                	// draw the monster image
-                
+                // draw the monster image
                 m.draw(g2);
 
                 for (Arrow arrow : getArrows()) {
@@ -132,16 +143,12 @@ public class HallPanel extends PlayablePanel{
                         arrow.draw(g2);
                     }
                 }
-
-                g2.dispose();
             }
             case HallOfAir -> {
                 // Update game
                 update();
 
                 // Repaint game
-                super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D)g;
                 g2.setFont(arial_40);
 
                 // Draw tiles
@@ -153,18 +160,12 @@ public class HallPanel extends PlayablePanel{
                         superObject.draw(g2, this);
                     }
                 }
-
-
-                g2.dispose();
-
             }
             case HallOfWater -> {
                 // Update game
                 update();
 
                 // Repaint game
-                super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D)g;
                 g2.setFont(arial_40);
 
                 // Draw tiles
@@ -176,18 +177,12 @@ public class HallPanel extends PlayablePanel{
                         superObject.draw(g2, this);
                     }
                 }
-
-
-                g2.dispose();
-
             }
             case HallOfFire -> {
                 // Update game
                 update();
 
                 // Repaint game
-                super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D)g;
                 g2.setFont(arial_40);
 
                 // Draw tiles
@@ -199,9 +194,23 @@ public class HallPanel extends PlayablePanel{
                         superObject.draw(g2, this);
                     }
                 }
-                g2.dispose();
             }
         }
+
+        if (isPaused()) {
+            drawPauseScreen(g2);
+        }
+
+        g2.dispose();
+    }
+
+    private void drawPauseScreen(Graphics2D g2) {
+        int x, y;
+        String text = "PAUSED";
+        x = PanelUtils.getXForCenteredText(text, this, g2);
+        y = BasePanel.screenHeight / 2;
+        g2.setColor(Color.WHITE);
+        g2.drawString(text, x - 100, y);
     }
 }
 

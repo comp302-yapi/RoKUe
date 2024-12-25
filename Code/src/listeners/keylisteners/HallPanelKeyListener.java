@@ -45,6 +45,10 @@ public class HallPanelKeyListener extends BaseKeyListener {
         	monsterSpawn = true;
         }
 
+        if (code == KeyEvent.VK_P) {
+            hallPanel.setPaused(!hallPanel.isPaused());
+        }
+
     }
 
     @Override
@@ -66,9 +70,5 @@ public class HallPanelKeyListener extends BaseKeyListener {
         if (code == KeyEvent.VK_D) {
             rightPressed = false;
         }
-
-        
-        
-        
     }
 }
