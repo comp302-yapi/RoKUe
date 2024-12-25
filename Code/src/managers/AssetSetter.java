@@ -1,5 +1,6 @@
 package managers;
 
+import entity.Entity;
 import enums.Hall;
 import monster.MON_Archer;
 import monster.MON_Wizard;
@@ -57,6 +58,8 @@ public class AssetSetter {
 	}
 	
 	public void spawnMonster() {
+		
+		/*
 		panel.getMonsters()[0] = new MON_Archer(panel);
 		panel.getMonsters()[0].worldX = panel.tileSize*24;
 		panel.getMonsters()[0].worldY = panel.tileSize*21;
@@ -68,6 +71,15 @@ public class AssetSetter {
 		panel.getMonsters()[2] = new MON_Wizard(panel);
 		panel.getMonsters()[2].worldX = panel.tileSize*20;
 		panel.getMonsters()[2].worldY = panel.tileSize*25;
+		
+		*/
+		
+		
+		
+		
+		
+		
+		
 	}
 	
 }

@@ -1,59 +1,68 @@
 package views;
 
 import containers.HallContainer;
-import controllers.HallController;
+import entity.Arrow;
 import enums.Hall;
-import listeners.keylisteners.GamePanelKeyListener;
 import listeners.keylisteners.HallPanelKeyListener;
-import managers.CollisionChecker;
+import listeners.mouselisteners.HallPanelMouseListener;
 import managers.CollisionCheckerForHall;
 import managers.TileManagerForHall;
 import managers.ViewManager;
+import monster.MON_Archer;
 import object.SuperObject;
-
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.util.Random;
 
 public class HallPanel extends PlayablePanel{
 
     public Hall currentHall = Hall.HallOfEarth;
     private final HallPanelKeyListener keyListener;
+    private final HallPanelMouseListener mouseListener;
+    private final MON_Archer m;
 
     public TileManagerForHall tileM;
 
     final CollisionCheckerForHall cChecker;
-    private final HallController hallController;
-
     public HallPanel(ViewManager viewManager) {
         super(viewManager);
         this.keyListener = new HallPanelKeyListener(this);
         this.addKeyListener(keyListener);
         getPlayer().addKeyListener(keyListener);
 
+        this.mouseListener = new HallPanelMouseListener(this, getTileM());
+        this.addMouseListener(mouseListener);
+
         this.tileM = HallContainer.getHallOfEarth();
         this.cChecker = new CollisionCheckerForHall(this, tileM);
 
         getPlayer().panel = this;
 
-        hallController = new HallController(null); // Pass the required argument (e.g., BuildPanel) if needed
+        m = new MON_Archer(this);
+
+        m.worldX = BasePanel.tileSize*10;
+        m.worldY = BasePanel.tileSize*10;
+        m.spawned = true;
+        getMonsters()[0] = m;
+
         assignRunesToObjects();
-    }
-
-    public void mousePressed(MouseEvent e) {
-        int mouseX = e.getX();
-        int mouseY = e.getY();
-
-        // Use the hallController instance to call getObjectSelectedInHall
-        SuperObject clickedObject = hallController.getObjectSelectedInHall(tileM, mouseX, mouseY);
-        if (clickedObject != null) {
-            clickedObject.interact(this); // Call interact method to handle rune detection
-        }
     }
 
     @Override
     public void update() {
         getPlayer().move();
+        m.update();
+
+        //Update Arrows
+        for (int i = 0; i < getArrows().length; i++) {
+            if (getArrows()[i] != null) {
+                getArrows()[i].update();
+
+                // Remove expired arrows
+                if (getArrows()[i].isExpired()) {
+                    getArrows()[i] = null;
+                }
+            }
+        }
 
     }
 
@@ -116,10 +125,19 @@ public class HallPanel extends PlayablePanel{
                     }
                 }
                 getPlayer().draw(g2);
+                
+
+                	// draw the monster image
+                
+                m.draw(g2);
+
+                for (Arrow arrow : getArrows()) {
+                    if (arrow != null) {
+                        arrow.draw(g2);
+                    }
+                }
 
                 g2.dispose();
-
-
             }
             case HallOfAir -> {
                 // Update game
@@ -185,15 +203,9 @@ public class HallPanel extends PlayablePanel{
                         superObject.draw(g2, this);
                     }
                 }
-
-
                 g2.dispose();
-
             }
         }
-
-
-
     }
 }
 

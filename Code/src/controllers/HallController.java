@@ -72,7 +72,7 @@ public class HallController {
                     return true;
                 }
                 else if(hallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
-                    buildPanel.getViewManager().switchTo("GamePanel", true);
+                    buildPanel.getViewManager().switchTo("HallPanel", true);
                     return true;
                 }
                 else {

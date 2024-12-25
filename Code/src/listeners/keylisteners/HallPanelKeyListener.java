@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 public class HallPanelKeyListener extends BaseKeyListener {
 
     private final HallPanel hallPanel;
+    public boolean monsterSpawn = false;
 
     public HallPanelKeyListener(HallPanel hallPanel) {
         super();
@@ -39,6 +40,10 @@ public class HallPanelKeyListener extends BaseKeyListener {
         if (code == KeyEvent.VK_D) {
             rightPressed = true;
         }
+        
+        if (code == KeyEvent.VK_E) {
+        	monsterSpawn = true;
+        }
 
     }
 
@@ -61,5 +66,9 @@ public class HallPanelKeyListener extends BaseKeyListener {
         if (code == KeyEvent.VK_D) {
             rightPressed = false;
         }
+
+        
+        
+        
     }
 }

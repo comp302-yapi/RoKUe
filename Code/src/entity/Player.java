@@ -145,7 +145,6 @@ public class Player extends Entity{
 				collisionOn = false;
 				hallPanel.getCollisionCheckerForHall().checkTile(this);
 
-
 				// CHECK OBJECT COLLISION
 				this.solidArea.x = 8;
 				this.solidArea.y = 16;
@@ -154,6 +153,8 @@ public class Player extends Entity{
 
 				pickupObject(objIndex);
 
+				this.solidArea.x = 8;
+				this.solidArea.y = 16;
 				// CHECK MONSTER COLLISION
 				int monsterIndex = hallPanel.getCollisionCheckerForHall().checkEntity(this, hallPanel.getMonsters());
 
