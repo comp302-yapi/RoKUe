@@ -4,10 +4,10 @@ import enums.Hall;
 
 public class HallValidator {
 
-    private final int EARTH_HALL_MIN_OBJECTS = 1;
-    private final int AIR_HALL_MIN_OBJECTS = 0;
-    private final int WATER_HALL_MIN_OBJECTS = 0;
-    private final int FIRE_HALL_MIN_OBJECTS = 0;
+    private final int EARTH_HALL_MIN_OBJECTS = 6;
+    private final int AIR_HALL_MIN_OBJECTS = 9;
+    private final int WATER_HALL_MIN_OBJECTS = 13;
+    private final int FIRE_HALL_MIN_OBJECTS = 17;
 
     public boolean validateHall(Hall hall, int hallObjectsCount) {
         switch (hall) {

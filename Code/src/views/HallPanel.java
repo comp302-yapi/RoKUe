@@ -99,7 +99,7 @@ public class HallPanel extends PlayablePanel{
 
             HallController.shouldSwitchHallsInGame(getTileM(), getPlayer(), this);
 
-            if (spawnCounter >= 180) {
+            if (spawnCounter >= 60 * 8) {
                 generateMonster();
                 spawnCounter = 0;
             }
@@ -240,8 +240,6 @@ public class HallPanel extends PlayablePanel{
 
         switch (currentHall) {
             case HallOfEarth -> {
-                // Update game
-                update();
                 // Repaint game
                 g2.setFont(arial_40);
 
