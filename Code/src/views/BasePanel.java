@@ -9,6 +9,7 @@ import managers.ViewManager;
 import object.SuperObject;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 
 public interface BasePanel {

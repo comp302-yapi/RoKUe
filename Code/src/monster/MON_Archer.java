@@ -9,7 +9,7 @@ public class MON_Archer extends Entity {
 
 	BasePanel gp;
 	private int shootCounter = 0;
-	private boolean spawned = false;
+	public boolean spawned = false;
 
 	public MON_Archer(BasePanel gp) {
 		super(gp);
@@ -47,13 +47,14 @@ public class MON_Archer extends Entity {
 
 	public void setAction() {
 		// Spawn in a random location in the hall if not already spawned
+
 		if (!spawned) {
 			Random random = new Random();
 			worldX = random.nextInt(gp.worldWidth);
 			worldY = random.nextInt(gp.worldHeight);
 			spawned = true;
 		}
-
+		
 		// Add random movement
 		actionLockCounter++;
 		if (actionLockCounter == 120) {
@@ -108,8 +109,8 @@ public class MON_Archer extends Entity {
 	}
 
 	private int calculateDistanceToPlayer() {
-		int playerX = gp.getPlayer().worldX;
-		int playerY = gp.getPlayer().worldY;
+		int playerX = gp.getPlayer().screenX;
+		int playerY = gp.getPlayer().screenY;
 
 		return (int) Math.sqrt(
 				Math.pow(worldX - playerX, 2) +
@@ -118,8 +119,8 @@ public class MON_Archer extends Entity {
 	}
 
 	private String determineArrowDirection() {
-		int playerX = gp.getPlayer().worldX;
-		int playerY = gp.getPlayer().worldY;
+		int playerX = gp.getPlayer().screenX;
+		int playerY = gp.getPlayer().screenY;
 
 		if (Math.abs(playerX - worldX) > Math.abs(playerY - worldY)) {
 			return playerX > worldX ? "right" : "left";

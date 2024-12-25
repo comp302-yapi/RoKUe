@@ -17,7 +17,7 @@ public abstract class PlayablePanel extends JPanel implements BasePanel {
     private final TileManager tileM;
     private final SuperObject[] obj;
     private final Entity[] monsters;
-    private final CollisionChecker cChecker;
+    final CollisionChecker cChecker;
     private final ViewManager viewManager;
 
     protected PlayablePanel(ViewManager viewManager) {

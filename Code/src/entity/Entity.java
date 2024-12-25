@@ -8,6 +8,7 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 import utils.ImageUtils;
 import views.BasePanel;
+import views.HallPanel;
 
 public class Entity {
 	
@@ -54,11 +55,22 @@ public class Entity {
 		
 		setAction();
 		
-		collisionOn = false;
-		panel.getCollisionChecker().checkTile(this);
-		panel.getCollisionChecker().checkObject(this, false);
-		panel.getCollisionChecker().checkEntity(this, panel.getMonsters());
-		boolean contactPlayer = panel.getCollisionChecker().checkPlayer(this);
+		boolean contactPlayer;
+		if (panel instanceof HallPanel p) {
+			collisionOn = false;
+			p.getCollisionCheckerForHall().checkTile(this);
+			p.getCollisionCheckerForHall().checkObject(this, false);
+			p.getCollisionCheckerForHall().checkEntity(this, panel.getMonsters());
+			contactPlayer = p.getCollisionCheckerForHall().checkPlayer(this);
+		}
+		
+		else {
+			collisionOn = false;
+			panel.getCollisionChecker().checkTile(this);
+			panel.getCollisionChecker().checkObject(this, false);
+			panel.getCollisionChecker().checkEntity(this, panel.getMonsters());
+			contactPlayer = panel.getCollisionChecker().checkPlayer(this);
+		}
 		
 		if (this.type == 2 && contactPlayer) {
 			if(!panel.getPlayer().invincible) {
@@ -92,13 +104,10 @@ public class Entity {
 	public void draw(Graphics2D g2) {
 		
 		BufferedImage image = null;
-		int screenX = worldX - panel.getPlayer().worldX + panel.getPlayer().screenX;
-		int screenY = worldY - panel.getPlayer().worldY + panel.getPlayer().screenY;
 		
-		if (worldX > panel.getPlayer().worldX - panel.tileSize - panel.getPlayer().screenX &&
-				worldX < panel.getPlayer().worldX + panel.tileSize + panel.getPlayer().screenX &&
-				worldY > panel.getPlayer().worldY - panel.tileSize - panel.getPlayer().screenY &&
-				worldY < panel.getPlayer().worldY + panel.tileSize + panel.getPlayer().screenY) {
+		
+		//System.out.println("çizilecek gibi");
+		if (true) {
 
 			switch (direction) {
 				case "up" -> {
@@ -135,7 +144,8 @@ public class Entity {
 				}
 			}
 			
-			g2.drawImage(image, screenX, screenY, panel.tileSize, panel.tileSize, null);
+			
+			g2.drawImage(image, worldX, worldY, BasePanel.tileSize, BasePanel.tileSize, null);
 			
 		}
 	}

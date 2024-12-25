@@ -160,8 +160,8 @@ public class CollisionChecker {
 		entity.solidArea.y = entity.worldY + entity.solidArea.y;
 
 		// Get the object's solid are position
-		player.solidArea.x = player.worldX + player.solidArea.x;
-		player.solidArea.y = player.worldY + player.solidArea.y;
+		player.solidArea.x = player.screenX + player.solidArea.x;
+		player.solidArea.y = player.screenY + player.solidArea.y;
 
 		switch (entity.direction) {
 			case "up" -> entity.solidArea.y -= entity.speed;

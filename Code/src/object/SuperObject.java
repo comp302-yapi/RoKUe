@@ -5,30 +5,51 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import views.BasePanel;
+import views.HallPanel;
 
 public class SuperObject {
 
-	public BufferedImage image;
+	public BufferedImage image, image2, image3;
 	public String name;
 	public boolean collision = false;
 	public int worldX, worldY;
-	public Rectangle solidArea = new Rectangle(0,0,48,48);
+	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 	public int solidAreaDefaultX = 0;
 	public int solidAreaDefaultY = 0;
 
-	public void draw(Graphics2D g2, BasePanel panel) {
-		
-		int screenX = worldX - panel.getPlayer().worldX + panel.getPlayer().screenX;
-		int screenY = worldY - panel.getPlayer().worldY + panel.getPlayer().screenY;
-		
-		if (worldX > panel.getPlayer().worldX - panel.tileSize - panel.getPlayer().screenX &&
-				worldX < panel.getPlayer().worldX + panel.tileSize + panel.getPlayer().screenX &&
-				worldY > panel.getPlayer().worldY - panel.tileSize - panel.getPlayer().screenY &&
-				worldY < panel.getPlayer().worldY + panel.tileSize + panel.getPlayer().screenY) {
-			
-			g2.drawImage(image, screenX, screenY, panel.tileSize, panel.tileSize, null);
-			
+	// Field to track if the object contains a hidden rune
+	public boolean hasRune = false;
+
+	/**
+	 * Handles the player's interaction when they click this object.
+	 * For example, if the object contains a rune, it prints a message.
+	 */
+	public void interact(HallPanel panel) {
+		if (hasRune) {
+			panel.showMessage("Rune found!");
+			System.out.println("Rune found!");
+			// Rune logic, e.g., remove rune after discovery
+			hasRune = false;  //  Prevent rediscovery of the same rune
+		} else {
+			System.out.println("No rune here.");
 		}
 	}
-	
+
+	/**
+	 * Draws the object on the screen if it is within the player's view.
+	 */
+	public void draw(Graphics2D g2, BasePanel panel) {
+
+		int screenX = worldX - panel.getPlayer().worldX + panel.getPlayer().screenX;
+		int screenY = worldY - panel.getPlayer().worldY + panel.getPlayer().screenY;
+
+		if (worldX > panel.getPlayer().worldX - BasePanel.tileSize - panel.getPlayer().screenX &&
+				worldX < panel.getPlayer().worldX + BasePanel.tileSize + panel.getPlayer().screenX &&
+				worldY > panel.getPlayer().worldY - BasePanel.tileSize - panel.getPlayer().screenY &&
+				worldY < panel.getPlayer().worldY + BasePanel.tileSize + panel.getPlayer().screenY) {
+
+			g2.drawImage(image, screenX, screenY, BasePanel.tileSize, BasePanel.tileSize, null);
+
+		}
+	}
 }
