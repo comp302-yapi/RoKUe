@@ -137,23 +137,34 @@ public class HallController {
             switch (currentHall.hall) {
                 case HallOfEarth -> {
                     hallPanel.currentHall = Hall.HallOfAir;
-                    player.screenX = 500;
-                    player.screenY = 96 + BasePanel.tileSize * 15 - 300;
+                    initNewHall(currentHall, player);
                 }
                 case HallOfAir -> {
                     hallPanel.currentHall = Hall.HallOfWater;
-                    player.screenX = 500;
-                    player.screenY = 96 + BasePanel.tileSize * 15 - 300;
+                    initNewHall(currentHall, player);
                 }
                 case HallOfWater -> {
                     hallPanel.currentHall = Hall.HallOfFire;
-                    player.screenX = 500;
-                    player.screenY = 96 + BasePanel.tileSize * 15 - 300;
+                    initNewHall(currentHall, player);
                 }
                 case HallOfFire -> {
                     System.out.println("finished");
                 }
             }
+        }
+    }
+
+    private static void initNewHall(TileManagerForHall currentHall, Player player) {
+        player.screenX = 700;
+        player.screenY = 96 + BasePanel.tileSize * 15 - 100;
+        assignRunesToObjects(currentHall);
+    }
+
+    public static void movePlayerIfCollision(TileManagerForHall currentHall, Player player) {
+        SuperObject objectCollided = getObjectSelectedInHall(currentHall, player.screenX + BasePanel.tileSize / 2, player.screenY + BasePanel.tileSize / 2);
+        if (objectCollided != null) {
+            player.screenX += objectCollided.worldX - player.screenX + objectCollided.image.getWidth() + 15;
+            player.screenY += objectCollided.worldY - player.screenY + objectCollided.image.getHeight() + 15;
         }
     }
 }
