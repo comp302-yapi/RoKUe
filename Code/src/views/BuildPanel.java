@@ -12,10 +12,7 @@ import enums.BuildDirection;
 import enums.Hall;
 import listeners.mouselisteners.BuildPanelMouseListener;
 import managers.*;
-import object.OBJ_Chest;
-import object.OBJ_Door;
-import object.OBJ_Key;
-import object.SuperObject;
+import object.*;
 import utils.PanelUtils;
 
 
@@ -93,22 +90,22 @@ public class BuildPanel extends NonPlayablePanel {
 		objectsToDraw.add(key);
 		objectsToDraw.add(door);
 
-		OBJ_Chest chest1 = new OBJ_Chest();
-		chest1.worldX = BasePanel.tileSize * 25 + 16;
-		chest1.worldY = BasePanel.tileSize * 9;
+		OBJ_Barrel barrel1 = new OBJ_Barrel();
+		barrel1.worldX = BasePanel.tileSize * 25 + 16;
+		barrel1.worldY = BasePanel.tileSize * 9;
 
-		OBJ_Key key1 = new OBJ_Key();
-		key1.worldX = BasePanel.tileSize * 27 + 16;
-		key1.worldY = BasePanel.tileSize * 7;
+		OBJ_Chain chain1 = new OBJ_Chain();
+		chain1.worldX = BasePanel.tileSize * 27 + 16;
+		chain1.worldY = BasePanel.tileSize * 7;
 
 
-		OBJ_Door door1 = new OBJ_Door();
-		door1.worldX = BasePanel.tileSize * 27 + 16;
-		door1.worldY = BasePanel.tileSize * 9;
+		OBJ_Pot pot1 = new OBJ_Pot();
+		pot1.worldX = BasePanel.tileSize * 27 + 16;
+		pot1.worldY = BasePanel.tileSize * 9;
 
-		objectsToDraw.add(chest1);
-		objectsToDraw.add(key1);
-		objectsToDraw.add(door1);
+		objectsToDraw.add(barrel1);
+		objectsToDraw.add(chain1);
+		objectsToDraw.add(pot1);
 	}
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
