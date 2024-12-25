@@ -15,8 +15,9 @@ import enums.Hall;
 import object.SuperObject;
 import tile.Tile;
 import views.BasePanel;
+import views.HallPanel;
 
-public class TileManagerForHall {
+public class TileManagerForHall{
 
 	public Hall hall;
 
@@ -24,8 +25,8 @@ public class TileManagerForHall {
 	public ArrayList<SuperObject> objects = new ArrayList<>();
 	public int maxCol,maxRow,idx;
 
-	public TileManagerForHall( Hall hall, String path, int maxCol, int maxRow) {
-		this.maxCol = maxCol;
+	public TileManagerForHall(Hall hall, String path, int maxCol, int maxRow) {
+        this.maxCol = maxCol;
 		this.maxRow = maxRow;
 		this.hall = hall;
 		mapTileNum = new int[BasePanel.maxWorldCol][BasePanel.maxWorldRow];
@@ -95,6 +96,8 @@ public class TileManagerForHall {
 			}
 		}
 
+
+
 		for (SuperObject object : objects) {
 			if (object != null) {
 				g2.drawImage(object.image, object.worldX, object.worldY, BasePanel.tileSize, BasePanel.tileSize, null);
@@ -119,6 +122,14 @@ public class TileManagerForHall {
 		obj.worldX = x;
 		obj.worldY = y;
 		objects.add(obj);
+
+	}
+
+	public SuperObject[] convertToArray() {
+
+
+		return objects.toArray(new SuperObject[30]);
+
 	}
 
 	public void removeObject(SuperObject obj) {

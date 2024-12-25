@@ -7,15 +7,19 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 import javax.imageio.ImageIO;
+
+import enums.Hall;
 import listeners.BaseKeyListener;
 import views.BasePanel;
+import views.GamePanel;
+import views.HallPanel;
 
 public class Player extends Entity{
 
 	BaseKeyListener keyH;
 	
-	public final int screenX;
-	public final int screenY;
+	public int screenX;
+	public int screenY;
 	public int hasKey = 0;
 
 	public Player(BasePanel panel) {
@@ -25,8 +29,8 @@ public class Player extends Entity{
 		screenY = BasePanel.screenHeight/2 - (BasePanel.tileSize/2);
 		
 		solidArea = new Rectangle(8, 16, 32, 32);
-		solidAreaDefaultX = solidArea.x;
-		solidAreaDefaultY = solidArea.y;
+		solidAreaDefaultX = 8;
+		solidAreaDefaultY = 16;
 		
 		setDefaultValues();
 		getPlayerImage();
@@ -38,10 +42,13 @@ public class Player extends Entity{
 	
 	public void setDefaultValues() {
 		
-		worldX = BasePanel.tileSize*23;
-		worldY = BasePanel.tileSize*21;
+		worldX = BasePanel.tileSize*37;
+		worldY = BasePanel.tileSize*37;
 		speed = 4;
 		direction = "down";
+		
+		maxLife = 6;
+		life = maxLife;
 		
 	}
 	
@@ -62,87 +69,200 @@ public class Player extends Entity{
 	}
 	
 	public void move() {
-		if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
-			
-			if (keyH.upPressed) {
-				direction = "up";
-			}
-			if (keyH.downPressed) {
-				direction = "down";
-			}
-			if (keyH.leftPressed) {
-				direction = "left";
-			}
-			if (keyH.rightPressed) {
-				direction = "right";
-			}
-			
-			// CHECK TILE COLLISION
-			collisionOn = false;
-			panel.getCollisionChecker().checkTile(this);
-			
-			// CHECK OBJECT COLLISION
-			int objIndex = panel.getCollisionChecker().checkObject(this, true);
-			pickupObject(objIndex);
-			
-			// CHECK MONSTER COLLISION
-			int monsterIndex = panel.getCollisionChecker().checkEntity(this, panel.getMonsters());
-			
-			// IF COLLISION FALSE, PLAYER CAN MOVE
-			if (!collisionOn) {
-				switch (direction) {
-					case "up" -> worldY -= speed;
-					case "down" -> worldY += speed;
-					case "left" -> worldX -= speed;
-					case "right" -> worldX += speed;
-				}
-			} 
+		if(panel instanceof GamePanel) {
+			if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
 
-			spriteCounter++;
-			if (spriteCounter > 12) { 
-				if (spriteNum == 1) {
-					spriteNum = 2;
-				} else if (spriteNum == 2) {
-					spriteNum = 1;
+				if (keyH.upPressed) {
+					direction = "up";
 				}
-				spriteCounter = 0;
+				if (keyH.downPressed) {
+					direction = "down";
+				}
+				if (keyH.leftPressed) {
+					direction = "left";
+				}
+				if (keyH.rightPressed) {
+					direction = "right";
+				}
+
+				// CHECK TILE COLLISION
+				collisionOn = false;
+				panel.getCollisionChecker().checkTile(this);
+
+				// CHECK OBJECT COLLISION
+
+
+				this.solidArea.x = this.solidAreaDefaultX;
+				this.solidArea.y = this.solidAreaDefaultY;
+				int objIndex = panel.getCollisionChecker().checkObject(this, true);
+				pickupObject(objIndex);
+
+				// CHECK MONSTER COLLISION
+				int monsterIndex = panel.getCollisionChecker().checkEntity(this, panel.getMonsters());
+
+				// IF COLLISION FALSE, PLAYER CAN MOVE
+				if (!collisionOn) {
+					switch (direction) {
+						case "up" -> worldY -= speed;
+						case "down" -> worldY += speed;
+						case "left" -> worldX -= speed;
+						case "right" -> worldX += speed;
+					}
+				}
+
+				spriteCounter++;
+				if (spriteCounter > 12) {
+					if (spriteNum == 1) {
+						spriteNum = 2;
+					} else if (spriteNum == 2) {
+						spriteNum = 1;
+					}
+					spriteCounter = 0;
+				}
+			} else {
+				spriteNum = 1;
 			}
-		} else { 
-			spriteNum = 1;
+		}
+		else if (panel instanceof HallPanel hallPanel) {
+
+            if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
+
+				if (keyH.upPressed) {
+					direction = "up";
+				}
+				if (keyH.downPressed) {
+					direction = "down";
+				}
+				if (keyH.leftPressed) {
+					direction = "left";
+				}
+				if (keyH.rightPressed) {
+					direction = "right";
+				}
+
+				// CHECK TILE COLLISION
+				collisionOn = false;
+				hallPanel.getCollisionCheckerForHall().checkTile(this);
+
+
+				// CHECK OBJECT COLLISION
+				this.solidArea.x = 8;
+				this.solidArea.y = 16;
+				int objIndex = hallPanel.getCollisionCheckerForHall().checkObject(this, true);
+
+
+				pickupObject(objIndex);
+
+				// CHECK MONSTER COLLISION
+				int monsterIndex = hallPanel.getCollisionCheckerForHall().checkEntity(this, hallPanel.getMonsters());
+
+				// IF COLLISION FALSE, PLAYER CAN MOVE
+				if (!collisionOn) {
+					switch (direction) {
+						case "up" -> {
+							screenY -= speed;
+
+						}
+						case "down" -> {
+							screenY += speed;
+
+						}
+						case "left" -> {
+							screenX -= speed;
+
+						}
+						case "right" -> {
+							screenX += speed;
+
+						}
+					}
+				}
+
+				spriteCounter++;
+				if (spriteCounter > 12) {
+					if (spriteNum == 1) {
+						spriteNum = 2;
+					} else if (spriteNum == 2) {
+						spriteNum = 1;
+					}
+					spriteCounter = 0;
+				}
+			} else {
+				spriteNum = 1;
+			}
+
 		}
 	}
 	
 	public void pickupObject(int i) {
-		
-		if (i != 999) {
-			
-			String objectName = panel.getSuperObjects()[i].name;
-			
-			switch (objectName) {
-			
-			case "Key": 
-			hasKey++; 
-			panel.getSuperObjects()[i] = null;
-			panel.showMessage("You got a key!");
-			break;
-			
-			case "Door": 
-			if (hasKey > 0) {
-				panel.getSuperObjects()[i] = null;
-				hasKey--;
-				panel.showMessage("You opened the door!");
 
-			} else {
-				panel.showMessage("You need a key!");
+		if (panel instanceof GamePanel){
+			if (i != 999) {
 
+				String objectName = panel.getSuperObjects()[i].name;
+
+				switch (objectName) {
+
+					case "Key":
+						hasKey++;
+						panel.getSuperObjects()[i] = null;
+						panel.showMessage("You got a key!");
+						break;
+
+					case "Door":
+						if (hasKey > 0) {
+							panel.getSuperObjects()[i] = null;
+							hasKey--;
+							panel.showMessage("You opened the door!");
+
+						} else {
+							panel.showMessage("You need a key!");
+
+						}
+						break;
+
+					case "Chest":
+						//panel.ui.gameFinished = true;
+						break;
+				}
 			}
-			break;
-				
-			case "Chest":
-			//panel.ui.gameFinished = true;
-			break;
+
+
+
+		}
+
+		else if (panel instanceof HallPanel hallPanel){
+			if (i != 999) {
+
+				String objectName = hallPanel.getTileM().convertToArray()[i].name;
+
+				switch (objectName) {
+
+					case "Key":
+						hasKey++;
+						hallPanel.getTileM().convertToArray()[i] = null;
+						panel.showMessage("You got a key!");
+						break;
+
+					case "Door":
+						if (hasKey > 0) {
+							hallPanel.getTileM().convertToArray()[i] = null;
+							hasKey--;
+							panel.showMessage("You opened the door!");
+
+						} else {
+							panel.showMessage("You need a key!");
+
+						}
+						break;
+
+					case "Chest":
+						//panel.ui.gameFinished = true;
+						break;
+				}
 			}
-		}				
+		}
+
 	}
 	
 	

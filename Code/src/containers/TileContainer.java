@@ -20,6 +20,7 @@ public class TileContainer {
 	public static BufferedImage columnTileTop, columnTileBottom, columnTileMiddle;
 	public static BufferedImage boxTileTop, boxTileBottom;
 	public static BufferedImage buildModeChest;
+	public static BufferedImage entrance;
 	
 	
 	public TileContainer() {
@@ -54,6 +55,8 @@ public class TileContainer {
 			boxTileBottom = allTiles.getSubimage(96, 112, 16, 16);
 
 			wallTile = allTiles.getSubimage(0, 12, 16, 16);
+
+			entrance = allTiles.getSubimage(288, 112, 16, 16);
 			
 			// ROCKY TILE
 			
@@ -130,6 +133,10 @@ public class TileContainer {
 			buildModeChest = ImageIO.read(Objects.requireNonNull(TileContainer.class.getResourceAsStream("/res/rokue_like_assets/Buildmodechest.png")));
 			tile[19] = new Tile();
 			tile[19].image = buildModeChest;
+
+			tile[20] = new Tile();
+			tile[20].image = entrance;
+
 			
 		} catch(IOException e) {
 			e.printStackTrace();

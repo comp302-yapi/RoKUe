@@ -3,11 +3,6 @@ package main;
 import managers.ViewManager;
 import views.*;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import containers.TileContainer;
@@ -29,9 +24,11 @@ public class Main {
 		JPanel titlePanel = new TitlePanel(viewManager);
 		JPanel buildPanel = new BuildPanel(viewManager);
 
+
 		viewManager.addPanel("TitlePanel", titlePanel);
 		viewManager.addPanel("GamePanel", gamePanel);
 		viewManager.addPanel("BuildPanel", buildPanel);
+
 		viewManager.switchTo("TitlePanel", true);
 		viewManager.startThread();
 

@@ -1,19 +1,19 @@
 package listeners.keylisteners;
 
+import enums.Hall;
 import listeners.BaseKeyListener;
 import views.GamePanel;
 import views.HallPanel;
 
-import javax.swing.*;
 import java.awt.event.KeyEvent;
 
-public class GamePanelKeyListener extends BaseKeyListener {
+public class HallPanelKeyListener extends BaseKeyListener {
 
-    private final GamePanel gamePanel;
+    private final HallPanel hallPanel;
 
-    public GamePanelKeyListener(GamePanel gamePanel) {
+    public HallPanelKeyListener(HallPanel hallPanel) {
         super();
-        this.gamePanel = gamePanel;
+        this.hallPanel = hallPanel;
     }
 
     @Override
@@ -40,16 +40,6 @@ public class GamePanelKeyListener extends BaseKeyListener {
             rightPressed = true;
         }
 
-        if (code == KeyEvent.VK_P) {
-            gamePanel.setPaused(!gamePanel.isPaused());
-        }
-
-        if (code == KeyEvent.VK_H) {
-
-            JPanel hallPanel = new HallPanel(gamePanel.getViewManager());
-            gamePanel.getViewManager().addPanel("HallPanel", hallPanel);
-            gamePanel.getViewManager().switchTo("HallPanel", true);
-        }
     }
 
     @Override

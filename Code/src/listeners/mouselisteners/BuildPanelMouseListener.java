@@ -27,7 +27,6 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("Mouse clicked at X: " + e.getX() + " Y: " + e.getY());
 		int x = e.getX();
 		int y = e.getY();
 
@@ -114,8 +113,7 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("Mouse pressed at X: " + e.getX() + " Y: " + e.getY());
-		
+
 		
 		int x = e.getX();
 		int y = e.getY();
@@ -159,8 +157,7 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("Mouse released at X: " + e.getX() + " Y: " + e.getY());
-		
+
 		
 		int x = e.getX();
 		int y = e.getY();

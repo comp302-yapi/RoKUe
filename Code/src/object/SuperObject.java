@@ -8,7 +8,7 @@ import views.BasePanel;
 
 public class SuperObject {
 
-	public BufferedImage image;
+	public BufferedImage image, image2, image3;
 	public String name;
 	public boolean collision = false;
 	public int worldX, worldY;
@@ -21,12 +21,12 @@ public class SuperObject {
 		int screenX = worldX - panel.getPlayer().worldX + panel.getPlayer().screenX;
 		int screenY = worldY - panel.getPlayer().worldY + panel.getPlayer().screenY;
 		
-		if (worldX > panel.getPlayer().worldX - panel.tileSize - panel.getPlayer().screenX &&
-				worldX < panel.getPlayer().worldX + panel.tileSize + panel.getPlayer().screenX &&
-				worldY > panel.getPlayer().worldY - panel.tileSize - panel.getPlayer().screenY &&
-				worldY < panel.getPlayer().worldY + panel.tileSize + panel.getPlayer().screenY) {
+		if (worldX > panel.getPlayer().worldX - BasePanel.tileSize - panel.getPlayer().screenX &&
+				worldX < panel.getPlayer().worldX + BasePanel.tileSize + panel.getPlayer().screenX &&
+				worldY > panel.getPlayer().worldY - BasePanel.tileSize - panel.getPlayer().screenY &&
+				worldY < panel.getPlayer().worldY + BasePanel.tileSize + panel.getPlayer().screenY) {
 			
-			g2.drawImage(image, screenX, screenY, panel.tileSize, panel.tileSize, null);
+			g2.drawImage(image, screenX, screenY, BasePanel.tileSize, BasePanel.tileSize, null);
 			
 		}
 	}
