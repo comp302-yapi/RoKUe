@@ -27,12 +27,10 @@ public class HallPanel extends PlayablePanel{
     public Hall currentHall = Hall.HallOfEarth;
     private final HallPanelKeyListener keyListener;
     private final HallPanelMouseListener mouseListener;
-    private final MON_Archer m;
     private final ArrayList<Entity> monsters = new ArrayList<>();
     public TileManagerForHall tileM;
     final CollisionCheckerForHall cChecker;
     private boolean isPaused;
-
     boolean wizardChecker = false;
     BufferedImage heart_full, heart_half, heart_blank;
     SuperObject heart = new OBJ_Heart();
@@ -99,6 +97,11 @@ public class HallPanel extends PlayablePanel{
         }
 
         HallController.shouldSwitchHallsInGame(getTileM(), getPlayer(), this);
+
+        if (spawnCounter >= 180) {
+            generateMonster();
+            spawnCounter = 0;
+        }
     }
 
     public TileManagerForHall getTileM(){ return this.tileM;}
@@ -112,9 +115,7 @@ public class HallPanel extends PlayablePanel{
         int locationY = random.nextInt(1,14) + 2;
 
         switch (pickMonster) {
-
             case "Archer":
-
                 MON_Archer archer = new MON_Archer(this);
                 archer.worldX = BasePanel.tileSize*locationX;
                 archer.worldY = BasePanel.tileSize*locationY;
@@ -239,12 +240,6 @@ public class HallPanel extends PlayablePanel{
             case HallOfEarth -> {
                 // Update game
                 update();
-
-                if (spawnCounter >= 180) {
-                    generateMonster();
-                    spawnCounter = 0;
-                }
-
                 // Repaint game
                 g2.setFont(arial_40);
 
@@ -255,27 +250,6 @@ public class HallPanel extends PlayablePanel{
                 for (SuperObject superObject : HallContainer.getHallOfEarth().objects) {
                     if (superObject != null) {
                         superObject.draw(g2, this);
-                    }
-                }
-                getPlayer().draw(g2);
-
-                drawPlayerLife(g2);
-
-
-
-
-                for (Entity monster : monsters) {
-                    if (monster != null) {
-                        monster.draw(g2);
-
-
-                    }
-                }
-//                m.draw(g2);
-
-                for (Arrow arrow : getArrows()) {
-                    if (arrow != null) {
-                        arrow.draw(g2);
                     }
                 }
             }
@@ -292,7 +266,6 @@ public class HallPanel extends PlayablePanel{
                         superObject.draw(g2, this);
                     }
                 }
-                getPlayer().draw(g2);
             }
             case HallOfWater -> {
                 // Repaint game
@@ -307,7 +280,6 @@ public class HallPanel extends PlayablePanel{
                         superObject.draw(g2, this);
                     }
                 }
-                getPlayer().draw(g2);
             }
             case HallOfFire -> {
                 // Repaint game
@@ -322,7 +294,22 @@ public class HallPanel extends PlayablePanel{
                         superObject.draw(g2, this);
                     }
                 }
-                getPlayer().draw(g2);
+            }
+        }
+
+        getPlayer().draw(g2);
+
+        drawPlayerLife(g2);
+
+        for (Entity monster : monsters) {
+            if (monster != null) {
+                monster.draw(g2);
+            }
+        }
+
+        for (Arrow arrow : getArrows()) {
+            if (arrow != null) {
+                arrow.draw(g2);
             }
         }
 
@@ -340,6 +327,10 @@ public class HallPanel extends PlayablePanel{
         y = BasePanel.screenHeight / 2;
         g2.setColor(Color.WHITE);
         g2.drawString(text, x - 100, y);
+    }
+
+    public ArrayList<Entity> getHallMonsters() {
+        return monsters;
     }
 }
 

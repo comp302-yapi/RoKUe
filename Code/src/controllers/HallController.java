@@ -1,6 +1,7 @@
 package controllers;
 
 import containers.HallContainer;
+import entity.Entity;
 import entity.Player;
 import enums.BuildDirection;
 import enums.Hall;
@@ -148,7 +149,7 @@ public class HallController {
                     initNewHall(hallPanel.currentHall, player, hallPanel);
                 }
                 case HallOfFire -> {
-                    System.out.println("finished");
+                    hallPanel.getViewManager().switchTo("TitlePanel", true);
                 }
             }
         }
@@ -159,6 +160,9 @@ public class HallController {
         player.screenY = 96 + BasePanel.tileSize * 15 - 100;
         hallPanel.tileM = HallContainer.getCurrentHallManager(nextHall);
         assignRunesToObjects(hallPanel.tileM);
+        hallPanel.getHallMonsters().clear();
+        hallPanel.zeroMonsters();
+        player.life = 6;
     }
 
     public static void movePlayerIfCollision(TileManagerForHall currentHall, Player player) {

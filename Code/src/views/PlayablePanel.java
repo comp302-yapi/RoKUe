@@ -16,7 +16,7 @@ public abstract class PlayablePanel extends JPanel implements BasePanel {
     private final Player player;
     private final TileManager tileM;
     private final SuperObject[] obj;
-    private final Entity[] monsters;
+    private Entity[] monsters;
     final CollisionChecker cChecker;
     private final ViewManager viewManager;
 
@@ -47,6 +47,10 @@ public abstract class PlayablePanel extends JPanel implements BasePanel {
     @Override
     public Entity[] getMonsters() {
         return monsters;
+    }
+
+    public void zeroMonsters(){
+        monsters = new Entity[20];
     }
 
     @Override
