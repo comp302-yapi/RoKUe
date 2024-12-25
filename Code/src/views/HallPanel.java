@@ -1,6 +1,7 @@
 package views;
 
 import containers.HallContainer;
+import entity.Arrow;
 import enums.Hall;
 import listeners.keylisteners.HallPanelKeyListener;
 import managers.CollisionCheckerForHall;
@@ -48,6 +49,19 @@ public class HallPanel extends PlayablePanel{
     public void update() {
         getPlayer().move();
         m.update();
+
+        //Update Arrows
+        for (int i = 0; i < getArrows().length; i++) {
+            if (getArrows()[i] != null) {
+                getArrows()[i].update();
+
+                // Remove expired arrows
+                if (getArrows()[i].isExpired()) {
+                    getArrows()[i] = null;
+                }
+            }
+        }
+
     }
 
     public TileManagerForHall getTileM(){ return this.tileM;}
@@ -86,23 +100,14 @@ public class HallPanel extends PlayablePanel{
                 	// draw the monster image
                 
                 m.draw(g2);
-                
-                for (int i = 0; i < getArrows().length; i++) {
-                    if (getArrows()[i] != null) {
-                        getArrows()[i].update();
 
-                        // Remove expired arrows
-                        if (getArrows()[i].isExpired()) {
-                            getArrows()[i] = null;
-                        }
+                for (Arrow arrow : getArrows()) {
+                    if (arrow != null) {
+                        arrow.draw(g2);
                     }
                 }
-                	
-
 
                 g2.dispose();
-
-
             }
             case HallOfAir -> {
                 // Update game
@@ -168,15 +173,9 @@ public class HallPanel extends PlayablePanel{
                         superObject.draw(g2, this);
                     }
                 }
-
-
                 g2.dispose();
-
             }
         }
-
-
-
     }
 }
 

@@ -87,13 +87,10 @@ public class Arrow extends Entity {
         }
 
         // Calculate screen position
-        int screenX = worldX - panel.getPlayer().worldX + panel.getPlayer().screenX;
-        int screenY = worldY - panel.getPlayer().worldY + panel.getPlayer().screenY;
+        int screenX = worldX;
+        int screenY = worldY;
 
         // Draw arrow if within screen bounds
-        if (true) {
-
-            g2.drawImage(image, screenX, screenY, panel.tileSize, panel.tileSize, null);
-        }
+        g2.drawImage(image, screenX, screenY, panel.tileSize, panel.tileSize, null);
     }
 }

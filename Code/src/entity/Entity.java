@@ -59,13 +59,9 @@ public class Entity {
 		if (panel instanceof HallPanel p) {
 			collisionOn = false;
 			p.getCollisionCheckerForHall().checkTile(this);
-			System.out.println(collisionOn + " 1");
 			p.getCollisionCheckerForHall().checkObject(this, false);
-			System.out.println(collisionOn + " 2");
 			p.getCollisionCheckerForHall().checkEntity(this, panel.getMonsters());
-			System.out.println(collisionOn + " 3");
 			contactPlayer = p.getCollisionCheckerForHall().checkPlayer(this);
-			System.out.println(collisionOn + " 4");
 		}
 		
 		else {
