@@ -84,12 +84,10 @@ public class HallController {
         return true;
     }
 
-    public SuperObject getObjectSelectedInHall(TileManagerForHall currentHall, int mouseX, int mouseY) {
-        for (SuperObject obj: getObjectsInHall(currentHall)) {
-            if (
-                    mouseX > obj.worldX && mouseX < obj.worldX + obj.image.getWidth() * BasePanel.scale
-                    && mouseY > obj.worldY && mouseY < obj.worldY + obj.image.getHeight() * BuildPanel.scale
-            ) {
+    public static SuperObject getObjectSelectedInHall(TileManagerForHall currentHall, int mouseX, int mouseY) {
+        for (SuperObject obj : currentHall.objects) {
+            if (mouseX > obj.worldX && mouseX < obj.worldX + obj.image.getWidth() * BasePanel.scale
+                    && mouseY > obj.worldY && mouseY < obj.worldY + obj.image.getHeight() * BuildPanel.scale) {
                 return obj;
             }
         }

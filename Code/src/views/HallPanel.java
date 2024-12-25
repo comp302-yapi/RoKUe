@@ -1,6 +1,7 @@
 package views;
 
 import containers.HallContainer;
+import controllers.HallController;
 import enums.Hall;
 import listeners.keylisteners.GamePanelKeyListener;
 import listeners.keylisteners.HallPanelKeyListener;
@@ -11,6 +12,8 @@ import managers.ViewManager;
 import object.SuperObject;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.Random;
 
 public class HallPanel extends PlayablePanel{
 
@@ -20,21 +23,32 @@ public class HallPanel extends PlayablePanel{
     public TileManagerForHall tileM;
 
     final CollisionCheckerForHall cChecker;
-
+    private final HallController hallController;
 
     public HallPanel(ViewManager viewManager) {
         super(viewManager);
         this.keyListener = new HallPanelKeyListener(this);
-
         this.addKeyListener(keyListener);
         getPlayer().addKeyListener(keyListener);
 
         this.tileM = HallContainer.getHallOfEarth();
-        this.cChecker = new CollisionCheckerForHall(this,tileM);
+        this.cChecker = new CollisionCheckerForHall(this, tileM);
 
         getPlayer().panel = this;
 
+        hallController = new HallController(null); // Pass the required argument (e.g., BuildPanel) if needed
+        assignRunesToObjects();
+    }
 
+    public void mousePressed(MouseEvent e) {
+        int mouseX = e.getX();
+        int mouseY = e.getY();
+
+        // Use the hallController instance to call getObjectSelectedInHall
+        SuperObject clickedObject = hallController.getObjectSelectedInHall(tileM, mouseX, mouseY);
+        if (clickedObject != null) {
+            clickedObject.interact(this); // Call interact method to handle rune detection
+        }
     }
 
     @Override
@@ -47,10 +61,38 @@ public class HallPanel extends PlayablePanel{
 
     @Override
     public void showMessage(String message) {
-
+        Graphics2D g2 = (Graphics2D) getGraphics();
+        if (g2 != null) {
+            g2.setFont(new Font("Arial", Font.BOLD, 18));
+            g2.setColor(Color.YELLOW);
+            g2.drawString(message, 10, 10); // Draw message at top left
+        }
     }
 
     public CollisionCheckerForHall getCollisionCheckerForHall(){ return this.cChecker;}
+    public void assignRunesToObjects() {
+        Random random = new Random();
+
+        // Get all objects in the current hall (for example purposes, using HallOfEarth)
+        SuperObject[] objects = HallContainer.getHallOfEarth().objects.toArray(new SuperObject[20]);
+
+        // Number of objects that can have runes (you can adjust this number as needed)
+        int runeObjectCount = 1;
+
+        // Randomly assign 'rune' to the specified number of objects
+        for (int i = 0; i < runeObjectCount; i++) {
+            int randomIndex;
+
+            // Find a random object that does not already have a rune
+            do {
+                randomIndex = random.nextInt(objects.length);
+            } while (objects[randomIndex] == null || objects[randomIndex].hasRune);
+
+            // Assign a rune to the object
+            objects[randomIndex].hasRune = true;
+        }
+    }
+
 
     public void paintComponent(Graphics g) {
 
