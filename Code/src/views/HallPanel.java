@@ -2,6 +2,7 @@ package views;
 
 import containers.HallContainer;
 import entity.Arrow;
+import entity.Entity;
 import enums.Hall;
 import listeners.keylisteners.HallPanelKeyListener;
 import listeners.mouselisteners.HallPanelMouseListener;
@@ -9,8 +10,13 @@ import managers.CollisionCheckerForHall;
 import managers.TileManagerForHall;
 import managers.ViewManager;
 import monster.MON_Archer;
+import monster.MON_Fighter;
+import monster.MON_Wizard;
+import object.OBJ_Heart;
 import object.SuperObject;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class HallPanel extends PlayablePanel{
@@ -19,14 +25,35 @@ public class HallPanel extends PlayablePanel{
     private final HallPanelKeyListener keyListener;
     private final HallPanelMouseListener mouseListener;
     private final MON_Archer m;
+    private final ArrayList<Entity> monsters = new ArrayList<>();
     public TileManagerForHall tileM;
     final CollisionCheckerForHall cChecker;
+    boolean wizardChecker = false;
+    BufferedImage heart_full, heart_half, heart_blank;
+    SuperObject heart = new OBJ_Heart();
+
+
+
+    public int spawnCounter;
+
+    String[] monsterTypes = new String[3];
+
     public HallPanel(ViewManager viewManager) {
         super(viewManager);
         this.tileM = HallContainer.getHallOfEarth();
         this.keyListener = new HallPanelKeyListener(this);
         this.addKeyListener(keyListener);
         getPlayer().addKeyListener(keyListener);
+
+        heart_full = heart.image;
+        heart_half = heart.image2;
+        heart_blank = heart.image3;
+
+
+
+        monsterTypes[0] = "Archer";
+        monsterTypes[1] = "Wizard";
+        monsterTypes[2] = "Fighter";
 
         this.mouseListener = new HallPanelMouseListener(this, getTileM());
         this.addMouseListener(mouseListener);
@@ -36,16 +63,24 @@ public class HallPanel extends PlayablePanel{
 
         m = new MON_Archer(this);
 
-        m.worldX = BasePanel.tileSize*10;
-        m.worldY = BasePanel.tileSize*10;
-        m.spawned = true;
-        getMonsters()[0] = m;
+//        m.worldX = BasePanel.tileSize*10;
+//        m.worldY = BasePanel.tileSize*10;
+//        m.spawned = true;
+//        getMonsters()[0] = m;
     }
 
     @Override
     public void update() {
         getPlayer().move();
-        m.update();
+
+        for (Entity monster : monsters) {
+            if (monster != null) {
+                monster.update();
+
+            }
+        }
+
+        spawnCounter++;
 
         //Update Arrows
         for (int i = 0; i < getArrows().length; i++) {
@@ -62,6 +97,81 @@ public class HallPanel extends PlayablePanel{
     }
 
     public TileManagerForHall getTileM(){ return this.tileM;}
+
+    public void generateMonster(){
+
+        Random random = new Random();
+        String pickMonster = monsterTypes[random.nextInt(monsterTypes.length)]; // Get a random index
+
+        int locationX = random.nextInt(1,13) + 7;
+        int locationY = random.nextInt(1,14) + 2;
+
+        switch (pickMonster) {
+
+            case "Archer":
+
+                MON_Archer archer = new MON_Archer(this);
+                archer.worldX = BasePanel.tileSize*locationX;
+                archer.worldY = BasePanel.tileSize*locationY;
+                archer.spawned = true;
+
+                for (int i = 0; i < getMonsters().length; i++) {
+
+                    if (getMonsters()[i] == null) {
+                        getMonsters()[i] = archer;
+                        break;
+                    }
+                }
+
+                monsters.add(archer);
+
+                break;
+
+            case "Wizard":
+
+                if (!wizardChecker) {
+                MON_Wizard wizard = new MON_Wizard(this);
+                wizard.worldX = BasePanel.tileSize * locationX;
+                wizard.worldY = BasePanel.tileSize * locationY;
+                wizard.spawned = true;
+
+
+                for (int i = 0; i < getMonsters().length; i++) {
+
+                    if (getMonsters()[i] == null) {
+                        getMonsters()[i] = wizard;
+                        break;
+                    }
+                }
+
+
+                    monsters.add(wizard);
+                    wizardChecker = true;
+                }
+
+                break;
+
+            case "Fighter":
+
+                MON_Fighter fighter = new MON_Fighter(this);
+                fighter.worldX = BasePanel.tileSize*locationX;
+                fighter.worldY = BasePanel.tileSize*locationY;
+                fighter.spawned = true;
+
+                for (int i = 0; i < getMonsters().length; i++) {
+
+                    if (getMonsters()[i] == null) {
+                        getMonsters()[i] = fighter;
+                        break;
+                    }
+                }
+
+                monsters.add(fighter);
+                break;
+            default:
+                System.out.println("Unknown character type.");
+        }
+    }
 
     @Override
     public void showMessage(String message) {
@@ -98,6 +208,33 @@ public class HallPanel extends PlayablePanel{
         }
     }
 
+    private void drawPlayerLife(Graphics2D g2) {
+
+        int x = tileSize/2;
+        int y = tileSize/2;
+        int i = 0;
+
+        while(i < getPlayer().maxLife/2) {
+            g2.drawImage(heart_blank, x, y, null);
+            i++;
+            x += tileSize*1.5;
+        }
+
+        x = tileSize/2;
+        y = tileSize/2;
+        i = 0;
+
+        while(i < getPlayer().life) {
+            g2.drawImage(heart_half, x, y, null);
+            i++;
+            if(i < getPlayer().life) {
+                g2.drawImage(heart_full, x, y, null);
+            }
+            i++;
+            x += tileSize*1.5;
+        }
+
+    }
 
     public void paintComponent(Graphics g) {
 
@@ -105,6 +242,11 @@ public class HallPanel extends PlayablePanel{
             case HallOfEarth -> {
                 // Update game
                 update();
+
+                if (spawnCounter >= 180) {
+                    generateMonster();
+                    spawnCounter = 0;
+                }
 
                 // Repaint game
                 super.paintComponent(g);
@@ -121,11 +263,20 @@ public class HallPanel extends PlayablePanel{
                     }
                 }
                 getPlayer().draw(g2);
-                
 
-                	// draw the monster image
-                
-                m.draw(g2);
+                drawPlayerLife(g2);
+
+
+
+
+                for (Entity monster : monsters) {
+                    if (monster != null) {
+                        monster.draw(g2);
+
+
+                    }
+                }
+//                m.draw(g2);
 
                 for (Arrow arrow : getArrows()) {
                     if (arrow != null) {

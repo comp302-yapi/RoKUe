@@ -23,6 +23,8 @@ public class Player extends Entity{
 	public int screenY;
 	public int hasKey = 0;
 
+	public boolean invincible = false;
+
 	public Player(BasePanel panel) {
 		super(panel);
 
@@ -96,7 +98,7 @@ public class Player extends Entity{
 				this.solidArea.x = this.solidAreaDefaultX;
 				this.solidArea.y = this.solidAreaDefaultY;
 				int objIndex = panel.getCollisionChecker().checkObject(this, true);
-				pickupObject(objIndex);
+//				pickupObject(objIndex);
 
 				// CHECK MONSTER COLLISION
 				int monsterIndex = panel.getCollisionChecker().checkEntity(this, panel.getMonsters());
