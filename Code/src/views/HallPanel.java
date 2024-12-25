@@ -19,20 +19,17 @@ public class HallPanel extends PlayablePanel{
     private final HallPanelKeyListener keyListener;
     private final HallPanelMouseListener mouseListener;
     private final MON_Archer m;
-
     public TileManagerForHall tileM;
-
     final CollisionCheckerForHall cChecker;
     public HallPanel(ViewManager viewManager) {
         super(viewManager);
+        this.tileM = HallContainer.getHallOfEarth();
         this.keyListener = new HallPanelKeyListener(this);
         this.addKeyListener(keyListener);
         getPlayer().addKeyListener(keyListener);
 
         this.mouseListener = new HallPanelMouseListener(this, getTileM());
         this.addMouseListener(mouseListener);
-
-        this.tileM = HallContainer.getHallOfEarth();
         this.cChecker = new CollisionCheckerForHall(this, tileM);
 
         getPlayer().panel = this;
@@ -43,8 +40,6 @@ public class HallPanel extends PlayablePanel{
         m.worldY = BasePanel.tileSize*10;
         m.spawned = true;
         getMonsters()[0] = m;
-
-        assignRunesToObjects();
     }
 
     @Override
@@ -79,7 +74,8 @@ public class HallPanel extends PlayablePanel{
     }
 
     public CollisionCheckerForHall getCollisionCheckerForHall(){ return this.cChecker;}
-    public void assignRunesToObjects() {
+
+    private void assignRunesToObjects() {
         Random random = new Random();
 
         // Get all objects in the current hall (for example purposes, using HallOfEarth)
