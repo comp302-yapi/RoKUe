@@ -15,7 +15,7 @@ public class soundManager {
         soundURL[0] = getClass().getResource("/res/sound/MusicDombra.wav");
         soundURL[1] = getClass().getResource("/res/sound/coin.wav");
         soundURL[2] = getClass().getResource("/res/sound/unlock.wav");
-        soundURL[3] = getClass().getResource("/res/sound/receivedamage.wav");
+        soundURL[3] = getClass().getResource("/res/sound/receivedamage2.wav");
         soundURL[4] = getClass().getResource("/res/sound/burning.wav");
 
 
