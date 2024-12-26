@@ -24,6 +24,7 @@ public class TileManagerForHall{
 
 	public int[][] mapTileNum;
 	public ArrayList<SuperObject> objects = new ArrayList<>();
+	public SuperObject[][] gridWorld = new SuperObject[13][13];
 	//public ArrayList<Entity> monsters = new ArrayList<>();
 	public int maxCol,maxRow,idx;
 	private boolean isOpened = false;
@@ -111,13 +112,36 @@ public class TileManagerForHall{
 			}
 		}
 
+		convertToGrid(objects);
 
+//		for (SuperObject object : objects) {
+//			if (object != null) {
+//				g2.drawImage(object.image, object.worldX, object.worldY, BasePanel.tileSize, BasePanel.tileSize, null);
+//			}
+//		}
+
+		for (int i = 0; i < gridWorld.length; i++) { // Loop through rows
+			for (int j = 0; j < gridWorld[i].length; j++) { // Loop through columns
+				if (gridWorld[i][j] != null) {
+					g2.drawImage(gridWorld[i][j].image, gridWorld[i][j].worldX, gridWorld[i][j].worldY, BasePanel.tileSize, BasePanel.tileSize, null);			}
+			}
+		}
+	}
+
+	public void convertToGrid(ArrayList<SuperObject> superObjects) {
+
+		int row, column;
 
 		for (SuperObject object : objects) {
 			if (object != null) {
-				g2.drawImage(object.image, object.worldX, object.worldY, BasePanel.tileSize, BasePanel.tileSize, null);
+
+				column = (object.worldY - 96) / 48;
+				row =  (object.worldX - 336) / 48;
+				gridWorld[row][column] = object;
+
 			}
 		}
+
 	}
 
 	public int getBottomWorldBorder() {
