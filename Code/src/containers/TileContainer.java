@@ -10,7 +10,7 @@ import tile.Tile;
 
 public class TileContainer {
 	
-	public static Tile[] tile = new Tile[40];
+	public static Tile[] tile = new Tile[50];
 	
 	public static BufferedImage allTiles;
 	public static BufferedImage pinkTile;
@@ -32,6 +32,9 @@ public class TileContainer {
 
 	public static BufferedImage waterFountainTop, waterFountainMiddle, waterFountainBottom;
 	public static BufferedImage waterBanner;
+
+	public static BufferedImage airFountainTop, airFountainMiddle, airFountainBottom;
+	public static BufferedImage airBanner;
 
 	
 	
@@ -81,23 +84,30 @@ public class TileContainer {
 			// FIRE
 			fireFountainTop = allTiles.getSubimage(0, 48, 16, 16);
 			fireFountainMiddle = allTiles.getSubimage(0, 64, 16, 16);
-			fireFountainBottom = allTiles.getSubimage(0, 82, 16, 16);
+			fireFountainBottom = allTiles.getSubimage(0, 80, 16, 16);
 
 			fireBanner = allTiles.getSubimage(192, 64, 16, 16);
 
 			// EARTH
 			earthFountainTop = allTiles.getSubimage(16, 48, 16, 16);
 			earthFountainMiddle = allTiles.getSubimage(16, 64, 16, 16);
-			earthFountainBottom = allTiles.getSubimage(16, 82, 16, 16);
+			earthFountainBottom = allTiles.getSubimage(16, 80, 16, 16);
 
 			earthBanner = allTiles.getSubimage(208, 64, 16, 16);
 
 			// Water
 			waterFountainTop = allTiles.getSubimage(32, 48, 16, 16);
 			waterFountainMiddle = allTiles.getSubimage(32, 64, 16, 16);
-			waterFountainBottom = allTiles.getSubimage(32, 82, 16, 16);
+			waterFountainBottom = allTiles.getSubimage(32, 80, 16, 16);
 
 			waterBanner = allTiles.getSubimage(224, 64, 16, 16);
+
+			// Air
+			airFountainTop = allTiles.getSubimage(112, 48, 16, 16);
+			airFountainMiddle = allTiles.getSubimage(112, 64, 16, 16);
+			airFountainBottom = allTiles.getSubimage(112, 80, 16, 16);
+
+			airBanner = allTiles.getSubimage(256, 64, 16, 16);
 
 			// ROCKY TILE
 			
@@ -239,6 +249,18 @@ public class TileContainer {
 			tile[37] = new Tile();
 			tile[37].image = waterBanner;
 			tile[37].collision = true;
+
+			// Air
+			tile[38] = new Tile();
+			tile[38].image = airFountainMiddle;
+			tile[38].collision = true;
+
+			tile[39] = new Tile();
+			tile[39].image = airFountainBottom;
+
+			tile[40] = new Tile();
+			tile[40].image = airBanner;
+			tile[40].collision = true;
 
 		} catch(IOException e) {
 			e.printStackTrace();
