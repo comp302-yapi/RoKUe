@@ -95,7 +95,6 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 
-		
 		int x = e.getX();
 		int y = e.getY();
 		if(buildPanel.selected) {

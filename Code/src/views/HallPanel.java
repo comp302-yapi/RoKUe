@@ -16,6 +16,7 @@ import monster.MON_Wizard;
 import object.OBJ_Heart;
 import object.SuperObject;
 import utils.PanelUtils;
+import managers.soundManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -38,6 +39,8 @@ public class HallPanel extends PlayablePanel{
     public int[][] gridWorldAll = new int[13][13];
     boolean availableSpot = false;
 
+    soundManager soundManager = new soundManager();
+
     public int spawnCounter;
 
     String[] monsterTypes = new String[3];
@@ -53,8 +56,6 @@ public class HallPanel extends PlayablePanel{
         heart_half = heart.image2;
         heart_blank = heart.image3;
 
-
-
         monsterTypes[0] = "Archer";
         monsterTypes[1] = "Wizard";
         monsterTypes[2] = "Fighter";
@@ -64,6 +65,9 @@ public class HallPanel extends PlayablePanel{
         this.cChecker = new CollisionCheckerForHall(this);
 
         getPlayer().panel = this;
+
+        // PLAY MUSIC
+        playMusic(0);
     }
 
     @Override
@@ -361,6 +365,25 @@ public class HallPanel extends PlayablePanel{
 
     public ArrayList<Entity> getHallMonsters() {
         return monsters;
+    }
+
+    public void playMusic(int i) {
+
+        soundManager.setFile(i);
+        soundManager.play();
+        soundManager.loop();
+
+    }
+
+    public void stopMusic() {
+        soundManager.stop();
+    }
+
+    public void playSE(int i) {
+
+        soundManager.setFile(i);
+        soundManager.play();
+
     }
 }
 

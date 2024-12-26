@@ -25,6 +25,7 @@ public class HallController {
     public HallController(BuildPanel buildPanel) {
         this.buildPanel = buildPanel;
         hallValidator = new HallValidator();
+
     }
 
     public void addObject(TileManagerForHall currentHall, SuperObject obj, int x, int y) {
