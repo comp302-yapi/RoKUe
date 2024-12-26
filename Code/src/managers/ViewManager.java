@@ -16,6 +16,7 @@ public class ViewManager implements Runnable {
         this.frame = frame;
         this.panels = new HashMap<>();
         this.gameThread = new Thread(this);
+
     }
 
     public void addPanel(String name, JPanel panel) {

@@ -1,6 +1,7 @@
 package views;
 
 import containers.HallContainer;
+import containers.TileContainer;
 import controllers.HallController;
 import entity.Arrow;
 import entity.Entity;
@@ -18,9 +19,13 @@ import object.SuperObject;
 import utils.PanelUtils;
 import managers.soundManager;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class HallPanel extends PlayablePanel{
@@ -38,6 +43,7 @@ public class HallPanel extends PlayablePanel{
     public SuperObject[][] gridWorld = new SuperObject[13][13];
     public int[][] gridWorldAll = new int[13][13];
     boolean availableSpot = false;
+    private ImageIcon backgroundImage;
 
     soundManager soundManager = new soundManager();
 
@@ -277,6 +283,13 @@ public class HallPanel extends PlayablePanel{
                 // Repaint game
                 g2.setFont(arial_40);
 
+                // Set background image
+                backgroundImage = new ImageIcon(getClass().getResource("/res/tiles/forest.png"));
+                Image scaledImage = backgroundImage.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
+                ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+                g2.drawImage(scaledIcon.getImage(), 0, 0, null);
+
                 // Draw tiles
                 HallContainer.getHallOfEarth().draw(g2);
 
@@ -290,6 +303,13 @@ public class HallPanel extends PlayablePanel{
             case HallOfAir -> {
                 // Repaint game
                 g2.setFont(arial_40);
+
+                // Set background image
+                backgroundImage = new ImageIcon(getClass().getResource("/res/tiles/glacial_mountains.png"));
+                Image scaledImage = backgroundImage.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
+                ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+                g2.drawImage(scaledIcon.getImage(), 0, 0, null);
 
                 // Draw tiles
                 HallContainer.getHallOfAir().draw(g2);
@@ -305,6 +325,13 @@ public class HallPanel extends PlayablePanel{
                 // Repaint game
                 g2.setFont(arial_40);
 
+                // Set background image
+                backgroundImage = new ImageIcon(getClass().getResource("/res/tiles/water.png"));
+                Image scaledImage = backgroundImage.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
+                ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+                g2.drawImage(scaledIcon.getImage(), 0, 0, null);
+
                 // Draw tiles
                 HallContainer.getHallOfWater().draw(g2);
 
@@ -318,6 +345,13 @@ public class HallPanel extends PlayablePanel{
             case HallOfFire -> {
                 // Repaint game
                 g2.setFont(arial_40);
+
+                // Set background image
+                backgroundImage = new ImageIcon(getClass().getResource("/res/tiles/fire.png"));
+                Image scaledImage = backgroundImage.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
+                ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+                g2.drawImage(scaledIcon.getImage(), 0, 0, null);
 
                 // Draw tiles
                 HallContainer.getHallOfFire().draw(g2);
