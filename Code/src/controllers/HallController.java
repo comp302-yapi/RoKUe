@@ -142,6 +142,9 @@ public class HallController {
 
     public static void shouldSwitchHallsInGame(TileManagerForHall currentHall, Player player, HallPanel hallPanel) {
         if (player.screenY > currentHall.getBottomWorldBorder()) {
+
+            hallPanel.nullTimer();
+
             switch (currentHall.hall) {
                 case HallOfEarth -> {
                     hallPanel.currentHall = Hall.HallOfAir;

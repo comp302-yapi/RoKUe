@@ -1,5 +1,8 @@
 package managers;
 
+import views.BuildPanel;
+import views.HallPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -28,6 +31,7 @@ public class ViewManager implements Runnable {
             // TODO: Decide on proper logging - if we need
             throw new IllegalArgumentException("Panel with that key does not exist");
         }
+
 
         JPanel panelToSwitch = panels.get(panelName);
         if (currentPanel != null && closeCurrentPanel) {

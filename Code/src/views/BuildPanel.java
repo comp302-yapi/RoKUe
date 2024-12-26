@@ -283,4 +283,5 @@ public class BuildPanel extends NonPlayablePanel {
 		return mouseX > nextButtonX && mouseX < nextButtonX + buttonWidth
 				&& mouseY > buttonY && mouseY < buttonY + buttonHeight;
 	}
+
 }

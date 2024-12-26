@@ -8,16 +8,14 @@ import entity.Entity;
 import enums.Hall;
 import listeners.keylisteners.HallPanelKeyListener;
 import listeners.mouselisteners.HallPanelMouseListener;
-import managers.CollisionCheckerForHall;
-import managers.TileManagerForHall;
-import managers.ViewManager;
+import managers.*;
 import monster.MON_Archer;
 import monster.MON_Fighter;
 import monster.MON_Wizard;
 import object.OBJ_Heart;
 import object.SuperObject;
+import tile.Tile;
 import utils.PanelUtils;
-import managers.soundManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -44,8 +42,16 @@ public class HallPanel extends PlayablePanel{
     public int[][] gridWorldAll = new int[13][13];
     boolean availableSpot = false;
     private ImageIcon backgroundImage;
-
     soundManager soundManager = new soundManager();
+
+
+    // Set the new time
+
+    private TimeManager timeManager;
+    private JLabel timerLabel;
+    private Timer timer;
+    private int timeLeft;
+    private boolean createTimer = false;
 
     public int spawnCounter;
 
@@ -57,6 +63,8 @@ public class HallPanel extends PlayablePanel{
         this.keyListener = new HallPanelKeyListener(this);
         this.addKeyListener(keyListener);
         getPlayer().addKeyListener(keyListener);
+
+        setLayout(new BorderLayout());
 
         heart_full = heart.image;
         heart_half = heart.image2;
@@ -74,6 +82,26 @@ public class HallPanel extends PlayablePanel{
 
         // PLAY MUSIC
         playMusic(0);
+    }
+
+    public void startTimer() {
+        // Stop any existing timer
+        if (timer != null && timer.isRunning()) {
+            timer.stop();
+        }
+
+        // Create and start the timer
+        timer = new Timer(1000, e -> {
+            if (timeLeft > 0) {
+                timeLeft--;
+                System.out.println("Time Left: " + timeLeft + " seconds");
+            } else {
+                timer.stop();
+                getViewManager().switchTo("TitlePanel", true);
+                System.out.println("Time's up!");
+            }
+        });
+        timer.start();
     }
 
     @Override
@@ -231,6 +259,12 @@ public class HallPanel extends PlayablePanel{
         }
     }
 
+    public void nullTimer() {
+        timer.stop();
+        timer = null;
+    }
+
+
     public CollisionCheckerForHall getCollisionCheckerForHall(){ return this.cChecker;}
 
     public void setPaused(boolean paused) {
@@ -280,6 +314,13 @@ public class HallPanel extends PlayablePanel{
 
         switch (currentHall) {
             case HallOfEarth -> {
+
+                if (timer == null) {
+                    timeLeft = this.getSuperObjectLength() * 5;
+                    System.out.println(timeLeft);
+                    startTimer();
+                }
+
                 // Repaint game
                 g2.setFont(arial_40);
 
@@ -299,8 +340,22 @@ public class HallPanel extends PlayablePanel{
                         superObject.draw(g2, this);
                     }
                 }
+
+                // Draw the Timer
+                g2.setFont(new Font("Arial", Font.BOLD, 30)); // Set font size and style
+                g2.setColor(Color.BLACK);                     // Set text color
+                String timerText = "Time Left: " + timeLeft + "s";
+                g2.drawString(timerText, this.getWidth()-250, 40);
+
             }
             case HallOfAir -> {
+
+                if (timer == null) {
+                    timeLeft = this.getSuperObjectLength() * 5;
+                    System.out.println(timeLeft);
+                    startTimer();
+                }
+
                 // Repaint game
                 g2.setFont(arial_40);
 
@@ -320,8 +375,22 @@ public class HallPanel extends PlayablePanel{
                         superObject.draw(g2, this);
                     }
                 }
+
+                // Draw the Timer
+                g2.setFont(new Font("Arial", Font.BOLD, 30)); // Set font size and style
+                g2.setColor(Color.BLACK);                     // Set text color
+                String timerText = "Time Left: " + timeLeft + "s";
+                g2.drawString(timerText, this.getWidth()-250, 40);
+
             }
             case HallOfWater -> {
+
+                if (timer == null) {
+                    timeLeft = this.getSuperObjectLength() * 5;
+                    System.out.println(timeLeft);
+                    startTimer();
+                }
+
                 // Repaint game
                 g2.setFont(arial_40);
 
@@ -341,8 +410,21 @@ public class HallPanel extends PlayablePanel{
                         superObject.draw(g2, this);
                     }
                 }
+
+                // Draw the Timer
+                g2.setFont(new Font("Arial", Font.BOLD, 30)); // Set font size and style
+                g2.setColor(Color.BLACK);                     // Set text color
+                String timerText = "Time Left: " + timeLeft + "s";
+                g2.drawString(timerText, this.getWidth()-250, 40);
             }
             case HallOfFire -> {
+
+                if (timer == null) {
+                    timeLeft = this.getSuperObjectLength() * 5;
+                    System.out.println(timeLeft);
+                    startTimer();
+                }
+
                 // Repaint game
                 g2.setFont(arial_40);
 
@@ -362,6 +444,12 @@ public class HallPanel extends PlayablePanel{
                         superObject.draw(g2, this);
                     }
                 }
+
+                // Draw the Timer
+                g2.setFont(new Font("Arial", Font.BOLD, 30)); // Set font size and style
+                g2.setColor(Color.BLACK);                     // Set text color
+                String timerText = "Time Left: " + timeLeft + "s";
+                g2.drawString(timerText, this.getWidth()-250, 40);
             }
         }
 
@@ -418,6 +506,43 @@ public class HallPanel extends PlayablePanel{
         soundManager.setFile(i);
         soundManager.play();
 
+    }
+
+    public int getSuperObjectLength() {
+        int num = 0;
+
+        switch (currentHall) {
+            case HallOfEarth -> {
+                for (int i = 0; i <= HallContainer.getHallOfEarth().objects.size() - 1; i++) {
+                    if (HallContainer.getHallOfEarth().objects.get(i) != null) {
+                        num++;
+                    }
+                }
+            }
+            case HallOfFire -> {
+                for (int i = 0; i <= HallContainer.getHallOfFire().objects.size() - 1; i++) {
+                    if (HallContainer.getHallOfFire().objects.get(i) != null) {
+                        num++;
+                    }
+                }
+            }
+            case HallOfAir -> {
+                for (int i = 0; i <= HallContainer.getHallOfAir().objects.size() - 1; i++) {
+                    if (HallContainer.getHallOfAir().objects.get(i) != null) {
+                        num++;
+                    }
+                }
+            }
+            case HallOfWater -> {
+                for (int i = 0; i <= HallContainer.getHallOfWater().objects.size() - 1; i++) {
+                    if (HallContainer.getHallOfWater().objects.get(i) != null) {
+                        num++;
+                    }
+                }
+            }
+            default -> throw new IllegalArgumentException("Invalid hall type: " + currentHall);
+        }
+        return num;
     }
 }
 
