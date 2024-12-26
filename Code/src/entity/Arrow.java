@@ -53,7 +53,6 @@ public class Arrow extends Entity {
             case "right" -> worldX += speed;
         }
 
-
         // Update travel distance
         travelDistance += speed;
 
