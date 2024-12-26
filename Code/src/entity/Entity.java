@@ -10,6 +10,7 @@ import utils.ImageUtils;
 import views.BasePanel;
 import views.HallPanel;
 
+
 public class Entity {
 	
 	public BasePanel panel;
@@ -75,6 +76,9 @@ public class Entity {
 		if (this.type == 2 && contactPlayer) {
 			if(!panel.getPlayer().invincible) {
 				panel.getPlayer().life -= 1;
+				if (panel instanceof HallPanel) {
+					((HallPanel) panel).playSE(3);
+				}
 				panel.getPlayer().invincible = true;
 			}
 		}

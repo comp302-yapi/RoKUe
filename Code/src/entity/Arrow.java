@@ -1,6 +1,8 @@
 package entity;
 
 import views.BasePanel;
+import views.HallPanel;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -17,6 +19,7 @@ public class Arrow extends Entity {
         this.worldX = worldX;
         this.worldY = worldY;
         this.direction = direction;
+        this.panel = gp;
 
         // Arrow characteristics
         damage = 1;
@@ -58,6 +61,9 @@ public class Arrow extends Entity {
         if (hitPlayer) {
             // Reduce player life
             panel.getPlayer().life -= damage;
+            if (panel instanceof HallPanel) {
+                ((HallPanel) panel).playSE(3);
+            }
             expired = true;
         }
 
