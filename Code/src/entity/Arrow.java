@@ -58,9 +58,11 @@ public class Arrow extends Entity {
 
         // Check for player collision
         boolean hitPlayer = panel.getCollisionChecker().checkPlayer(this);
-        if (hitPlayer) {
+        if (hitPlayer && !panel.getPlayer().invincible) {
             // Reduce player life
             panel.getPlayer().life -= damage;
+            panel.getPlayer().invincible = true;
+
             if (panel instanceof HallPanel) {
                 ((HallPanel) panel).playSE(3);
             }

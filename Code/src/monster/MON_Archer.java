@@ -35,51 +35,61 @@ public class MON_Archer extends Entity {
 
 	public void getImage() {
 		// Load archer monster images
-		up1 = setup("/res/monster/archer", gp.tileSize, gp.tileSize);
-		up2 = setup("/res/monster/archer", gp.tileSize, gp.tileSize);
-		down1 = up1;
-		down2 = up2;
-		left1 = up1;
-		left2 = up2;
-		right1 = up1;
-		right2 = up2;
+		up1 = setup("/res/monster/skeletonlord_up_1", gp.tileSize, gp.tileSize);
+		up2 = setup("/res/monster/skeletonlord_up_2", gp.tileSize, gp.tileSize);;
+		down1 = setup("/res/monster/skeletonlord_down_1", gp.tileSize, gp.tileSize);;
+		down2 = setup("/res/monster/skeletonlord_down_2", gp.tileSize, gp.tileSize);;
+		left1 = setup("/res/monster/skeletonlord_left_1", gp.tileSize, gp.tileSize);;
+		left2 = setup("/res/monster/skeletonlord_left_2", gp.tileSize, gp.tileSize);;
+		right1 = setup("/res/monster/skeletonlord_right_1", gp.tileSize, gp.tileSize);;
+		right2 = setup("/res/monster/skeletonlord_right_2", gp.tileSize, gp.tileSize);;
 	}
 
-	public void setAction() {
-		// Spawn in a random location in the hall if not already spawned
+	// Add a new field to remember if we're locked to the opposite direction:
+	private boolean inOppositeMode = false;
 
+	public void setAction() {
+		// Initial spawn
 		if (!spawned) {
 			Random random = new Random();
 			worldX = random.nextInt(gp.worldWidth);
 			worldY = random.nextInt(gp.worldHeight);
 			spawned = true;
 		}
-		
-		// Add random movement
-		actionLockCounter++;
-		if (actionLockCounter == 120) {
-			Random random = new Random();
-			int i = random.nextInt(100) + 1;
 
-			if (i <= 25) {
-				direction = "up";
-			}
-			else if (i <= 50) {
-				direction = "down";
-			}
-			else if (i <= 75) {
-				direction = "left";
-			}
-			else if (i <= 100) {
-				direction = "right";
-			}
+		int distance = calculateDistanceToPlayer();
 
-			actionLockCounter = 0;
+		if (distance < 48 * 4) {
+			if (!inOppositeMode) {
+				switch (gp.getPlayer().direction) {
+					case "up":    direction = "down";  break;
+					case "down":  direction = "up";    break;
+					case "left":  direction = "right"; break;
+					case "right": direction = "left";  break;
+					default:      direction = "unknown";
+				}
+				inOppositeMode = true;
+			}
+		} else {
+			if (inOppositeMode) {
+				inOppositeMode = false;
+			}
+			// Random movement
+			actionLockCounter++;
+			if (actionLockCounter == 120) {
+				Random random = new Random();
+				int i = random.nextInt(100) + 1;
+				if      (i <= 25) direction = "up";
+				else if (i <= 50) direction = "down";
+				else if (i <= 75) direction = "left";
+				else              direction = "right";
+				actionLockCounter = 0;
+			}
 		}
 
-		// Shoot arrow every second
+		// Shoot arrow
 		shootCounter++;
-		if (shootCounter >= 60) { // Assuming 60 FPS
+		if (shootCounter >= 60) {
 			shootArrow();
 			shootCounter = 0;
 		}
@@ -92,6 +102,7 @@ public class MON_Archer extends Entity {
 		// Check if player is within 4 squares
 		if (distanceToPlayer <= 4 * gp.tileSize) {
 			// Determine arrow direction
+
 			String arrowDirection = determineArrowDirection();
 
 			// Create and launch arrow

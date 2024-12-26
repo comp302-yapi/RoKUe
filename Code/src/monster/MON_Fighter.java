@@ -3,6 +3,7 @@ package monster;
 import entity.Arrow;
 import entity.Entity;
 import views.BasePanel;
+import views.HallPanel;
 
 import java.util.Random;
 
@@ -19,7 +20,7 @@ public class MON_Fighter extends Entity {
 
 		type = 2; // monster type
 		name = "Fighter Monster";
-		speed = 2; // Added minimal movement
+		speed = 1; // Added minimal movement
 		maxLife = 4;
 		life = maxLife;
 
@@ -36,14 +37,14 @@ public class MON_Fighter extends Entity {
 
 	public void getImage() {
 		// Load archer monster images
-		up1 = setup("/res/monster/greenslime_down_1", BasePanel.tileSize, BasePanel.tileSize);
-		up2 = setup("/res/monster/greenslime_down_2", BasePanel.tileSize, BasePanel.tileSize);
-		down1 = up1;
-		down2 = up2;
-		left1 = up1;
-		left2 = up2;
-		right1 = up1;
-		right2 = up2;
+		up1 = setup("/res/monster/orc_up_1", BasePanel.tileSize, BasePanel.tileSize);
+		up2 = setup("/res/monster/orc_up_2", BasePanel.tileSize, BasePanel.tileSize);
+		down1 = setup("/res/monster/orc_down_1", BasePanel.tileSize, BasePanel.tileSize);;
+		down2 = setup("/res/monster/orc_down_2", BasePanel.tileSize, BasePanel.tileSize);;
+		left1 = setup("/res/monster/orc_left_1", BasePanel.tileSize, BasePanel.tileSize);;
+		left2 = setup("/res/monster/orc_left_2", BasePanel.tileSize, BasePanel.tileSize);;
+		right1 = setup("/res/monster/orc_right_1", BasePanel.tileSize, BasePanel.tileSize);;
+		right2 = setup("/res/monster/orc_right_2", BasePanel.tileSize, BasePanel.tileSize);;
 	}
 
 	public void setAction() {
@@ -57,11 +58,19 @@ public class MON_Fighter extends Entity {
 		}
 
 		boolean hitPlayer = panel.getCollisionChecker().checkPlayer(this);
-		if (hitPlayer) {
-			// Reduce player life
+		if (hitPlayer && !panel.getPlayer().invincible) {
 			panel.getPlayer().life -= 1;
 
+			if (panel instanceof HallPanel) {
+				((HallPanel) panel).playSE(3);
+			}
+
+			panel.getPlayer().invincible = true;
 		}
+
+		if (calculateDistanceToPlayer() <= 96) {
+			direction = determineDirection();
+		} else {
 
 		// Add random movement
 		actionLockCounter++;
@@ -80,6 +89,17 @@ public class MON_Fighter extends Entity {
 			}
 
 			actionLockCounter = 0;
+		}}
+	}
+
+	private String determineDirection() {
+		int playerX = gp.getPlayer().screenX;
+		int playerY = gp.getPlayer().screenY;
+
+		if (Math.abs(playerX - worldX) > Math.abs(playerY - worldY)) {
+			return playerX > worldX ? "right" : "left";
+		} else {
+			return playerY > worldY ? "down" : "up";
 		}
 	}
 

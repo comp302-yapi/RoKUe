@@ -10,7 +10,7 @@ import tile.Tile;
 
 public class TileContainer {
 	
-	public static Tile[] tile = new Tile[30];
+	public static Tile[] tile = new Tile[40];
 	
 	public static BufferedImage allTiles;
 	public static BufferedImage pinkTile;
@@ -23,6 +23,16 @@ public class TileContainer {
 	public static BufferedImage entrance;
 	public static BufferedImage openDoorTopLeft, openDoorTopRight, openDoorBottomLeft, openDoorBottomRight;
 	public static BufferedImage closeDoorTopLeft, closeDoorTopRight, closeDoorBottomLeft, closeDoorBottomRight;
+
+	public static BufferedImage fireFountainTop, fireFountainMiddle, fireFountainBottom;
+	public static BufferedImage fireBanner;
+
+	public static BufferedImage earthFountainTop, earthFountainMiddle, earthFountainBottom;
+	public static BufferedImage earthBanner;
+
+	public static BufferedImage waterFountainTop, waterFountainMiddle, waterFountainBottom;
+	public static BufferedImage waterBanner;
+
 	
 	
 	public TileContainer() {
@@ -67,6 +77,27 @@ public class TileContainer {
 			openDoorTopRight = allTiles.getSubimage(448, 16, 16, 16);
 			openDoorBottomLeft = allTiles.getSubimage(432, 32, 16, 16);
 			openDoorBottomRight = allTiles.getSubimage(448, 32, 16, 16);
+
+			// FIRE
+			fireFountainTop = allTiles.getSubimage(0, 48, 16, 16);
+			fireFountainMiddle = allTiles.getSubimage(0, 64, 16, 16);
+			fireFountainBottom = allTiles.getSubimage(0, 82, 16, 16);
+
+			fireBanner = allTiles.getSubimage(192, 64, 16, 16);
+
+			// EARTH
+			earthFountainTop = allTiles.getSubimage(16, 48, 16, 16);
+			earthFountainMiddle = allTiles.getSubimage(16, 64, 16, 16);
+			earthFountainBottom = allTiles.getSubimage(16, 82, 16, 16);
+
+			earthBanner = allTiles.getSubimage(208, 64, 16, 16);
+
+			// Water
+			waterFountainTop = allTiles.getSubimage(32, 48, 16, 16);
+			waterFountainMiddle = allTiles.getSubimage(32, 64, 16, 16);
+			waterFountainBottom = allTiles.getSubimage(32, 82, 16, 16);
+
+			waterBanner = allTiles.getSubimage(224, 64, 16, 16);
 
 			// ROCKY TILE
 			
@@ -173,6 +204,41 @@ public class TileContainer {
 			tile[28].image = closeDoorBottomRight;
 			tile[28].collision = true;
 
+			// FIRE
+			tile[29] = new Tile();
+			tile[29].image = fireFountainMiddle;
+			tile[29].collision = true;
+
+			tile[30] = new Tile();
+			tile[30].image = fireFountainBottom;
+
+			tile[31] = new Tile();
+			tile[31].image = fireBanner;
+			tile[31].collision = true;
+
+			// Earth
+			tile[32] = new Tile();
+			tile[32].image = earthFountainMiddle;
+			tile[32].collision = true;
+
+			tile[33] = new Tile();
+			tile[33].image = earthFountainBottom;
+
+			tile[34] = new Tile();
+			tile[34].image = earthBanner;
+			tile[34].collision = true;
+
+			// Water
+			tile[35] = new Tile();
+			tile[35].image = waterFountainMiddle;
+			tile[35].collision = true;
+
+			tile[36] = new Tile();
+			tile[36].image = waterFountainBottom;
+
+			tile[37] = new Tile();
+			tile[37].image = waterBanner;
+			tile[37].collision = true;
 
 		} catch(IOException e) {
 			e.printStackTrace();
