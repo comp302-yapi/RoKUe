@@ -58,7 +58,7 @@ public class MON_Fighter extends Entity {
 		}
 	}
 
-	public boolean isAttacking() {
+	public boolean isAttackingFighter() {
 		return attacking;
 	}
 

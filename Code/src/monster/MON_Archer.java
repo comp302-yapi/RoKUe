@@ -116,6 +116,9 @@ public class MON_Archer extends Entity {
 					break;
 				}
 			}
+		} else {
+			shootCounter = 60;
+
 		}
 	}
 

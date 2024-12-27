@@ -63,7 +63,7 @@ public class Entity {
 
 	}
 
-	public boolean isAttacking() {
+	public boolean isAttackingFighter() {
         return false;
     }
 	
@@ -122,7 +122,7 @@ public class Entity {
 		spriteCounter++;
 		if (spriteCounter > 12) { 
 			if (spriteNum == 1) {
-				if (isAttacking()) {
+				if (isAttackingFighter()) {
 
 					// Save current values
 					int currentWorldX = worldX;
@@ -188,7 +188,7 @@ public class Entity {
 		int tempScreenX = worldX;
 		int tempScreenY = worldY;
 
-		if (!isAttacking()) {
+		if (!isAttackingFighter()) {
         switch (direction) {
             case "up" -> {
                 if (spriteNum == 1) {
@@ -224,7 +224,7 @@ public class Entity {
             }
         }}
 
-		if (isAttacking()) {
+		if (isAttackingFighter()) {
 			g2.setColor(Color.RED);
 //			g2.drawRect(tempScreenX, tempScreenY, solidArea.width, solidArea.height);
 			switch (direction) {
