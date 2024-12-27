@@ -1,7 +1,6 @@
 package entity;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
@@ -28,6 +27,10 @@ public class Entity {
 	
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 	public int solidAreaDefaultX, solidAreaDefaultY;
+	public int solidAreaDefaultWidth, solidAreaDefaultHeight;
+
+	public Rectangle attackArea = new Rectangle(0, 0, 48, 48);
+
 	public boolean collisionOn = false;
 	public int actionLockCounter = 0;
 	public boolean invincible = false;
@@ -35,8 +38,6 @@ public class Entity {
 
 	public boolean invincibleCloak = false;
 	public int invincibleCounterCloak;
-
-	boolean attacking = false;
 	
 	public BufferedImage image, image2, image3;
 	public String name;
@@ -57,10 +58,19 @@ public class Entity {
 	public void setAction() {
 		
 	}
+
+	public void chooseImage() {
+
+	}
+
+	public boolean isAttacking() {
+        return false;
+    }
 	
 	public void update() {
 		
 		setAction();
+		chooseImage();
 		
 		boolean contactPlayer;
 		if (panel instanceof HallPanel p) {
@@ -107,11 +117,62 @@ public class Entity {
 				case "left" -> worldX -= speed;
 				case "right" -> worldX += speed;
 			}
-		} 
+		}
 
 		spriteCounter++;
 		if (spriteCounter > 12) { 
 			if (spriteNum == 1) {
+				if (isAttacking()) {
+
+					// Save current values
+					int currentWorldX = worldX;
+					int currentWorldY = worldY;
+					int solidAreaWidth = solidArea.width;
+					int solidAreaHeight = solidArea.height;
+
+					// Adjust attacking
+					// Adjust player's worldX/Y for the attackArea
+					switch (direction) {
+						case "up":
+							worldY -= attackArea.height;
+							break;
+						case "down":
+							worldY += attackArea.height;
+							break;
+						case "left":
+							worldX -= attackArea.width;
+							break;
+						case "right":
+							worldX += attackArea.width;
+							break;
+					}
+
+					solidArea.width = attackArea.width;
+					solidArea.height = attackArea.height;
+
+					boolean playerHitAttackCheck = panel.getCollisionChecker().checkPlayer(this);
+
+					if (playerHitAttackCheck && !panel.getPlayer().invincible) {
+						panel.getPlayer().life -= 1;
+						panel.getPlayer().invincible = true;
+
+						if (panel instanceof HallPanel) {
+							((HallPanel) panel).playSE(3);
+						}
+
+						System.out.println("HIT PLAYER");
+					} else {
+						System.out.println("Miss");
+
+					}
+
+					worldX = currentWorldX;
+					worldY = currentWorldY;
+					solidArea.width = solidAreaWidth;
+					solidArea.height = solidAreaHeight;
+
+				}
+
 				spriteNum = 2;
 			} else if (spriteNum == 2) {
 				spriteNum = 1;
@@ -124,10 +185,51 @@ public class Entity {
 		
 		BufferedImage image = null;
 
-		//System.out.println("çizilecek gibi");
-		if (true) {
+		int tempScreenX = worldX;
+		int tempScreenY = worldY;
+
+		if (!isAttacking()) {
+        switch (direction) {
+            case "up" -> {
+                if (spriteNum == 1) {
+                    image = up1;
+                }
+                if (spriteNum == 2) {
+                    image = up2;
+                }
+            }
+            case "down" -> {
+                if (spriteNum == 1) {
+                    image = down1;
+                }
+                if (spriteNum == 2) {
+                    image = down2;
+                }
+            }
+            case "left" -> {
+                if (spriteNum == 1) {
+                    image = left1;
+                }
+                if (spriteNum == 2) {
+                    image = left2;
+                }
+            }
+            case "right" -> {
+                if (spriteNum == 1) {
+                    image = right1;
+                }
+                if (spriteNum == 2) {
+                    image = right2;
+                }
+            }
+        }}
+
+		if (isAttacking()) {
+			g2.setColor(Color.RED);
+//			g2.drawRect(tempScreenX, tempScreenY, solidArea.width, solidArea.height);
 			switch (direction) {
 				case "up" -> {
+					tempScreenY = worldY - BasePanel.tileSize;
 					if (spriteNum == 1) {
 						image = up1;
 					}
@@ -144,6 +246,7 @@ public class Entity {
 					}
 				}
 				case "left" -> {
+					tempScreenX = worldX - BasePanel.tileSize;
 					if (spriteNum == 1) {
 						image = left1;
 					}
@@ -160,11 +263,11 @@ public class Entity {
 					}
 				}
 			}
-
-			g2.drawImage(image, worldX, worldY, BasePanel.tileSize, BasePanel.tileSize, null);
-
 		}
-	}
+
+        g2.drawImage(image, tempScreenX, tempScreenY, image.getWidth(), image.getHeight(), null);
+
+    }
 	
 	
 	public BufferedImage setup(String imagePath, int width, int height) {
@@ -175,7 +278,7 @@ public class Entity {
 		try {
 			image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath + ".png")));
 			image = uTool.scaleImage(image, width, height);
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

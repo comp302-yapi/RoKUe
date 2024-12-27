@@ -34,10 +34,32 @@ public class MON_Fighter extends Entity {
 		solidArea.y = 18;
 		solidArea.width = 42;
 		solidArea.height = 30;
+
+		solidAreaDefaultWidth = solidArea.width;
+		solidAreaDefaultHeight = solidArea.height;
+
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 
-		getImage();
+		// Attack Area
+		attackArea.width = 36;
+		attackArea.height = 36;
+
+		chooseImage();
+	}
+
+	public void chooseImage() {
+
+		if (attacking) {
+			getImageAttacking();
+		}
+		else {
+			getImage();
+		}
+	}
+
+	public boolean isAttacking() {
+		return attacking;
 	}
 
 	public void getImage() {
@@ -52,6 +74,17 @@ public class MON_Fighter extends Entity {
 		right2 = setup("/res/monster/orc_right_2", BasePanel.tileSize, BasePanel.tileSize);;
 	}
 
+	public void getImageAttacking() {
+		up1 = setup("/res/monster/orc_attack_up_1", BasePanel.tileSize, BasePanel.tileSize*2);
+		up2 = setup("/res/monster/orc_attack_up_2", BasePanel.tileSize, BasePanel.tileSize*2);
+		down1 = setup("/res/monster/orc_attack_down_1", BasePanel.tileSize, BasePanel.tileSize*2);
+		down2 = setup("/res/monster/orc_attack_down_2", BasePanel.tileSize, BasePanel.tileSize*2);
+		left1 = setup("/res/monster/orc_attack_left_1", BasePanel.tileSize*2, BasePanel.tileSize);
+		left2 = setup("/res/monster/orc_attack_left_2", BasePanel.tileSize*2, BasePanel.tileSize);
+		right1 = setup("/res/monster/orc_attack_right_1", BasePanel.tileSize*2, BasePanel.tileSize);
+		right2 = setup("/res/monster/orc_attack_right_2", BasePanel.tileSize*2, BasePanel.tileSize);
+	}
+
 	public void setAction() {
 		// Spawn in a random location in the hall if not already spawned
 		if (!spawned) {
@@ -62,6 +95,7 @@ public class MON_Fighter extends Entity {
 		}
 
 		boolean hitPlayer = panel.getCollisionChecker().checkPlayer(this);
+
 		if (hitPlayer && !panel.getPlayer().invincible) {
 			panel.getPlayer().life -= 1;
 
@@ -73,13 +107,14 @@ public class MON_Fighter extends Entity {
 		}
 
 		if (calculateDistanceToPlayer() <= 96) {
+			attacking = true;
 			direction = determineDirection();
 			if (checkLuringGem()) {
 				direction = determineDirectionLuringGem();
 			}
 		} else {
 
-
+		attacking = false;
 		// Add random movement
 		actionLockCounter++;
 		if (actionLockCounter == 120) {
@@ -111,7 +146,6 @@ public class MON_Fighter extends Entity {
 					direction = determineDirectionLuringGem();
 				}
 			}
-
 			actionLockCounter = 0;
 		}}
 	}
