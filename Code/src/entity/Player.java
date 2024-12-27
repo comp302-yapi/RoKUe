@@ -164,7 +164,7 @@ public class Player extends Entity{
 					invincibleCounterCloak++;
 				}
 
-				if (invincibleCounterCloak >= 240) {
+				if (invincibleCounterCloak >= 2) {
 					invincibleCloak = false;
 					invincibleCounterCloak = 0;
 				}

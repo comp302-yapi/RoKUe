@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 import javax.imageio.ImageIO;
+
+import monster.MON_Fighter;
 import utils.ImageUtils;
 import views.BasePanel;
 import views.HallPanel;
@@ -91,6 +93,9 @@ public class Entity {
 		}
 
 		if (life == 0) {
+			if (panel instanceof HallPanel) {
+				System.out.println("Life = 0");
+			}
 			panel.getViewManager().switchTo("TitlePanel", true);
 		}
 		
@@ -118,11 +123,9 @@ public class Entity {
 	public void draw(Graphics2D g2) {
 		
 		BufferedImage image = null;
-		
-		
+
 		//System.out.println("çizilecek gibi");
 		if (true) {
-
 			switch (direction) {
 				case "up" -> {
 					if (spriteNum == 1) {
@@ -157,10 +160,9 @@ public class Entity {
 					}
 				}
 			}
-			
-			
+
 			g2.drawImage(image, worldX, worldY, BasePanel.tileSize, BasePanel.tileSize, null);
-			
+
 		}
 	}
 	

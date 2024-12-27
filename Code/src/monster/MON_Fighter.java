@@ -16,6 +16,7 @@ public class MON_Fighter extends Entity {
 	BasePanel gp;
 	public boolean spawned = false;
 	public int countdown;
+	public boolean attacking;
 
 	public MON_Fighter(BasePanel gp) {
 		super(gp);
@@ -53,7 +54,6 @@ public class MON_Fighter extends Entity {
 
 	public void setAction() {
 		// Spawn in a random location in the hall if not already spawned
-
 		if (!spawned) {
 			Random random = new Random();
 			worldX = random.nextInt(BasePanel.worldWidth);
@@ -78,6 +78,7 @@ public class MON_Fighter extends Entity {
 				direction = determineDirectionLuringGem();
 			}
 		} else {
+
 
 		// Add random movement
 		actionLockCounter++;

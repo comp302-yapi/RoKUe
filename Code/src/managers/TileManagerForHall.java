@@ -88,6 +88,15 @@ public class TileManagerForHall{
 		isOpened = true;
 	}
 
+	public void closeDoor() {
+		mapTileNum[5][13] = 25;
+		mapTileNum[6][13] = 26;
+		mapTileNum[5][14] = 27;
+		mapTileNum[6][14] = 28;
+
+		isOpened = false;
+	}
+
 	public void draw(Graphics2D g2) {
 
 		int worldCol = 0;
@@ -185,8 +194,6 @@ public class TileManagerForHall{
 		// Add the object to enchantments list
 		enchantments.add(obj);
 	}
-
-
 
 	public SuperObject[] convertToArray() {
 		return objects.toArray(new SuperObject[30]);

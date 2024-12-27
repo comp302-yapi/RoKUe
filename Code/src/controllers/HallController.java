@@ -171,7 +171,9 @@ public class HallController {
                     initNewHall(hallPanel.currentHall, player, hallPanel);
                 }
                 case HallOfFire -> {
+                    System.out.println("HallOfFire");
                     hallPanel.getViewManager().switchTo("TitlePanel", true);
+
                 }
             }
         }
