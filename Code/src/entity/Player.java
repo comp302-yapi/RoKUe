@@ -3,6 +3,7 @@ package entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
@@ -20,6 +21,7 @@ public class Player extends Entity{
 	public int screenY;
 	public boolean invincible = false;
 	public int invincibilityCounter = 0;
+	public ArrayList<SuperObject> inventory = new ArrayList<>();
 
 	public Player(BasePanel panel) {
 		super(panel);
@@ -157,7 +159,6 @@ public class Player extends Entity{
 					invincible = false;
 					invincibleCounter = 0;
 				}
-
 
 				// CHECK MONSTER COLLISION
 				int monsterIndex = hallPanel.getCollisionCheckerForHall().checkEntity(this, hallPanel.getMonsters());

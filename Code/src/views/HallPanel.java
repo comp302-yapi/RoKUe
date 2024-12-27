@@ -12,6 +12,8 @@ import managers.*;
 import monster.MON_Archer;
 import monster.MON_Fighter;
 import monster.MON_Wizard;
+import object.OBJ_Cactus;
+import object.OBJ_Door;
 import object.OBJ_Heart;
 import object.SuperObject;
 import tile.Tile;
@@ -44,7 +46,6 @@ public class HallPanel extends PlayablePanel{
     private ImageIcon backgroundImage;
     soundManager soundManager = new soundManager();
 
-
     // Set the new time
 
     private TimeManager timeManager;
@@ -55,6 +56,8 @@ public class HallPanel extends PlayablePanel{
 
     public int spawnCounter;
 
+    public int spawnEnchantmentCounter;
+
     String[] monsterTypes = new String[3];
 
     public HallPanel(ViewManager viewManager) {
@@ -63,6 +66,7 @@ public class HallPanel extends PlayablePanel{
         this.keyListener = new HallPanelKeyListener(this);
         this.addKeyListener(keyListener);
         getPlayer().addKeyListener(keyListener);
+
 
         setLayout(new BorderLayout());
 
@@ -118,11 +122,8 @@ public class HallPanel extends PlayablePanel{
             for (Entity monster : monsters) {
                 if (monster != null) {
                     monster.update();
-
                 }
             }
-
-            spawnCounter++;
 
             //Update Arrows
             for (int i = 0; i < getArrows().length; i++) {
@@ -138,10 +139,25 @@ public class HallPanel extends PlayablePanel{
 
             HallController.shouldSwitchHallsInGame(getTileM(), getPlayer(), this);
 
+            // Generate Monster
+            spawnCounter++;
+
             if (spawnCounter >= 60 * 2) {
                 generateMonster();
                 spawnCounter = 0;
             }
+
+            // Generate Enchantment
+            spawnEnchantmentCounter++;
+
+            if (spawnEnchantmentCounter >= 60 * 2) {
+                OBJ_Cactus cactus = new OBJ_Cactus();
+                cactus.collision = true;
+                tileM.generateEnchantment();
+                spawnEnchantmentCounter = 0;
+            }
+
+
         }
     }
 
@@ -341,6 +357,13 @@ public class HallPanel extends PlayablePanel{
                     }
                 }
 
+                // Draw Enchantments
+                for (SuperObject superObject : HallContainer.getHallOfEarth().enchantments) {
+                    if (superObject != null) {
+                        g2.drawImage(superObject.image, superObject.worldX, superObject.worldY, tileSize, tileSize, null);
+                    }
+                }
+
                 // Draw the Timer
                 g2.setFont(new Font("Arial", Font.BOLD, 30)); // Set font size and style
                 g2.setColor(Color.BLACK);                     // Set text color
@@ -485,6 +508,8 @@ public class HallPanel extends PlayablePanel{
         g2.drawString(text, x - 100, y);
     }
 
+
+
     public ArrayList<Entity> getHallMonsters() {
         return monsters;
     }
@@ -544,5 +569,7 @@ public class HallPanel extends PlayablePanel{
         }
         return num;
     }
+
+
 }
 

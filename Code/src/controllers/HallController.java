@@ -109,6 +109,16 @@ public class HallController {
         return null;
     }
 
+    public static SuperObject getEnchantmentSelectedInHall(TileManagerForHall currentHall, int mouseX, int mouseY) {
+        for (SuperObject obj : currentHall.enchantments) {
+            if (mouseX > obj.worldX && mouseX < obj.worldX + obj.image.getWidth() * BasePanel.scale
+                    && mouseY > obj.worldY && mouseY < obj.worldY + obj.image.getHeight() * BuildPanel.scale) {
+                return obj;
+            }
+        }
+        return null;
+    }
+
     private int getNonNullElementCount(TileManagerForHall hall) {
         return getObjectsInHall(hall).size();
     }

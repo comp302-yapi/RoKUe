@@ -8,12 +8,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 import javax.imageio.ImageIO;
 
 import containers.TileContainer;
 import entity.Entity;
 import enums.Hall;
-import object.SuperObject;
+import object.*;
 import tile.Tile;
 import views.BasePanel;
 import views.HallPanel;
@@ -24,6 +25,7 @@ public class TileManagerForHall{
 
 	public int[][] mapTileNum;
 	public ArrayList<SuperObject> objects = new ArrayList<>();
+	public ArrayList<SuperObject> enchantments = new ArrayList<>();
 	public SuperObject[][] gridWorld = new SuperObject[13][13];
 	//public ArrayList<Entity> monsters = new ArrayList<>();
 	public int maxCol,maxRow,idx;
@@ -40,9 +42,7 @@ public class TileManagerForHall{
 		loadMap(path);
 		bottomWorldBorder = 96 + BasePanel.tileSize * 15;
 	}
-	
 
-	
 	public void loadMap(String filePath) {
 
 		try {
@@ -114,11 +114,6 @@ public class TileManagerForHall{
 
 		convertToGrid(objects);
 
-//		for (SuperObject object : objects) {
-//			if (object != null) {
-//				g2.drawImage(object.image, object.worldX, object.worldY, BasePanel.tileSize, BasePanel.tileSize, null);
-//			}
-//		}
 
 		for (int i = 0; i < gridWorld.length; i++) { // Loop through rows
 			for (int j = 0; j < gridWorld[i].length; j++) { // Loop through columns
@@ -167,6 +162,31 @@ public class TileManagerForHall{
 		objects.add(obj);
 
 	}
+
+	public void generateEnchantment() {
+		Random random = new Random();
+
+		// Randomly pick a type of object
+		SuperObject obj;
+		int randomType = random.nextInt(4);
+
+		switch (randomType) {
+			case 0 -> obj = new ENCH_Reveal();
+			case 1 -> obj = new ENCH_Cloak();
+			case 2 -> obj = new ENCH_LuringGem();
+			case 3 -> obj = new ENCH_ExtraLife();
+			default -> throw new IllegalStateException("Unexpected value: " + randomType);
+		}
+
+		// Set random position
+		obj.worldX = (random.nextInt(1, 13) + 7) * 48;
+		obj.worldY = (random.nextInt(1, 14) + 2) * 48;
+
+		// Add the object to enchantments list
+		enchantments.add(obj);
+	}
+
+
 
 	public SuperObject[] convertToArray() {
 		return objects.toArray(new SuperObject[30]);

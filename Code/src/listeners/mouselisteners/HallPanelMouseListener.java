@@ -29,6 +29,20 @@ public class HallPanelMouseListener extends BaseMouseListener {
                 hallPanel.getTileM().openDoor();
             }
         }
+
+        SuperObject clickedEnchantment = HallController.getEnchantmentSelectedInHall(hallPanel.getTileM(), mouseX, mouseY);
+        if (clickedEnchantment != null) {
+            hallPanel.getPlayer().inventory.add(clickedEnchantment);
+
+            for (SuperObject object : hallPanel.getPlayer().inventory) {
+                if (object != null) {
+                    System.out.println(object.name);
+                }
+            }
+
+            hallPanel.getTileM().enchantments.remove(clickedEnchantment);
+        }
+
     }
 
     @Override
