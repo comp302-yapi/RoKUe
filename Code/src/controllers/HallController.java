@@ -21,6 +21,8 @@ public class HallController {
 
     private final HallValidator hallValidator;
     private final BuildPanel buildPanel;
+    public boolean isLureModeActive = false;
+
 
     public HallController(BuildPanel buildPanel) {
         this.buildPanel = buildPanel;
@@ -33,7 +35,7 @@ public class HallController {
         x -= x % 48;
         y -= y % 48;
 
-        System.out.println(x + " | " + y);
+//        System.out.println(x + " | " + y);
 
         currentHall.addObject(obj, x, y);
     }
@@ -181,6 +183,7 @@ public class HallController {
         hallPanel.tileM = HallContainer.getCurrentHallManager(nextHall);
         assignRunesToObjects(hallPanel.tileM);
         hallPanel.getHallMonsters().clear();
+        hallPanel.getTileM().enchantments.clear();
         hallPanel.zeroMonsters();
         player.life = 6;
     }

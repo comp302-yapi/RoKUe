@@ -160,6 +160,15 @@ public class Player extends Entity{
 					invincibleCounter = 0;
 				}
 
+				if (invincibleCloak) {
+					invincibleCounterCloak++;
+				}
+
+				if (invincibleCounterCloak >= 600) {
+					invincibleCloak = false;
+					invincibleCounterCloak = 0;
+				}
+
 				// CHECK MONSTER COLLISION
 				int monsterIndex = hallPanel.getCollisionCheckerForHall().checkEntity(this, hallPanel.getMonsters());
 
@@ -245,6 +254,10 @@ public class Player extends Entity{
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 		}
 
+		if (invincibleCloak) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+		}
+
 		g2.drawImage(image, screenX, screenY, BasePanel.tileSize, BasePanel.tileSize, null);
 		g2.setColor(Color.red);
 
@@ -253,6 +266,17 @@ public class Player extends Entity{
 
 //		g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 	}
+
+	public int inventoryLength() {
+		int count = 0;
+		for (SuperObject object : inventory) {
+			if (object != null) {
+				count++;
+			}
+		}
+		return count;
+	}
+
 }
 
 

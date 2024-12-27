@@ -60,13 +60,15 @@ public class Arrow extends Entity {
         boolean hitPlayer = panel.getCollisionChecker().checkPlayer(this);
         if (hitPlayer && !panel.getPlayer().invincible) {
             // Reduce player life
-            panel.getPlayer().life -= damage;
-            panel.getPlayer().invincible = true;
+            if (!panel.getPlayer().invincibleCloak) {
+                panel.getPlayer().life -= damage;
+                panel.getPlayer().invincible = true;
 
-            if (panel instanceof HallPanel) {
-                ((HallPanel) panel).playSE(3);
+                if (panel instanceof HallPanel) {
+                    ((HallPanel) panel).playSE(3);
+                }
+                expired = true;
             }
-            expired = true;
         }
 
         // Check if arrow exceeded range

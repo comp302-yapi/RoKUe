@@ -30,6 +30,10 @@ public class Entity {
 	public int actionLockCounter = 0;
 	public boolean invincible = false;
 	public int invincibleCounter;
+
+	public boolean invincibleCloak = false;
+	public int invincibleCounterCloak;
+
 	boolean attacking = false;
 	
 	public BufferedImage image, image2, image3;
@@ -72,14 +76,17 @@ public class Entity {
 			panel.getCollisionChecker().checkEntity(this, panel.getMonsters());
 			contactPlayer = panel.getCollisionChecker().checkPlayer(this);
 		}
-		
+
+		// This doesn't do anything (?)
 		if (this.type == 2 && contactPlayer) {
 			if(!panel.getPlayer().invincible) {
-				panel.getPlayer().life -= 1;
-				if (panel instanceof HallPanel) {
-					((HallPanel) panel).playSE(3);
+				if(!panel.getPlayer().invincibleCloak) {
+					panel.getPlayer().life -= 1;
+					if (panel instanceof HallPanel) {
+						((HallPanel) panel).playSE(3);
+					}
+					panel.getPlayer().invincible = true;
 				}
-				panel.getPlayer().invincible = true;
 			}
 		}
 
