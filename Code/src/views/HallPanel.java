@@ -144,7 +144,7 @@ public class HallPanel extends PlayablePanel{
             // Generate Monster
             spawnCounter++;
 
-            if (spawnCounter >= 60 * 2) {
+            if (spawnCounter >= 60 * 3) {
                 generateMonster();
                 spawnCounter = 0;
             }
@@ -152,9 +152,7 @@ public class HallPanel extends PlayablePanel{
             // Generate Enchantment
             spawnEnchantmentCounter++;
 
-            if (spawnEnchantmentCounter >= 60 * 2) {
-                OBJ_Cactus cactus = new OBJ_Cactus();
-                cactus.collision = true;
+            if (spawnEnchantmentCounter >= 60 * 6) {
                 tileM.generateEnchantment();
                 spawnEnchantmentCounter = 0;
             }

@@ -1,7 +1,11 @@
 package monster;
 
+import containers.HallContainer;
 import entity.Arrow;
 import entity.Entity;
+import enums.Hall;
+import object.OBJ_LuringGem;
+import object.SuperObject;
 import views.BasePanel;
 import views.HallPanel;
 
@@ -70,6 +74,9 @@ public class MON_Fighter extends Entity {
 
 		if (calculateDistanceToPlayer() <= 96) {
 			direction = determineDirection();
+			if (checkLuringGem()) {
+				direction = determineDirectionLuringGem();
+			}
 		} else {
 
 		// Add random movement
@@ -80,12 +87,28 @@ public class MON_Fighter extends Entity {
 
 			if (i <= 25) {
 				direction = "up";
+
+				if (checkLuringGem()) {
+					direction = determineDirectionLuringGem();
+				}
 			} else if (i <= 50) {
 				direction = "down";
+
+				if (checkLuringGem()) {
+					direction = determineDirectionLuringGem();
+				}
 			} else if (i <= 75) {
 				direction = "left";
+
+				if (checkLuringGem()) {
+					direction = determineDirectionLuringGem();
+				}
 			} else if (i <= 100) {
 				direction = "right";
+
+				if (checkLuringGem()) {
+					direction = determineDirectionLuringGem();
+				}
 			}
 
 			actionLockCounter = 0;
@@ -101,6 +124,64 @@ public class MON_Fighter extends Entity {
 		} else {
 			return playerY > worldY ? "down" : "up";
 		}
+	}
+
+	public boolean checkLuringGem() {
+		boolean checker = false;
+
+		if (panel instanceof HallPanel) {
+			switch (((HallPanel) panel).currentHall) {
+				case HallOfEarth -> {
+					for (SuperObject obj : HallContainer.getHallOfEarth().objects) {
+						if (obj instanceof OBJ_LuringGem) {
+							checker = true;
+							break;
+						}
+					}
+				}
+				case HallOfFire -> {
+					for (SuperObject obj : HallContainer.getHallOfFire().objects) {
+						if (obj instanceof OBJ_LuringGem) {
+							checker = true;
+							break;
+						}
+					}
+				}
+				case HallOfWater -> {
+					for (SuperObject obj : HallContainer.getHallOfWater().objects) {
+						if (obj instanceof OBJ_LuringGem) {
+							checker = true;
+							break;
+						}
+					}
+				}
+				case HallOfAir -> {
+					for (SuperObject obj : HallContainer.getHallOfAir().objects) {
+						if (obj instanceof OBJ_LuringGem) {
+							checker = true;
+							break;
+						}
+					}
+				}
+				default -> checker = false;
+			}
+		}
+		return checker;
+	}
+
+	public String determineDirectionLuringGem() {
+		if (panel instanceof HallPanel) {
+			for (SuperObject obj : HallContainer.getHallOfEarth().objects) {
+				if (obj instanceof OBJ_LuringGem luringGem) {
+                    if (Math.abs(luringGem.worldX - worldX) > Math.abs(luringGem.worldY - worldY)) {
+						return luringGem.worldX > worldX ? "right" : "left";
+					} else {
+						return luringGem.worldY > worldY ? "down" : "up";
+					}
+                }
+			}
+		}
+		return direction;
 	}
 
 	private int calculateDistanceToPlayer() {
