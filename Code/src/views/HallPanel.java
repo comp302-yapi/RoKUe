@@ -332,7 +332,7 @@ public class HallPanel extends PlayablePanel{
             case HallOfEarth -> {
 
                 if (timer == null) {
-                    timeLeft = this.getSuperObjectLength() * 5;
+                    timeLeft = this.getSuperObjectLength() * 10;
                     System.out.println(timeLeft);
                     startTimer();
                 }
@@ -374,7 +374,7 @@ public class HallPanel extends PlayablePanel{
             case HallOfAir -> {
 
                 if (timer == null) {
-                    timeLeft = this.getSuperObjectLength() * 5;
+                    timeLeft = this.getSuperObjectLength() * 10;
                     System.out.println(timeLeft);
                     startTimer();
                 }
@@ -416,7 +416,7 @@ public class HallPanel extends PlayablePanel{
             case HallOfWater -> {
 
                 if (timer == null) {
-                    timeLeft = this.getSuperObjectLength() * 5;
+                    timeLeft = this.getSuperObjectLength() * 10;
                     System.out.println(timeLeft);
                     startTimer();
                 }
@@ -457,7 +457,7 @@ public class HallPanel extends PlayablePanel{
             case HallOfFire -> {
 
                 if (timer == null) {
-                    timeLeft = this.getSuperObjectLength() * 5;
+                    timeLeft = this.getSuperObjectLength() * 10;
                     System.out.println(timeLeft);
                     startTimer();
                 }
