@@ -1,5 +1,10 @@
 package managers;
 
+import enums.Hall;
+import views.BuildPanel;
+import views.HallPanel;
+import views.TitlePanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -16,6 +21,7 @@ public class ViewManager implements Runnable {
         this.frame = frame;
         this.panels = new HashMap<>();
         this.gameThread = new Thread(this);
+
     }
 
     public void addPanel(String name, JPanel panel) {
@@ -28,9 +34,25 @@ public class ViewManager implements Runnable {
             throw new IllegalArgumentException("Panel with that key does not exist");
         }
 
+
         JPanel panelToSwitch = panels.get(panelName);
         if (currentPanel != null && closeCurrentPanel) {
             frame.remove(currentPanel);
+        }
+
+        if (panelToSwitch instanceof TitlePanel) {
+
+            ((TitlePanel) panelToSwitch).soundManager.stop();
+            panels.clear();
+
+            JPanel titlePanel = new TitlePanel(this);
+            JPanel buildPanel = new BuildPanel(this);
+            JPanel hallPanel = new HallPanel(this);
+
+            addPanel("HallPanel", hallPanel);
+            addPanel("TitlePanel", titlePanel);
+            addPanel("BuildPanel", buildPanel);
+
         }
 
         currentPanel = panelToSwitch;

@@ -21,10 +21,13 @@ public class HallController {
 
     private final HallValidator hallValidator;
     private final BuildPanel buildPanel;
+    public boolean isLureModeActive = false;
+
 
     public HallController(BuildPanel buildPanel) {
         this.buildPanel = buildPanel;
         hallValidator = new HallValidator();
+
     }
 
     public void addObject(TileManagerForHall currentHall, SuperObject obj, int x, int y) {
@@ -32,7 +35,7 @@ public class HallController {
         x -= x % 48;
         y -= y % 48;
 
-        System.out.println(x + " | " + y);
+//        System.out.println(x + " | " + y);
 
         currentHall.addObject(obj, x, y);
     }
@@ -108,6 +111,16 @@ public class HallController {
         return null;
     }
 
+    public static SuperObject getEnchantmentSelectedInHall(TileManagerForHall currentHall, int mouseX, int mouseY) {
+        for (SuperObject obj : currentHall.enchantments) {
+            if (mouseX > obj.worldX && mouseX < obj.worldX + obj.image.getWidth() * BasePanel.scale
+                    && mouseY > obj.worldY && mouseY < obj.worldY + obj.image.getHeight() * BuildPanel.scale) {
+                return obj;
+            }
+        }
+        return null;
+    }
+
     private int getNonNullElementCount(TileManagerForHall hall) {
         return getObjectsInHall(hall).size();
     }
@@ -141,6 +154,9 @@ public class HallController {
 
     public static void shouldSwitchHallsInGame(TileManagerForHall currentHall, Player player, HallPanel hallPanel) {
         if (player.screenY > currentHall.getBottomWorldBorder()) {
+
+            hallPanel.nullTimer();
+
             switch (currentHall.hall) {
                 case HallOfEarth -> {
                     hallPanel.currentHall = Hall.HallOfAir;
@@ -155,7 +171,9 @@ public class HallController {
                     initNewHall(hallPanel.currentHall, player, hallPanel);
                 }
                 case HallOfFire -> {
+                    System.out.println("HallOfFire");
                     hallPanel.getViewManager().switchTo("TitlePanel", true);
+
                 }
             }
         }
@@ -167,6 +185,7 @@ public class HallController {
         hallPanel.tileM = HallContainer.getCurrentHallManager(nextHall);
         assignRunesToObjects(hallPanel.tileM);
         hallPanel.getHallMonsters().clear();
+        hallPanel.getTileM().enchantments.clear();
         hallPanel.zeroMonsters();
         player.life = 6;
     }

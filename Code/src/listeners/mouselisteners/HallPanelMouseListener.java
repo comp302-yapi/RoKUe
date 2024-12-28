@@ -3,7 +3,7 @@ package listeners.mouselisteners;
 import controllers.HallController;
 import listeners.BaseMouseListener;
 import managers.TileManagerForHall;
-import object.SuperObject;
+import object.*;
 import views.HallPanel;
 
 import java.awt.event.MouseEvent;
@@ -29,6 +29,41 @@ public class HallPanelMouseListener extends BaseMouseListener {
                 hallPanel.getTileM().openDoor();
             }
         }
+
+        SuperObject clickedEnchantment = HallController.getEnchantmentSelectedInHall(hallPanel.getTileM(), mouseX, mouseY);
+        if (clickedEnchantment != null) {
+            if (clickedEnchantment instanceof ENCH_Cloak || clickedEnchantment instanceof ENCH_Reveal || clickedEnchantment instanceof ENCH_LuringGem) {
+
+                hallPanel.getPlayer().inventory.add(clickedEnchantment);
+
+                int num = hallPanel.getPlayer().inventoryLength() - 1;
+
+                int numForX = num % 5;
+                int numForY = num / 5;
+
+                clickedEnchantment.worldX = (48 * (23 + numForX)) + 16;
+                clickedEnchantment.worldY = (48 * (7 + (numForY)));
+
+
+//            System.out.println("Printing Inventory");
+//            for (SuperObject object : hallPanel.getPlayer().inventory) {
+//                if (object != null) {
+//                    System.out.println(object.name);
+//                }
+//            }
+
+                hallPanel.getTileM().enchantments.remove(clickedEnchantment);
+
+            } else {
+
+                hallPanel.getTileM().enchantments.remove(clickedEnchantment);
+
+                if (clickedEnchantment instanceof ENCH_ExtraLife && hallPanel.getPlayer().life < 6) {
+                    hallPanel.getPlayer().life += 1;
+                }
+            }
+        }
+
     }
 
     @Override

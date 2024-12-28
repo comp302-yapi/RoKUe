@@ -73,5 +73,6 @@ public abstract class PlayablePanel extends JPanel implements BasePanel {
     public Arrow[] getArrows() {
         return arrows;
     }
+
 }
 

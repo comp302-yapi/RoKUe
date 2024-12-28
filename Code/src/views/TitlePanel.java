@@ -2,6 +2,7 @@ package views;
 
 import listeners.keylisteners.TitlePanelKeyListener;
 import managers.ViewManager;
+import managers.soundManager;
 import utils.PanelUtils;
 import java.awt.*;
 
@@ -9,13 +10,29 @@ public class TitlePanel extends NonPlayablePanel {
 
     private int commandNum;
     private final TitlePanelKeyListener titlePanelKeyListener;
+    public soundManager soundManager = new soundManager();
 
     public TitlePanel(ViewManager viewManager) {
         super(viewManager);
         setCommandNum(0);
         this.titlePanelKeyListener = new TitlePanelKeyListener(this);
         this.addKeyListener(titlePanelKeyListener);
+
+        playMusic(0);
     }
+
+    public void playMusic(int i) {
+
+        soundManager.setFile(i);
+        soundManager.play();
+        soundManager.loop();
+
+    }
+
+    public void stopMusic() {
+        soundManager.stop();
+    }
+
 
     public int getCommandNum() {
         return commandNum;

@@ -116,7 +116,7 @@ public class CollisionChecker {
 	// NPC OR MONSTER COLLISION
 	public int checkEntity(Entity entity, Entity[] target) {
 		int index = 999;
-		
+
 		for (int i = 0; i < target.length; i++) {
 
 			if (target[i] != null) {
@@ -151,10 +151,10 @@ public class CollisionChecker {
 		
 		return index;
 	}
-	
+
 	public boolean checkPlayer(Entity entity) {
 		boolean contactPlayer = false;
-		
+
 		// Get entity's solid area position
 		entity.solidArea.x = entity.worldX + entity.solidArea.x;
 		entity.solidArea.y = entity.worldY + entity.solidArea.y;
@@ -169,12 +169,12 @@ public class CollisionChecker {
 			case "left" -> entity.solidArea.x -= entity.speed;
 			case "right" -> entity.solidArea.x += entity.speed;
 		}
-		
+
 		if (entity.solidArea.intersects(player.solidArea)) {
 			entity.collisionOn = true;
 			contactPlayer = true;
 		}
-		
+
 		entity.solidArea.x = entity.solidAreaDefaultX;
 		entity.solidArea.y = entity.solidAreaDefaultY;
 		player.solidArea.x = player.solidAreaDefaultX;

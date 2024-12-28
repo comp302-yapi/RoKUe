@@ -1,6 +1,8 @@
 package entity;
 
 import views.BasePanel;
+import views.HallPanel;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -17,6 +19,7 @@ public class Arrow extends Entity {
         this.worldX = worldX;
         this.worldY = worldY;
         this.direction = direction;
+        this.panel = gp;
 
         // Arrow characteristics
         damage = 1;
@@ -55,10 +58,17 @@ public class Arrow extends Entity {
 
         // Check for player collision
         boolean hitPlayer = panel.getCollisionChecker().checkPlayer(this);
-        if (hitPlayer) {
+        if (hitPlayer && !panel.getPlayer().invincible) {
             // Reduce player life
-            panel.getPlayer().life -= damage;
-            expired = true;
+            if (!panel.getPlayer().invincibleCloak) {
+                panel.getPlayer().life -= damage;
+                panel.getPlayer().invincible = true;
+
+                if (panel instanceof HallPanel) {
+                    ((HallPanel) panel).playSE(3);
+                }
+                expired = true;
+            }
         }
 
         // Check if arrow exceeded range

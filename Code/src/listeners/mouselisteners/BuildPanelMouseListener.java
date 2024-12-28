@@ -64,6 +64,7 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 			if (objInMap != null) {
 				// If selected an object on the map
 				buildPanel.getCurrentHallManager().removeObject(objInMap);
+				buildPanel.getCurrentHallManager().gridWorld[(x/48) - 7 ][(y/48) - 2] = null;
 
 				for(int i = 0; i < buildPanel.objectsToDraw.size(); i++) {
 					if(buildPanel.objectsToDraw.get(i).getClass() == objInMap.getClass()) {
@@ -95,7 +96,6 @@ public class BuildPanelMouseListener extends BaseMouseListener implements  Mouse
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 
-		
 		int x = e.getX();
 		int y = e.getY();
 		if(buildPanel.selected) {

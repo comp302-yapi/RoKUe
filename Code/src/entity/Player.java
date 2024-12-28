@@ -1,10 +1,9 @@
 package entity;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
@@ -20,6 +19,10 @@ public class Player extends Entity{
 	BaseKeyListener keyH;
 	public int screenX;
 	public int screenY;
+	public boolean invincible = false;
+	public int invincibilityCounter = 0;
+	public ArrayList<SuperObject> inventory = new ArrayList<>();
+
 
 	public Player(BasePanel panel) {
 		super(panel);
@@ -147,6 +150,26 @@ public class Player extends Entity{
 
 				this.solidArea.x = 8;
 				this.solidArea.y = 16;
+
+				// INVINCIBLE
+				if(invincible) {
+					invincibleCounter++;
+				}
+
+				if (invincibleCounter >= 60) {
+					invincible = false;
+					invincibleCounter = 0;
+				}
+
+				if (invincibleCloak) {
+					invincibleCounterCloak++;
+				}
+
+				if (invincibleCounterCloak >= 2) {
+					invincibleCloak = false;
+					invincibleCounterCloak = 0;
+				}
+
 				// CHECK MONSTER COLLISION
 				int monsterIndex = hallPanel.getCollisionCheckerForHall().checkEntity(this, hallPanel.getMonsters());
 
@@ -227,11 +250,34 @@ public class Player extends Entity{
 				}
 			}
 		}
-		
+
+		if (invincible) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+		}
+
+		if (invincibleCloak) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+		}
+
 		g2.drawImage(image, screenX, screenY, BasePanel.tileSize, BasePanel.tileSize, null);
 		g2.setColor(Color.red);
+
+		// RESET INVINCIBLE EFFECT SO IT DOES NOT AFFECT MONSTERS
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
 //		g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 	}
+
+	public int inventoryLength() {
+		int count = 0;
+		for (SuperObject object : inventory) {
+			if (object != null) {
+				count++;
+			}
+		}
+		return count;
+	}
+
 }
 
 

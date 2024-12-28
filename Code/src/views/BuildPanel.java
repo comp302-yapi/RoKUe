@@ -50,7 +50,11 @@ public class BuildPanel extends NonPlayablePanel {
 		this.addMouseMotionListener(buildPanelMouseListener);
 
         currentHall = Hall.HallOfEarth;
-        loadObjects();
+		this.objectsToDraw.clear();
+		this.getCurrentHallManager().objects.clear();
+
+		this.getCurrentHallManager().gridWorld = new SuperObject[13][13];
+		loadObjects();
 
 	}
 
@@ -98,7 +102,6 @@ public class BuildPanel extends NonPlayablePanel {
 		chain1.worldX = BasePanel.tileSize * 27 + 16;
 		chain1.worldY = BasePanel.tileSize * 7;
 
-
 		OBJ_Pot pot1 = new OBJ_Pot();
 		pot1.worldX = BasePanel.tileSize * 27 + 16;
 		pot1.worldY = BasePanel.tileSize * 9;
@@ -124,25 +127,13 @@ public class BuildPanel extends NonPlayablePanel {
 
 		getCurrentHallManager().draw(g2);
 
-		/*
-    	if (checkObjectBorder(mouseClickedX,mouseClickedY)){
-            g2.setColor(Color.BLACK);
-            g2.setStroke(new BasicStroke(2)); // Thicker border
-            g2.drawRect(this.mouseClickedX - (int)(BasePanel.tileSize / 2), this.mouseClickedY - (int)(BasePanel.tileSize / 2), BasePanel.tileSize, BasePanel.tileSize);
-    	}
-    	*/
-
 		g2.setColor(new Color(62, 41, 52));
-		//g2.fillRect(0, 0, BasePanel.screenWidth, BasePanel.screenHeight);
-
 
 		//TODO: bunun düzeltilmesi gerekiyor
 		g2.fillRect(0,0,BasePanel.screenWidth,96);
 		g2.fillRect(1008,0,BasePanel.screenWidth,BasePanel.screenHeight);
 		g2.fillRect(0,0,336,BasePanel.screenHeight);
 		g2.fillRect(0,816,BasePanel.screenWidth,BasePanel.screenHeight);
-
-
 
 		// TITLE NAME
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 72F));
@@ -283,4 +274,5 @@ public class BuildPanel extends NonPlayablePanel {
 		return mouseX > nextButtonX && mouseX < nextButtonX + buttonWidth
 				&& mouseY > buttonY && mouseY < buttonY + buttonHeight;
 	}
+
 }
