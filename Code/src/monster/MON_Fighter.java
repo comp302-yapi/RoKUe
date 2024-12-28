@@ -21,7 +21,7 @@ public class MON_Fighter extends Entity {
 	public boolean attacking;
 	private int fighterCounter;
 	public int tempScreenY, tempScreenX;
-	public int loadCountWalk, loadCountAttacking;s
+	public int loadCountWalk, loadCountAttacking;
 
 	public MON_Fighter(BasePanel gp) {
 		super(gp);
