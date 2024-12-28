@@ -23,6 +23,7 @@ public class Player extends Entity{
 	public int invincibilityCounter = 0;
 	public ArrayList<SuperObject> inventory = new ArrayList<>();
 
+
 	public Player(BasePanel panel) {
 		super(panel);
 

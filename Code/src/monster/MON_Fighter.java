@@ -9,6 +9,8 @@ import object.SuperObject;
 import views.BasePanel;
 import views.HallPanel;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class MON_Fighter extends Entity {
@@ -17,6 +19,10 @@ public class MON_Fighter extends Entity {
 	public boolean spawned = false;
 	public int countdown;
 	public boolean attacking;
+	private int fighterCounter;
+	public int tempScreenY, tempScreenX;
+
+
 
 	public MON_Fighter(BasePanel gp) {
 		super(gp);
@@ -150,6 +156,19 @@ public class MON_Fighter extends Entity {
 		}}
 	}
 
+	public BufferedImage getAnimateImage() {
+		return image;
+	}
+
+
+	public int getBufferX() {
+		return tempScreenX;
+	}
+
+	public int getBufferY() {
+		return tempScreenY;
+	}
+
 	private String determineDirection() {
 		int playerX = gp.getPlayer().screenX;
 		int playerY = gp.getPlayer().screenY;
@@ -217,6 +236,151 @@ public class MON_Fighter extends Entity {
 			}
 		}
 		return direction;
+	}
+
+	public void animate() {
+		fighterCounter++;
+		if (fighterCounter > 12) {
+			if (spriteNum == 1) {
+				if (isAttackingFighter()) {
+
+					// Save current values
+					int currentWorldX = worldX;
+					int currentWorldY = worldY;
+					int solidAreaWidth = solidArea.width;
+					int solidAreaHeight = solidArea.height;
+
+					// Adjust attacking
+					// Adjust player's worldX/Y for the attackArea
+					switch (direction) {
+						case "up":
+							worldY -= attackArea.height;
+							break;
+						case "down":
+							worldY += attackArea.height;
+							break;
+						case "left":
+							worldX -= attackArea.width;
+							break;
+						case "right":
+							worldX += attackArea.width;
+							break;
+					}
+
+					solidArea.width = attackArea.width;
+					solidArea.height = attackArea.height;
+
+					boolean playerHitAttackCheck = panel.getCollisionChecker().checkPlayer(this);
+
+					if (playerHitAttackCheck && !panel.getPlayer().invincible) {
+						panel.getPlayer().life -= 1;
+						panel.getPlayer().invincible = true;
+
+						if (panel instanceof HallPanel) {
+							((HallPanel) panel).playSE(3);
+						}
+
+						System.out.println("HIT PLAYER");
+					} else {
+						System.out.println("Miss");
+
+					}
+
+					worldX = currentWorldX;
+					worldY = currentWorldY;
+					solidArea.width = solidAreaWidth;
+					solidArea.height = solidAreaHeight;
+
+				}
+
+				spriteNum = 2;
+			} else if (spriteNum == 2) {
+				spriteNum = 1;
+			}
+			fighterCounter = 0;
+		}
+	}
+
+	public void animateDirection() {
+
+		tempScreenX = worldX;
+		tempScreenY = worldY;
+
+		if (!isAttackingFighter()) {
+
+			switch (direction) {
+				case "up" -> {
+					if (spriteNum == 1) {
+						image = up1;
+					}
+					if (spriteNum == 2) {
+						image = up2;
+					}
+				}
+				case "down" -> {
+					if (spriteNum == 1) {
+						image = down1;
+					}
+					if (spriteNum == 2) {
+						image = down2;
+					}
+				}
+				case "left" -> {
+					if (spriteNum == 1) {
+						image = left1;
+					}
+					if (spriteNum == 2) {
+						image = left2;
+					}
+				}
+				case "right" -> {
+					if (spriteNum == 1) {
+						image = right1;
+					}
+					if (spriteNum == 2) {
+						image = right2;
+					}
+				}
+			}}
+
+		if (isAttackingFighter()) {
+			switch (direction) {
+				case "up" -> {
+					tempScreenY = worldY - BasePanel.tileSize;
+					if (spriteNum == 1) {
+						image = up1;
+					}
+					if (spriteNum == 2) {
+						image = up2;
+					}
+				}
+				case "down" -> {
+					if (spriteNum == 1) {
+						image = down1;
+					}
+					if (spriteNum == 2) {
+						image = down2;
+					}
+				}
+				case "left" -> {
+					tempScreenX = worldX - BasePanel.tileSize;
+					if (spriteNum == 1) {
+						image = left1;
+					}
+					if (spriteNum == 2) {
+						image = left2;
+					}
+				}
+				case "right" -> {
+					if (spriteNum == 1) {
+						image = right1;
+					}
+					if (spriteNum == 2) {
+						image = right2;
+					}
+				}
+			}
+		}
 	}
 
 	private int calculateDistanceToPlayer() {
