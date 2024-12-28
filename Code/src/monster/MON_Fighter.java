@@ -21,8 +21,7 @@ public class MON_Fighter extends Entity {
 	public boolean attacking;
 	private int fighterCounter;
 	public int tempScreenY, tempScreenX;
-
-
+	public int loadCountWalk, loadCountAttacking;s
 
 	public MON_Fighter(BasePanel gp) {
 		super(gp);
@@ -51,44 +50,107 @@ public class MON_Fighter extends Entity {
 		attackArea.width = 36;
 		attackArea.height = 36;
 
+		getImage();
+		getImageAttacking();
+
 		chooseImage();
+	}
+
+	public void getImage() {
+		// Load archer monster images
+//		loadCountWalk++;
+//		System.out.println(loadCountWalk + "Walking");
+		up_walking1 = setup("/res/monster/orc_up_1", BasePanel.tileSize, BasePanel.tileSize);
+		up_walking2 = setup("/res/monster/orc_up_2", BasePanel.tileSize, BasePanel.tileSize);
+		down_walking1 = setup("/res/monster/orc_down_1", BasePanel.tileSize, BasePanel.tileSize);;
+		down_walking2 = setup("/res/monster/orc_down_2", BasePanel.tileSize, BasePanel.tileSize);;
+		left_walking1 = setup("/res/monster/orc_left_1", BasePanel.tileSize, BasePanel.tileSize);;
+		left_walking2 = setup("/res/monster/orc_left_2", BasePanel.tileSize, BasePanel.tileSize);;
+		right_walking1 = setup("/res/monster/orc_right_1", BasePanel.tileSize, BasePanel.tileSize);;
+		right_walking2 = setup("/res/monster/orc_right_2", BasePanel.tileSize, BasePanel.tileSize);;
 	}
 
 	public void chooseImage() {
 
 		if (attacking) {
-			getImageAttacking();
+			chooseImageAttacking();
 		}
 		else {
-			getImage();
+			chooseImageWalking();
 		}
+	}
+
+	public void getImageAttacking() {
+//		loadCountAttacking++;
+//		System.out.println(loadCountAttacking + "Attacking");
+		up_attacking1 = setup("/res/monster/orc_attack_up_1", BasePanel.tileSize, BasePanel.tileSize*2);
+		up_attacking2 = setup("/res/monster/orc_attack_up_2", BasePanel.tileSize, BasePanel.tileSize*2);
+		down_attacking1 = setup("/res/monster/orc_attack_down_1", BasePanel.tileSize, BasePanel.tileSize*2);
+		down_attacking2 = setup("/res/monster/orc_attack_down_2", BasePanel.tileSize, BasePanel.tileSize*2);
+		left_attacking1 = setup("/res/monster/orc_attack_left_1", BasePanel.tileSize*2, BasePanel.tileSize);
+		left_attacking2 = setup("/res/monster/orc_attack_left_2", BasePanel.tileSize*2, BasePanel.tileSize);
+		right_attacking1 = setup("/res/monster/orc_attack_right_1", BasePanel.tileSize*2, BasePanel.tileSize);
+		right_attacking2 = setup("/res/monster/orc_attack_right_2", BasePanel.tileSize*2, BasePanel.tileSize);
+	}
+
+	public void chooseImageAttacking() {
+
+		up1 = up_attacking1;
+		up2 = up_attacking2;
+		up3 = up_attacking3;
+		up4 = up_attacking4;
+		up5 = up_attacking5;
+
+		down1 = down_attacking1;
+		down2 = down_attacking2;
+		down3 = down_attacking3;
+		down4 = down_attacking4;
+		down5 = down_attacking5;
+
+		left1 = left_attacking1;
+		left2 = left_attacking2;
+		left3 = left_attacking3;
+		left4 = left_attacking4;
+		left5 = left_attacking5;
+
+		right1 = right_attacking1;
+		right2 = right_attacking2;
+		right3 = right_attacking3;
+		right4 = right_attacking4;
+		right5 = right_attacking5;
+
+	}
+
+	public void chooseImageWalking() {
+
+		up1 = up_walking1;
+		up2 = up_walking2;
+		up3 = up_walking3;
+		up4 = up_walking4;
+		up5 = up_walking5;
+
+		down1 = down_walking1;
+		down2 = down_walking2;
+		down3 = down_walking3;
+		down4 = down_walking4;
+		down5 = down_walking5;
+
+		left1 = left_walking1;
+		left2 = left_walking2;
+		left3 = left_walking3;
+		left4 = left_walking4;
+		left5 = left_walking5;
+
+		right1 = right_walking1;
+		right2 = right_walking2;
+		right3 = right_walking3;
+		right4 = right_walking4;
+		right5 = right_walking5;
+
 	}
 
 	public boolean isAttackingFighter() {
 		return attacking;
-	}
-
-	public void getImage() {
-		// Load archer monster images
-		up1 = setup("/res/monster/orc_up_1", BasePanel.tileSize, BasePanel.tileSize);
-		up2 = setup("/res/monster/orc_up_2", BasePanel.tileSize, BasePanel.tileSize);
-		down1 = setup("/res/monster/orc_down_1", BasePanel.tileSize, BasePanel.tileSize);;
-		down2 = setup("/res/monster/orc_down_2", BasePanel.tileSize, BasePanel.tileSize);;
-		left1 = setup("/res/monster/orc_left_1", BasePanel.tileSize, BasePanel.tileSize);;
-		left2 = setup("/res/monster/orc_left_2", BasePanel.tileSize, BasePanel.tileSize);;
-		right1 = setup("/res/monster/orc_right_1", BasePanel.tileSize, BasePanel.tileSize);;
-		right2 = setup("/res/monster/orc_right_2", BasePanel.tileSize, BasePanel.tileSize);;
-	}
-
-	public void getImageAttacking() {
-		up1 = setup("/res/monster/orc_attack_up_1", BasePanel.tileSize, BasePanel.tileSize*2);
-		up2 = setup("/res/monster/orc_attack_up_2", BasePanel.tileSize, BasePanel.tileSize*2);
-		down1 = setup("/res/monster/orc_attack_down_1", BasePanel.tileSize, BasePanel.tileSize*2);
-		down2 = setup("/res/monster/orc_attack_down_2", BasePanel.tileSize, BasePanel.tileSize*2);
-		left1 = setup("/res/monster/orc_attack_left_1", BasePanel.tileSize*2, BasePanel.tileSize);
-		left2 = setup("/res/monster/orc_attack_left_2", BasePanel.tileSize*2, BasePanel.tileSize);
-		right1 = setup("/res/monster/orc_attack_right_1", BasePanel.tileSize*2, BasePanel.tileSize);
-		right2 = setup("/res/monster/orc_attack_right_2", BasePanel.tileSize*2, BasePanel.tileSize);
 	}
 
 	public void setAction() {
@@ -159,7 +221,6 @@ public class MON_Fighter extends Entity {
 	public BufferedImage getAnimateImage() {
 		return image;
 	}
-
 
 	public int getBufferX() {
 		return tempScreenX;

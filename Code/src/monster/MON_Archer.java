@@ -37,73 +37,131 @@ public class MON_Archer extends Entity {
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 
+		getImage();
+		getImageAttacking();
+
 		chooseImage();
 	}
 
 	public void getImage() {
 		// Load archer monster images
-		up1 = setup("/res/monster/ArcherUpWalk/tile000", BasePanel.tileSize, BasePanel.tileSize);
-		up2 = setup("/res/monster/ArcherUpWalk/tile001", BasePanel.tileSize, BasePanel.tileSize);
-		up3 = setup("/res/monster/ArcherUpWalk/tile002", BasePanel.tileSize, BasePanel.tileSize);
-		up4 = setup("/res/monster/ArcherUpWalk/tile003", BasePanel.tileSize, BasePanel.tileSize);;
-		up5 = setup("/res/monster/ArcherUpWalk/tile004", BasePanel.tileSize, BasePanel.tileSize);
+		up_walking1 = setup("/res/monster/ArcherUpWalk/tile000", BasePanel.tileSize, BasePanel.tileSize);
+		up_walking2 = setup("/res/monster/ArcherUpWalk/tile001", BasePanel.tileSize, BasePanel.tileSize);
+		up_walking3 = setup("/res/monster/ArcherUpWalk/tile002", BasePanel.tileSize, BasePanel.tileSize);
+		up_walking4 = setup("/res/monster/ArcherUpWalk/tile003", BasePanel.tileSize, BasePanel.tileSize);;
+		up_walking5 = setup("/res/monster/ArcherUpWalk/tile004", BasePanel.tileSize, BasePanel.tileSize);
 
-		down1 = setup("/res/monster/ArcherDownWalk/tile000", BasePanel.tileSize, BasePanel.tileSize);
-		down2 = setup("/res/monster/ArcherDownWalk/tile001", BasePanel.tileSize, BasePanel.tileSize);
-		down3 = setup("/res/monster/ArcherDownWalk/tile002", BasePanel.tileSize, BasePanel.tileSize);
-		down4 = setup("/res/monster/ArcherDownWalk/tile003", BasePanel.tileSize, BasePanel.tileSize);
-		down5 = setup("/res/monster/ArcherDownWalk/tile004", BasePanel.tileSize, BasePanel.tileSize);
+		down_walking1 = setup("/res/monster/ArcherDownWalk/tile000", BasePanel.tileSize, BasePanel.tileSize);
+		down_walking2 = setup("/res/monster/ArcherDownWalk/tile001", BasePanel.tileSize, BasePanel.tileSize);
+		down_walking3 = setup("/res/monster/ArcherDownWalk/tile002", BasePanel.tileSize, BasePanel.tileSize);
+		down_walking4 = setup("/res/monster/ArcherDownWalk/tile003", BasePanel.tileSize, BasePanel.tileSize);
+		down_walking5 = setup("/res/monster/ArcherDownWalk/tile004", BasePanel.tileSize, BasePanel.tileSize);
 
-		left1 = setup("/res/monster/ArcherLeftWalk/tile000", BasePanel.tileSize, BasePanel.tileSize);
-		left2 = setup("/res/monster/ArcherLeftWalk/tile001", BasePanel.tileSize, BasePanel.tileSize);
-		left3 = setup("/res/monster/ArcherLeftWalk/tile002", BasePanel.tileSize, BasePanel.tileSize);
-		left4 = setup("/res/monster/ArcherLeftWalk/tile003", BasePanel.tileSize, BasePanel.tileSize);
-		left5 = setup("/res/monster/ArcherLeftWalk/tile004", BasePanel.tileSize, BasePanel.tileSize);
+		left_walking1 = setup("/res/monster/ArcherLeftWalk/tile000", BasePanel.tileSize, BasePanel.tileSize);
+		left_walking2 = setup("/res/monster/ArcherLeftWalk/tile001", BasePanel.tileSize, BasePanel.tileSize);
+		left_walking3 = setup("/res/monster/ArcherLeftWalk/tile002", BasePanel.tileSize, BasePanel.tileSize);
+		left_walking4 = setup("/res/monster/ArcherLeftWalk/tile003", BasePanel.tileSize, BasePanel.tileSize);
+		left_walking5 = setup("/res/monster/ArcherLeftWalk/tile004", BasePanel.tileSize, BasePanel.tileSize);
 
-		right1 = setup("/res/monster/ArcherRightWalk/tile000", BasePanel.tileSize, BasePanel.tileSize);
-		right2 = setup("/res/monster/ArcherRightWalk/tile001", BasePanel.tileSize, BasePanel.tileSize);
-		right3 = setup("/res/monster/ArcherRightWalk/tile002", BasePanel.tileSize, BasePanel.tileSize);
-		right4 = setup("/res/monster/ArcherRightWalk/tile003", BasePanel.tileSize, BasePanel.tileSize);
-		right5 = setup("/res/monster/ArcherRightWalk/tile004", BasePanel.tileSize, BasePanel.tileSize);
+		right_walking1 = setup("/res/monster/ArcherRightWalk/tile000", BasePanel.tileSize, BasePanel.tileSize);
+		right_walking2 = setup("/res/monster/ArcherRightWalk/tile001", BasePanel.tileSize, BasePanel.tileSize);
+		right_walking3 = setup("/res/monster/ArcherRightWalk/tile002", BasePanel.tileSize, BasePanel.tileSize);
+		right_walking4 = setup("/res/monster/ArcherRightWalk/tile003", BasePanel.tileSize, BasePanel.tileSize);
+		right_walking5 = setup("/res/monster/ArcherRightWalk/tile004", BasePanel.tileSize, BasePanel.tileSize);
 	}
 
 	public void chooseImage() {
 
 		if (attacking) {
-			getImageAttacking();
+			chooseImageAttacking();
 		}
 		else {
-			getImage();
+			chooseImageWalking();
 		}
 	}
 
 	public void getImageAttacking() {
 		// Load archer monster images
-		up1 = setup("/res/monster/ArcherUpShoot/tile000", BasePanel.tileSize, BasePanel.tileSize);
-		up2 = setup("/res/monster/ArcherUpShoot/tile001", BasePanel.tileSize, BasePanel.tileSize);
-		up3 = setup("/res/monster/ArcherUpShoot/tile002", BasePanel.tileSize, BasePanel.tileSize);
-		up4 = setup("/res/monster/ArcherUpShoot/tile003", BasePanel.tileSize, BasePanel.tileSize);;
-		up5 = setup("/res/monster/ArcherUpShoot/tile004", BasePanel.tileSize, BasePanel.tileSize);
+		up_attacking1 = setup("/res/monster/ArcherUpShoot/tile000", BasePanel.tileSize, BasePanel.tileSize*2);
+		up_attacking2 = setup("/res/monster/ArcherUpShoot/tile001", BasePanel.tileSize, BasePanel.tileSize*2);
+		up_attacking3 = setup("/res/monster/ArcherUpShoot/tile002", BasePanel.tileSize, BasePanel.tileSize*2);
+		up_attacking4 = setup("/res/monster/ArcherUpShoot/tile003", BasePanel.tileSize, BasePanel.tileSize*2);;
+		up_attacking5 = setup("/res/monster/ArcherUpShoot/tile004", BasePanel.tileSize, BasePanel.tileSize*2);
 
-		down1 = setup("/res/monster/ArcherDownShoot/tile000", BasePanel.tileSize, BasePanel.tileSize);
-		down2 = setup("/res/monster/ArcherDownShoot/tile001", BasePanel.tileSize, BasePanel.tileSize);
-		down3 = setup("/res/monster/ArcherDownShoot/tile002", BasePanel.tileSize, BasePanel.tileSize);
-		down4 = setup("/res/monster/ArcherDownShoot/tile003", BasePanel.tileSize, BasePanel.tileSize);
-		down5 = setup("/res/monster/ArcherDownShoot/tile004", BasePanel.tileSize, BasePanel.tileSize);
+		down_attacking1 = setup("/res/monster/ArcherDownShoot/tile000", BasePanel.tileSize, BasePanel.tileSize*2);
+		down_attacking2 = setup("/res/monster/ArcherDownShoot/tile001", BasePanel.tileSize, BasePanel.tileSize*2);
+		down_attacking3 = setup("/res/monster/ArcherDownShoot/tile002", BasePanel.tileSize, BasePanel.tileSize*2);
+		down_attacking4 = setup("/res/monster/ArcherDownShoot/tile003", BasePanel.tileSize, BasePanel.tileSize*2);
+		down_attacking5 = setup("/res/monster/ArcherDownShoot/tile004", BasePanel.tileSize, BasePanel.tileSize*2);
 
-		left1 = setup("/res/monster/ArcherLeftShoot/tile000", BasePanel.tileSize, BasePanel.tileSize);
-		left2 = setup("/res/monster/ArcherLeftShoot/tile001", BasePanel.tileSize, BasePanel.tileSize);
-		left3 = setup("/res/monster/ArcherLeftShoot/tile002", BasePanel.tileSize, BasePanel.tileSize);
-		left4 = setup("/res/monster/ArcherLeftShoot/tile003", BasePanel.tileSize, BasePanel.tileSize);
-		left5 = setup("/res/monster/ArcherLeftShoot/tile004", BasePanel.tileSize, BasePanel.tileSize);
+		left_attacking1 = setup("/res/monster/ArcherLeftShoot/tile000", BasePanel.tileSize*2, BasePanel.tileSize);
+		left_attacking2 = setup("/res/monster/ArcherLeftShoot/tile001", BasePanel.tileSize*2, BasePanel.tileSize);
+		left_attacking3 = setup("/res/monster/ArcherLeftShoot/tile002", BasePanel.tileSize*2, BasePanel.tileSize);
+		left_attacking4 = setup("/res/monster/ArcherLeftShoot/tile003", BasePanel.tileSize*2, BasePanel.tileSize);
+		left_attacking5 = setup("/res/monster/ArcherLeftShoot/tile004", BasePanel.tileSize*2, BasePanel.tileSize);
 
-		right1 = setup("/res/monster/ArcherRightShoot/tile000", BasePanel.tileSize, BasePanel.tileSize);
-		right2 = setup("/res/monster/ArcherRightShoot/tile001", BasePanel.tileSize, BasePanel.tileSize);
-		right3 = setup("/res/monster/ArcherRightShoot/tile002", BasePanel.tileSize, BasePanel.tileSize);
-		right4 = setup("/res/monster/ArcherRightShoot/tile003", BasePanel.tileSize, BasePanel.tileSize);
-		right5 = setup("/res/monster/ArcherRightShoot/tile004", BasePanel.tileSize, BasePanel.tileSize);
+		right_attacking1 = setup("/res/monster/ArcherRightShoot/tile000", BasePanel.tileSize*2, BasePanel.tileSize);
+		right_attacking2 = setup("/res/monster/ArcherRightShoot/tile001", BasePanel.tileSize*2, BasePanel.tileSize);
+		right_attacking3 = setup("/res/monster/ArcherRightShoot/tile002", BasePanel.tileSize*2, BasePanel.tileSize);
+		right_attacking4 = setup("/res/monster/ArcherRightShoot/tile003", BasePanel.tileSize*2, BasePanel.tileSize);
+		right_attacking5 = setup("/res/monster/ArcherRightShoot/tile004", BasePanel.tileSize*2, BasePanel.tileSize);
 	}
 
+	public void chooseImageAttacking() {
+
+		up1 = up_attacking1;
+		up2 = up_attacking2;
+		up3 = up_attacking3;
+		up4 = up_attacking4;
+		up5 = up_attacking5;
+
+		down1 = down_attacking1;
+		down2 = down_attacking2;
+		down3 = down_attacking3;
+		down4 = down_attacking4;
+		down5 = down_attacking5;
+
+		left1 = left_attacking1;
+		left2 = left_attacking2;
+		left3 = left_attacking3;
+		left4 = left_attacking4;
+		left5 = left_attacking5;
+
+		right1 = right_attacking1;
+		right2 = right_attacking2;
+		right3 = right_attacking3;
+		right4 = right_attacking4;
+		right5 = right_attacking5;
+
+	}
+
+	public void chooseImageWalking() {
+
+		up1 = up_walking1;
+		up2 = up_walking2;
+		up3 = up_walking3;
+		up4 = up_walking4;
+		up5 = up_walking5;
+
+		down1 = down_walking1;
+		down2 = down_walking2;
+		down3 = down_walking3;
+		down4 = down_walking4;
+		down5 = down_walking5;
+
+		left1 = left_walking1;
+		left2 = left_walking2;
+		left3 = left_walking3;
+		left4 = left_walking4;
+		left5 = left_walking5;
+
+		right1 = right_walking1;
+		right2 = right_walking2;
+		right3 = right_walking3;
+		right4 = right_walking4;
+		right5 = right_walking5;
+
+	}
 
 	// Add a new field to remember if we're locked to the opposite direction:
 	private boolean inOppositeMode = false;
