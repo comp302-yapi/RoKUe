@@ -1,7 +1,9 @@
 package managers;
 
+import enums.Hall;
 import views.BuildPanel;
 import views.HallPanel;
+import views.TitlePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,6 +38,21 @@ public class ViewManager implements Runnable {
         JPanel panelToSwitch = panels.get(panelName);
         if (currentPanel != null && closeCurrentPanel) {
             frame.remove(currentPanel);
+        }
+
+        if (panelToSwitch instanceof TitlePanel) {
+
+            ((TitlePanel) panelToSwitch).soundManager.stop();
+            panels.clear();
+
+            JPanel titlePanel = new TitlePanel(this);
+            JPanel buildPanel = new BuildPanel(this);
+            JPanel hallPanel = new HallPanel(this);
+
+            addPanel("HallPanel", hallPanel);
+            addPanel("TitlePanel", titlePanel);
+            addPanel("BuildPanel", buildPanel);
+
         }
 
         currentPanel = panelToSwitch;

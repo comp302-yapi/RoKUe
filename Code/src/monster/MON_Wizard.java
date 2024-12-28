@@ -5,6 +5,7 @@ import object.SuperObject;
 import views.BasePanel;
 import views.HallPanel;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -15,6 +16,8 @@ public class MON_Wizard extends Entity {
 	private int teleportCounter = 0;
 	public boolean spawned = false;
 	private final int TELEPORT_INTERVAL = 300; // 5 seconds at 60 FPS
+	public int tempScreenX, tempScreenY;
+
 
 	public MON_Wizard(BasePanel panel) {
 		super(panel);
@@ -36,6 +39,10 @@ public class MON_Wizard extends Entity {
 		getImage();
 	}
 
+	public BufferedImage getAnimateImage() {
+		return image;
+	}
+
 	public void getImage() {
 		// Load wizard sprite images - you'll need to create these sprites
 		up1 = setup("/res/monster/wizard", panel.tileSize, panel.tileSize);
@@ -47,6 +54,96 @@ public class MON_Wizard extends Entity {
 		left2 = up2;
 		right1 = up1;
 		right2 = up2;
+	}
+
+	public int getBufferX() {
+		return tempScreenX;
+	}
+
+	public int getBufferY() {
+		return tempScreenY;
+	}
+
+	public void animateDirection() {
+
+		tempScreenX = worldX;
+		tempScreenY = worldY;
+
+		if (!isAttackingFighter()) {
+
+			switch (direction) {
+				case "up" -> {
+					if (spriteNum == 1) {
+						image = up1;
+					}
+					if (spriteNum == 2) {
+						image = up2;
+					}
+				}
+				case "down" -> {
+					if (spriteNum == 1) {
+						image = down1;
+					}
+					if (spriteNum == 2) {
+						image = down2;
+					}
+				}
+				case "left" -> {
+					if (spriteNum == 1) {
+						image = left1;
+					}
+					if (spriteNum == 2) {
+						image = left2;
+					}
+				}
+				case "right" -> {
+					if (spriteNum == 1) {
+						image = right1;
+					}
+					if (spriteNum == 2) {
+						image = right2;
+					}
+				}
+			}}
+
+		if (isAttackingFighter()) {
+			switch (direction) {
+				case "up" -> {
+					int tempScreenY = worldY - BasePanel.tileSize;
+					if (spriteNum == 1) {
+						image = up1;
+					}
+					if (spriteNum == 2) {
+						image = up2;
+					}
+				}
+				case "down" -> {
+					if (spriteNum == 1) {
+						image = down1;
+					}
+					if (spriteNum == 2) {
+						image = down2;
+					}
+				}
+				case "left" -> {
+					int tempScreenX = worldX - BasePanel.tileSize;
+					if (spriteNum == 1) {
+						image = left1;
+					}
+					if (spriteNum == 2) {
+						image = left2;
+					}
+				}
+				case "right" -> {
+					if (spriteNum == 1) {
+						image = right1;
+					}
+					if (spriteNum == 2) {
+						image = right2;
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -69,19 +166,19 @@ public class MON_Wizard extends Entity {
 	}
 
 	private void teleportRune() {
-		
+
 		if(panel instanceof HallPanel hp) {
-			
+
 			Random random = new Random();
-			
+
 			ArrayList<SuperObject> objs = null;
-			
+
 			switch(hp.currentHall) {
-			
-			
+
+
 			case HallOfWater -> {
 				objs = HallContainer.getHallOfWater().objects;
-				
+
 			}
 			case HallOfEarth -> {
 				objs = HallContainer.getHallOfEarth().objects;
@@ -92,9 +189,9 @@ public class MON_Wizard extends Entity {
 			case HallOfAir -> {
 				objs = HallContainer.getHallOfAir().objects;
 			}
-			
+
 			}
-			
+
 			SuperObject keyObject = null;
 			for(SuperObject obj:objs) {
 				if(obj.hasRune) {
@@ -102,17 +199,15 @@ public class MON_Wizard extends Entity {
 					break;
 				}
 			}
-			
+
 			if(keyObject != null) {
 				keyObject.hasRune = false;
 		        int randomIndex = random.nextInt(objs.size());
 		        SuperObject randomObj = objs.get(randomIndex);
 		        randomObj.hasRune = true;
-				
+
 			}
-
 		}
-
 	}
 
 	@Override

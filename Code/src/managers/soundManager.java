@@ -7,7 +7,7 @@ import java.net.URL;
 
 public class soundManager {
 
-    Clip clip;
+    public Clip clip;
     URL[] soundURL = new URL[30];
 
     public soundManager() {
@@ -46,9 +46,12 @@ public class soundManager {
     }
 
     public void stop() {
-
-        clip.stop();
-
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
+            clip.flush();
+            clip.setFramePosition(0);
+        }
+        this.clip = null;
     }
 
 }

@@ -41,7 +41,7 @@ public class HallPanel extends PlayablePanel{
     public int[][] gridWorldAll = new int[13][13];
     boolean availableSpot = false;
     private ImageIcon backgroundImage;
-    soundManager soundManager = new soundManager();
+    public soundManager soundManager = new soundManager();
     public boolean checkInventoryForReveal = false;
     public boolean checkInventoryForCloak = false;
     public boolean checkInventoryForLuringGem = false;
@@ -69,6 +69,27 @@ public class HallPanel extends PlayablePanel{
         this.addKeyListener(keyListener);
         getPlayer().addKeyListener(keyListener);
 
+        // RESETTING
+        HallContainer.getHallOfEarth().objects.clear();
+        HallContainer.getHallOfAir().objects.clear();
+        HallContainer.getHallOfWater().objects.clear();
+        HallContainer.getHallOfFire().objects.clear();
+
+        HallContainer.getHallOfEarth().gridWorld = new SuperObject[13][13];
+        HallContainer.getHallOfAir().gridWorld = new SuperObject[13][13];
+        HallContainer.getHallOfWater().gridWorld = new SuperObject[13][13];
+        HallContainer.getHallOfFire().gridWorld = new SuperObject[13][13];
+
+        HallContainer.getHallOfEarth().closeDoor();
+        HallContainer.getHallOfAir().closeDoor();
+        HallContainer.getHallOfWater().closeDoor();
+        HallContainer.getHallOfFire().closeDoor();
+
+        this.tileM.gridWorld = new SuperObject[13][13];
+        this.gridWorldAll = new int[13][13];
+        this.tileM.closeDoor();
+        this.tileM.enchantments.clear();
+
 
         setLayout(new BorderLayout());
 
@@ -85,9 +106,6 @@ public class HallPanel extends PlayablePanel{
         this.cChecker = new CollisionCheckerForHall(this);
 
         getPlayer().panel = this;
-
-        // PLAY MUSIC
-        playMusic(0);
     }
 
     public void startTimer() {
@@ -103,6 +121,8 @@ public class HallPanel extends PlayablePanel{
 //                System.out.println("Time Left: " + timeLeft + " seconds");
             } else {
                 timer.stop();
+                soundManager.stop();
+                soundManager = null;
                 getViewManager().switchTo("TitlePanel", true);
 //                System.out.println("Time's up!");
             }
@@ -285,7 +305,6 @@ public class HallPanel extends PlayablePanel{
         timer = null;
     }
 
-
     public CollisionCheckerForHall getCollisionCheckerForHall(){ return this.cChecker;}
 
     public void setPaused(boolean paused) {
@@ -335,6 +354,10 @@ public class HallPanel extends PlayablePanel{
 
         switch (currentHall) {
             case HallOfEarth -> {
+
+                if (getPlayer().life <= 0) {
+                    getViewManager().switchTo("TitlePanel", true);
+                }
 
                 if (timer == null) {
                     timeLeft = this.getSuperObjectLength() * 10;
@@ -551,7 +574,6 @@ public class HallPanel extends PlayablePanel{
         if (isPaused()) {
             drawPauseScreen(g2);
         }
-
         g2.dispose();
     }
 
@@ -666,21 +688,8 @@ public class HallPanel extends PlayablePanel{
         return hasEnchantment;
     }
 
-
     public ArrayList<Entity> getHallMonsters() {
         return monsters;
-    }
-
-    public void playMusic(int i) {
-
-        soundManager.setFile(i);
-        soundManager.play();
-        soundManager.loop();
-
-    }
-
-    public void stopMusic() {
-        soundManager.stop();
     }
 
     public void playSE(int i) {
@@ -753,7 +762,5 @@ public class HallPanel extends PlayablePanel{
         }
         return num;
     }
-
-
 }
 

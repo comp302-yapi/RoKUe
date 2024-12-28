@@ -23,6 +23,7 @@ public class Player extends Entity{
 	public int invincibilityCounter = 0;
 	public ArrayList<SuperObject> inventory = new ArrayList<>();
 
+
 	public Player(BasePanel panel) {
 		super(panel);
 
@@ -164,7 +165,7 @@ public class Player extends Entity{
 					invincibleCounterCloak++;
 				}
 
-				if (invincibleCounterCloak >= 240) {
+				if (invincibleCounterCloak >= 2) {
 					invincibleCloak = false;
 					invincibleCounterCloak = 0;
 				}
