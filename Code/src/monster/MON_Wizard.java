@@ -1,10 +1,15 @@
 package monster;
 
 import entity.Entity;
+import object.SuperObject;
 import views.BasePanel;
+import views.HallPanel;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
+
+import containers.HallContainer;
 
 public class MON_Wizard extends Entity {
 
@@ -161,20 +166,46 @@ public class MON_Wizard extends Entity {
 	}
 
 	private void teleportRune() {
-		Random random = new Random();
 
-		// Find and teleport the key (rune)
-		for (int i = 0; i < panel.getSuperObjects().length; i++) {
-			if (panel.getSuperObjects()[i] != null && panel.getSuperObjects()[i].name.equals("Key")) {
-				// Generate random position
-				int newX = random.nextInt(panel.screenWidth * 2); // Adjust range as needed
-				int newY = random.nextInt(panel.screenHeight * 2); // Adjust range as needed
+		if(panel instanceof HallPanel hp) {
 
-				// Update rune position
-				panel.getSuperObjects()[i].worldX = newX;
-				panel.getSuperObjects()[i].worldY = newY;
-				System.out.println(newX + " | " + newY);
-				break;
+			Random random = new Random();
+
+			ArrayList<SuperObject> objs = null;
+
+			switch(hp.currentHall) {
+
+
+			case HallOfWater -> {
+				objs = HallContainer.getHallOfWater().objects;
+
+			}
+			case HallOfEarth -> {
+				objs = HallContainer.getHallOfEarth().objects;
+						}
+			case HallOfFire -> {
+				objs = HallContainer.getHallOfFire().objects;
+			}
+			case HallOfAir -> {
+				objs = HallContainer.getHallOfAir().objects;
+			}
+
+			}
+
+			SuperObject keyObject = null;
+			for(SuperObject obj:objs) {
+				if(obj.hasRune) {
+					keyObject = obj;
+					break;
+				}
+			}
+
+			if(keyObject != null) {
+				keyObject.hasRune = false;
+		        int randomIndex = random.nextInt(objs.size());
+		        SuperObject randomObj = objs.get(randomIndex);
+		        randomObj.hasRune = true;
+
 			}
 		}
 	}

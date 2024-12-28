@@ -26,7 +26,7 @@ public class TileManagerForHall{
 	public int[][] mapTileNum;
 	public ArrayList<SuperObject> objects = new ArrayList<>();
 	public ArrayList<SuperObject> enchantments = new ArrayList<>();
-	public SuperObject[][] gridWorld = new SuperObject[13][13];
+	public SuperObject[][] gridWorld = new SuperObject[13][14];
 	//public ArrayList<Entity> monsters = new ArrayList<>();
 	public int maxCol,maxRow,idx;
 	private boolean isOpened = false;
@@ -200,6 +200,10 @@ public class TileManagerForHall{
 	}
 
 	public void removeObject(SuperObject obj) {
+		int column = (obj.worldY - 96) / 48;
+		int row =  (obj.worldX - 336) / 48;
+		gridWorld[row][column]  = null; 
+		
 		objects.remove(obj);
 	}
 }

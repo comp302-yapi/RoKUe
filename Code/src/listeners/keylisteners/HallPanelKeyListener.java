@@ -29,20 +29,20 @@ public class HallPanelKeyListener extends BaseKeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_W) {
+        if (code == KeyEvent.VK_UP) {
             upPressed = true;
         }
 
-        if (code == KeyEvent.VK_S) {
+        if (code == KeyEvent.VK_DOWN) {
             downPressed = true;
         }
 
-        if (code == KeyEvent.VK_A) {
+        if (code == KeyEvent.VK_LEFT) {
             leftPressed = true;
 
         }
 
-        if (code == KeyEvent.VK_D) {
+        if (code == KeyEvent.VK_RIGHT) {
             rightPressed = true;
         }
         
@@ -65,20 +65,20 @@ public class HallPanelKeyListener extends BaseKeyListener {
             }
         } else if (isLureModeActive) {
             switch (code) {
-                case KeyEvent.VK_LEFT -> {
+                case KeyEvent.VK_A -> {
                     isLureModeActive = false;
                     hallPanel.throwGem("Left");
 
                 }
-                case KeyEvent.VK_RIGHT -> {
+                case KeyEvent.VK_D -> {
                     hallPanel.throwGem("Right");
                     isLureModeActive = false;
                 }
-                case KeyEvent.VK_UP -> {
+                case KeyEvent.VK_W -> {
                     hallPanel.throwGem("Up");
                     isLureModeActive = false;
                 }
-                case KeyEvent.VK_DOWN -> {
+                case KeyEvent.VK_S -> {
                     hallPanel.throwGem("Down");
                     isLureModeActive = false;
                 }
@@ -96,19 +96,19 @@ public class HallPanelKeyListener extends BaseKeyListener {
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_W) {
+        if (code == KeyEvent.VK_UP) {
             upPressed = false;
         }
 
-        if (code == KeyEvent.VK_S) {
+        if (code == KeyEvent.VK_DOWN) {
             downPressed = false;
         }
 
-        if (code == KeyEvent.VK_A) {
+        if (code == KeyEvent.VK_LEFT) {
             leftPressed = false;
         }
 
-        if (code == KeyEvent.VK_D) {
+        if (code == KeyEvent.VK_RIGHT) {
             rightPressed = false;
         }
     }
