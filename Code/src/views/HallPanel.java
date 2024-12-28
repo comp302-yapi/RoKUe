@@ -192,12 +192,17 @@ public class HallPanel extends PlayablePanel{
 
         int locationX = random.nextInt(1,13) + 7;
         int locationY = random.nextInt(1,14) + 2;
+        
+        int gX = (BasePanel.tileSize*locationX - 336)/48;
+        int gY = (BasePanel.tileSize*locationY - 96) / 48;
 
         setGridWorld();
 
-        while (gridWorldAll[locationX - 8][locationY - 3] != 0)  {
+        while (gridWorldAll[locationX - 8][locationY - 3] != 0 || getTileM().gridWorld[gX][gY] != null)  {
             locationX = random.nextInt(1,13) + 7;
             locationY = random.nextInt(1,14) + 2;
+            gX = (BasePanel.tileSize*locationX - 336)/48;
+            gY = (BasePanel.tileSize*locationY - 96) / 48;
         }
 
         switch (pickMonster) {
