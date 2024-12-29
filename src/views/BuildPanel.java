@@ -5,11 +5,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import containers.HallContainer;
 import containers.TileContainer;
 import enums.BuildDirection;
 import enums.Hall;
+import listeners.keylisteners.BuildPanelKeyListener;
 import listeners.mouselisteners.BuildPanelMouseListener;
 import managers.*;
 import object.*;
@@ -17,10 +20,13 @@ import utils.PanelUtils;
 
 
 public class BuildPanel extends NonPlayablePanel {
+
+
 	private final BuildPanelMouseListener buildPanelMouseListener;
+	private final BuildPanelKeyListener buildPanelKeyListener;
 	public ArrayList<SuperObject> objectsToDraw = new ArrayList<>();
 
-	private Hall currentHall;// enum oluşturabiliriz bunun için
+	private Hall currentHall; // enum oluşturabiliriz bunun için
 
 	public int mouseClickedX, mouseClickedY;
 	public int mouseDraggedX, mouseDraggedY;
@@ -44,10 +50,12 @@ public class BuildPanel extends NonPlayablePanel {
 
 	public BuildPanel(ViewManager viewManager) {
 		super(viewManager);
-
+        this.buildPanelKeyListener = new BuildPanelKeyListener(this);
         this.buildPanelMouseListener = new BuildPanelMouseListener(this);
+
         this.addMouseListener(buildPanelMouseListener);
 		this.addMouseMotionListener(buildPanelMouseListener);
+		this.addKeyListener(buildPanelKeyListener);
 
         currentHall = Hall.HallOfEarth;
 		this.objectsToDraw.clear();

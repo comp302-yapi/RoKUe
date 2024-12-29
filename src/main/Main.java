@@ -16,7 +16,7 @@ public class Main {
 		window.setTitle("RokueLike Game");
 
 		TileContainer.initiateTiles();
-		
+
 		ViewManager viewManager = new ViewManager(window);
 		//JPanel gamePanel = new GamePanel(viewManager);
 		JPanel titlePanel = new TitlePanel(viewManager);

@@ -1,6 +1,7 @@
 package saveStates;
 
 import enums.Hall;
+import views.BuildPanel;
 import views.HallPanel;
 
 import java.io.Serializable;
@@ -30,8 +31,8 @@ public class GameState implements Serializable {
     private BuildPanelState buildPanelState;
 
     // HallPanel state
-    private HallPanelState hallPanelState;
     private HallPanel saveHallPanel;
+    private BuildPanel saveBuildPanel;
 
     // Any other variables you want to persist
     private String currentLevel;
@@ -60,9 +61,21 @@ public class GameState implements Serializable {
     public List<MonsterState> getMonsters() { return monsters; }
     public void setMonsters(List<MonsterState> monsters) { this.monsters = monsters; }
 
-    public BuildPanelState getBuildPanelState() { return buildPanelState; }
-    public void setBuildPanelState(BuildPanelState buildPanelState) { this.buildPanelState = buildPanelState; }
+    // BUILD PANEL
+    public BuildPanel getBuildPanelState() { return saveBuildPanel; }
+    public void setBuildPanelState(BuildPanel buildPanel) {
 
+        System.out.println("Saving Build Panel...");
+
+        if (buildPanel != null) {
+            System.out.println("Saved Build Panel");
+
+        }
+        this.saveBuildPanel = buildPanel;
+
+    }
+
+    // HALL PANEL
     public HallPanel getHallPanelState() { return saveHallPanel; }
     public void setHallPanelState(HallPanel hallPanel) {
         System.out.println("Saving Hall Panel...");

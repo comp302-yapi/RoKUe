@@ -1,18 +1,20 @@
 package saveStates;
 
+import enums.Hall;
+import object.SuperObject;
+import views.BuildPanel;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class BuildPanelState implements Serializable {
     private static final long serialVersionUID = 1L;
+    public List<SuperObject> objects;
+    public Hall currentHall;
 
-    private List<ObjectState> objects; // Objects on the BuildPanel
-
-    public BuildPanelState(List<ObjectState> objects) {
-        this.objects = objects;
+    public BuildPanelState(BuildPanel buildPanel) {
+        this.objects = new ArrayList<>(buildPanel.getCurrentHallManager().objects);
+        this.currentHall = buildPanel.getCurrentHall();
     }
-
-    public List<ObjectState> getObjects() { return objects; }
-    public void setObjects(List<ObjectState> objects) { this.objects = objects; }
 }

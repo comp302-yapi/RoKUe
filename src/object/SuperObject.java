@@ -80,4 +80,7 @@ public class SuperObject implements Serializable {
 
 		}
 	}
+
+	public void loadImage() {
+	}
 }

@@ -9,9 +9,14 @@ import object.SuperObject;
 import managers.TileManager;
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
+import java.io.Serializable;
 
-public class NonPlayablePanel extends JPanel implements BasePanel {
+public class NonPlayablePanel extends JPanel implements BasePanel, Serializable {
 
+
+    @Serial
+    private static final long serialVersionUID = 1L; // Add this for versioning
     private final ViewManager viewManager;
 
     public NonPlayablePanel(ViewManager viewManager) {

@@ -1,6 +1,8 @@
 package enums;
 
-public enum Hall {
+import java.io.Serializable;
+
+public enum Hall implements Serializable {
 	HallOfWater,
 	HallOfEarth,
 	HallOfAir,

@@ -1,14 +1,17 @@
 package managers;
 
-import enums.Hall;
+import saveStates.GameState;
 import views.BuildPanel;
 import views.HallPanel;
 import views.TitlePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +30,10 @@ public class ViewManager implements Runnable, Serializable {
         this.panels = new HashMap<>();
         this.gameThread = new Thread(this);
 
+    }
+
+    public Map<String, JPanel> getPanels() {
+        return panels;
     }
 
     public void addPanel(String name, JPanel panel) {
@@ -65,6 +72,50 @@ public class ViewManager implements Runnable, Serializable {
         frame.revalidate();
         frame.repaint();
         panelToSwitch.requestFocusInWindow();
+    }
+
+    public void loadGame() {
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("game_save.ser"))) {
+            GameState savedState = (GameState) ois.readObject();
+            printSavedState(savedState);
+
+            panels.clear();
+
+            JPanel titlePanel = new TitlePanel(this);
+            JPanel buildPanel = savedState.getBuildPanelState();
+            JPanel hallPanel = savedState.getHallPanelState();
+
+            addPanel("HallPanel", hallPanel);
+            addPanel("TitlePanel", titlePanel);
+            addPanel("BuildPanel", buildPanel);
+
+
+        } catch (Exception c) {
+            c.printStackTrace();
+        }
+    }
+
+    public void printSavedState(GameState savedState) {
+        // Print out the contents of the saved game
+        System.out.println("Hero X: " + savedState.getHeroX());
+        System.out.println("Hero Y: " + savedState.getHeroY());
+        System.out.println("Time Remaining: " + savedState.getTimeRemaining());
+        System.out.println("Lives Remaining: " + savedState.getLivesRemaining());
+
+        if (savedState.getHallPanelState() != null) {
+            System.out.println("HallPanel State: ");
+            System.out.println("  Monsters: " + Arrays.toString(savedState.getHallPanelState().getMonsters()));
+            System.out.println("  Objects: " + savedState.getHallPanelState().tileM.objects);
+            System.out.println("  Enchantments: " + savedState.getHallPanelState().tileM.enchantments);
+
+        }
+
+        if (savedState.getBuildPanelState() != null) {
+            System.out.println("BuildPanel State: ");
+            System.out.println("  Objects: " + savedState.getBuildPanelState().getCurrentHallManager().objects);
+        }
+
     }
 
     public void startThread() {

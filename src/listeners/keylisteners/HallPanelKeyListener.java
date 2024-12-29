@@ -1,15 +1,9 @@
 package listeners.keylisteners;
 
-import controllers.HallController;
-import enums.Hall;
 import listeners.BaseKeyListener;
-import object.ENCH_Reveal;
-import object.OBJ_Door;
-import object.SuperObject;
-import saveStates.BuildPanelState;
+import managers.SaveManager;
 import saveStates.GameState;
-import saveStates.HallPanelState;
-import views.GamePanel;
+import views.BuildPanel;
 import views.HallPanel;
 
 import java.awt.event.KeyEvent;
@@ -24,6 +18,7 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
     private final HallPanel hallPanel;
     public boolean monsterSpawn = false;
     boolean isLureModeActive = false;
+    private SaveManager saveManager;
 
     public HallPanelKeyListener(HallPanel hallPanel) {
         super();
@@ -60,7 +55,9 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
                 a.printStackTrace();
                 System.out.println("Failed to save the game.");
             }
+        }
 
+        if (code == KeyEvent.VK_L) {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("game_save.ser"))) {
                 GameState savedState = (GameState) ois.readObject();
 
@@ -73,16 +70,16 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
                 if (savedState.getHallPanelState() != null) {
                     System.out.println("HallPanel State: ");
                     System.out.println("  Monsters: " + Arrays.toString(savedState.getHallPanelState().getMonsters()));
-                    System.out.println("  Objects: " + savedState.getHallPanelState().tileM.objects);
                     System.out.println("  Enchantments: " + savedState.getHallPanelState().tileM.enchantments);
-
+                    System.out.println("  Objects: " + savedState.getHallPanelState().tileM.objects);
 
                 }
 
                 if (savedState.getBuildPanelState() != null) {
                     System.out.println("BuildPanel State: ");
-                    System.out.println("  Objects: " + savedState.getBuildPanelState().getObjects());
                 }
+
+
             } catch (Exception c) {
                 c.printStackTrace();
             }

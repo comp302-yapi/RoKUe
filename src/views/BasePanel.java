@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 
-public interface BasePanel {
+public interface BasePanel{
 
     // SCREEN SETTINGS
     int originalTileSize = 16; // 16x16 tile

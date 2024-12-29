@@ -13,19 +13,20 @@ import monster.MON_Archer;
 import monster.MON_Fighter;
 import monster.MON_Wizard;
 import object.*;
-import tile.Tile;
 import utils.PanelUtils;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 public class HallPanel extends PlayablePanel{
+
+    @Serial
+    private static final long serialVersionUID = 1L; // Add this for versioning
+
 
     public Hall currentHall = Hall.HallOfEarth;
     private final HallPanelKeyListener keyListener;
