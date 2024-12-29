@@ -3,6 +3,7 @@ package entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
@@ -13,26 +14,28 @@ import views.BasePanel;
 import views.HallPanel;
 
 
-public class Entity {
+public class Entity implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	
 	public BasePanel panel;
 	public int worldX, worldY;
 	public int speed;
 	
-	public BufferedImage up1, up2, up3, up4, up5;
-	public BufferedImage down1, down2, down3, down4, down5;
-	public BufferedImage left1, left2, left3, left4, left5;
-	public BufferedImage right1, right2 , right3, right4, right5;
+	public transient BufferedImage up1, up2, up3, up4, up5;
+	public transient BufferedImage down1, down2, down3, down4, down5;
+	public transient BufferedImage left1, left2, left3, left4, left5;
+	public transient BufferedImage right1, right2 , right3, right4, right5;
 
-	public BufferedImage up_attacking1, up_attacking2, up_attacking3, up_attacking4, up_attacking5;
-	public BufferedImage down_attacking1, down_attacking2, down_attacking3, down_attacking4, down_attacking5;
-	public BufferedImage left_attacking1, left_attacking2, left_attacking3, left_attacking4, left_attacking5;
-	public BufferedImage right_attacking1, right_attacking2, right_attacking3, right_attacking4, right_attacking5;
+	public transient BufferedImage up_attacking1, up_attacking2, up_attacking3, up_attacking4, up_attacking5;
+	public transient BufferedImage down_attacking1, down_attacking2, down_attacking3, down_attacking4, down_attacking5;
+	public transient BufferedImage left_attacking1, left_attacking2, left_attacking3, left_attacking4, left_attacking5;
+	public transient BufferedImage right_attacking1, right_attacking2, right_attacking3, right_attacking4, right_attacking5;
 
-	public BufferedImage up_walking1, up_walking2, up_walking3, up_walking4, up_walking5;
-	public BufferedImage down_walking1, down_walking2, down_walking3, down_walking4, down_walking5;
-	public BufferedImage left_walking1, left_walking2, left_walking3, left_walking4, left_walking5;
-	public BufferedImage right_walking1, right_walking2, right_walking3, right_walking4, right_walking5;
+	public transient BufferedImage up_walking1, up_walking2, up_walking3, up_walking4, up_walking5;
+	public transient BufferedImage down_walking1, down_walking2, down_walking3, down_walking4, down_walking5;
+	public transient BufferedImage left_walking1, left_walking2, left_walking3, left_walking4, left_walking5;
+	public transient BufferedImage right_walking1, right_walking2, right_walking3, right_walking4, right_walking5;
 
 	public String direction = "down";
 
@@ -53,7 +56,7 @@ public class Entity {
 	public boolean invincibleCloak = false;
 	public int invincibleCounterCloak;
 	
-	public BufferedImage image, image2, image3;
+	public transient BufferedImage image, image2, image3;
 	public String name;
 	public boolean collision = false;
 	

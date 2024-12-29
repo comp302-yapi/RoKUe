@@ -1,21 +1,9 @@
 package object;
 
-import java.io.IOException;
+public class OBJ_Key extends SuperObject {
 
-import javax.imageio.ImageIO;
-
-public class OBJ_Key extends SuperObject{
-	
 	public OBJ_Key() {
-		
+		super("/res/objects/key.png", null, null); // Pass the image path for image1, others are null if unused
 		name = "Key";
-		
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/res/objects/key.png"));
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
-
 }

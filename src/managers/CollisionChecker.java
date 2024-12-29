@@ -6,7 +6,11 @@ import entity.Player;
 import object.SuperObject;
 import views.BasePanel;
 
-public class CollisionChecker {
+import java.io.Serializable;
+
+public class CollisionChecker implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	
 	private final TileManager tileM;
 	private final Player player;

@@ -4,8 +4,11 @@ import listeners.BaseKeyListener;
 import views.TitlePanel;
 
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 
-public class TitlePanelKeyListener extends BaseKeyListener {
+public class TitlePanelKeyListener extends BaseKeyListener implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final TitlePanel titlePanel;
 

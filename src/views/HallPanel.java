@@ -3,6 +3,7 @@ package views;
 import containers.HallContainer;
 import containers.TileContainer;
 import controllers.HallController;
+import data.HallPanelData;
 import entity.Arrow;
 import entity.Entity;
 import enums.Hall;
@@ -35,7 +36,7 @@ public class HallPanel extends PlayablePanel{
     final CollisionCheckerForHall cChecker;
     private boolean isPaused;
     boolean wizardChecker = false;
-    BufferedImage heart_full, heart_half, heart_blank;
+    transient BufferedImage heart_full, heart_half, heart_blank;
     SuperObject heart = new OBJ_Heart();
     public SuperObject[][] gridWorld = new SuperObject[13][14];
     public int[][] gridWorldAll;
@@ -107,6 +108,76 @@ public class HallPanel extends PlayablePanel{
 
         getPlayer().panel = this;
     }
+
+    public HallPanelData exportData() {
+        return new HallPanelData(
+                currentHall,
+                monsters,
+                gridWorld,
+                gridWorldAll,
+                timeLeft,
+                isPaused,
+                checkInventoryForReveal,
+                checkInventoryForCloak,
+                checkInventoryForLuringGem,
+                HallContainer.getHallOfEarth().objects,
+                HallContainer.getHallOfAir().objects,
+                HallContainer.getHallOfWater().objects,
+                HallContainer.getHallOfFire().objects
+
+        );
+    }
+
+    public void restoreData(HallPanelData data) {
+        this.currentHall = data.currentHall;
+        this.monsters.clear();
+        this.monsters.addAll(data.monsters);
+        HallContainer.getHallOfEarth().gridWorld = new SuperObject[13][14];
+        HallContainer.getHallOfAir().gridWorld = new SuperObject[13][14];
+        HallContainer.getHallOfWater().gridWorld = new SuperObject[13][14];
+        HallContainer.getHallOfFire().gridWorld = new SuperObject[13][14];
+        this.gridWorld = data.gridWorld;
+        this.gridWorldAll = data.gridWorldAll;
+        this.timeLeft = data.timeLeft;
+        this.isPaused = data.isPaused;
+        this.checkInventoryForReveal = data.checkInventoryForReveal;
+        this.checkInventoryForCloak = data.checkInventoryForCloak;
+        this.checkInventoryForLuringGem = data.checkInventoryForLuringGem;
+        this.tileM.objects.clear();
+        HallContainer.getHallOfEarth().objects.clear();
+        HallContainer.getHallOfAir().objects.clear();
+        HallContainer.getHallOfWater().objects.clear();
+        HallContainer.getHallOfFire().objects.clear();
+
+        this.tileM = HallContainer.getHallOfEarth();
+        this.tileM.objects = data.objectsEarth;
+
+        this.tileM = HallContainer.getHallOfAir();
+        this.tileM.objects = data.objectsAir;
+
+        this.tileM = HallContainer.getHallOfWater();
+        this.tileM.objects = data.objectsWater;
+
+        this.tileM = HallContainer.getHallOfFire();
+        this.tileM.objects = data.objectsFire;
+
+        switch (currentHall) {
+            case HallOfEarth -> {
+                this.tileM = HallContainer.getHallOfEarth();
+            }
+            case HallOfAir -> {
+                this.tileM = HallContainer.getHallOfAir();
+            }
+            case HallOfWater -> {
+                this.tileM = HallContainer.getHallOfWater();
+            }
+            case HallOfFire -> {
+                this.tileM = HallContainer.getHallOfFire();
+            }
+            default -> throw new IllegalArgumentException("Unexpected hall type: " + currentHall);
+        }
+        }
+
 
     public void startTimer() {
         // Stop any existing timer

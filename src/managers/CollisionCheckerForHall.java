@@ -8,9 +8,12 @@ import object.SuperObject;
 import views.BasePanel;
 import views.HallPanel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CollisionCheckerForHall {
+public class CollisionCheckerForHall implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final HallPanel hallPanel;
     private final Player player;

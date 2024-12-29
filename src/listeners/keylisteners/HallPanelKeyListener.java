@@ -1,17 +1,22 @@
 package listeners.keylisteners;
 
 import controllers.HallController;
+import entity.GameState;
 import enums.Hall;
 import listeners.BaseKeyListener;
 import object.ENCH_Reveal;
 import object.OBJ_Door;
 import object.SuperObject;
+import views.BuildPanel;
 import views.GamePanel;
 import views.HallPanel;
 
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 
-public class HallPanelKeyListener extends BaseKeyListener {
+public class HallPanelKeyListener extends BaseKeyListener implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final HallPanel hallPanel;
     public boolean monsterSpawn = false;
@@ -28,6 +33,18 @@ public class HallPanelKeyListener extends BaseKeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
+
+        if (code == KeyEvent.VK_O) {
+            GameState gs = hallPanel.getViewManager().collectGameState();
+            hallPanel.getViewManager().saveGame("newSave.ser", gs);
+            System.out.println(gs);
+        }
+
+        if (code == KeyEvent.VK_L) {
+            System.out.println("Pressed Load");
+            GameState gs = hallPanel.getViewManager().loadGame("newSave.ser");
+            System.out.println(gs.toString());
+        }
 
         if (code == KeyEvent.VK_UP) {
             upPressed = true;

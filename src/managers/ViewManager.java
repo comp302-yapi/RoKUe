@@ -1,21 +1,28 @@
 package managers;
 
-import enums.Hall;
+import data.BuildPanelData;
+import data.HallPanelData;
+import entity.GameState;
+import utils.GameLoader;
+import utils.GameSaver;
 import views.BuildPanel;
 import views.HallPanel;
 import views.TitlePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViewManager implements Runnable {
+public class ViewManager implements Runnable, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final JFrame frame;
-    private final Map<String, JPanel> panels;
+    public final Map<String, JPanel> panels;
     private JPanel currentPanel;
-    private final Thread gameThread;
+    private final transient Thread gameThread;
 
     public ViewManager(JFrame frame) {
         this.frame = frame;
@@ -33,7 +40,6 @@ public class ViewManager implements Runnable {
             // TODO: Decide on proper logging - if we need
             throw new IllegalArgumentException("Panel with that key does not exist");
         }
-
 
         JPanel panelToSwitch = panels.get(panelName);
         if (currentPanel != null && closeCurrentPanel) {
@@ -60,6 +66,36 @@ public class ViewManager implements Runnable {
         frame.revalidate();
         frame.repaint();
         panelToSwitch.requestFocusInWindow();
+    }
+
+    public GameState collectGameState() {
+
+        HallPanel h = (HallPanel) panels.get("HallPanel");
+        HallPanelData hallPanelData = h.exportData();
+
+        BuildPanel b = (BuildPanel) panels.get("BuildPanel");
+        BuildPanelData buildPanelData = b.exportData();
+
+        return new GameState(hallPanelData, buildPanelData);
+    }
+
+    public void restoreGameState(GameState gameState) {
+        HallPanel h = (HallPanel) panels.get("HallPanel");
+        h.restoreData(gameState.getHallPanelData());
+
+        BuildPanel b = (BuildPanel) panels.get("BuildPanel");
+        b.restoreData(gameState.getBuildPanelData());
+    }
+
+    public void saveGame(String filePath, GameState gameState) {
+        GameSaver.saveGame(gameState, filePath);
+    }
+
+    public GameState loadGame(String filePath) {
+//                if (loadedGameState != null) {
+//            restoreGameState(loadedGameState);
+//        }
+        return GameLoader.loadGame(filePath);
     }
 
     public void startThread() {

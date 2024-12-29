@@ -13,11 +13,14 @@ import views.BasePanel;
 import views.BuildPanel;
 import views.HallPanel;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
 
-public class HallController {
+public class HallController implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final HallValidator hallValidator;
     private final BuildPanel buildPanel;
@@ -34,8 +37,6 @@ public class HallController {
 
         x -= x % 48;
         y -= y % 48;
-
-//        System.out.println(x + " | " + y);
 
         currentHall.addObject(obj, x, y);
     }

@@ -7,8 +7,11 @@ import object.*;
 import views.HallPanel;
 
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
-public class HallPanelMouseListener extends BaseMouseListener {
+public class HallPanelMouseListener extends BaseMouseListener implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private HallPanel hallPanel;
 

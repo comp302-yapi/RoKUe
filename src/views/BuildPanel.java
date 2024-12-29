@@ -8,8 +8,11 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import containers.HallContainer;
 import containers.TileContainer;
+import data.BuildPanelData;
 import enums.BuildDirection;
 import enums.Hall;
+import listeners.keylisteners.BuildPanelKeyListener;
+import listeners.keylisteners.HallPanelKeyListener;
 import listeners.mouselisteners.BuildPanelMouseListener;
 import managers.*;
 import object.*;
@@ -21,6 +24,8 @@ public class BuildPanel extends NonPlayablePanel {
 	public ArrayList<SuperObject> objectsToDraw = new ArrayList<>();
 
 	private Hall currentHall;// enum oluşturabiliriz bunun için
+
+	private final BuildPanelKeyListener keyListener;
 
 	public int mouseClickedX, mouseClickedY;
 	public int mouseDraggedX, mouseDraggedY;
@@ -48,8 +53,10 @@ public class BuildPanel extends NonPlayablePanel {
         this.buildPanelMouseListener = new BuildPanelMouseListener(this);
         this.addMouseListener(buildPanelMouseListener);
 		this.addMouseMotionListener(buildPanelMouseListener);
+		this.keyListener = new BuildPanelKeyListener(this);
+		this.addKeyListener(keyListener);
 
-        currentHall = Hall.HallOfEarth;
+		currentHall = Hall.HallOfEarth;
 		this.objectsToDraw.clear();
 		this.getCurrentHallManager().objects.clear();
 
@@ -57,6 +64,21 @@ public class BuildPanel extends NonPlayablePanel {
 		loadObjects();
 
 	}
+
+	public BuildPanelData exportData() {
+		return new BuildPanelData(
+				new ArrayList<>(getCurrentHallManager().objects),
+				currentHall,
+				isHallValidated
+		);
+	}
+
+	public void restoreData(BuildPanelData data) {
+		this.getCurrentHallManager().objects = new ArrayList<>(data.objectsToDraw);
+		this.currentHall = data.currentHall;
+		this.isHallValidated = data.isHallValidated;
+	}
+
 
 	public Hall getCurrentHall() {
 		return this.currentHall;
@@ -110,6 +132,7 @@ public class BuildPanel extends NonPlayablePanel {
 		objectsToDraw.add(chain1);
 		objectsToDraw.add(pot1);
 	}
+
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;

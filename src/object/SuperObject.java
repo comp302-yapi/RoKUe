@@ -3,19 +3,26 @@ package object;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.*;
 
 import views.BasePanel;
 import views.HallPanel;
 
-public class SuperObject {
+import javax.imageio.ImageIO;
 
-	public BufferedImage image, image2, image3;
+public class SuperObject implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	public transient BufferedImage image, image2, image3;
 	public String name;
 	public boolean collision = false;
 	public int worldX, worldY;
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 	public int solidAreaDefaultX = 0;
 	public int solidAreaDefaultY = 0;
+
+	private String imagePath, image2Path, image3Path;
 
 	// Field to track if the object contains a hidden rune
 	public boolean hasRune = false;
@@ -24,6 +31,39 @@ public class SuperObject {
 	 * Handles the player's interaction when they click this object.
 	 * For example, if the object contains a rune, it prints a message.
 	 */
+
+	public SuperObject(String imagePath, String image2Path, String image3Path) {
+		this.imagePath = imagePath;
+		this.image2Path = image2Path;
+		this.image3Path = image3Path;
+		loadImages();
+	}
+
+	// Load images from paths
+	private void loadImages() {
+		try {
+			if (imagePath != null) image = ImageIO.read(getClass().getResourceAsStream(imagePath));
+			if (image2Path != null) image2 = ImageIO.read(getClass().getResourceAsStream(image2Path));
+			if (image3Path != null) image3 = ImageIO.read(getClass().getResourceAsStream(image3Path));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Custom serialization to save paths
+	@Serial
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject(); // Serialize non-transient fields
+		System.out.println("CALLED2222");
+
+	}
+
+	@Serial
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		System.out.println("CALLED");
+		in.defaultReadObject(); // Deserialize non-transient fields
+		loadImages(); // Reload transient fields
+	}
 
 
 	private int calculateDistanceToPlayer(HallPanel hp) {

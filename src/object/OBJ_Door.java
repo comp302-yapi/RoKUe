@@ -1,23 +1,10 @@
 package object;
 
-import java.io.IOException;
+public class OBJ_Door extends SuperObject {
 
-import javax.imageio.ImageIO;
-
-public class OBJ_Door extends SuperObject{
-	
 	public OBJ_Door() {
-		
+		super("/res/objects/door.png", null, null); // Pass the image path for image1, others are null if unused
 		name = "Door";
 		this.collision = true;
-		
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/res/objects/door.png"));
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		collision = true;
 	}
-
 }

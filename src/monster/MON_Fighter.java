@@ -341,9 +341,9 @@ public class MON_Fighter extends Entity {
 							((HallPanel) panel).playSE(3);
 						}
 
-						System.out.println("HIT PLAYER");
+//						System.out.println("HIT PLAYER");
 					} else {
-						System.out.println("Miss");
+//						System.out.println("Miss");
 
 					}
 

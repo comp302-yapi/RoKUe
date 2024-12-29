@@ -2,12 +2,16 @@ package validators;
 
 import enums.Hall;
 
-public class HallValidator {
+import java.io.Serializable;
 
-    private final int EARTH_HALL_MIN_OBJECTS = 3;
-    private final int AIR_HALL_MIN_OBJECTS = 3;
-    private final int WATER_HALL_MIN_OBJECTS = 3;
-    private final int FIRE_HALL_MIN_OBJECTS = 3;
+public class HallValidator implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private final int EARTH_HALL_MIN_OBJECTS = 1;
+    private final int AIR_HALL_MIN_OBJECTS = 0;
+    private final int WATER_HALL_MIN_OBJECTS = 0;
+    private final int FIRE_HALL_MIN_OBJECTS = 0;
 
     public boolean validateHall(Hall hall, int hallObjectsCount) {
         switch (hall) {
