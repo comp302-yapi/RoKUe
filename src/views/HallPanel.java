@@ -34,7 +34,7 @@ public class HallPanel extends PlayablePanel {
 	public TileManagerForHall tileM;
 	final CollisionCheckerForHall cChecker;
 	private boolean isPaused;
-	boolean wizardChecker = false;
+	public boolean wizardChecker = false;
 	BufferedImage heart_full, heart_half, heart_blank;
 	SuperObject heart = new OBJ_Heart();
 	public SuperObject[][] gridWorld = new SuperObject[13][14];
@@ -47,13 +47,14 @@ public class HallPanel extends PlayablePanel {
 	public boolean checkInventoryForLuringGem = false;
 	public boolean drawReveal = false;
 	public int revealX, revealY, revealCounter, change;
+	public final int secondPerObject = 100; 
 
 	// Set the new time
 
 	private TimeManager timeManager;
 	private JLabel timerLabel;
 	private Timer timer;
-	private int timeLeft;
+	public int timeLeft;
 	private boolean createTimer = false;
 
 	public int spawnCounter;
@@ -119,7 +120,7 @@ public class HallPanel extends PlayablePanel {
 		if (!isPaused()) {
 
 			if (TimeManager.getInstance().timer == null) {
-				timeLeft = this.getSuperObjectLength() * 100;
+				timeLeft = this.getSuperObjectLength() * secondPerObject;
 				TimeManager.getInstance().startTimer(timeLeft);
 			}
 
@@ -135,7 +136,7 @@ public class HallPanel extends PlayablePanel {
 
 			getPlayer().move();
 
-			for (Entity monster : monsters) {
+			for (Entity monster : new ArrayList<>(monsters)) {
 				if (monster != null) {
 					monster.update();
 				}
@@ -158,7 +159,7 @@ public class HallPanel extends PlayablePanel {
 			// Generate Monster
 			spawnCounter++;
 
-			if (spawnCounter >= 60 * 3) {
+			if (spawnCounter >= 60 * 5) {
 				generateMonster();
 				spawnCounter = 0;
 			}

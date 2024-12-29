@@ -15,8 +15,13 @@ import containers.HallContainer;
 public class MON_Wizard extends Entity {
 
 	private int teleportCounter = 0;
+	private int waitCounter = 0;
+	private int teleportPlayerCounter;
 	public boolean spawned = false;
-	private final int TELEPORT_INTERVAL = 300; // 5 seconds at 60 FPS
+	private final int TELEPORT_INTERVAL = 180; 
+	private final int WAIT_INTERVAL = 120; 
+	private final int TELEPORT_PLAYER_INTERVAL = 60;
+	public boolean playerTeleported = false;
 	public int tempScreenX, tempScreenY;
 
 
@@ -46,8 +51,8 @@ public class MON_Wizard extends Entity {
 
 	public void getImage() {
 		// Load wizard sprite images - you'll need to create these sprites
-		up1 = setup("/res/monster/wizard", panel.tileSize, panel.tileSize);
-		up2 = setup("/res/monster/wizard", panel.tileSize, panel.tileSize);
+		up1 = setup("/res/monster/wizard", BasePanel.tileSize, BasePanel.tileSize);
+		up2 = setup("/res/monster/wizard", BasePanel.tileSize, BasePanel.tileSize);
 		// Use same sprite for all directions since wizard doesn't move
 		down1 = up1;
 		down2 = up2;
@@ -153,16 +158,58 @@ public class MON_Wizard extends Entity {
 		// Initial spawn logic
 		if (!spawned) {
 			Random random = new Random();
-			worldX = random.nextInt(panel.screenWidth * 2); // Adjust range as needed
-			worldY = random.nextInt(panel.screenHeight * 2); // Adjust range as needed
+			worldX = random.nextInt(BasePanel.screenWidth * 2); // Adjust range as needed
+			worldY = random.nextInt(BasePanel.screenHeight * 2); // Adjust range as needed
 			spawned = true;
 		}
 
+		/*// Old action
 		// Handle rune teleportation
 		teleportCounter++;
 		if (teleportCounter >= TELEPORT_INTERVAL) {
 			teleportRune();
+			teleportPlayer();
 			teleportCounter = 0;
+		}
+		
+		*/
+		
+		if (panel instanceof HallPanel hp) {
+			
+			if(hp.timeLeft < HallContainer.getCurrentHallManager(hp.currentHall).objects.size() * hp.secondPerObject * 0.3) {
+				
+				teleportPlayerCounter++;
+				if(teleportPlayerCounter >= TELEPORT_PLAYER_INTERVAL && !playerTeleported) {
+					teleportPlayer();
+					playerTeleported = true;
+					hp.wizardChecker = false;
+					hp.getHallMonsters().remove(this);
+					teleportPlayerCounter = 0;
+				}
+				
+				
+			}
+			else if (hp.timeLeft > HallContainer.getCurrentHallManager(hp.currentHall).objects.size() * hp.secondPerObject *  0.7) {
+				
+				teleportCounter++;
+				if (teleportCounter >= TELEPORT_INTERVAL) {
+					teleportRune();
+					teleportCounter = 0;
+				}
+			}
+			
+			else {
+				
+				waitCounter++;
+				if(waitCounter >= WAIT_INTERVAL) {
+					hp.wizardChecker = false;
+					hp.getHallMonsters().remove(this);
+					waitCounter = 0;
+				}
+				
+			}
+		
+		
 		}
 	}
 
@@ -198,7 +245,7 @@ public class MON_Wizard extends Entity {
 				if(obj.hasRune) {
 					keyObject = obj;
 					break;
-				}
+				} 
 			}
 
 			if(keyObject != null) {
@@ -211,6 +258,28 @@ public class MON_Wizard extends Entity {
 
 			}
 		}
+	}
+	
+	public void teleportPlayer() {
+		
+		if (panel instanceof HallPanel hp) {
+			
+			Random random = new Random();
+			
+			//TODO: do not use hardcoded values for map
+			
+			hp.getPlayer().screenX = random.nextInt(12 * 48) + 336 + 48; // Adjust range as needed
+			hp.getPlayer().screenY = random.nextInt(13 * 48) + 96 + 48;
+			while (hp.getCollisionCheckerForHall().checkObject(hp.getPlayer(),true) != 999 || 
+					hp.getCollisionCheckerForHall().checkEntity(hp.getPlayer(), hp.getMonsters()) != 999) {
+				hp.getPlayer().screenX = random.nextInt(12 * 48) + 336; // Adjust range as needed
+				hp.getPlayer().screenY = random.nextInt(13 * 48) + 96;
+				
+			}
+
+			
+		}
+		
 	}
 
 	@Override
