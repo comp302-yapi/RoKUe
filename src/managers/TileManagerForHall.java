@@ -202,7 +202,8 @@ public class TileManagerForHall{
 	public void removeObject(SuperObject obj) {
 		int column = (obj.worldY - 96) / 48;
 		int row =  (obj.worldX - 336) / 48;
-		gridWorld[row][column]  = null; 
+		
+		gridWorld[row][column] = null;
 		
 		objects.remove(obj);
 	}
