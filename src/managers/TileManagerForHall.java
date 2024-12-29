@@ -131,13 +131,15 @@ public class TileManagerForHall{
 			}
 		}
 	}
-
+ 
 	public void convertToGrid(ArrayList<SuperObject> superObjects) {
 
 		int row, column;
 
 		for (SuperObject object : objects) {
 			if (object != null) {
+				
+				//System.out.println("Ekledi" + object.name);
 
 				column = (object.worldY - 96) / 48;
 				row =  (object.worldX - 336) / 48;

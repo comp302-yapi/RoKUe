@@ -35,7 +35,6 @@ public class TimeManager {
         stopTimer(); // Stop any running timer
         timeLeft = durationInSeconds;
         timeStopped = false;
-        System.out.println("Timer started" + timeLeft);
 
         timer = new Timer(1000, new ActionListener() {
             @Override
@@ -61,7 +60,6 @@ public class TimeManager {
 
     public void stopTimer() {
         if (timer != null && timer.isRunning()) {
-        	System.out.println("Timer stopped" + timeLeft);
             timer.stop();
             timeStopped = true;
         }

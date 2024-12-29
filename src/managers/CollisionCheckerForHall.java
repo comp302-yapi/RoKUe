@@ -4,6 +4,7 @@ import containers.HallContainer;
 import containers.TileContainer;
 import entity.Entity;
 import entity.Player;
+import monster.MON_Fighter;
 import object.SuperObject;
 import views.BasePanel;
 import views.HallPanel;
@@ -81,6 +82,10 @@ public class CollisionCheckerForHall {
                 }
             }
         }
+        
+        entity.solidArea.x = entity.solidAreaDefaultX;
+        entity.solidArea.x = entity.solidAreaDefaultY;
+        
 
     }
 
@@ -97,6 +102,7 @@ public class CollisionCheckerForHall {
             else {
                 entity.solidArea.x = entity.worldX  + entity.solidArea.x;
                 entity.solidArea.y = entity.worldY + entity.solidArea.y;
+                
             }
 
 
@@ -112,6 +118,7 @@ public class CollisionCheckerForHall {
             }
 
             if (entity.solidArea.intersects(obj.solidArea)) {
+
                 if (obj.collision) {
                     entity.collisionOn = true;
                 }
@@ -120,6 +127,9 @@ public class CollisionCheckerForHall {
                     index = HallContainer.getCurrentHallManager(hallPanel.currentHall).objects.indexOf(obj);
                 }
             }
+            		
+            	
+            	
 
             entity.solidArea.x = entity.solidAreaDefaultX;
             entity.solidArea.y = entity.solidAreaDefaultY;
