@@ -10,7 +10,7 @@ public class OBJ_LuringGem extends SuperObject {
         collision = true;
 
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/objects/LuringGem.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/res/objects/ThrowedLuringGem.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

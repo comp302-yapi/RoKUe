@@ -174,7 +174,7 @@ public class MON_Fighter extends Entity {
 			panel.getPlayer().invincible = true;
 		}
 
-		if (calculateDistanceToPlayer() <= 900) {
+		if (calculateDistanceToPlayer() <= 120) {
 			attacking = true;
 			direction = determineDirection();
 			if (checkLuringGem()) {
