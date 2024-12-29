@@ -6,6 +6,7 @@ import entity.Player;
 import enums.BuildDirection;
 import enums.Hall;
 import managers.TileManagerForHall;
+import managers.TimeManager;
 import managers.ViewManager;
 import object.SuperObject;
 import validators.HallValidator;
@@ -162,7 +163,8 @@ public class HallController {
     public static void shouldSwitchHallsInGame(TileManagerForHall currentHall, Player player, HallPanel hallPanel) {
         if (player.screenY > currentHall.getBottomWorldBorder()) {
 
-            hallPanel.nullTimer();
+           TimeManager.getInstance().stopTimer();
+           TimeManager.getInstance().timer = null;
 
             switch (currentHall.hall) {
                 case HallOfEarth -> {

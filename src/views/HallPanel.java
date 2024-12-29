@@ -108,27 +108,7 @@ public class HallPanel extends PlayablePanel{
         getPlayer().panel = this;
     }
 
-    public void startTimer() {
-        // Stop any existing timer
-        if (timer != null && timer.isRunning()) {
-            timer.stop();
-        }
-
-        // Create and start the timer
-        timer = new Timer(1000, e -> {
-            if (timeLeft > 0) {
-                timeLeft--;
-//                System.out.println("Time Left: " + timeLeft + " seconds");
-            } else {
-                timer.stop();
-                soundManager.stop();
-                soundManager = null;
-                getViewManager().switchTo("TitlePanel", true);
-//                System.out.println("Time's up!");
-            }
-        });
-        timer.start();
-    }
+    
 
     @Override
     public void addNotify() {
@@ -138,7 +118,25 @@ public class HallPanel extends PlayablePanel{
 
     @Override
     public void update() {
+    	
         if (!isPaused()) {
+        	
+
+            if (TimeManager.getInstance().timer == null) {
+                timeLeft = this.getSuperObjectLength() * 10;
+                TimeManager.getInstance().startTimer(timeLeft);                    
+            }
+            
+            if(TimeManager.getInstance().timeStopped) {
+            	TimeManager.getInstance().startTimer(timeLeft);
+            }
+            
+            if (getPlayer().life <= 0 || timeLeft <= 0) {
+                getViewManager().switchTo("TitlePanel", true);
+            }
+        	
+        	timeLeft = TimeManager.getInstance().timeLeft;
+        	
             getPlayer().move();
 
             for (Entity monster : monsters) {
@@ -179,6 +177,17 @@ public class HallPanel extends PlayablePanel{
 
 
         }
+        else {
+        	
+            if(!TimeManager.getInstance().timeStopped) {
+            	TimeManager.getInstance().stopTimer();
+            }
+        	
+        }
+        
+
+        
+        
     }
 
     public TileManagerForHall getTileM(){ return this.tileM;}
@@ -300,10 +309,6 @@ public class HallPanel extends PlayablePanel{
         }
     }
 
-    public void nullTimer() {
-        timer.stop();
-        timer = null;
-    }
 
     public CollisionCheckerForHall getCollisionCheckerForHall(){ return this.cChecker;}
 
@@ -348,22 +353,12 @@ public class HallPanel extends PlayablePanel{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
-        if (!isPaused()) {
+
             update();
-        }
+        
 
         switch (currentHall) {
             case HallOfEarth -> {
-
-                if (getPlayer().life <= 0) {
-                    getViewManager().switchTo("TitlePanel", true);
-                }
-
-                if (timer == null) {
-                    timeLeft = this.getSuperObjectLength() * 10;
-                    System.out.println(timeLeft);
-                    startTimer();
-                }
 
                 // Repaint game
                 g2.setFont(arial_40);
@@ -401,12 +396,7 @@ public class HallPanel extends PlayablePanel{
             }
             case HallOfAir -> {
 
-                if (timer == null) {
-                    timeLeft = this.getSuperObjectLength() * 10;
-                    System.out.println(timeLeft);
-                    startTimer();
-                }
-
+               
                 // Repaint game
                 g2.setFont(arial_40);
 
@@ -443,12 +433,8 @@ public class HallPanel extends PlayablePanel{
             }
             case HallOfWater -> {
 
-                if (timer == null) {
-                    timeLeft = this.getSuperObjectLength() * 10;
-                    System.out.println(timeLeft);
-                    startTimer();
-                }
 
+               
                 // Repaint game
                 g2.setFont(arial_40);
 
@@ -484,16 +470,13 @@ public class HallPanel extends PlayablePanel{
             }
             case HallOfFire -> {
 
-                if (timer == null) {
-                    timeLeft = this.getSuperObjectLength() * 10;
-                    System.out.println(timeLeft);
-                    startTimer();
-                }
 
+               
                 // Repaint game
                 g2.setFont(arial_40);
 
                 // Set background image
+                //TODO: image loaded every update
                 backgroundImage = new ImageIcon(getClass().getResource("/res/tiles/fire.png"));
                 Image scaledImage = backgroundImage.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
