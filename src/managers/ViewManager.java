@@ -7,15 +7,20 @@ import views.TitlePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViewManager implements Runnable {
+public class ViewManager implements Runnable, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L; // Add this for versioning
 
     private final JFrame frame;
     private final Map<String, JPanel> panels;
     private JPanel currentPanel;
-    private final Thread gameThread;
+    private final transient Thread gameThread;
 
     public ViewManager(JFrame frame) {
         this.frame = frame;

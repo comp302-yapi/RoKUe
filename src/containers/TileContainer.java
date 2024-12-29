@@ -12,29 +12,29 @@ public class TileContainer {
 	
 	public static Tile[] tile = new Tile[50];
 	
-	public static BufferedImage allTiles;
-	public static BufferedImage pinkTile;
-	public static BufferedImage rockyTile00, rockyTile01, rockyTile02, rockyTile03, rockyTile10, rockyTile11,
+	public static transient BufferedImage allTiles;
+	public static transient BufferedImage pinkTile;
+	public static transient BufferedImage rockyTile00, rockyTile01, rockyTile02, rockyTile03, rockyTile10, rockyTile11,
 	rockyTile12, rockyTile13, rockyTile20, rockyTile21, rockyTile22, rockyTile23;
-	public static BufferedImage wallTile;
-	public static BufferedImage columnTileTop, columnTileBottom, columnTileMiddle;
-	public static BufferedImage boxTileTop, boxTileBottom;
-	public static BufferedImage buildModeChest;
-	public static BufferedImage entrance;
-	public static BufferedImage openDoorTopLeft, openDoorTopRight, openDoorBottomLeft, openDoorBottomRight;
-	public static BufferedImage closeDoorTopLeft, closeDoorTopRight, closeDoorBottomLeft, closeDoorBottomRight;
+	public static transient BufferedImage wallTile;
+	public static transient BufferedImage columnTileTop, columnTileBottom, columnTileMiddle;
+	public static transient BufferedImage boxTileTop, boxTileBottom;
+	public static transient BufferedImage buildModeChest;
+	public static transient BufferedImage entrance;
+	public static transient BufferedImage openDoorTopLeft, openDoorTopRight, openDoorBottomLeft, openDoorBottomRight;
+	public static transient BufferedImage closeDoorTopLeft, closeDoorTopRight, closeDoorBottomLeft, closeDoorBottomRight;
 
-	public static BufferedImage fireFountainTop, fireFountainMiddle, fireFountainBottom;
-	public static BufferedImage fireBanner;
+	public static transient BufferedImage fireFountainTop, fireFountainMiddle, fireFountainBottom;
+	public static transient BufferedImage fireBanner;
 
-	public static BufferedImage earthFountainTop, earthFountainMiddle, earthFountainBottom;
-	public static BufferedImage earthBanner;
+	public static transient BufferedImage earthFountainTop, earthFountainMiddle, earthFountainBottom;
+	public static transient BufferedImage earthBanner;
 
-	public static BufferedImage waterFountainTop, waterFountainMiddle, waterFountainBottom;
-	public static BufferedImage waterBanner;
+	public static transient BufferedImage waterFountainTop, waterFountainMiddle, waterFountainBottom;
+	public static transient BufferedImage waterBanner;
 
-	public static BufferedImage airFountainTop, airFountainMiddle, airFountainBottom;
-	public static BufferedImage airBanner;
+	public static transient BufferedImage airFountainTop, airFountainMiddle, airFountainBottom;
+	public static transient BufferedImage airBanner;
 
 	
 	

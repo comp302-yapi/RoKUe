@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 
 public class OBJ_Entrance extends SuperObject{
 
-    BufferedImage allTiles, entrance;
+    transient BufferedImage allTiles, entrance;
     Hall hall;
     boolean allowEnter = false;
 

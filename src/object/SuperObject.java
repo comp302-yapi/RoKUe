@@ -3,13 +3,18 @@ package object;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.Serial;
+import java.io.Serializable;
 
 import views.BasePanel;
 import views.HallPanel;
 
-public class SuperObject {
+public class SuperObject implements Serializable {
 
-	public BufferedImage image, image2, image3;
+	@Serial
+	private static final long serialVersionUID = 1L; // Add this for versioning
+
+	public transient BufferedImage image, image2, image3;
 	public String name;
 	public boolean collision = false;
 	public int worldX, worldY;

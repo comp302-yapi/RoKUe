@@ -2,10 +2,7 @@ package managers;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
@@ -19,7 +16,10 @@ import tile.Tile;
 import views.BasePanel;
 import views.HallPanel;
 
-public class TileManagerForHall{
+public class TileManagerForHall implements Serializable{
+
+	@Serial
+	private static final long serialVersionUID = 1L; // Add this for versioning
 
 	public Hall hall;
 

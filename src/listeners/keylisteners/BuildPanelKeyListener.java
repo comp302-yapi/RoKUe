@@ -1,12 +1,17 @@
 package listeners.keylisteners;
 
 import java.awt.event.KeyEvent;
+import java.io.Serial;
+import java.io.Serializable;
 
 import listeners.BaseKeyListener;
 import views.BuildPanel;
 import enums.Hall;
 
-public class BuildPanelKeyListener extends BaseKeyListener{
+public class BuildPanelKeyListener extends BaseKeyListener implements Serializable {
+
+	@Serial
+	private static final long serialVersionUID = 1L; // Add this for versioning
 	
 	private final BuildPanel buildPanel;
 	

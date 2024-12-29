@@ -6,12 +6,20 @@ import listeners.BaseKeyListener;
 import object.ENCH_Reveal;
 import object.OBJ_Door;
 import object.SuperObject;
+import saveStates.BuildPanelState;
+import saveStates.GameState;
+import saveStates.HallPanelState;
 import views.GamePanel;
 import views.HallPanel;
 
 import java.awt.event.KeyEvent;
+import java.io.*;
+import java.util.Arrays;
 
-public class HallPanelKeyListener extends BaseKeyListener {
+public class HallPanelKeyListener extends BaseKeyListener implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L; // Add this for versioning
 
     private final HallPanel hallPanel;
     public boolean monsterSpawn = false;
@@ -28,6 +36,57 @@ public class HallPanelKeyListener extends BaseKeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
+
+        if (code == KeyEvent.VK_O) {
+            // Create a new GameState instance
+            GameState newGameState = new GameState();
+
+            // Example: Set initial player position, time, lives, etc.
+            newGameState.setHeroX(hallPanel.getPlayer().screenX); // Initial X position
+            newGameState.setHeroY(hallPanel.getPlayer().screenY); // Initial Y position
+            newGameState.setTimeRemaining(300); // Initial time remaining (in seconds)
+            newGameState.setLivesRemaining(hallPanel.getPlayer().life); // Initial number of lives
+
+            newGameState.setHallPanelState(hallPanel);
+
+            // Optionally, print out confirmation
+            System.out.println("New game state created: " + newGameState);
+
+            // Save the game state to a file
+            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("game_save.ser"))) {
+                oos.writeObject(newGameState);
+                System.out.println("Game saved successfully.");
+            } catch (Exception a) {
+                a.printStackTrace();
+                System.out.println("Failed to save the game.");
+            }
+
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("game_save.ser"))) {
+                GameState savedState = (GameState) ois.readObject();
+
+                // Print out the contents of the saved game
+                System.out.println("Hero X: " + savedState.getHeroX());
+                System.out.println("Hero Y: " + savedState.getHeroY());
+                System.out.println("Time Remaining: " + savedState.getTimeRemaining());
+                System.out.println("Lives Remaining: " + savedState.getLivesRemaining());
+
+                if (savedState.getHallPanelState() != null) {
+                    System.out.println("HallPanel State: ");
+                    System.out.println("  Monsters: " + Arrays.toString(savedState.getHallPanelState().getMonsters()));
+                    System.out.println("  Objects: " + savedState.getHallPanelState().tileM.objects);
+                    System.out.println("  Enchantments: " + savedState.getHallPanelState().tileM.enchantments);
+
+
+                }
+
+                if (savedState.getBuildPanelState() != null) {
+                    System.out.println("BuildPanel State: ");
+                    System.out.println("  Objects: " + savedState.getBuildPanelState().getObjects());
+                }
+            } catch (Exception c) {
+                c.printStackTrace();
+            }
+        }
 
         if (code == KeyEvent.VK_UP) {
             upPressed = true;

@@ -35,7 +35,7 @@ public class HallPanel extends PlayablePanel{
     final CollisionCheckerForHall cChecker;
     private boolean isPaused;
     boolean wizardChecker = false;
-    BufferedImage heart_full, heart_half, heart_blank;
+    transient BufferedImage heart_full, heart_half, heart_blank;
     SuperObject heart = new OBJ_Heart();
     public SuperObject[][] gridWorld = new SuperObject[13][14];
     public int[][] gridWorldAll;

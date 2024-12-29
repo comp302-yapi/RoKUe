@@ -10,8 +10,13 @@ import object.SuperObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
+import java.io.Serializable;
 
-public abstract class PlayablePanel extends JPanel implements BasePanel {
+public abstract class PlayablePanel extends JPanel implements BasePanel, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L; // Add this for versioning
 
     private final Player player;
     private final TileManager tileM;

@@ -4,6 +4,8 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.io.Serial;
+import java.io.Serializable;
 
 import controllers.HallController;
 import enums.BuildDirection;
@@ -12,7 +14,10 @@ import object.*;
 import views.BasePanel;
 import views.BuildPanel;
 
-public class BuildPanelMouseListener extends BaseMouseListener implements  MouseMotionListener {
+public class BuildPanelMouseListener extends BaseMouseListener implements MouseMotionListener, Serializable {
+
+	@Serial
+	private static final long serialVersionUID = 1L; // Add this for versioning
 
 	private final BuildPanel buildPanel;
 	private final HallController hallController;

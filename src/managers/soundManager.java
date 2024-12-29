@@ -3,11 +3,16 @@ package managers;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.io.Serial;
+import java.io.Serializable;
 import java.net.URL;
 
-public class soundManager {
+public class soundManager implements Serializable {
 
-    public Clip clip;
+    @Serial
+    private static final long serialVersionUID = 1L; // Add this for versioning
+
+    public transient Clip clip;
     URL[] soundURL = new URL[30];
 
     public soundManager() {

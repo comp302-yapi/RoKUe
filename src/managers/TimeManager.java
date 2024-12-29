@@ -3,8 +3,14 @@ package managers;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
+import java.io.Serializable;
 
-public class TimeManager {
+public class TimeManager implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L; // Add this for versioning
+
     private static TimeManager instance;
     private Timer timer;
     private int timeLeft;

@@ -6,8 +6,14 @@ import entity.Player;
 import object.SuperObject;
 import views.BasePanel;
 
-public class CollisionChecker {
-	
+import java.io.Serial;
+import java.io.Serializable;
+
+public class CollisionChecker implements Serializable {
+
+	@Serial
+	private static final long serialVersionUID = 1L; // Add this for versioning
+
 	private final TileManager tileM;
 	private final Player player;
 	private final SuperObject[] obj;

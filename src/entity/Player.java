@@ -3,6 +3,8 @@ package entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 import javax.imageio.ImageIO;
@@ -14,7 +16,10 @@ import views.BasePanel;
 import views.GamePanel;
 import views.HallPanel;
 
-public class Player extends Entity{
+public class Player extends Entity implements Serializable {
+
+	@Serial
+	private static final long serialVersionUID = 1L; // Add this for versioning
 
 	BaseKeyListener keyH;
 	public int screenX;

@@ -13,11 +13,16 @@ import views.BasePanel;
 import views.BuildPanel;
 import views.HallPanel;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
 
-public class HallController {
+public class HallController implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L; // Add this for versioning
 
     private final HallValidator hallValidator;
     private final BuildPanel buildPanel;
