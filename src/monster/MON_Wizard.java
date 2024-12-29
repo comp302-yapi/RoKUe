@@ -1,6 +1,7 @@
 package monster;
 
 import entity.Entity;
+import object.OBJ_LuringGem;
 import object.SuperObject;
 import views.BasePanel;
 import views.HallPanel;
@@ -202,8 +203,10 @@ public class MON_Wizard extends Entity {
 
 			if(keyObject != null) {
 				keyObject.hasRune = false;
-		        int randomIndex = random.nextInt(objs.size());
-		        SuperObject randomObj = objs.get(randomIndex);
+		        SuperObject randomObj = objs.get(random.nextInt(objs.size()));
+		        while(randomObj instanceof OBJ_LuringGem) {
+		        	randomObj = objs.get(random.nextInt(objs.size()));
+		        }
 		        randomObj.hasRune = true;
 
 			}

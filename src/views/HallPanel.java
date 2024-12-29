@@ -123,7 +123,7 @@ public class HallPanel extends PlayablePanel{
         	
 
             if (TimeManager.getInstance().timer == null) {
-                timeLeft = this.getSuperObjectLength() * 10;
+                timeLeft = this.getSuperObjectLength() * 100;
                 TimeManager.getInstance().startTimer(timeLeft);                    
             }
             
