@@ -280,6 +280,7 @@ public class HallPanel extends PlayablePanel{
 
         Random random = new Random();
         String pickMonster = monsterTypes[random.nextInt(monsterTypes.length)]; // Get a random index
+        pickMonster = "Fighter";
 
         int locationX = random.nextInt(1,13) + 7;
         int locationY = random.nextInt(1,14) + 2;

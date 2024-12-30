@@ -54,13 +54,10 @@ public class SuperObject implements Serializable {
 	@Serial
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.defaultWriteObject(); // Serialize non-transient fields
-		System.out.println("CALLED2222");
-
 	}
 
 	@Serial
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-		System.out.println("CALLED");
 		in.defaultReadObject(); // Deserialize non-transient fields
 		loadImages(); // Reload transient fields
 	}
@@ -75,6 +72,7 @@ public class SuperObject implements Serializable {
 						Math.pow(worldY - playerY, 2)
 		);
 	}
+
 	public boolean interact(HallPanel panel) {
 
 		int dist = this.calculateDistanceToPlayer(panel);

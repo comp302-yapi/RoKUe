@@ -159,6 +159,7 @@ public class Entity implements Serializable {
 		tempScreenX = getBufferX();
 		tempScreenY = getBufferY();
 
+//		System.out.println(this.name);
         g2.drawImage(image, tempScreenX, tempScreenY, image.getWidth(), image.getHeight(), null);
 
     }
