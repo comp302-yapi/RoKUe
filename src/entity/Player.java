@@ -311,6 +311,12 @@ public class Player extends Entity{
 		}
 	}
 
+	public void removeKeyListener(BaseKeyListener keyListener) {
+		if (keyListener == this.keyH) {
+			this.keyH = null;
+		}
+	}
+
 	public void draw(Graphics2D g2) {
 		
 		BufferedImage image = null;

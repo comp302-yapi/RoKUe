@@ -70,52 +70,43 @@ public class ViewManager implements Runnable, Serializable {
             addPanel("HomePanel", homePanel);
             addPanel("HallPanel", hallPanel);
 
-            panelToSwitch = titlePanel; // Switch to the reloaded TitlePanel
+            panelToSwitch = titlePanel;
         }
 
-        // Add the new panel's key listener
         if (panelToSwitch instanceof PlayablePanel playablePanel) {
             Player player = Player.getInstance(playablePanel);
 
+            Arrays.stream(panelToSwitch.getKeyListeners()).forEach(panelToSwitch::removeKeyListener);
+
+            if (player.keyH != null) {
+                player.removeKeyListener(player.keyH);
+            }
+
             if (panelToSwitch instanceof HallPanel hallPanel) {
-
                 hallPanel.timeLeft = hallPanel.getSuperObjectLength() * 100;
-
                 hallPanel.getPlayer().life = hallPanel.getPlayer().maxLife;
+
                 HallPanelKeyListener hallKeyListener = new HallPanelKeyListener(hallPanel);
                 panelToSwitch.addKeyListener(hallKeyListener);
                 player.addKeyListener(hallKeyListener);
+
+                player.keyH = hallKeyListener;
             } else if (panelToSwitch instanceof HomePanel homePanel) {
                 if (currentPanel instanceof HallPanel hallPanel) {
-
-                    if (hallPanel.tileM.objectsEarth != null) {
-                        hallPanel.tileM.objectsEarth.clear();
-                    }
-
-                    if (hallPanel.getSuperObjects() != null) {
-                        Arrays.fill(hallPanel.getSuperObjects(), null);
-                    }
-
-                    if (hallPanel.tileM.objectsAir != null) {
-                        hallPanel.tileM.objectsAir.clear();
-                    }
-                    if (hallPanel.tileM.objectsWater != null) {
-                        hallPanel.tileM.objectsWater.clear();
-                    }
-                    if (hallPanel.tileM.objectsFire != null) {
-                        hallPanel.tileM.objectsFire.clear();
-                    }
-                    if (hallPanel.tileM.enchantments != null) {
-                        hallPanel.tileM.enchantments.clear();
-                    }
-                    if (hallPanel.getHallMonsters() != null) {
-                        hallPanel.getHallMonsters().clear();
-                    }
-
+                    if (hallPanel.tileM.objectsEarth != null) hallPanel.tileM.objectsEarth.clear();
+                    if (hallPanel.getSuperObjects() != null) Arrays.fill(hallPanel.getSuperObjects(), null);
+                    if (hallPanel.tileM.objectsAir != null) hallPanel.tileM.objectsAir.clear();
+                    if (hallPanel.tileM.objectsWater != null) hallPanel.tileM.objectsWater.clear();
+                    if (hallPanel.tileM.objectsFire != null) hallPanel.tileM.objectsFire.clear();
+                    if (hallPanel.tileM.enchantments != null) hallPanel.tileM.enchantments.clear();
+                    if (hallPanel.getHallMonsters() != null) hallPanel.getHallMonsters().clear();
                 }
+
                 HomePanelKeyListener homeKeyListener = new HomePanelKeyListener(homePanel);
                 panelToSwitch.addKeyListener(homeKeyListener);
                 player.addKeyListener(homeKeyListener);
+
+                player.keyH = homeKeyListener;
             }
         }
 
