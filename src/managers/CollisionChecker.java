@@ -3,6 +3,7 @@ package managers;
 import containers.TileContainer;
 import entity.Entity;
 import entity.Player;
+import monster.MON_Fighter;
 import object.SuperObject;
 import views.BasePanel;
 
@@ -15,11 +16,13 @@ public class CollisionChecker implements Serializable {
 	private final TileManager tileM;
 	private final Player player;
 	private final SuperObject[] obj;
+	private final BasePanel panel;
 	
 	public CollisionChecker(BasePanel panel, TileManager tileM) {
 		this.tileM = tileM;
 		this.player = panel.getPlayer();
 		this.obj = panel.getSuperObjects();
+		this.panel = panel;
 	}
 	
 	public void checkTile(Entity entity) {
@@ -164,8 +167,8 @@ public class CollisionChecker implements Serializable {
 		entity.solidArea.y = entity.worldY + entity.solidArea.y;
 
 		// Get the object's solid are position
-		player.solidArea.x = player.screenX + player.solidArea.x;
-		player.solidArea.y = player.screenY + player.solidArea.y;
+		player.solidArea.x = panel.getPlayer().screenX + player.solidArea.x;
+		player.solidArea.y = panel.getPlayer().screenY + player.solidArea.y;
 
 		switch (entity.direction) {
 			case "up" -> entity.solidArea.y -= entity.speed;

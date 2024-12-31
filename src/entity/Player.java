@@ -13,6 +13,7 @@ import object.SuperObject;
 import views.BasePanel;
 import views.GamePanel;
 import views.HallPanel;
+import views.HomePanel;
 
 public class Player extends Entity{
 
@@ -22,6 +23,7 @@ public class Player extends Entity{
 	public boolean invincible = false;
 	public int invincibilityCounter = 0;
 	public ArrayList<SuperObject> inventory = new ArrayList<>();
+	public int gold;
 
 
 	public Player(BasePanel panel) {
@@ -47,9 +49,10 @@ public class Player extends Entity{
 		worldX = BasePanel.tileSize*37;
 		worldY = BasePanel.tileSize*37;
 		speed = 4;
+		armor = 0;
 		direction = "down";
 		
-		maxLife = 6;
+		maxLife = 12;
 		life = maxLife;
 		
 	}
@@ -122,10 +125,10 @@ public class Player extends Entity{
 				spriteNum = 1;
 			}
 		}
+
 		else if (panel instanceof HallPanel hallPanel) {
 
             if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
-
 				if (keyH.upPressed) {
 					direction = "up";
 				}
@@ -209,9 +212,91 @@ public class Player extends Entity{
 			}
 
 		}
+
+		else if (panel instanceof HomePanel homePanel) {
+
+			if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
+				if (keyH.upPressed) {
+					direction = "up";
+				}
+				if (keyH.downPressed) {
+					direction = "down";
+				}
+				if (keyH.leftPressed) {
+					direction = "left";
+				}
+				if (keyH.rightPressed) {
+					direction = "right";
+				}
+
+				// CHECK TILE COLLISION
+				collisionOn = false;
+
+				// CHECK OBJECT COLLISION
+				this.solidArea.x = 8;
+				this.solidArea.y = 16;
+
+				this.solidArea.x = 8;
+				this.solidArea.y = 16;
+
+				// INVINCIBLE
+				if(invincible) {
+					invincibleCounter++;
+				}
+
+				if (invincibleCounter >= 60) {
+					invincible = false;
+					invincibleCounter = 0;
+				}
+
+				if (invincibleCloak) {
+					invincibleCounterCloak++;
+				}
+
+				if (invincibleCounterCloak >= 2) {
+					invincibleCloak = false;
+					invincibleCounterCloak = 0;
+				}
+
+
+				// IF COLLISION FALSE, PLAYER CAN MOVE
+				if (!collisionOn) {
+					switch (direction) {
+						case "up" -> {
+							screenY -= speed;
+
+						}
+						case "down" -> {
+							screenY += speed;
+
+						}
+						case "left" -> {
+							screenX -= speed;
+
+						}
+						case "right" -> {
+							screenX += speed;
+
+						}
+					}
+				}
+
+				spriteCounter++;
+				if (spriteCounter > 12) {
+					if (spriteNum == 1) {
+						spriteNum = 2;
+					} else if (spriteNum == 2) {
+						spriteNum = 1;
+					}
+					spriteCounter = 0;
+				}
+			} else {
+				spriteNum = 1;
+			}
+
+		}
 	}
 
-	
 	public void draw(Graphics2D g2) {
 		
 		BufferedImage image = null;
@@ -276,6 +361,20 @@ public class Player extends Entity{
 			}
 		}
 		return count;
+	}
+
+	public void damagePlayer(int attackDamage) {
+
+		int finalDamage = Math.max(attackDamage - armor, 0);
+
+		panel.getPlayer().life -= finalDamage;
+
+		if (panel instanceof HallPanel) {
+			((HallPanel) panel).playSE(3);
+		}
+
+		panel.getPlayer().invincible = true;
+
 	}
 
 }

@@ -6,6 +6,9 @@ import views.BasePanel;
 import views.HallPanel;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 
 public class MON_Archer extends Entity {
@@ -18,15 +21,56 @@ public class MON_Archer extends Entity {
 	public boolean attacking;
 
 
+	// Transient Images
+	private transient BufferedImage up_walking1, up_walking2, up_walking3, up_walking4, up_walking5;
+	private transient BufferedImage down_walking1, down_walking2, down_walking3, down_walking4, down_walking5;
+	private transient BufferedImage left_walking1, left_walking2, left_walking3, left_walking4, left_walking5;
+	private transient BufferedImage right_walking1, right_walking2, right_walking3, right_walking4, right_walking5;
+
+	private transient BufferedImage up_attacking1, up_attacking2, up_attacking3, up_attacking4, up_attacking5;
+	private transient BufferedImage down_attacking1, down_attacking2, down_attacking3, down_attacking4, down_attacking5;
+	private transient BufferedImage left_attacking1, left_attacking2, left_attacking3, left_attacking4, left_attacking5;
+	private transient BufferedImage right_attacking1, right_attacking2, right_attacking3, right_attacking4, right_attacking5;
+
+	// Paths
+	private final String upWalkingPaths[] = {"/res/monster/ArcherUpWalk/tile000", "/res/monster/ArcherUpWalk/tile001",
+			"/res/monster/ArcherUpWalk/tile002", "/res/monster/ArcherUpWalk/tile003",
+			"/res/monster/ArcherUpWalk/tile004"};
+	private final String downWalkingPaths[] = {"/res/monster/ArcherDownWalk/tile000", "/res/monster/ArcherDownWalk/tile001",
+			"/res/monster/ArcherDownWalk/tile002", "/res/monster/ArcherDownWalk/tile003",
+			"/res/monster/ArcherDownWalk/tile004"};
+	private final String leftWalkingPaths[] = {"/res/monster/ArcherLeftWalk/tile000", "/res/monster/ArcherLeftWalk/tile001",
+			"/res/monster/ArcherLeftWalk/tile002", "/res/monster/ArcherLeftWalk/tile003",
+			"/res/monster/ArcherLeftWalk/tile004"};
+	private final String rightWalkingPaths[] = {"/res/monster/ArcherRightWalk/tile000", "/res/monster/ArcherRightWalk/tile001",
+			"/res/monster/ArcherRightWalk/tile002", "/res/monster/ArcherRightWalk/tile003",
+			"/res/monster/ArcherRightWalk/tile004"};
+
+	private final String upAttackingPaths[] = {"/res/monster/ArcherUpShoot/tile000", "/res/monster/ArcherUpShoot/tile001",
+			"/res/monster/ArcherUpShoot/tile002", "/res/monster/ArcherUpShoot/tile003",
+			"/res/monster/ArcherUpShoot/tile004"};
+	private final String downAttackingPaths[] = {"/res/monster/ArcherDownShoot/tile000", "/res/monster/ArcherDownShoot/tile001",
+			"/res/monster/ArcherDownShoot/tile002", "/res/monster/ArcherDownShoot/tile003",
+			"/res/monster/ArcherDownShoot/tile004"};
+	private final String leftAttackingPaths[] = {"/res/monster/ArcherLeftShoot/tile000", "/res/monster/ArcherLeftShoot/tile001",
+			"/res/monster/ArcherLeftShoot/tile002", "/res/monster/ArcherLeftShoot/tile003",
+			"/res/monster/ArcherLeftShoot/tile004"};
+	private final String rightAttackingPaths[] = {"/res/monster/ArcherRightShoot/tile000", "/res/monster/ArcherRightShoot/tile001",
+			"/res/monster/ArcherRightShoot/tile002", "/res/monster/ArcherRightShoot/tile003",
+			"/res/monster/ArcherRightShoot/tile004"};
+
+
+
 	public MON_Archer(BasePanel gp) {
 		super(gp);
 
-		this.gp = gp;
+		this.gp = panel;
 
 		type = 2; // monster type
 		name = "Archer Monster";
 		speed = 1; // Added minimal movement
 		maxLife = 4;
+		damage = 1;
 		life = maxLife;
 
 		// Solid area for collision detection
@@ -44,30 +88,29 @@ public class MON_Archer extends Entity {
 	}
 
 	public void getImage() {
-		// Load archer monster images
-		up_walking1 = setup("/res/monster/ArcherUpWalk/tile000", BasePanel.tileSize, BasePanel.tileSize);
-		up_walking2 = setup("/res/monster/ArcherUpWalk/tile001", BasePanel.tileSize, BasePanel.tileSize);
-		up_walking3 = setup("/res/monster/ArcherUpWalk/tile002", BasePanel.tileSize, BasePanel.tileSize);
-		up_walking4 = setup("/res/monster/ArcherUpWalk/tile003", BasePanel.tileSize, BasePanel.tileSize);;
-		up_walking5 = setup("/res/monster/ArcherUpWalk/tile004", BasePanel.tileSize, BasePanel.tileSize);
+		up_walking1 = setup(upWalkingPaths[0], BasePanel.tileSize, BasePanel.tileSize);
+		up_walking2 = setup(upWalkingPaths[1], BasePanel.tileSize, BasePanel.tileSize);
+		up_walking3 = setup(upWalkingPaths[2], BasePanel.tileSize, BasePanel.tileSize);
+		up_walking4 = setup(upWalkingPaths[3], BasePanel.tileSize, BasePanel.tileSize);
+		up_walking5 = setup(upWalkingPaths[4], BasePanel.tileSize, BasePanel.tileSize);
 
-		down_walking1 = setup("/res/monster/ArcherDownWalk/tile000", BasePanel.tileSize, BasePanel.tileSize);
-		down_walking2 = setup("/res/monster/ArcherDownWalk/tile001", BasePanel.tileSize, BasePanel.tileSize);
-		down_walking3 = setup("/res/monster/ArcherDownWalk/tile002", BasePanel.tileSize, BasePanel.tileSize);
-		down_walking4 = setup("/res/monster/ArcherDownWalk/tile003", BasePanel.tileSize, BasePanel.tileSize);
-		down_walking5 = setup("/res/monster/ArcherDownWalk/tile004", BasePanel.tileSize, BasePanel.tileSize);
+		down_walking1 = setup(downWalkingPaths[0], BasePanel.tileSize, BasePanel.tileSize);
+		down_walking2 = setup(downWalkingPaths[1], BasePanel.tileSize, BasePanel.tileSize);
+		down_walking3 = setup(downWalkingPaths[2], BasePanel.tileSize, BasePanel.tileSize);
+		down_walking4 = setup(downWalkingPaths[3], BasePanel.tileSize, BasePanel.tileSize);
+		down_walking5 = setup(downWalkingPaths[4], BasePanel.tileSize, BasePanel.tileSize);
 
-		left_walking1 = setup("/res/monster/ArcherLeftWalk/tile000", BasePanel.tileSize, BasePanel.tileSize);
-		left_walking2 = setup("/res/monster/ArcherLeftWalk/tile001", BasePanel.tileSize, BasePanel.tileSize);
-		left_walking3 = setup("/res/monster/ArcherLeftWalk/tile002", BasePanel.tileSize, BasePanel.tileSize);
-		left_walking4 = setup("/res/monster/ArcherLeftWalk/tile003", BasePanel.tileSize, BasePanel.tileSize);
-		left_walking5 = setup("/res/monster/ArcherLeftWalk/tile004", BasePanel.tileSize, BasePanel.tileSize);
+		left_walking1 = setup(leftWalkingPaths[0], BasePanel.tileSize, BasePanel.tileSize);
+		left_walking2 = setup(leftWalkingPaths[1], BasePanel.tileSize, BasePanel.tileSize);
+		left_walking3 = setup(leftWalkingPaths[2], BasePanel.tileSize, BasePanel.tileSize);
+		left_walking4 = setup(leftWalkingPaths[3], BasePanel.tileSize, BasePanel.tileSize);
+		left_walking5 = setup(leftWalkingPaths[4], BasePanel.tileSize, BasePanel.tileSize);
 
-		right_walking1 = setup("/res/monster/ArcherRightWalk/tile000", BasePanel.tileSize, BasePanel.tileSize);
-		right_walking2 = setup("/res/monster/ArcherRightWalk/tile001", BasePanel.tileSize, BasePanel.tileSize);
-		right_walking3 = setup("/res/monster/ArcherRightWalk/tile002", BasePanel.tileSize, BasePanel.tileSize);
-		right_walking4 = setup("/res/monster/ArcherRightWalk/tile003", BasePanel.tileSize, BasePanel.tileSize);
-		right_walking5 = setup("/res/monster/ArcherRightWalk/tile004", BasePanel.tileSize, BasePanel.tileSize);
+		right_walking1 = setup(rightWalkingPaths[0], BasePanel.tileSize, BasePanel.tileSize);
+		right_walking2 = setup(rightWalkingPaths[1], BasePanel.tileSize, BasePanel.tileSize);
+		right_walking3 = setup(rightWalkingPaths[2], BasePanel.tileSize, BasePanel.tileSize);
+		right_walking4 = setup(rightWalkingPaths[3], BasePanel.tileSize, BasePanel.tileSize);
+		right_walking5 = setup(rightWalkingPaths[4], BasePanel.tileSize, BasePanel.tileSize);
 	}
 
 	public void chooseImage() {
@@ -81,30 +124,39 @@ public class MON_Archer extends Entity {
 	}
 
 	public void getImageAttacking() {
-		// Load archer monster images
-		up_attacking1 = setup("/res/monster/ArcherUpShoot/tile000", BasePanel.tileSize, BasePanel.tileSize*2);
-		up_attacking2 = setup("/res/monster/ArcherUpShoot/tile001", BasePanel.tileSize, BasePanel.tileSize*2);
-		up_attacking3 = setup("/res/monster/ArcherUpShoot/tile002", BasePanel.tileSize, BasePanel.tileSize*2);
-		up_attacking4 = setup("/res/monster/ArcherUpShoot/tile003", BasePanel.tileSize, BasePanel.tileSize*2);;
-		up_attacking5 = setup("/res/monster/ArcherUpShoot/tile004", BasePanel.tileSize, BasePanel.tileSize*2);
+		up_attacking1 = setup(upAttackingPaths[0], BasePanel.tileSize, BasePanel.tileSize * 2);
+		up_attacking2 = setup(upAttackingPaths[1], BasePanel.tileSize, BasePanel.tileSize * 2);
+		up_attacking3 = setup(upAttackingPaths[2], BasePanel.tileSize, BasePanel.tileSize * 2);
+		up_attacking4 = setup(upAttackingPaths[3], BasePanel.tileSize, BasePanel.tileSize * 2);
+		up_attacking5 = setup(upAttackingPaths[4], BasePanel.tileSize, BasePanel.tileSize * 2);
 
-		down_attacking1 = setup("/res/monster/ArcherDownShoot/tile000", BasePanel.tileSize, BasePanel.tileSize*2);
-		down_attacking2 = setup("/res/monster/ArcherDownShoot/tile001", BasePanel.tileSize, BasePanel.tileSize*2);
-		down_attacking3 = setup("/res/monster/ArcherDownShoot/tile002", BasePanel.tileSize, BasePanel.tileSize*2);
-		down_attacking4 = setup("/res/monster/ArcherDownShoot/tile003", BasePanel.tileSize, BasePanel.tileSize*2);
-		down_attacking5 = setup("/res/monster/ArcherDownShoot/tile004", BasePanel.tileSize, BasePanel.tileSize*2);
+		down_attacking1 = setup(downAttackingPaths[0], BasePanel.tileSize, BasePanel.tileSize * 2);
+		down_attacking2 = setup(downAttackingPaths[1], BasePanel.tileSize, BasePanel.tileSize * 2);
+		down_attacking3 = setup(downAttackingPaths[2], BasePanel.tileSize, BasePanel.tileSize * 2);
+		down_attacking4 = setup(downAttackingPaths[3], BasePanel.tileSize, BasePanel.tileSize * 2);
+		down_attacking5 = setup(downAttackingPaths[4], BasePanel.tileSize, BasePanel.tileSize * 2);
 
-		left_attacking1 = setup("/res/monster/ArcherLeftShoot/tile000", BasePanel.tileSize*2, BasePanel.tileSize);
-		left_attacking2 = setup("/res/monster/ArcherLeftShoot/tile001", BasePanel.tileSize*2, BasePanel.tileSize);
-		left_attacking3 = setup("/res/monster/ArcherLeftShoot/tile002", BasePanel.tileSize*2, BasePanel.tileSize);
-		left_attacking4 = setup("/res/monster/ArcherLeftShoot/tile003", BasePanel.tileSize*2, BasePanel.tileSize);
-		left_attacking5 = setup("/res/monster/ArcherLeftShoot/tile004", BasePanel.tileSize*2, BasePanel.tileSize);
+		left_attacking1 = setup(leftAttackingPaths[0], BasePanel.tileSize * 2, BasePanel.tileSize);
+		left_attacking2 = setup(leftAttackingPaths[1], BasePanel.tileSize * 2, BasePanel.tileSize);
+		left_attacking3 = setup(leftAttackingPaths[2], BasePanel.tileSize * 2, BasePanel.tileSize);
+		left_attacking4 = setup(leftAttackingPaths[3], BasePanel.tileSize * 2, BasePanel.tileSize);
+		left_attacking5 = setup(leftAttackingPaths[4], BasePanel.tileSize * 2, BasePanel.tileSize);
 
-		right_attacking1 = setup("/res/monster/ArcherRightShoot/tile000", BasePanel.tileSize*2, BasePanel.tileSize);
-		right_attacking2 = setup("/res/monster/ArcherRightShoot/tile001", BasePanel.tileSize*2, BasePanel.tileSize);
-		right_attacking3 = setup("/res/monster/ArcherRightShoot/tile002", BasePanel.tileSize*2, BasePanel.tileSize);
-		right_attacking4 = setup("/res/monster/ArcherRightShoot/tile003", BasePanel.tileSize*2, BasePanel.tileSize);
-		right_attacking5 = setup("/res/monster/ArcherRightShoot/tile004", BasePanel.tileSize*2, BasePanel.tileSize);
+		right_attacking1 = setup(rightAttackingPaths[0], BasePanel.tileSize * 2, BasePanel.tileSize);
+		right_attacking2 = setup(rightAttackingPaths[1], BasePanel.tileSize * 2, BasePanel.tileSize);
+		right_attacking3 = setup(rightAttackingPaths[2], BasePanel.tileSize * 2, BasePanel.tileSize);
+		right_attacking4 = setup(rightAttackingPaths[3], BasePanel.tileSize * 2, BasePanel.tileSize);
+		right_attacking5 = setup(rightAttackingPaths[4], BasePanel.tileSize * 2, BasePanel.tileSize);
+	}
+
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		getImage();
+		getImageAttacking();
 	}
 
 	public void chooseImageAttacking() {
@@ -235,10 +287,10 @@ public class MON_Archer extends Entity {
 			String arrowDirection = determineArrowDirection();
 
 			// Create and launch arrow
-			Arrow arrow = new Arrow(gp, worldX, worldY, arrowDirection);
+			Arrow arrow = new Arrow(panel, worldX, worldY, arrowDirection);
 
 			// Add arrow to game's arrow array
-			Arrow[] arrows = gp.getArrows();
+			Arrow[] arrows = panel.getArrows();
 			for (int i = 0; i < arrows.length; i++) {
 				if (arrows[i] == null) {
 					arrows[i] = arrow;
@@ -287,7 +339,7 @@ public class MON_Archer extends Entity {
 					boolean playerHitAttackCheck = panel.getCollisionChecker().checkPlayer(this);
 
 					if (playerHitAttackCheck && !panel.getPlayer().invincible) {
-						panel.getPlayer().life -= 1;
+						panel.getPlayer().life -= damage;
 						panel.getPlayer().invincible = true;
 
 						if (panel instanceof HallPanel) {
@@ -477,8 +529,8 @@ public class MON_Archer extends Entity {
 	}
 
 	private int calculateDistanceToPlayer() {
-		int playerX = gp.getPlayer().screenX;
-		int playerY = gp.getPlayer().screenY;
+		int playerX = panel.getPlayer().screenX;
+		int playerY = panel.getPlayer().screenY;
 
 		return (int) Math.sqrt(
 				Math.pow(worldX - playerX, 2) +
@@ -487,8 +539,8 @@ public class MON_Archer extends Entity {
 	}
 
 	private String determineArrowDirection() {
-		int playerX = gp.getPlayer().screenX;
-		int playerY = gp.getPlayer().screenY;
+		int playerX = panel.getPlayer().screenX;
+		int playerY = panel.getPlayer().screenY;
 
 		if (Math.abs(playerX - worldX) > Math.abs(playerY - worldY)) {
 			return playerX > worldX ? "right" : "left";

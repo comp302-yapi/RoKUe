@@ -10,6 +10,7 @@ public class GameState implements Serializable {
 
     private HallPanelData hallPanelData;
     private BuildPanelData buildPanelData;
+    public String currentMode;
 
     // Constructor
     public GameState(HallPanelData hallPanelData, BuildPanelData buildPanelData) {
@@ -40,6 +41,7 @@ public class GameState implements Serializable {
         return "GameState {" +
                 "\n  HallPanelData: " + (hallPanelData != null ? hallPanelData.toString() : "null") +
                 "\n  BuildPanelData: " + (buildPanelData != null ? buildPanelData.toString() : "null") +
+                "\n  Current Mode: " + currentMode +
                 "\n}";
     }
 }

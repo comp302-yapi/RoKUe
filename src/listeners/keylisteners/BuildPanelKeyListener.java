@@ -33,6 +33,7 @@ public class BuildPanelKeyListener extends BaseKeyListener implements Serializab
 
 		if (code == KeyEvent.VK_O) {
 			GameState gs = buildPanel.getViewManager().collectGameState();
+			gs.currentMode = "Build";
 			buildPanel.getViewManager().saveGame("newSave.ser", gs);
 			System.out.println(gs);
 		}

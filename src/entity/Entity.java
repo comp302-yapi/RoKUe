@@ -66,6 +66,8 @@ public class Entity implements Serializable {
 	// CHARACTER STATUS
 	public int maxLife;
 	public int life;
+	public int damage;
+	public int armor;
 	
 	
 	public Entity(BasePanel panel) {
@@ -92,7 +94,10 @@ public class Entity implements Serializable {
 		
 		setAction();
 		chooseImage();
-		
+
+		// THE GAME WORKS WITHOUT THE BELOW CODE
+		// TODO FIND OUT WHY, CAN WE DELETE THESE?
+
 		boolean contactPlayer;
 		if (panel instanceof HallPanel p) {
 			collisionOn = false;
@@ -101,7 +106,7 @@ public class Entity implements Serializable {
 			p.getCollisionCheckerForHall().checkEntity(this, panel.getMonsters());
 			contactPlayer = p.getCollisionCheckerForHall().checkPlayer(this);
 		}
-		
+
 		else {
 			collisionOn = false;
 			panel.getCollisionChecker().checkTile(this);
@@ -159,7 +164,9 @@ public class Entity implements Serializable {
 		tempScreenX = getBufferX();
 		tempScreenY = getBufferY();
 
-//		System.out.println(this.name);
+		if (image == null) {
+			System.out.println(this.name);
+		}
         g2.drawImage(image, tempScreenX, tempScreenY, image.getWidth(), image.getHeight(), null);
 
     }

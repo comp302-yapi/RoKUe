@@ -36,6 +36,7 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
 
         if (code == KeyEvent.VK_O) {
             GameState gs = hallPanel.getViewManager().collectGameState();
+            gs.currentMode = "Play";
             hallPanel.getViewManager().saveGame("newSave.ser", gs);
             System.out.println(gs);
         }

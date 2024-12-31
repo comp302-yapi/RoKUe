@@ -32,7 +32,7 @@ public class TileManagerForHall implements Serializable {
 	public SuperObject[][] gridWorld = new SuperObject[13][14];
 	//public ArrayList<Entity> monsters = new ArrayList<>();
 	public int maxCol,maxRow,idx;
-	private boolean isOpened = false;
+	public boolean isOpened = false;
 	private final int bottomWorldBorder;
 
 	public TileManagerForHall(Hall hall, String path, int maxCol, int maxRow) {
@@ -196,6 +196,19 @@ public class TileManagerForHall implements Serializable {
 
 		// Add the object to enchantments list
 		enchantments.add(obj);
+	}
+
+	public void generateGold() {
+		Random random = new Random();
+
+		SuperObject gold = new MISC_Gold();
+
+		// Set random position
+		gold.worldX = (random.nextInt(1, 13) + 7) * 48;
+		gold.worldY = (random.nextInt(1, 14) + 2) * 48;
+
+		// Add the object to enchantments list
+		enchantments.add(gold);
 	}
 
 	public SuperObject[] convertToArray() {

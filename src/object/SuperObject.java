@@ -77,8 +77,7 @@ public class SuperObject implements Serializable {
 
 		int dist = this.calculateDistanceToPlayer(panel);
 		if (dist <= 65) {
-			if (hasRune) { 
-				panel.playSE(1);
+			if (hasRune) {
 				panel.playSE(2);
 				panel.showMessage("Rune found!");
 				System.out.println("Rune found!");

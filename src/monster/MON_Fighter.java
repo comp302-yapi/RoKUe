@@ -61,6 +61,7 @@ public class MON_Fighter extends Entity {
 		name = "Fighter Monster";
 		speed = 1; // Added minimal movement
 		maxLife = 4;
+		damage = 2;
 		life = maxLife;
 
 		// Solid area for collision detection
@@ -115,7 +116,6 @@ public class MON_Fighter extends Entity {
 		right_attacking1 = setup(rightAttacking1Path, BasePanel.tileSize * 2, BasePanel.tileSize);
 		right_attacking2 = setup(rightAttacking2Path, BasePanel.tileSize * 2, BasePanel.tileSize);
 	}
-
 
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.defaultWriteObject();
@@ -199,13 +199,7 @@ public class MON_Fighter extends Entity {
 		boolean hitPlayer = panel.getCollisionChecker().checkPlayer(this);
 
 		if (hitPlayer && !panel.getPlayer().invincible) {
-			panel.getPlayer().life -= 1;
-
-			if (panel instanceof HallPanel) {
-				((HallPanel) panel).playSE(3);
-			}
-
-			panel.getPlayer().invincible = true;
+			panel.getPlayer().damagePlayer(damage);
 		}
 
 		if (calculateDistanceToPlayer() <= 96) {
@@ -265,8 +259,8 @@ public class MON_Fighter extends Entity {
 	}
 
 	private String determineDirection() {
-		int playerX = gp.getPlayer().screenX;
-		int playerY = gp.getPlayer().screenY;
+		int playerX = panel.getPlayer().screenX;
+		int playerY = panel.getPlayer().screenY;
 
 		if (Math.abs(playerX - worldX) > Math.abs(playerY - worldY)) {
 			return playerX > worldX ? "right" : "left";
@@ -368,12 +362,7 @@ public class MON_Fighter extends Entity {
 					boolean playerHitAttackCheck = panel.getCollisionChecker().checkPlayer(this);
 
 					if (playerHitAttackCheck && !panel.getPlayer().invincible) {
-						panel.getPlayer().life -= 1;
-						panel.getPlayer().invincible = true;
-
-						if (panel instanceof HallPanel) {
-							((HallPanel) panel).playSE(3);
-						}
+						panel.getPlayer().damagePlayer(damage);
 					}
 					worldX = currentWorldX;
 					worldY = currentWorldY;
@@ -471,8 +460,8 @@ public class MON_Fighter extends Entity {
 	}
 
 	private int calculateDistanceToPlayer() {
-		int playerX = gp.getPlayer().screenX;
-		int playerY = gp.getPlayer().screenY;
+		int playerX = panel.getPlayer().screenX;
+		int playerY = panel.getPlayer().screenY;
 
 		return (int) Math.sqrt(
 				Math.pow(worldX - playerX, 2) +

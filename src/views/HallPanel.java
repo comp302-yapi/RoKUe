@@ -14,16 +14,12 @@ import monster.MON_Archer;
 import monster.MON_Fighter;
 import monster.MON_Wizard;
 import object.*;
-import tile.Tile;
 import utils.PanelUtils;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 public class HallPanel extends PlayablePanel{
@@ -55,6 +51,7 @@ public class HallPanel extends PlayablePanel{
     private JLabel timerLabel;
     private Timer timer;
     private int timeLeft;
+    private int timeLeftSave;
     private boolean createTimer = false;
 
     public int spawnCounter;
@@ -91,7 +88,6 @@ public class HallPanel extends PlayablePanel{
         this.tileM.closeDoor();
         this.tileM.enchantments.clear();
 
-
         setLayout(new BorderLayout());
 
         heart_full = heart.image;
@@ -123,26 +119,60 @@ public class HallPanel extends PlayablePanel{
                 HallContainer.getHallOfEarth().objects,
                 HallContainer.getHallOfAir().objects,
                 HallContainer.getHallOfWater().objects,
-                HallContainer.getHallOfFire().objects
-
-        );
+                HallContainer.getHallOfFire().objects,
+                this.getPlayer().screenX,
+                this.getPlayer().screenY,
+                this.wizardChecker,
+                HallContainer.getHallOfEarth().enchantments,
+                HallContainer.getHallOfAir().enchantments,
+                HallContainer.getHallOfWater().enchantments,
+                HallContainer.getHallOfFire().enchantments,
+                this.getPlayer().gold);
     }
 
     public void restoreData(HallPanelData data) {
         this.currentHall = data.currentHall;
         this.monsters.clear();
         this.monsters.addAll(data.monsters);
+
+        this.getPlayer().gold = data.gold;
+
+        for (Entity monster : getMonsters()) {
+            if (monster != null) {
+                monster.panel = this;
+            }
+        }
+
+        for (Entity arrow : getArrows()) {
+            if (arrow != null) {
+                arrow.panel = this;
+            }
+        }
+
         HallContainer.getHallOfEarth().gridWorld = new SuperObject[13][14];
         HallContainer.getHallOfAir().gridWorld = new SuperObject[13][14];
         HallContainer.getHallOfWater().gridWorld = new SuperObject[13][14];
         HallContainer.getHallOfFire().gridWorld = new SuperObject[13][14];
+
         this.gridWorld = data.gridWorld;
         this.gridWorldAll = data.gridWorldAll;
-        this.timeLeft = data.timeLeft;
+
+        HallContainer.getHallOfEarth().enchantments = data.enchantmentsEarth;
+        HallContainer.getHallOfAir().enchantments = data.enchantmentsAir;
+        HallContainer.getHallOfWater().enchantments = data.enchantmentsWater;
+        HallContainer.getHallOfFire().enchantments = data.enchantmentsFire;
+
+        this.timeLeftSave = data.timeLeftSave;
         this.isPaused = data.isPaused;
+
         this.checkInventoryForReveal = data.checkInventoryForReveal;
         this.checkInventoryForCloak = data.checkInventoryForCloak;
         this.checkInventoryForLuringGem = data.checkInventoryForLuringGem;
+        this.wizardChecker = data.wizardChecker;
+
+        getPlayer().screenX = data.playerX;
+        getPlayer().screenY = data.playerY;
+
         this.tileM.objects.clear();
         HallContainer.getHallOfEarth().objects.clear();
         HallContainer.getHallOfAir().objects.clear();
@@ -178,6 +208,9 @@ public class HallPanel extends PlayablePanel{
         }
         }
 
+    public Entity[] getMonsters() {
+        return this.monsters.toArray(new Entity[0]);
+    }
 
     public void startTimer() {
         // Stop any existing timer
@@ -245,10 +278,9 @@ public class HallPanel extends PlayablePanel{
 
             if (spawnEnchantmentCounter >= 60 * 6) {
                 tileM.generateEnchantment();
+                tileM.generateGold();
                 spawnEnchantmentCounter = 0;
             }
-
-
         }
     }
 
@@ -333,7 +365,6 @@ public class HallPanel extends PlayablePanel{
                         break;
                     }
                 }
-
                     monsters.add(wizard);
                     wizardChecker = true;
                 }
@@ -377,7 +408,7 @@ public class HallPanel extends PlayablePanel{
         timer = null;
     }
 
-    public CollisionCheckerForHall getCollisionCheckerForHall(){ return this.cChecker;}
+    public CollisionCheckerForHall getCollisionCheckerForHall(){return this.cChecker;}
 
     public void setPaused(boolean paused) {
         isPaused = paused;
@@ -432,7 +463,15 @@ public class HallPanel extends PlayablePanel{
                 }
 
                 if (timer == null) {
-                    timeLeft = this.getSuperObjectLength() * 10;
+                    timeLeft = this.getSuperObjectLength() * 100;
+
+                    if (timeLeftSave != timeLeft && timeLeftSave > 0) {
+                        System.out.println("TimeLeft: " + timeLeft);
+                        System.out.println("TimeLeftSave: " + timeLeftSave);
+
+                        timeLeft = timeLeftSave;
+                    }
+
                     System.out.println(timeLeft);
                     startTimer();
                 }
@@ -475,6 +514,14 @@ public class HallPanel extends PlayablePanel{
 
                 if (timer == null) {
                     timeLeft = this.getSuperObjectLength() * 10;
+
+                    if (timeLeftSave != timeLeft && timeLeftSave > 0) {
+                        System.out.println("TimeLeft: " + timeLeft);
+                        System.out.println("TimeLeftSave: " + timeLeftSave);
+
+                        timeLeft = timeLeftSave;
+                    }
+
                     System.out.println(timeLeft);
                     startTimer();
                 }
@@ -517,6 +564,14 @@ public class HallPanel extends PlayablePanel{
 
                 if (timer == null) {
                     timeLeft = this.getSuperObjectLength() * 10;
+
+                    if (timeLeftSave != timeLeft && timeLeftSave > 0) {
+                        System.out.println("TimeLeft: " + timeLeft);
+                        System.out.println("TimeLeftSave: " + timeLeftSave);
+
+                        timeLeft = timeLeftSave;
+                    }
+
                     System.out.println(timeLeft);
                     startTimer();
                 }
@@ -558,6 +613,14 @@ public class HallPanel extends PlayablePanel{
 
                 if (timer == null) {
                     timeLeft = this.getSuperObjectLength() * 10;
+
+                    if (timeLeftSave != timeLeft && timeLeftSave > 0) {
+                        System.out.println("TimeLeft: " + timeLeft);
+                        System.out.println("TimeLeftSave: " + timeLeftSave);
+
+                        timeLeft = timeLeftSave;
+                    }
+
                     System.out.println(timeLeft);
                     startTimer();
                 }
