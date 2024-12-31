@@ -173,7 +173,8 @@ public class HallController implements Serializable {
                 }
                 case HallOfFire -> {
                     System.out.println("HallOfFire");
-                    hallPanel.getViewManager().switchTo("TitlePanel", true);
+                    System.out.println("SWITCH3");
+                    hallPanel.getViewManager().switchTo("HomePanel", true);
 
                 }
             }

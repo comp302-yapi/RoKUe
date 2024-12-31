@@ -52,6 +52,19 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
             rightPressed = true;
         }
 
+        if (code == KeyEvent.VK_M) {
+            System.out.println(homePanel.getPlayer().gold);
+        }
+
+        if (code == KeyEvent.VK_Q) {
+            homePanel.getViewManager().switchTo("TitlePanel", true);
+        }
+
+        if (code == KeyEvent.VK_ENTER) {
+            homePanel.getViewManager().switchTo("BuildPanel", true);
+        }
+
+
         if (code == KeyEvent.VK_E) {
             monsterSpawn = true;
         }

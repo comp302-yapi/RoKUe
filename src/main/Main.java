@@ -21,16 +21,17 @@ public class Main {
 		//JPanel gamePanel = new GamePanel(viewManager);
 		JPanel titlePanel = new TitlePanel(viewManager);
 		JPanel buildPanel = new BuildPanel(viewManager);
-        JPanel hallPanel = new HallPanel(viewManager);
 		JPanel homePanel = new HomePanel(viewManager);
+		JPanel hallPanel = new HallPanel(viewManager);
 
-        viewManager.addPanel("HallPanel", hallPanel);
+
 		viewManager.addPanel("TitlePanel", titlePanel);
 		//viewManager.addPanel("GamePanel", gamePanel);
 		viewManager.addPanel("BuildPanel", buildPanel);
 		viewManager.addPanel("HomePanel", homePanel);
+		viewManager.addPanel("HallPanel", hallPanel);
 
-		viewManager.switchTo("HomePanel", true);
+		viewManager.switchTo("TitlePanel", true);
 		viewManager.startThread();
 
 		window.pack();

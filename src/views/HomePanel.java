@@ -1,9 +1,10 @@
 package views;
 
 import entity.Entity;
-import listeners.keylisteners.HallPanelKeyListener;
+import entity.Player;
 import listeners.keylisteners.HomePanelKeyListener;
-import managers.ViewManager;
+import managers.*;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -12,6 +13,9 @@ public class HomePanel extends PlayablePanel {
     private final ArrayList<Entity> entities = new ArrayList<>();
     private boolean isPaused;
     private final HomePanelKeyListener keyListener;
+    private final TileManagerForHome tileM;
+    final CollisionCheckerForHome cChecker;
+
 
     public HomePanel(ViewManager viewManager) {
         super(viewManager);
@@ -20,7 +24,16 @@ public class HomePanel extends PlayablePanel {
 
         this.keyListener = new HomePanelKeyListener(this);
         this.addKeyListener(keyListener);
+
+        Player player = Player.getInstance(this);
+        player.addKeyListener(keyListener);
+
+
+        this.tileM = new TileManagerForHome(this,  "/res/maps/Home.txt", 30, 18);
         getPlayer().addKeyListener(keyListener);
+
+        this.cChecker = new CollisionCheckerForHome(this);
+
     }
 
     @Override
@@ -28,10 +41,17 @@ public class HomePanel extends PlayablePanel {
         getPlayer().move();
     }
 
+    public TileManagerForHome getTileManagerHome() {
+        return tileM;
+    }
+
     @Override
     public void showMessage(String message) {
 
     }
+
+    public CollisionCheckerForHome getCollisionCheckerForHome(){return this.cChecker;}
+
 
     @Override
     public void paintComponent(Graphics g) {
@@ -43,6 +63,8 @@ public class HomePanel extends PlayablePanel {
         // Clear the panel
         g2.setColor(Color.WHITE); // Background color
         g2.fillRect(0, 0, getWidth(), getHeight());
+
+        tileM.draw(g2);
 
         // Draw the player
         getPlayer().draw(g2);

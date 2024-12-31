@@ -17,18 +17,18 @@ import views.HomePanel;
 
 public class Player extends Entity{
 
-	BaseKeyListener keyH;
+	public BaseKeyListener keyH;
 	public int screenX;
 	public int screenY;
 	public boolean invincible = false;
 	public int invincibilityCounter = 0;
 	public ArrayList<SuperObject> inventory = new ArrayList<>();
 	public int gold;
+	private static Player instance; // Static instance of the singleton
 
-
-	public Player(BasePanel panel) {
+	private Player(BasePanel panel) {
 		super(panel);
-
+		System.out.println("PLAYER CREATED");
 		screenX = BasePanel.screenWidth/2 - (BasePanel.tileSize/2);
 		screenY = BasePanel.screenHeight/2 - (BasePanel.tileSize/2);
 		
@@ -38,6 +38,19 @@ public class Player extends Entity{
 		
 		setDefaultValues();
 		getPlayerImage();
+	}
+
+	// Static method to get the single instance
+	public static Player getInstance(BasePanel panel) {
+		if (instance == null) {
+			instance = new Player(panel);
+		}
+		// Ensure the panel is set properly each time
+		if (instance.panel != panel) {
+			instance.panel = panel;
+		}
+
+		return instance;
 	}
 
 	public void addKeyListener(BaseKeyListener keyListener) {
@@ -50,6 +63,7 @@ public class Player extends Entity{
 		worldY = BasePanel.tileSize*37;
 		speed = 4;
 		armor = 0;
+		gold = 0;
 		direction = "down";
 		
 		maxLife = 12;
@@ -76,7 +90,6 @@ public class Player extends Entity{
 	public void move() {
 		if(panel instanceof GamePanel) {
 			if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
-
 				if (keyH.upPressed) {
 					direction = "up";
 				}
@@ -231,6 +244,7 @@ public class Player extends Entity{
 
 				// CHECK TILE COLLISION
 				collisionOn = false;
+				homePanel.getCollisionCheckerForHome().checkTile(this);
 
 				// CHECK OBJECT COLLISION
 				this.solidArea.x = 8;

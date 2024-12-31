@@ -12,6 +12,7 @@ import monster.MON_Fighter;
 import utils.ImageUtils;
 import views.BasePanel;
 import views.HallPanel;
+import views.HomePanel;
 
 
 public class Entity implements Serializable {
@@ -107,6 +108,15 @@ public class Entity implements Serializable {
 			contactPlayer = p.getCollisionCheckerForHall().checkPlayer(this);
 		}
 
+		else if (panel instanceof HomePanel p) {
+			collisionOn = false;
+			System.out.println("Checking for home...");
+			p.getCollisionCheckerForHome().checkTile(this);
+			contactPlayer = p.getCollisionCheckerForHome().checkPlayer(this);
+			System.out.println(contactPlayer);
+
+		}
+
 		else {
 			collisionOn = false;
 			panel.getCollisionChecker().checkTile(this);
@@ -132,7 +142,8 @@ public class Entity implements Serializable {
 			if (panel instanceof HallPanel) {
 				System.out.println("Life = 0");
 			}
-			panel.getViewManager().switchTo("TitlePanel", true);
+			System.out.println("SWITCH1");
+			panel.getViewManager().switchTo("HomePanel", true);
 		}
 
 

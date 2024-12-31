@@ -33,6 +33,11 @@ public class TitlePanelKeyListener extends BaseKeyListener implements Serializab
             titlePanel.setCommandNum(titlePanel.getCommandNum() + 1);
         }
 
+        if (code == KeyEvent.VK_Q) {
+            System.out.println("SWITCH2");
+            titlePanel.getViewManager().switchTo("HomePanel", true);
+        }
+
         if (code == KeyEvent.VK_ENTER) {
             if (titlePanel.getCommandNum() == 0) {
                 titlePanel.getViewManager().switchTo("BuildPanel", true);

@@ -5,11 +5,11 @@ import entity.Entity;
 import entity.Player;
 import managers.CollisionChecker;
 import managers.TileManager;
+import managers.TileManagerForHome;
 import managers.ViewManager;
 import object.SuperObject;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 
 public interface BasePanel {

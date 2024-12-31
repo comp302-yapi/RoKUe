@@ -6,6 +6,7 @@ import controllers.HallController;
 import data.HallPanelData;
 import entity.Arrow;
 import entity.Entity;
+import entity.Player;
 import enums.Hall;
 import listeners.keylisteners.HallPanelKeyListener;
 import listeners.mouselisteners.HallPanelMouseListener;
@@ -50,7 +51,7 @@ public class HallPanel extends PlayablePanel{
     private TimeManager timeManager;
     private JLabel timerLabel;
     private Timer timer;
-    private int timeLeft;
+    public int timeLeft;
     private int timeLeftSave;
     private boolean createTimer = false;
 
@@ -66,6 +67,10 @@ public class HallPanel extends PlayablePanel{
         this.keyListener = new HallPanelKeyListener(this);
         this.addKeyListener(keyListener);
         getPlayer().addKeyListener(keyListener);
+
+        Player player = Player.getInstance(this);
+        player.addKeyListener(keyListener);
+
 
         // RESETTING
         HallContainer.getHallOfEarth().objects.clear();
@@ -227,7 +232,8 @@ public class HallPanel extends PlayablePanel{
                 timer.stop();
                 soundManager.stop();
                 soundManager = null;
-                getViewManager().switchTo("TitlePanel", true);
+                System.out.println("SWITCH4");
+                getViewManager().switchTo("HomePanel", true);
 //                System.out.println("Time's up!");
             }
         });
@@ -459,7 +465,8 @@ public class HallPanel extends PlayablePanel{
             case HallOfEarth -> {
 
                 if (getPlayer().life <= 0) {
-                    getViewManager().switchTo("TitlePanel", true);
+                    System.out.println("SWITCH5");
+                    getViewManager().switchTo("HomePanel", true);
                 }
 
                 if (timer == null) {

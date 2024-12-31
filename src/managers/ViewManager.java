@@ -3,15 +3,18 @@ package managers;
 import data.BuildPanelData;
 import data.HallPanelData;
 import entity.GameState;
+import entity.Player;
+import listeners.keylisteners.HallPanelKeyListener;
+import listeners.keylisteners.HomePanelKeyListener;
 import utils.GameLoader;
 import utils.GameSaver;
-import views.BuildPanel;
-import views.HallPanel;
-import views.TitlePanel;
+import views.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,33 +35,87 @@ public class ViewManager implements Runnable, Serializable {
     }
 
     public void addPanel(String name, JPanel panel) {
+        System.out.println("Added:" + name);
         panels.putIfAbsent(name, panel);
     }
 
     public void switchTo(String panelName, Boolean closeCurrentPanel) throws IllegalArgumentException {
         if (!panels.containsKey(panelName)) {
-            // TODO: Decide on proper logging - if we need
             throw new IllegalArgumentException("Panel with that key does not exist");
         }
 
         JPanel panelToSwitch = panels.get(panelName);
         if (currentPanel != null && closeCurrentPanel) {
+            // Remove key listeners from the current panel
+            for (KeyListener keyListener : currentPanel.getKeyListeners()) {
+                currentPanel.removeKeyListener(keyListener);
+            }
+
             frame.remove(currentPanel);
         }
 
+        // If switching back to TitlePanel, reset and reload panels
         if (panelToSwitch instanceof TitlePanel) {
-
             ((TitlePanel) panelToSwitch).soundManager.stop();
             panels.clear();
 
             JPanel titlePanel = new TitlePanel(this);
             JPanel buildPanel = new BuildPanel(this);
+            JPanel homePanel = new HomePanel(this);
             JPanel hallPanel = new HallPanel(this);
 
-            addPanel("HallPanel", hallPanel);
             addPanel("TitlePanel", titlePanel);
             addPanel("BuildPanel", buildPanel);
+            addPanel("HomePanel", homePanel);
+            addPanel("HallPanel", hallPanel);
 
+            panelToSwitch = titlePanel; // Switch to the reloaded TitlePanel
+        }
+
+        // Add the new panel's key listener
+        if (panelToSwitch instanceof PlayablePanel playablePanel) {
+            Player player = Player.getInstance(playablePanel);
+
+            if (panelToSwitch instanceof HallPanel hallPanel) {
+
+                hallPanel.timeLeft = hallPanel.getSuperObjectLength() * 100;
+
+                hallPanel.getPlayer().life = hallPanel.getPlayer().maxLife;
+                HallPanelKeyListener hallKeyListener = new HallPanelKeyListener(hallPanel);
+                panelToSwitch.addKeyListener(hallKeyListener);
+                player.addKeyListener(hallKeyListener);
+            } else if (panelToSwitch instanceof HomePanel homePanel) {
+                if (currentPanel instanceof HallPanel hallPanel) {
+
+                    if (hallPanel.tileM.objectsEarth != null) {
+                        hallPanel.tileM.objectsEarth.clear();
+                    }
+
+                    if (hallPanel.getSuperObjects() != null) {
+                        Arrays.fill(hallPanel.getSuperObjects(), null);
+                    }
+
+                    if (hallPanel.tileM.objectsAir != null) {
+                        hallPanel.tileM.objectsAir.clear();
+                    }
+                    if (hallPanel.tileM.objectsWater != null) {
+                        hallPanel.tileM.objectsWater.clear();
+                    }
+                    if (hallPanel.tileM.objectsFire != null) {
+                        hallPanel.tileM.objectsFire.clear();
+                    }
+                    if (hallPanel.tileM.enchantments != null) {
+                        hallPanel.tileM.enchantments.clear();
+                    }
+                    if (hallPanel.getHallMonsters() != null) {
+                        hallPanel.getHallMonsters().clear();
+                    }
+
+                }
+                HomePanelKeyListener homeKeyListener = new HomePanelKeyListener(homePanel);
+                panelToSwitch.addKeyListener(homeKeyListener);
+                player.addKeyListener(homeKeyListener);
+            }
         }
 
         currentPanel = panelToSwitch;
@@ -92,9 +149,6 @@ public class ViewManager implements Runnable, Serializable {
     }
 
     public GameState loadGame(String filePath) {
-//                if (loadedGameState != null) {
-//            restoreGameState(loadedGameState);
-//        }
         return GameLoader.loadGame(filePath);
     }
 
