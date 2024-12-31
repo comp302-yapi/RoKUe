@@ -33,14 +33,9 @@ public class TitlePanelKeyListener extends BaseKeyListener implements Serializab
             titlePanel.setCommandNum(titlePanel.getCommandNum() + 1);
         }
 
-        if (code == KeyEvent.VK_Q) {
-            System.out.println("SWITCH2");
-            titlePanel.getViewManager().switchTo("HomePanel", true);
-        }
-
         if (code == KeyEvent.VK_ENTER) {
             if (titlePanel.getCommandNum() == 0) {
-                titlePanel.getViewManager().switchTo("BuildPanel", true);
+                titlePanel.getViewManager().switchTo("HomePanel", true);
             }
 
             if (titlePanel.getCommandNum() == 1) {
@@ -55,6 +50,11 @@ public class TitlePanelKeyListener extends BaseKeyListener implements Serializab
                 if (gs.currentMode.equals("Play")) {
                     titlePanel.getViewManager().restoreGameState(gs);
                     titlePanel.getViewManager().switchTo("HallPanel", true);
+                }
+
+                if (gs.currentMode.equals("Home")) {
+                    titlePanel.getViewManager().restoreGameState(gs);
+                    titlePanel.getViewManager().switchTo("HomePanel", true);
                 }
 
                 System.out.println(gs.toString());

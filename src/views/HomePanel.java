@@ -16,7 +16,6 @@ public class HomePanel extends PlayablePanel {
     private final TileManagerForHome tileM;
     final CollisionCheckerForHome cChecker;
 
-
     public HomePanel(ViewManager viewManager) {
         super(viewManager);
         setLayout(null); // No layout, fully customizable space
@@ -27,7 +26,6 @@ public class HomePanel extends PlayablePanel {
 
         Player player = Player.getInstance(this);
         player.addKeyListener(keyListener);
-
 
         this.tileM = new TileManagerForHome(this,  "/res/maps/Home.txt", 30, 18);
         getPlayer().addKeyListener(keyListener);

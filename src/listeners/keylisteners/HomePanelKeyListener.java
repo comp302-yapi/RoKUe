@@ -64,6 +64,13 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
             homePanel.getViewManager().switchTo("BuildPanel", true);
         }
 
+        if (code == KeyEvent.VK_O) {
+            GameState gs = homePanel.getViewManager().collectGameState();
+            gs.currentMode = "Home";
+            homePanel.getViewManager().saveGame("newSave.ser", gs);
+            System.out.println(gs);
+        }
+
 
         if (code == KeyEvent.VK_E) {
             monsterSpawn = true;
