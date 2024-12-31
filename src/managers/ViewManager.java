@@ -2,6 +2,7 @@ package managers;
 
 import data.BuildPanelData;
 import data.HallPanelData;
+import data.HomePanelData;
 import entity.GameState;
 import entity.Player;
 import listeners.keylisteners.HallPanelKeyListener;
@@ -133,7 +134,10 @@ public class ViewManager implements Runnable, Serializable {
         BuildPanel b = (BuildPanel) panels.get("BuildPanel");
         BuildPanelData buildPanelData = b.exportData();
 
-        return new GameState(hallPanelData, buildPanelData);
+        HomePanel home = (HomePanel) panels.get("HomePanel");
+        HomePanelData homePanelData = home.exportData();
+
+        return new GameState(hallPanelData, buildPanelData, homePanelData);
     }
 
     public void restoreGameState(GameState gameState) {
@@ -142,6 +146,9 @@ public class ViewManager implements Runnable, Serializable {
 
         BuildPanel b = (BuildPanel) panels.get("BuildPanel");
         b.restoreData(gameState.getBuildPanelData());
+
+        HomePanel home = (HomePanel) panels.get("HomePanel");
+        home.restoreData(gameState.getHomePanelData());
     }
 
     public void saveGame(String filePath, GameState gameState) {

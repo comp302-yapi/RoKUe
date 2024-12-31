@@ -669,6 +669,7 @@ public class HallPanel extends PlayablePanel{
 
         // Using Reveal Enchantment
         if (checkInventoryForReveal) {
+            System.out.println("Reveal");
             reveal(g2);
             checkInventoryForReveal = false;
         }
@@ -795,6 +796,7 @@ public class HallPanel extends PlayablePanel{
                 break;
             }
         }
+        System.out.println("Checked " + hasEnchantment);
         this.checkInventoryForReveal = hasEnchantment;
     }
 

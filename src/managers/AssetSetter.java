@@ -55,6 +55,8 @@ public class AssetSetter {
 		panel.getSuperObjects()[7] = new OBJ_Entrance(Hall.HallOfWater);
 		panel.getSuperObjects()[7].worldX = 37 * BasePanel.tileSize;
 		panel.getSuperObjects()[7].worldY = 40 * BasePanel.tileSize;
+
+
 	}
 	
 	public void spawnMonster() {

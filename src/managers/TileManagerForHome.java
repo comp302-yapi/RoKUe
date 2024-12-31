@@ -3,10 +3,12 @@ package managers;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
 import containers.TileContainer;
+import object.SuperObject;
 import tile.Tile;
 import views.BasePanel;
 
@@ -17,6 +19,7 @@ public class TileManagerForHome implements Serializable {
     BasePanel panel;
     public int mapTileNum[][];
     public int maxCol,maxRow,idx;
+    public ArrayList<SuperObject> objects = new ArrayList<>();
 
     public TileManagerForHome(BasePanel panel, String path, int maxCol, int maxRow) {
 
@@ -88,6 +91,13 @@ public class TileManagerForHome implements Serializable {
                 worldRow++;
             }
         }
+
+    }
+
+    public void addObject(SuperObject obj, int x, int y) {
+        obj.worldX = x;
+        obj.worldY = y;
+        objects.add(obj);
 
     }
 }

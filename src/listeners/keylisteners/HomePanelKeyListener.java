@@ -56,6 +56,10 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
             System.out.println(homePanel.getPlayer().gold);
         }
 
+        if (code == KeyEvent.VK_B) {
+            homePanel.buyArmor();
+        }
+
         if (code == KeyEvent.VK_Q) {
             homePanel.getViewManager().switchTo("TitlePanel", true);
         }
@@ -63,6 +67,7 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
         if (code == KeyEvent.VK_ENTER) {
             homePanel.getViewManager().switchTo("BuildPanel", true);
         }
+
 
         if (code == KeyEvent.VK_O) {
             GameState gs = homePanel.getViewManager().collectGameState();

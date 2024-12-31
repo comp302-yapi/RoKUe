@@ -128,8 +128,7 @@ public class BuildPanelMouseListener extends BaseMouseListener implements MouseM
 				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Pot) {
 					newObj = new OBJ_Pot();
 				}
-				
-				
+
 				if (newObj != null) {
 					hallController.addObject(buildPanel.getCurrentHallManager(), newObj, x - (int)(BasePanel.tileSize / 2), y - (int)(BasePanel.tileSize / 2));
 				}

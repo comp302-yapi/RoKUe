@@ -56,7 +56,6 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
         }
 
         if (code == KeyEvent.VK_LEFT) {
-//            System.out.println("LEFT");
             leftPressed = true;
 
         }
@@ -70,6 +69,7 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
         }
 
         if (code == KeyEvent.VK_R) {
+            System.out.println("Check R");
             hallPanel.checkInventoryForReveal();
         }
 
