@@ -38,6 +38,16 @@ public class Entity implements Serializable {
 	public transient BufferedImage left_walking1, left_walking2, left_walking3, left_walking4, left_walking5;
 	public transient BufferedImage right_walking1, right_walking2, right_walking3, right_walking4, right_walking5;
 
+	public transient BufferedImage ironarmor_torso_up1, ironarmor_torso_up2;
+	public transient BufferedImage ironarmor_torso_down1, ironarmor_torso_down2;
+	public transient BufferedImage ironarmor_torso_left1, ironarmor_torso_left2;
+	public transient BufferedImage ironarmor_torso_right1, ironarmor_torso_right2;
+
+	public transient BufferedImage leatherarmor_torso_up1, leatherarmor_torso_up2;
+	public transient BufferedImage leatherarmor_torso_down1, leatherarmor_torso_down2;
+	public transient BufferedImage leatherarmor_torso_left1, leatherarmor_torso_left2;
+	public transient BufferedImage leatherarmor_torso_right1, leatherarmor_torso_right2;
+
 	public String direction = "down";
 
 	public int spriteCounter = 0;

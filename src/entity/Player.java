@@ -25,6 +25,8 @@ public class Player extends Entity{
 	public ArrayList<SuperObject> inventory = new ArrayList<>();
 	public int gold;
 	private static Player instance; // Static instance of the singleton
+	public boolean armorOnIronTorso, armorOnLeatherTorso;
+
 
 	private Player(BasePanel panel) {
 		super(panel);
@@ -38,6 +40,8 @@ public class Player extends Entity{
 		
 		setDefaultValues();
 		getPlayerImage();
+		getIronArmorTorso();
+		getLeatherArmorTorso();
 	}
 
 	// Static method to get the single instance
@@ -73,18 +77,59 @@ public class Player extends Entity{
 	
 	public void getPlayerImage() {
 		try {
-			up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/boy_up_1.png")));
-			up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/boy_up_2.png")));
-			down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/boy_down_1.png")));
-			down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/boy_down_2.png")));
-			left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/boy_left_1.png")));
-			left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/boy_left_2.png")));
-			right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/boy_right_1.png")));
-			right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/boy_right_2.png")));
-			
+			up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_up_1.png")));
+			up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_up_2.png")));
+			down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_down_1.png")));
+			down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_down_2.png")));
+			left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_left_1.png")));
+			left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_left_2.png")));
+			right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_right_1.png")));
+			right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_right_2.png")));
+
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void getIronArmorTorso() {
+		try {
+			ironarmor_torso_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_up_1.png")));
+			ironarmor_torso_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_up_2.png")));
+			ironarmor_torso_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_down_1.png")));
+			ironarmor_torso_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_down_2.png")));
+			ironarmor_torso_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_left_1.png")));
+			ironarmor_torso_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_left_2.png")));
+			ironarmor_torso_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_right_1.png")));
+			ironarmor_torso_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_right_2.png")));
+
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getLeatherArmorTorso() {
+		try {
+			leatherarmor_torso_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_down_1.png")));
+			leatherarmor_torso_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_down_2.png")));
+			leatherarmor_torso_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_up_1.png")));
+			leatherarmor_torso_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_up_2.png")));
+			leatherarmor_torso_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_left_1.png")));
+			leatherarmor_torso_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_left_2.png")));
+			leatherarmor_torso_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_right_1.png")));
+			leatherarmor_torso_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_right_2.png")));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void wearArmorIronTorso() {
+		armorOnLeatherTorso = false;
+		armorOnIronTorso = true;
+	}
+
+	public void wearArmorLeatherTorso() {
+		armorOnIronTorso = false;
+		armorOnLeatherTorso = true;
 	}
 	
 	public void move() {
@@ -318,40 +363,42 @@ public class Player extends Entity{
 	}
 
 	public void draw(Graphics2D g2) {
-		
-		BufferedImage image = null;
 
+		BufferedImage image = null;
+		BufferedImage torsoArmorImage = null;
+
+		// Select base image and torso armor image
 		switch (direction) {
 			case "up" -> {
-				if (spriteNum == 1) {
-					image = up1;
-				}
-				if (spriteNum == 2) {
-					image = up2;
+				image = (spriteNum == 1) ? up1 : up2;
+				if (armorOnIronTorso) {
+					torsoArmorImage = (spriteNum == 1) ? ironarmor_torso_up1 : ironarmor_torso_up2;
+				} else if (armorOnLeatherTorso) {
+					torsoArmorImage = (spriteNum == 1) ? leatherarmor_torso_up1 : leatherarmor_torso_up2;
 				}
 			}
 			case "down" -> {
-				if (spriteNum == 1) {
-					image = down1;
-				}
-				if (spriteNum == 2) {
-					image = down2;
+				image = (spriteNum == 1) ? down1 : down2;
+				if (armorOnIronTorso) {
+					torsoArmorImage = (spriteNum == 1) ? ironarmor_torso_down1 : ironarmor_torso_down2;
+				} else if (armorOnLeatherTorso) {
+					torsoArmorImage = (spriteNum == 1) ? leatherarmor_torso_down1 : leatherarmor_torso_down2;
 				}
 			}
 			case "left" -> {
-				if (spriteNum == 1) {
-					image = left1;
-				}
-				if (spriteNum == 2) {
-					image = left2;
+				image = (spriteNum == 1) ? left1 : left2;
+				if (armorOnIronTorso) {
+					torsoArmorImage = (spriteNum == 1) ? ironarmor_torso_left1 : ironarmor_torso_left2;
+				} else if (armorOnLeatherTorso) {
+					torsoArmorImage = (spriteNum == 1) ? leatherarmor_torso_left1 : leatherarmor_torso_left2;
 				}
 			}
 			case "right" -> {
-				if (spriteNum == 1) {
-					image = right1;
-				}
-				if (spriteNum == 2) {
-					image = right2;
+				image = (spriteNum == 1) ? right1 : right2;
+				if (armorOnIronTorso) {
+					torsoArmorImage = (spriteNum == 1) ? ironarmor_torso_right1 : ironarmor_torso_right2;
+				} else if (armorOnLeatherTorso) {
+					torsoArmorImage = (spriteNum == 1) ? leatherarmor_torso_right1 : leatherarmor_torso_right2;
 				}
 			}
 		}
@@ -364,13 +411,20 @@ public class Player extends Entity{
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
 		}
 
+		// Draw the base image
 		g2.drawImage(image, screenX, screenY, BasePanel.tileSize, BasePanel.tileSize, null);
+
+		// Draw torso armor image
+		if (torsoArmorImage != null) {
+			g2.drawImage(torsoArmorImage, screenX, screenY, BasePanel.tileSize, BasePanel.tileSize, null);
+		}
+
 		g2.setColor(Color.red);
 
 		// RESET INVINCIBLE EFFECT SO IT DOES NOT AFFECT MONSTERS
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
-//		g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+//	g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 	}
 
 	public int inventoryLength() {

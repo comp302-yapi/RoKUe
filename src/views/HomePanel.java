@@ -71,6 +71,12 @@ public class HomePanel extends PlayablePanel {
         if (getPlayer().gold >= armorToBuy.cost) {
             getPlayer().gold -= armorToBuy.cost;
             getPlayer().armor = armorToBuy.armor;
+
+            if (armorToBuy.name.equals("IronArmor")) {
+                getPlayer().wearArmorIronTorso();
+            } else if (armorToBuy.name.equals("LeatherArmor")) {
+                getPlayer().wearArmorLeatherTorso();
+            }
         }
     }
 
