@@ -22,11 +22,11 @@ public class Entity implements Serializable {
 	public BasePanel panel;
 	public int worldX, worldY;
 	public int speed;
-	
-	public transient BufferedImage up1, up2, up3, up4, up5;
-	public transient BufferedImage down1, down2, down3, down4, down5;
-	public transient BufferedImage left1, left2, left3, left4, left5;
-	public transient BufferedImage right1, right2 , right3, right4, right5;
+
+	public transient BufferedImage up1, up2, up3, up4, up5, up6, up7, up8, up9;
+	public transient BufferedImage down1, down2, down3, down4, down5, down6, down7, down8, down9;
+	public transient BufferedImage left1, left2, left3, left4, left5, left6, left7, left8, left9;
+	public transient BufferedImage right1, right2, right3, right4, right5, right6, right7, right8, right9;
 
 	public transient BufferedImage up_attacking1, up_attacking2, up_attacking3, up_attacking4, up_attacking5;
 	public transient BufferedImage down_attacking1, down_attacking2, down_attacking3, down_attacking4, down_attacking5;
@@ -38,15 +38,64 @@ public class Entity implements Serializable {
 	public transient BufferedImage left_walking1, left_walking2, left_walking3, left_walking4, left_walking5;
 	public transient BufferedImage right_walking1, right_walking2, right_walking3, right_walking4, right_walking5;
 
-	public transient BufferedImage ironarmor_torso_up1, ironarmor_torso_up2;
-	public transient BufferedImage ironarmor_torso_down1, ironarmor_torso_down2;
-	public transient BufferedImage ironarmor_torso_left1, ironarmor_torso_left2;
-	public transient BufferedImage ironarmor_torso_right1, ironarmor_torso_right2;
+	// IRON ARMOR
 
-	public transient BufferedImage leatherarmor_torso_up1, leatherarmor_torso_up2;
-	public transient BufferedImage leatherarmor_torso_down1, leatherarmor_torso_down2;
-	public transient BufferedImage leatherarmor_torso_left1, leatherarmor_torso_left2;
-	public transient BufferedImage leatherarmor_torso_right1, leatherarmor_torso_right2;
+	// TORSO
+	public transient BufferedImage ironarmor_torso_up1, ironarmor_torso_up2, ironarmor_torso_up3, ironarmor_torso_up4,
+			ironarmor_torso_up5, ironarmor_torso_up6, ironarmor_torso_up7, ironarmor_torso_up8, ironarmor_torso_up9;
+	public transient BufferedImage ironarmor_torso_down1, ironarmor_torso_down2, ironarmor_torso_down3,
+			ironarmor_torso_down4, ironarmor_torso_down5, ironarmor_torso_down6, ironarmor_torso_down7,
+			ironarmor_torso_down8, ironarmor_torso_down9;
+	public transient BufferedImage ironarmor_torso_left1, ironarmor_torso_left2, ironarmor_torso_left3,
+			ironarmor_torso_left4, ironarmor_torso_left5, ironarmor_torso_left6, ironarmor_torso_left7,
+			ironarmor_torso_left8, ironarmor_torso_left9;
+	public transient BufferedImage ironarmor_torso_right1, ironarmor_torso_right2, ironarmor_torso_right3,
+			ironarmor_torso_right4, ironarmor_torso_right5, ironarmor_torso_right6, ironarmor_torso_right7,
+			ironarmor_torso_right8, ironarmor_torso_right9;
+
+	// HEAD
+	public transient BufferedImage ironarmor_head_up1, ironarmor_head_up2, ironarmor_head_up3, ironarmor_head_up4,
+			ironarmor_head_up5, ironarmor_head_up6, ironarmor_head_up7, ironarmor_head_up8, ironarmor_head_up9;
+	public transient BufferedImage ironarmor_head_down1, ironarmor_head_down2, ironarmor_head_down3,
+			ironarmor_head_down4, ironarmor_head_down5, ironarmor_head_down6, ironarmor_head_down7,
+			ironarmor_head_down8, ironarmor_head_down9;
+	public transient BufferedImage ironarmor_head_left1, ironarmor_head_left2, ironarmor_head_left3,
+			ironarmor_head_left4, ironarmor_head_left5, ironarmor_head_left6, ironarmor_head_left7,
+			ironarmor_head_left8, ironarmor_head_left9;
+	public transient BufferedImage ironarmor_head_right1, ironarmor_head_right2, ironarmor_head_right3,
+			ironarmor_head_right4, ironarmor_head_right5, ironarmor_head_right6, ironarmor_head_right7,
+			ironarmor_head_right8, ironarmor_head_right9;
+
+
+	// LEATHER ARMOR
+
+	// TORSO
+	public transient BufferedImage leatherarmor_torso_up1, leatherarmor_torso_up2, leatherarmor_torso_up3,
+			leatherarmor_torso_up4, leatherarmor_torso_up5, leatherarmor_torso_up6, leatherarmor_torso_up7,
+			leatherarmor_torso_up8, leatherarmor_torso_up9;
+	public transient BufferedImage leatherarmor_torso_down1, leatherarmor_torso_down2, leatherarmor_torso_down3,
+			leatherarmor_torso_down4, leatherarmor_torso_down5, leatherarmor_torso_down6, leatherarmor_torso_down7,
+			leatherarmor_torso_down8, leatherarmor_torso_down9;
+	public transient BufferedImage leatherarmor_torso_left1, leatherarmor_torso_left2, leatherarmor_torso_left3,
+			leatherarmor_torso_left4, leatherarmor_torso_left5, leatherarmor_torso_left6, leatherarmor_torso_left7,
+			leatherarmor_torso_left8, leatherarmor_torso_left9;
+	public transient BufferedImage leatherarmor_torso_right1, leatherarmor_torso_right2, leatherarmor_torso_right3,
+			leatherarmor_torso_right4, leatherarmor_torso_right5, leatherarmor_torso_right6, leatherarmor_torso_right7,
+			leatherarmor_torso_right8, leatherarmor_torso_right9;
+
+	// HEAD
+	public transient BufferedImage leatherarmor_head_up1, leatherarmor_head_up2, leatherarmor_head_up3,
+			leatherarmor_head_up4, leatherarmor_head_up5, leatherarmor_head_up6, leatherarmor_head_up7,
+			leatherarmor_head_up8, leatherarmor_head_up9;
+	public transient BufferedImage leatherarmor_head_down1, leatherarmor_head_down2, leatherarmor_head_down3,
+			leatherarmor_head_down4, leatherarmor_head_down5, leatherarmor_head_down6, leatherarmor_head_down7,
+			leatherarmor_head_down8, leatherarmor_head_down9;
+	public transient BufferedImage leatherarmor_head_left1, leatherarmor_head_left2, leatherarmor_head_left3,
+			leatherarmor_head_left4, leatherarmor_head_left5, leatherarmor_head_left6, leatherarmor_head_left7,
+			leatherarmor_head_left8, leatherarmor_head_left9;
+	public transient BufferedImage leatherarmor_head_right1, leatherarmor_head_right2, leatherarmor_head_right3,
+			leatherarmor_head_right4, leatherarmor_head_right5, leatherarmor_head_right6, leatherarmor_head_right7,
+			leatherarmor_head_right8, leatherarmor_head_right9;
 
 	public String direction = "down";
 

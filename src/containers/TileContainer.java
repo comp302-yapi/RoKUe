@@ -36,8 +36,10 @@ public class TileContainer {
 	public static transient BufferedImage airFountainTop, airFountainMiddle, airFountainBottom;
 	public static transient BufferedImage airBanner;
 
-	
-	
+	public static transient BufferedImage tableLeft, tableMiddle, tableRight;
+
+
+
 	public TileContainer() {
 		
 	}
@@ -108,6 +110,11 @@ public class TileContainer {
 			airFountainBottom = allTiles.getSubimage(112, 80, 16, 16);
 
 			airBanner = allTiles.getSubimage(256, 64, 16, 16);
+
+			// Table
+			tableLeft = allTiles.getSubimage(272, 128, 16, 16);
+			tableMiddle = allTiles.getSubimage(288, 128, 16, 16);
+			tableRight = allTiles.getSubimage(304, 128, 16, 16);
 
 			// ROCKY TILE
 			
@@ -261,6 +268,18 @@ public class TileContainer {
 			tile[40] = new Tile();
 			tile[40].image = airBanner;
 			tile[40].collision = true;
+
+			tile[41] = new Tile();
+			tile[41].image = tableLeft;
+			tile[41].collision = true;
+
+			tile[42] = new Tile();
+			tile[42].image = tableMiddle;
+			tile[42].collision = true;
+
+			tile[43] = new Tile();
+			tile[43].image = tableRight;
+			tile[43].collision = true;
 
 		} catch(IOException e) {
 			e.printStackTrace();

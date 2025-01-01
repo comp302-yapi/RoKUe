@@ -26,7 +26,7 @@ public class Player extends Entity{
 	public int gold;
 	private static Player instance; // Static instance of the singleton
 	public boolean armorOnIronTorso, armorOnLeatherTorso;
-
+	public boolean armorOnIronHead, armorOnLeatherHead;
 
 	private Player(BasePanel panel) {
 		super(panel);
@@ -42,6 +42,8 @@ public class Player extends Entity{
 		getPlayerImage();
 		getIronArmorTorso();
 		getLeatherArmorTorso();
+		getIronArmorHead();
+		getLeatherArmorHead();
 	}
 
 	// Static method to get the single instance
@@ -67,57 +69,247 @@ public class Player extends Entity{
 		worldY = BasePanel.tileSize*37;
 		speed = 4;
 		armor = 0;
-		gold = 0;
+		gold = 100000;
 		direction = "down";
 		
 		maxLife = 12;
 		life = maxLife;
 		
 	}
-	
+
 	public void getPlayerImage() {
 		try {
 			up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_up_1.png")));
 			up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_up_2.png")));
+			up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_up_3.png")));
+			up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_up_4.png")));
+			up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_up_5.png")));
+			up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_up_6.png")));
+			up7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_up_7.png")));
+			up8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_up_8.png")));
+			up9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_up_9.png")));
+
 			down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_down_1.png")));
 			down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_down_2.png")));
+			down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_down_3.png")));
+			down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_down_4.png")));
+			down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_down_5.png")));
+			down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_down_6.png")));
+			down7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_down_7.png")));
+			down8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_down_8.png")));
+			down9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_down_9.png")));
+
 			left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_left_1.png")));
 			left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_left_2.png")));
+			left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_left_3.png")));
+			left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_left_4.png")));
+			left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_left_5.png")));
+			left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_left_6.png")));
+			left7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_left_7.png")));
+			left8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_left_8.png")));
+			left9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_left_9.png")));
+
 			right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_right_1.png")));
 			right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_right_2.png")));
+			right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_right_3.png")));
+			right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_right_4.png")));
+			right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_right_5.png")));
+			right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_right_6.png")));
+			right7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_right_7.png")));
+			right8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_right_8.png")));
+			right9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterWalk/main_right_9.png")));
 
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+
+	// IRON ARMOR
 	public void getIronArmorTorso() {
 		try {
-			ironarmor_torso_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_up_1.png")));
-			ironarmor_torso_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_up_2.png")));
-			ironarmor_torso_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_down_1.png")));
-			ironarmor_torso_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_down_2.png")));
-			ironarmor_torso_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_left_1.png")));
-			ironarmor_torso_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_left_2.png")));
-			ironarmor_torso_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_right_1.png")));
-			ironarmor_torso_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmor/ironarmor_right_2.png")));
+			ironarmor_torso_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_up_1.png")));
+			ironarmor_torso_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_up_2.png")));
+			ironarmor_torso_up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_up_3.png")));
+			ironarmor_torso_up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_up_4.png")));
+			ironarmor_torso_up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_up_5.png")));
+			ironarmor_torso_up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_up_6.png")));
+			ironarmor_torso_up7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_up_7.png")));
+			ironarmor_torso_up8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_up_8.png")));
+			ironarmor_torso_up9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_up_9.png")));
 
-		} catch(IOException e) {
+			ironarmor_torso_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_down_1.png")));
+			ironarmor_torso_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_down_2.png")));
+			ironarmor_torso_down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_down_3.png")));
+			ironarmor_torso_down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_down_4.png")));
+			ironarmor_torso_down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_down_5.png")));
+			ironarmor_torso_down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_down_6.png")));
+			ironarmor_torso_down7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_down_7.png")));
+			ironarmor_torso_down8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_down_8.png")));
+			ironarmor_torso_down9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_down_9.png")));
+
+			ironarmor_torso_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_left_1.png")));
+			ironarmor_torso_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_left_2.png")));
+			ironarmor_torso_left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_left_3.png")));
+			ironarmor_torso_left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_left_4.png")));
+			ironarmor_torso_left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_left_5.png")));
+			ironarmor_torso_left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_left_6.png")));
+			ironarmor_torso_left7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_left_7.png")));
+			ironarmor_torso_left8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_left_8.png")));
+			ironarmor_torso_left9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_left_9.png")));
+
+			ironarmor_torso_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_right_1.png")));
+			ironarmor_torso_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_right_2.png")));
+			ironarmor_torso_right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_right_3.png")));
+			ironarmor_torso_right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_right_4.png")));
+			ironarmor_torso_right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_right_5.png")));
+			ironarmor_torso_right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_right_6.png")));
+			ironarmor_torso_right7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_right_7.png")));
+			ironarmor_torso_right8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_right_8.png")));
+			ironarmor_torso_right9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorTorso/ironarmor_torso_right_9.png")));
+
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	public void getIronArmorHead() {
+		try {
+			ironarmor_head_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_up_1.png")));
+			ironarmor_head_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_up_2.png")));
+			ironarmor_head_up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_up_3.png")));
+			ironarmor_head_up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_up_4.png")));
+			ironarmor_head_up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_up_5.png")));
+			ironarmor_head_up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_up_6.png")));
+			ironarmor_head_up7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_up_7.png")));
+			ironarmor_head_up8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_up_8.png")));
+			ironarmor_head_up9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_up_9.png")));
+
+			ironarmor_head_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_down_1.png")));
+			ironarmor_head_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_down_2.png")));
+			ironarmor_head_down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_down_3.png")));
+			ironarmor_head_down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_down_4.png")));
+			ironarmor_head_down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_down_5.png")));
+			ironarmor_head_down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_down_6.png")));
+			ironarmor_head_down7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_down_7.png")));
+			ironarmor_head_down8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_down_8.png")));
+			ironarmor_head_down9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_down_9.png")));
+
+			ironarmor_head_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_left_1.png")));
+			ironarmor_head_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_left_2.png")));
+			ironarmor_head_left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_left_3.png")));
+			ironarmor_head_left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_left_4.png")));
+			ironarmor_head_left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_left_5.png")));
+			ironarmor_head_left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_left_6.png")));
+			ironarmor_head_left7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_left_7.png")));
+			ironarmor_head_left8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_left_8.png")));
+			ironarmor_head_left9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_left_9.png")));
+
+			ironarmor_head_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_right_1.png")));
+			ironarmor_head_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_right_2.png")));
+			ironarmor_head_right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_right_3.png")));
+			ironarmor_head_right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_right_4.png")));
+			ironarmor_head_right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_right_5.png")));
+			ironarmor_head_right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_right_6.png")));
+			ironarmor_head_right7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_right_7.png")));
+			ironarmor_head_right8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_right_8.png")));
+			ironarmor_head_right9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorHead/ironarmor_head_right_9.png")));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// LEATHER ARMOR
 	public void getLeatherArmorTorso() {
 		try {
-			leatherarmor_torso_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_down_1.png")));
-			leatherarmor_torso_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_down_2.png")));
-			leatherarmor_torso_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_up_1.png")));
-			leatherarmor_torso_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_up_2.png")));
-			leatherarmor_torso_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_left_1.png")));
-			leatherarmor_torso_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_left_2.png")));
-			leatherarmor_torso_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_right_1.png")));
-			leatherarmor_torso_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmor/leatherarmor_right_2.png")));
-		} catch(IOException e) {
+			leatherarmor_torso_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_up_1.png")));
+			leatherarmor_torso_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_up_2.png")));
+			leatherarmor_torso_up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_up_3.png")));
+			leatherarmor_torso_up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_up_4.png")));
+			leatherarmor_torso_up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_up_5.png")));
+			leatherarmor_torso_up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_up_6.png")));
+			leatherarmor_torso_up7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_up_7.png")));
+			leatherarmor_torso_up8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_up_8.png")));
+			leatherarmor_torso_up9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_up_9.png")));
+
+			leatherarmor_torso_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_down_1.png")));
+			leatherarmor_torso_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_down_2.png")));
+			leatherarmor_torso_down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_down_3.png")));
+			leatherarmor_torso_down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_down_4.png")));
+			leatherarmor_torso_down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_down_5.png")));
+			leatherarmor_torso_down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_down_6.png")));
+			leatherarmor_torso_down7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_down_7.png")));
+			leatherarmor_torso_down8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_down_8.png")));
+			leatherarmor_torso_down9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_down_9.png")));
+
+			leatherarmor_torso_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_left_1.png")));
+			leatherarmor_torso_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_left_2.png")));
+			leatherarmor_torso_left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_left_3.png")));
+			leatherarmor_torso_left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_left_4.png")));
+			leatherarmor_torso_left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_left_5.png")));
+			leatherarmor_torso_left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_left_6.png")));
+			leatherarmor_torso_left7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_left_7.png")));
+			leatherarmor_torso_left8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_left_8.png")));
+			leatherarmor_torso_left9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_left_9.png")));
+
+			leatherarmor_torso_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_right_1.png")));
+			leatherarmor_torso_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_right_2.png")));
+			leatherarmor_torso_right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_right_3.png")));
+			leatherarmor_torso_right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_right_4.png")));
+			leatherarmor_torso_right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_right_5.png")));
+			leatherarmor_torso_right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_right_6.png")));
+			leatherarmor_torso_right7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_right_7.png")));
+			leatherarmor_torso_right8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_right_8.png")));
+			leatherarmor_torso_right9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorTorso/leatherarmor_right_9.png")));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getLeatherArmorHead() {
+		try {
+			leatherarmor_head_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_up_1.png")));
+			leatherarmor_head_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_up_2.png")));
+			leatherarmor_head_up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_up_3.png")));
+			leatherarmor_head_up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_up_4.png")));
+			leatherarmor_head_up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_up_5.png")));
+			leatherarmor_head_up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_up_6.png")));
+			leatherarmor_head_up7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_up_7.png")));
+			leatherarmor_head_up8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_up_8.png")));
+			leatherarmor_head_up9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_up_9.png")));
+
+			leatherarmor_head_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_down_1.png")));
+			leatherarmor_head_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_down_2.png")));
+			leatherarmor_head_down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_down_3.png")));
+			leatherarmor_head_down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_down_4.png")));
+			leatherarmor_head_down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_down_5.png")));
+			leatherarmor_head_down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_down_6.png")));
+			leatherarmor_head_down7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_down_7.png")));
+			leatherarmor_head_down8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_down_8.png")));
+			leatherarmor_head_down9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_down_9.png")));
+
+			leatherarmor_head_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_left_1.png")));
+			leatherarmor_head_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_left_2.png")));
+			leatherarmor_head_left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_left_3.png")));
+			leatherarmor_head_left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_left_4.png")));
+			leatherarmor_head_left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_left_5.png")));
+			leatherarmor_head_left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_left_6.png")));
+			leatherarmor_head_left7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_left_7.png")));
+			leatherarmor_head_left8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_left_8.png")));
+			leatherarmor_head_left9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_left_9.png")));
+
+			leatherarmor_head_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_right_1.png")));
+			leatherarmor_head_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_right_2.png")));
+			leatherarmor_head_right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_right_3.png")));
+			leatherarmor_head_right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_right_4.png")));
+			leatherarmor_head_right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_right_5.png")));
+			leatherarmor_head_right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_right_6.png")));
+			leatherarmor_head_right7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_right_7.png")));
+			leatherarmor_head_right8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_right_8.png")));
+			leatherarmor_head_right9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_right_9.png")));
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -130,6 +322,16 @@ public class Player extends Entity{
 	public void wearArmorLeatherTorso() {
 		armorOnIronTorso = false;
 		armorOnLeatherTorso = true;
+	}
+
+	public void wearArmorIronHead() {
+		armorOnLeatherHead = false;
+		armorOnIronHead = true;
+	}
+
+	public void wearArmorLeatherHead() {
+		armorOnIronHead = false;
+		armorOnLeatherHead = true;
 	}
 	
 	public void move() {
@@ -171,7 +373,7 @@ public class Player extends Entity{
 				}
 
 				spriteCounter++;
-				if (spriteCounter > 12) {
+				if (spriteCounter > 3) {
 					if (spriteNum == 1) {
 						spriteNum = 2;
 					} else if (spriteNum == 2) {
@@ -257,17 +459,13 @@ public class Player extends Entity{
 				}
 
 				spriteCounter++;
-				if (spriteCounter > 12) {
-					if (spriteNum == 1) {
-						spriteNum = 2;
-					} else if (spriteNum == 2) {
+				if (spriteCounter > 3) {
+					spriteNum++;
+					if (spriteNum > 9) { // Reset after 9
 						spriteNum = 1;
 					}
-					spriteCounter = 0;
-				}
-			} else {
-				spriteNum = 1;
-			}
+					spriteCounter = 0; // Reset counter after switching sprite
+				}}
 
 		}
 
@@ -341,17 +539,13 @@ public class Player extends Entity{
 				}
 
 				spriteCounter++;
-				if (spriteCounter > 12) {
-					if (spriteNum == 1) {
-						spriteNum = 2;
-					} else if (spriteNum == 2) {
+				if (spriteCounter > 3) {
+					spriteNum++;
+					if (spriteNum > 9) { // Reset after 9
 						spriteNum = 1;
 					}
-					spriteCounter = 0;
-				}
-			} else {
-				spriteNum = 1;
-			}
+					spriteCounter = 0; // Reset counter after switching sprite
+				}}
 
 		}
 	}
@@ -366,39 +560,276 @@ public class Player extends Entity{
 
 		BufferedImage image = null;
 		BufferedImage torsoArmorImage = null;
+		BufferedImage headArmorImage = null;
 
 		// Select base image and torso armor image
 		switch (direction) {
 			case "up" -> {
-				image = (spriteNum == 1) ? up1 : up2;
-				if (armorOnIronTorso) {
-					torsoArmorImage = (spriteNum == 1) ? ironarmor_torso_up1 : ironarmor_torso_up2;
-				} else if (armorOnLeatherTorso) {
-					torsoArmorImage = (spriteNum == 1) ? leatherarmor_torso_up1 : leatherarmor_torso_up2;
+				switch (spriteNum) {
+					case 1 -> {
+						image = up1;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up1;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up1;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up1;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_up1;
+					}
+					case 2 -> {
+						image = up2;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up2;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up2;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up2;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_up2;
+					}
+					case 3 -> {
+						image = up3;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up3;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up3;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up3;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_up3;
+					}
+					case 4 -> {
+						image = up4;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up4;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up4;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up4;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_up4;
+					}
+					case 5 -> {
+						image = up5;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up5;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up5;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up5;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_up5;
+					}
+					case 6 -> {
+						image = up6;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up6;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up6;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up6;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_up6;
+					}
+					case 7 -> {
+						image = up7;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up7;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up7;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up7;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_up7;
+					}
+					case 8 -> {
+						image = up8;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up8;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up8;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up8;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_up8;
+					}
+					case 9 -> {
+						image = up9;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up9;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up9;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up9;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_up9;
+					}
 				}
 			}
 			case "down" -> {
-				image = (spriteNum == 1) ? down1 : down2;
-				if (armorOnIronTorso) {
-					torsoArmorImage = (spriteNum == 1) ? ironarmor_torso_down1 : ironarmor_torso_down2;
-				} else if (armorOnLeatherTorso) {
-					torsoArmorImage = (spriteNum == 1) ? leatherarmor_torso_down1 : leatherarmor_torso_down2;
+				switch (spriteNum) {
+					case 1 -> {
+						image = down1;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down1;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down1;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down1;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_down1;
+					}
+					case 2 -> {
+						image = down2;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down2;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down2;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down2;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_down2;
+					}
+					case 3 -> {
+						image = down3;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down3;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down3;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down3;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_down3;
+					}
+					case 4 -> {
+						image = down4;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down4;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down4;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down4;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_down4;
+					}
+					case 5 -> {
+						image = down5;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down5;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down5;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down5;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_down5;
+					}
+					case 6 -> {
+						image = down6;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down6;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down6;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down6;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_down6;
+					}
+					case 7 -> {
+						image = down7;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down7;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down7;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down7;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_down7;
+					}
+					case 8 -> {
+						image = down8;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down8;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down8;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down8;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_down8;
+					}
+					case 9 -> {
+						image = down9;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down9;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down9;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down9;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_down9;
+					}
 				}
 			}
 			case "left" -> {
-				image = (spriteNum == 1) ? left1 : left2;
-				if (armorOnIronTorso) {
-					torsoArmorImage = (spriteNum == 1) ? ironarmor_torso_left1 : ironarmor_torso_left2;
-				} else if (armorOnLeatherTorso) {
-					torsoArmorImage = (spriteNum == 1) ? leatherarmor_torso_left1 : leatherarmor_torso_left2;
+				switch (spriteNum) {
+					case 1 -> {
+						image = left1;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left1;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left1;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left1;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_left1;
+					}
+					case 2 -> {
+						image = left2;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left2;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left2;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left2;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_left2;
+					}
+					case 3 -> {
+						image = left3;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left3;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left3;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left3;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_left3;
+					}
+					case 4 -> {
+						image = left4;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left4;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left4;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left4;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_left4;
+					}
+					case 5 -> {
+						image = left5;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left5;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left5;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left5;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_left5;
+					}
+					case 6 -> {
+						image = left6;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left6;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left6;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left6;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_left6;
+					}
+					case 7 -> {
+						image = left7;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left7;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left7;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left7;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_left7;
+					}
+					case 8 -> {
+						image = left8;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left8;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left8;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left8;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_left8;
+					}
+					case 9 -> {
+						image = left9;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left9;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left9;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left9;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_left9;
+					}
 				}
 			}
 			case "right" -> {
-				image = (spriteNum == 1) ? right1 : right2;
-				if (armorOnIronTorso) {
-					torsoArmorImage = (spriteNum == 1) ? ironarmor_torso_right1 : ironarmor_torso_right2;
-				} else if (armorOnLeatherTorso) {
-					torsoArmorImage = (spriteNum == 1) ? leatherarmor_torso_right1 : leatherarmor_torso_right2;
+				switch (spriteNum) {
+					case 1 -> {
+						image = right1;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right1;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right1;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right1;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_right1;
+					}
+					case 2 -> {
+						image = right2;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right2;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right2;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right2;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_right2;
+					}
+					case 3 -> {
+						image = right3;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right3;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right3;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right3;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_right3;
+					}
+					case 4 -> {
+						image = right4;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right4;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right4;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right4;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_right4;
+					}
+					case 5 -> {
+						image = right5;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right5;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right5;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right5;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_right5;
+					}
+					case 6 -> {
+						image = right6;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right6;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right6;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right6;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_right6;
+					}
+					case 7 -> {
+						image = right7;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right7;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right7;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right7;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_right7;
+					}
+					case 8 -> {
+						image = right8;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right8;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right8;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right8;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_right8;
+					}
+					case 9 -> {
+						image = right9;
+						if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right9;
+						else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right9;
+						if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right9;
+						else if (armorOnIronHead) headArmorImage = ironarmor_head_right9;
+					}
 				}
 			}
 		}
@@ -417,6 +848,10 @@ public class Player extends Entity{
 		// Draw torso armor image
 		if (torsoArmorImage != null) {
 			g2.drawImage(torsoArmorImage, screenX, screenY, BasePanel.tileSize, BasePanel.tileSize, null);
+		}
+
+		if (headArmorImage != null) {
+			g2.drawImage(headArmorImage, screenX, screenY-2, BasePanel.tileSize, BasePanel.tileSize, null);
 		}
 
 		g2.setColor(Color.red);

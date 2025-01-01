@@ -60,14 +60,6 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
             homePanel.buyArmor();
         }
 
-        if (code == KeyEvent.VK_W) {
-            homePanel.getPlayer().wearArmorIronTorso();
-        }
-
-        if (code == KeyEvent.VK_A) {
-            homePanel.getPlayer().wearArmorLeatherTorso();
-        }
-
         if (code == KeyEvent.VK_Q) {
             homePanel.getViewManager().switchTo("TitlePanel", true);
         }

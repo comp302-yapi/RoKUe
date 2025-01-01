@@ -6,13 +6,15 @@ import entity.Entity;
 import entity.Player;
 import listeners.keylisteners.HomePanelKeyListener;
 import managers.*;
-import object.OBJ_Cactus;
-import object.OBJ_IronArmor;
-import object.OBJ_LeatherArmor;
-import object.SuperObject;
+import object.*;
+import utils.ImageUtils;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class HomePanel extends PlayablePanel {
 
@@ -21,6 +23,10 @@ public class HomePanel extends PlayablePanel {
     private final HomePanelKeyListener keyListener;
     private final TileManagerForHome tileM;
     final CollisionCheckerForHome cChecker;
+    SuperObject leatherHelmet = new ARMOR_LeatherArmorHead();
+    SuperObject leatherArmorTorso = new ARMOR_LeatherArmorTorso();
+    SuperObject ironHelmet = new ARMOR_IronArmorHead();
+    SuperObject ironTorso = new ARMOR_IronArmorTorso();
 
     public HomePanel(ViewManager viewManager) {
         super(viewManager);
@@ -38,12 +44,17 @@ public class HomePanel extends PlayablePanel {
 
         this.cChecker = new CollisionCheckerForHome(this);
 
-        OBJ_IronArmor ironArmor = new OBJ_IronArmor();
-        OBJ_LeatherArmor leatherArmor = new OBJ_LeatherArmor();
+        ARMOR_IronArmorTorso ironArmorTorso = new ARMOR_IronArmorTorso();
+        ARMOR_LeatherArmorTorso leatherArmorTorso = new ARMOR_LeatherArmorTorso();
+        ARMOR_IronArmorHead ironArmorHead = new ARMOR_IronArmorHead();
+        ARMOR_LeatherArmorHead leatherArmorHead = new ARMOR_LeatherArmorHead();
 
-        tileM.addObject(ironArmor, 200, 400);
-        tileM.addObject(leatherArmor, 1200, 400);
 
+        tileM.addObject(leatherArmorHead, 800, 188);
+        tileM.addObject(leatherArmorTorso, 900, 188);
+
+        tileM.addObject(ironArmorTorso, 500, 188);
+        tileM.addObject(ironArmorHead, 600, 188);
 
     }
 
@@ -68,16 +79,43 @@ public class HomePanel extends PlayablePanel {
 
         SuperObject armorToBuy = chooseArmor();
 
-        if (getPlayer().gold >= armorToBuy.cost) {
-            getPlayer().gold -= armorToBuy.cost;
-            getPlayer().armor = armorToBuy.armor;
+        if (armorToBuy != null) {
+            if (getPlayer().gold >= armorToBuy.cost) {
+                getPlayer().gold -= armorToBuy.cost;
 
-            if (armorToBuy.name.equals("IronArmor")) {
-                getPlayer().wearArmorIronTorso();
-            } else if (armorToBuy.name.equals("LeatherArmor")) {
-                getPlayer().wearArmorLeatherTorso();
+                switch (armorToBuy.name) {
+                    case "Iron Chestplate" -> getPlayer().wearArmorIronTorso();
+                    case "Leather Chestplate" -> getPlayer().wearArmorLeatherTorso();
+                    case "Leather Helmet" -> getPlayer().wearArmorLeatherHead();
+                    case "Iron Helmet" -> getPlayer().wearArmorIronHead();
+                }
+
+                getPlayer().armor = calculateArmor();
+
             }
         }
+    }
+
+    public int calculateArmor() {
+        int armor = 0;
+
+        if (getPlayer().armorOnLeatherHead) {
+            armor += leatherHelmet.armor;
+        }
+
+        if (getPlayer().armorOnLeatherTorso) {
+            armor += leatherArmorTorso.armor;
+        }
+
+        if (getPlayer().armorOnIronHead) {
+            armor += ironHelmet.armor;
+        }
+
+        if (getPlayer().armorOnIronTorso) {
+            armor += ironTorso.armor;
+        }
+
+        return armor;
     }
 
     public SuperObject chooseArmor() {
@@ -93,7 +131,7 @@ public class HomePanel extends PlayablePanel {
                         Math.pow(object.worldX - playerX, 2) + Math.pow(object.worldY - playerY, 2)
                 );
 
-                if (distance < closestDistance) {
+                if (distance <= 4 * 48 && distance < closestDistance) {
                     closestDistance = distance;
                     closestObject = object;
                 }
@@ -124,12 +162,13 @@ public class HomePanel extends PlayablePanel {
             }
         }
 
+        displayClosestObjectName(g2);
+
         // Draw Character Info
         drawPlayerAttributes(g2);
 
         // Draw the player
         getPlayer().draw(g2);
-
 
         // If paused, show a pause screen
         if (isPaused) {
@@ -137,6 +176,79 @@ public class HomePanel extends PlayablePanel {
         }
 
         g2.dispose();
+    }
+
+    private void displayClosestObjectName(Graphics2D g2) {
+        SuperObject closestObject = null;
+        double closestDistance = Double.MAX_VALUE;
+        ImageUtils uTool = new ImageUtils();
+
+        // Find the closest object
+        for (SuperObject object : tileM.objects) {
+            if (object != null) {
+                double distance = Math.sqrt(
+                        Math.pow(object.worldX - getPlayer().screenX, 2) +
+                                Math.pow(object.worldY - getPlayer().screenY, 2)
+                );
+
+                if (distance < closestDistance && distance <= 48 * 4) {
+                    closestDistance = distance;
+                    closestObject = object;
+                }
+            }
+        }
+
+        // If there's a closest object, display its information
+        if (closestObject != null) {
+            // Load icons
+            BufferedImage goldImage, armorImage;
+            try {
+                goldImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/objects/gold/tile001.png")));
+                armorImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/objects/shield_wood.png")));
+            } catch (IOException e) {
+                e.printStackTrace();
+                return; // If any image cannot be loaded, do not display anything
+            }
+
+            // Scale icons
+            goldImage = uTool.scaleImage(goldImage, 32, 32);
+            armorImage = uTool.scaleImage(armorImage, 32, 32);
+
+            // Info panel dimensions
+            int panelWidth = 200;
+            int panelHeight = 130;
+            int panelX = closestObject.worldX + HomePanel.tileSize / 2 - panelWidth / 2;
+            int panelY = closestObject.worldY - panelHeight - 20;
+
+            // Draw the panel background
+            g2.setColor(new Color(50, 50, 50, 200)); // Grey with transparency
+            g2.fillRoundRect(panelX, panelY, panelWidth, panelHeight, 10, 10);
+
+            // Draw the panel border
+            g2.setColor(Color.BLACK);
+            g2.setStroke(new BasicStroke(3));
+            g2.drawRoundRect(panelX, panelY, panelWidth, panelHeight, 10, 10);
+
+            // Display object image and name
+            int objImageX = panelX + 10;
+            int objImageY = panelY + 10;
+            g2.drawImage(uTool.scaleImage(closestObject.image, 32, 32), objImageX, objImageY, null);
+            g2.setFont(new Font("Arial", Font.BOLD, 16));
+            g2.setColor(Color.WHITE);
+            g2.drawString(closestObject.name, objImageX + 40, objImageY + 20);
+
+            // Display armor info
+            int armorX = objImageX;
+            int armorY = objImageY + 40;
+            g2.drawImage(armorImage, armorX, armorY, null);
+            g2.drawString(String.valueOf(closestObject.armor), armorX + 40, armorY + 20);
+
+            // Display cost info
+            int goldX = objImageX;
+            int goldY = armorY + 40;
+            g2.drawImage(goldImage, goldX, goldY, null);
+            g2.drawString(String.valueOf(closestObject.cost), goldX + 40, goldY + 20);
+        }
     }
 
     private void drawPauseScreen(Graphics2D g2) {

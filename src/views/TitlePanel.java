@@ -18,7 +18,7 @@ public class TitlePanel extends NonPlayablePanel {
         this.titlePanelKeyListener = new TitlePanelKeyListener(this);
         this.addKeyListener(titlePanelKeyListener);
 
-        playMusic(0);
+//        playMusic(0);
     }
 
     public void playMusic(int i) {
