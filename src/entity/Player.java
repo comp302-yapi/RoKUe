@@ -52,6 +52,9 @@ public class Player extends Entity{
 		getLeatherArmorHead();
 		getPlayerImageAttacking();
 		getIronArmorTorsoKnifeAttacking();
+		getLeatherArmorTorsoKnifeAttacking();
+		getIronArmorHeadKnifeAttacking();
+		getLeatherArmorHeadKnifeAttacking();
 	}
 
 	// Static method to get the single instance
@@ -384,6 +387,42 @@ public class Player extends Entity{
 		}
 	}
 
+	public void getIronArmorHeadKnifeAttacking() {
+		try {
+			ironarmor_head_knife_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_up_1.png")));
+			ironarmor_head_knife_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_up_2.png")));
+			ironarmor_head_knife_up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_up_3.png")));
+			ironarmor_head_knife_up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_up_4.png")));
+			ironarmor_head_knife_up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_up_5.png")));
+			ironarmor_head_knife_up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_up_6.png")));
+
+			ironarmor_head_knife_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_down_1.png")));
+			ironarmor_head_knife_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_down_2.png")));
+			ironarmor_head_knife_down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_down_3.png")));
+			ironarmor_head_knife_down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_down_4.png")));
+			ironarmor_head_knife_down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_down_5.png")));
+			ironarmor_head_knife_down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_down_6.png")));
+
+			ironarmor_head_knife_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_left_1.png")));
+			ironarmor_head_knife_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_left_2.png")));
+			ironarmor_head_knife_left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_left_3.png")));
+			ironarmor_head_knife_left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_left_4.png")));
+			ironarmor_head_knife_left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_left_5.png")));
+			ironarmor_head_knife_left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_left_6.png")));
+
+			ironarmor_head_knife_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_right_1.png")));
+			ironarmor_head_knife_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_right_2.png")));
+			ironarmor_head_knife_right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_right_3.png")));
+			ironarmor_head_knife_right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_right_4.png")));
+			ironarmor_head_knife_right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_right_5.png")));
+			ironarmor_head_knife_right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorHeadKnife/ironarmor_head_knife_right_6.png")));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	// LEATHER ARMOR
 	public void getLeatherArmorTorso() {
 		try {
@@ -432,6 +471,45 @@ public class Player extends Entity{
 		}
 	}
 
+	public void getLeatherArmorTorsoKnifeAttacking() {
+		try {
+			// UP direction
+			leatherarmor_torso_knife_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_up_1.png")));
+			leatherarmor_torso_knife_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_up_2.png")));
+			leatherarmor_torso_knife_up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_up_3.png")));
+			leatherarmor_torso_knife_up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_up_4.png")));
+			leatherarmor_torso_knife_up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_up_5.png")));
+			leatherarmor_torso_knife_up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_up_6.png")));
+
+			// DOWN direction
+			leatherarmor_torso_knife_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_down_1.png")));
+			leatherarmor_torso_knife_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_down_2.png")));
+			leatherarmor_torso_knife_down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_down_3.png")));
+			leatherarmor_torso_knife_down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_down_4.png")));
+			leatherarmor_torso_knife_down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_down_5.png")));
+			leatherarmor_torso_knife_down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_down_6.png")));
+
+			// LEFT direction
+			leatherarmor_torso_knife_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_left_1.png")));
+			leatherarmor_torso_knife_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_left_2.png")));
+			leatherarmor_torso_knife_left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_left_3.png")));
+			leatherarmor_torso_knife_left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_left_4.png")));
+			leatherarmor_torso_knife_left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_left_5.png")));
+			leatherarmor_torso_knife_left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_left_6.png")));
+
+			// RIGHT direction
+			leatherarmor_torso_knife_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_right_1.png")));
+			leatherarmor_torso_knife_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_right_2.png")));
+			leatherarmor_torso_knife_right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_right_3.png")));
+			leatherarmor_torso_knife_right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_right_4.png")));
+			leatherarmor_torso_knife_right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_right_5.png")));
+			leatherarmor_torso_knife_right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorTorsoKnife/leatherarmor_torso_knife_right_6.png")));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void getLeatherArmorHead() {
 		try {
 			leatherarmor_head_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_up_1.png")));
@@ -473,6 +551,45 @@ public class Player extends Entity{
 			leatherarmor_head_right7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_right_7.png")));
 			leatherarmor_head_right8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_right_8.png")));
 			leatherarmor_head_right9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorHead/leatherarmor_head_right_9.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getLeatherArmorHeadKnifeAttacking() {
+		try {
+			// UP direction
+			leatherarmor_head_knife_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_up_1.png")));
+			leatherarmor_head_knife_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_up_2.png")));
+			leatherarmor_head_knife_up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_up_3.png")));
+			leatherarmor_head_knife_up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_up_4.png")));
+			leatherarmor_head_knife_up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_up_5.png")));
+			leatherarmor_head_knife_up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_up_6.png")));
+
+			// DOWN direction
+			leatherarmor_head_knife_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_down_1.png")));
+			leatherarmor_head_knife_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_down_2.png")));
+			leatherarmor_head_knife_down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_down_3.png")));
+			leatherarmor_head_knife_down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_down_4.png")));
+			leatherarmor_head_knife_down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_down_5.png")));
+			leatherarmor_head_knife_down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_down_6.png")));
+
+			// LEFT direction
+			leatherarmor_head_knife_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_left_1.png")));
+			leatherarmor_head_knife_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_left_2.png")));
+			leatherarmor_head_knife_left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_left_3.png")));
+			leatherarmor_head_knife_left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_left_4.png")));
+			leatherarmor_head_knife_left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_left_5.png")));
+			leatherarmor_head_knife_left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_left_6.png")));
+
+			// RIGHT direction
+			leatherarmor_head_knife_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_right_1.png")));
+			leatherarmor_head_knife_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_right_2.png")));
+			leatherarmor_head_knife_right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_right_3.png")));
+			leatherarmor_head_knife_right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_right_4.png")));
+			leatherarmor_head_knife_right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_right_5.png")));
+			leatherarmor_head_knife_right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorHeadKnife/leatherarmor_head_knife_right_6.png")));
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
