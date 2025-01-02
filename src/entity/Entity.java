@@ -22,6 +22,9 @@ public class Entity implements Serializable {
 	public BasePanel panel;
 	public int worldX, worldY;
 	public int speed;
+	int tempScreenX = worldX;
+	int tempScreenY = worldY;
+	int tempScreenYDown;
 
 	public transient BufferedImage up1, up2, up3, up4, up5, up6, up7, up8, up9;
 	public transient BufferedImage down1, down2, down3, down4, down5, down6, down7, down8, down9;
@@ -33,14 +36,13 @@ public class Entity implements Serializable {
 	public transient BufferedImage left_attacking1, left_attacking2, left_attacking3, left_attacking4, left_attacking5;
 	public transient BufferedImage right_attacking1, right_attacking2, right_attacking3, right_attacking4, right_attacking5;
 
-	public transient BufferedImage up_walking1, up_walking2, up_walking3, up_walking4, up_walking5;
-	public transient BufferedImage down_walking1, down_walking2, down_walking3, down_walking4, down_walking5;
-	public transient BufferedImage left_walking1, left_walking2, left_walking3, left_walking4, left_walking5;
-	public transient BufferedImage right_walking1, right_walking2, right_walking3, right_walking4, right_walking5;
-
+	public transient BufferedImage up_walking1, up_walking2, up_walking3, up_walking4, up_walking5, up_walking6, up_walking7, up_walking8, up_walking9;
+	public transient BufferedImage down_walking1, down_walking2, down_walking3, down_walking4, down_walking5, down_walking6, down_walking7, down_walking8, down_walking9;
+	public transient BufferedImage left_walking1, left_walking2, left_walking3, left_walking4, left_walking5, left_walking6, left_walking7, left_walking8, left_walking9;
+	public transient BufferedImage right_walking1, right_walking2, right_walking3, right_walking4, right_walking5, right_walking6, right_walking7, right_walking8, right_walking9;
 	// IRON ARMOR
 
-	// TORSO
+	// TORSO WALKING
 	public transient BufferedImage ironarmor_torso_up1, ironarmor_torso_up2, ironarmor_torso_up3, ironarmor_torso_up4,
 			ironarmor_torso_up5, ironarmor_torso_up6, ironarmor_torso_up7, ironarmor_torso_up8, ironarmor_torso_up9;
 	public transient BufferedImage ironarmor_torso_down1, ironarmor_torso_down2, ironarmor_torso_down3,
@@ -52,6 +54,75 @@ public class Entity implements Serializable {
 	public transient BufferedImage ironarmor_torso_right1, ironarmor_torso_right2, ironarmor_torso_right3,
 			ironarmor_torso_right4, ironarmor_torso_right5, ironarmor_torso_right6, ironarmor_torso_right7,
 			ironarmor_torso_right8, ironarmor_torso_right9;
+
+	// TORSO KNIFE ATTACKING
+	public transient BufferedImage ironarmor_torso_knife_up1, ironarmor_torso_knife_up2, ironarmor_torso_knife_up3,
+			ironarmor_torso_knife_up4, ironarmor_torso_knife_up5, ironarmor_torso_knife_up6, ironarmor_torso_knife_up7,
+			ironarmor_torso_knife_up8, ironarmor_torso_knife_up9;
+
+	public transient BufferedImage ironarmor_torso_knife_down1, ironarmor_torso_knife_down2, ironarmor_torso_knife_down3,
+			ironarmor_torso_knife_down4, ironarmor_torso_knife_down5, ironarmor_torso_knife_down6, ironarmor_torso_knife_down7,
+			ironarmor_torso_knife_down8, ironarmor_torso_knife_down9;
+
+	public transient BufferedImage ironarmor_torso_knife_left1, ironarmor_torso_knife_left2, ironarmor_torso_knife_left3,
+			ironarmor_torso_knife_left4, ironarmor_torso_knife_left5, ironarmor_torso_knife_left6, ironarmor_torso_knife_left7,
+			ironarmor_torso_knife_left8, ironarmor_torso_knife_left9;
+
+	public transient BufferedImage ironarmor_torso_knife_right1, ironarmor_torso_knife_right2, ironarmor_torso_knife_right3,
+			ironarmor_torso_knife_right4, ironarmor_torso_knife_right5, ironarmor_torso_knife_right6, ironarmor_torso_knife_right7,
+			ironarmor_torso_knife_right8, ironarmor_torso_knife_right9;
+
+	// Iron Armor Head Knife
+	public transient BufferedImage ironarmor_head_knife_up1, ironarmor_head_knife_up2, ironarmor_head_knife_up3,
+			ironarmor_head_knife_up4, ironarmor_head_knife_up5, ironarmor_head_knife_up6, ironarmor_head_knife_up7,
+			ironarmor_head_knife_up8, ironarmor_head_knife_up9;
+
+	public transient BufferedImage ironarmor_head_knife_down1, ironarmor_head_knife_down2, ironarmor_head_knife_down3,
+			ironarmor_head_knife_down4, ironarmor_head_knife_down5, ironarmor_head_knife_down6, ironarmor_head_knife_down7,
+			ironarmor_head_knife_down8, ironarmor_head_knife_down9;
+
+	public transient BufferedImage ironarmor_head_knife_left1, ironarmor_head_knife_left2, ironarmor_head_knife_left3,
+			ironarmor_head_knife_left4, ironarmor_head_knife_left5, ironarmor_head_knife_left6, ironarmor_head_knife_left7,
+			ironarmor_head_knife_left8, ironarmor_head_knife_left9;
+
+	public transient BufferedImage ironarmor_head_knife_right1, ironarmor_head_knife_right2, ironarmor_head_knife_right3,
+			ironarmor_head_knife_right4, ironarmor_head_knife_right5, ironarmor_head_knife_right6, ironarmor_head_knife_right7,
+			ironarmor_head_knife_right8, ironarmor_head_knife_right9;
+
+	// Leather Armor Head Knife
+	public transient BufferedImage leatherarmor_head_knife_up1, leatherarmor_head_knife_up2, leatherarmor_head_knife_up3,
+			leatherarmor_head_knife_up4, leatherarmor_head_knife_up5, leatherarmor_head_knife_up6, leatherarmor_head_knife_up7,
+			leatherarmor_head_knife_up8, leatherarmor_head_knife_up9;
+
+	public transient BufferedImage leatherarmor_head_knife_down1, leatherarmor_head_knife_down2, leatherarmor_head_knife_down3,
+			leatherarmor_head_knife_down4, leatherarmor_head_knife_down5, leatherarmor_head_knife_down6, leatherarmor_head_knife_down7,
+			leatherarmor_head_knife_down8, leatherarmor_head_knife_down9;
+
+	public transient BufferedImage leatherarmor_head_knife_left1, leatherarmor_head_knife_left2, leatherarmor_head_knife_left3,
+			leatherarmor_head_knife_left4, leatherarmor_head_knife_left5, leatherarmor_head_knife_left6, leatherarmor_head_knife_left7,
+			leatherarmor_head_knife_left8, leatherarmor_head_knife_left9;
+
+	public transient BufferedImage leatherarmor_head_knife_right1, leatherarmor_head_knife_right2, leatherarmor_head_knife_right3,
+			leatherarmor_head_knife_right4, leatherarmor_head_knife_right5, leatherarmor_head_knife_right6, leatherarmor_head_knife_right7,
+			leatherarmor_head_knife_right8, leatherarmor_head_knife_right9;
+
+	// Leather Armor Torso Knife
+	public transient BufferedImage leatherarmor_torso_knife_up1, leatherarmor_torso_knife_up2, leatherarmor_torso_knife_up3,
+			leatherarmor_torso_knife_up4, leatherarmor_torso_knife_up5, leatherarmor_torso_knife_up6, leatherarmor_torso_knife_up7,
+			leatherarmor_torso_knife_up8, leatherarmor_torso_knife_up9;
+
+	public transient BufferedImage leatherarmor_torso_knife_down1, leatherarmor_torso_knife_down2, leatherarmor_torso_knife_down3,
+			leatherarmor_torso_knife_down4, leatherarmor_torso_knife_down5, leatherarmor_torso_knife_down6, leatherarmor_torso_knife_down7,
+			leatherarmor_torso_knife_down8, leatherarmor_torso_knife_down9;
+
+	public transient BufferedImage leatherarmor_torso_knife_left1, leatherarmor_torso_knife_left2, leatherarmor_torso_knife_left3,
+			leatherarmor_torso_knife_left4, leatherarmor_torso_knife_left5, leatherarmor_torso_knife_left6, leatherarmor_torso_knife_left7,
+			leatherarmor_torso_knife_left8, leatherarmor_torso_knife_left9;
+
+	public transient BufferedImage leatherarmor_torso_knife_right1, leatherarmor_torso_knife_right2, leatherarmor_torso_knife_right3,
+			leatherarmor_torso_knife_right4, leatherarmor_torso_knife_right5, leatherarmor_torso_knife_right6, leatherarmor_torso_knife_right7,
+			leatherarmor_torso_knife_right8, leatherarmor_torso_knife_right9;
+
 
 	// HEAD
 	public transient BufferedImage ironarmor_head_up1, ironarmor_head_up2, ironarmor_head_up3, ironarmor_head_up4,
@@ -197,14 +268,6 @@ public class Entity implements Serializable {
 			}
 		}
 
-		if (life == 0) {
-			if (panel instanceof HallPanel) {
-				System.out.println("Life = 0");
-			}
-			System.out.println("SWITCH1");
-			panel.getViewManager().switchTo("HomePanel", true);
-		}
-
 
 		// IF COLLISION FALSE, PLAYER CAN MOVE
 		if (!collisionOn) {
@@ -216,6 +279,14 @@ public class Entity implements Serializable {
 			}
 		}
 
+		if(invincible) {
+			invincibleCounter++;
+		}
+
+		if (invincibleCounter >= 40) {
+			invincible = false;
+			invincibleCounter = 0;
+		}
 
 	}
 	
@@ -223,8 +294,6 @@ public class Entity implements Serializable {
 		
 		BufferedImage image = null;
 
-		int tempScreenX = worldX;
-		int tempScreenY = worldY;
 
 		animateDirection();
 		animate();
@@ -237,9 +306,17 @@ public class Entity implements Serializable {
 		if (image == null) {
 			System.out.println(this.name);
 		}
+
+		if (invincible) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+		}
+
         g2.drawImage(image, tempScreenX, tempScreenY, image.getWidth(), image.getHeight(), null);
 
-    }
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
+
+	}
 
 	public void animate() {
 

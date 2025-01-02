@@ -301,7 +301,11 @@ public class HomePanel extends PlayablePanel {
                 getPlayer().life,
                 getPlayer().maxLife,
                 getPlayer().screenX,
-                getPlayer().screenY
+                getPlayer().screenY,
+                getPlayer().armorOnIronHead,
+                getPlayer().armorOnIronTorso,
+                getPlayer().armorOnLeatherHead,
+                getPlayer().armorOnLeatherTorso
         );
     }
 
@@ -317,6 +321,11 @@ public class HomePanel extends PlayablePanel {
         player.maxLife = data.playerMaxLife;
         player.screenX = data.playerScreenX;
         player.screenY = data.playerScreenY;
+        player.armorOnLeatherTorso = data.armorOnLeatherTorso;
+        player.armorOnLeatherHead = data.armorOnLeatherHead;
+        player.armorOnIronTorso = data.armorOnIronTorso;
+        player.armorOnIronHead = data.armorOnIronHead;
+
     }
 
 

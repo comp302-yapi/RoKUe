@@ -60,6 +60,11 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
             homePanel.buyArmor();
         }
 
+        if (code == KeyEvent.VK_SPACE) {
+            spacePressed = true;
+            homePanel.getPlayer().attacking = true;
+        }
+
         if (code == KeyEvent.VK_Q) {
             homePanel.getViewManager().switchTo("TitlePanel", true);
         }
@@ -105,6 +110,10 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
 
         if (code == KeyEvent.VK_RIGHT) {
             rightPressed = false;
+        }
+
+        if (code == KeyEvent.VK_SPACE) {
+            spacePressed = false;
         }
     }
 }

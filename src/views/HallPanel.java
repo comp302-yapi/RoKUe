@@ -302,14 +302,20 @@ public class HallPanel extends PlayablePanel{
 
         for (Entity monster : monsters) {
 
-            int row = monster.worldX / BasePanel.tileSize;
-            int column = monster.worldY / BasePanel.tileSize;
+            if (monster != null) {
 
-            if (row > 13) {row = 13;}
-            if (column > 13) {column = 13;}
+                int row = monster.worldX / BasePanel.tileSize;
+                int column = monster.worldY / BasePanel.tileSize;
 
-            gridWorldAll[row - 7][column - 2] = 1;
+                if (row > 13) {
+                    row = 13;
+                }
+                if (column > 13) {
+                    column = 13;
+                }
 
+                gridWorldAll[row - 7][column - 2] = 1;
+            }
         }
 
     }
@@ -318,7 +324,7 @@ public class HallPanel extends PlayablePanel{
 
         Random random = new Random();
         String pickMonster = monsterTypes[random.nextInt(monsterTypes.length)]; // Get a random index
-        pickMonster = "Fighter";
+//      pickMonster = "Fighter";
 
         int locationX = random.nextInt(1,13) + 7;
         int locationY = random.nextInt(1,14) + 2;

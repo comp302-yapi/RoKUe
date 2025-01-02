@@ -282,7 +282,6 @@ public class MON_Archer extends Entity {
 			attacking = true;
 			// Determine arrow direction
 			this.collisionOn = true;
-			System.out.println("Collision changed to true");
 
 			String arrowDirection = determineArrowDirection();
 

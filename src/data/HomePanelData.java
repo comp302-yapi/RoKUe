@@ -16,6 +16,8 @@ public class HomePanelData implements Serializable {
     public int playerMaxLife;
     public int playerScreenX;
     public int playerScreenY;
+    public boolean armorOnLeatherHead, armorOnLeatherTorso;
+    public boolean armorOnIronHead, armorOnIronTorso;
 
     public HomePanelData(
             ArrayList<SuperObject> objectsInHome,
@@ -25,7 +27,12 @@ public class HomePanelData implements Serializable {
             int playerLife,
             int playerMaxLife,
             int playerScreenX,
-            int playerScreenY
+            int playerScreenY,
+            boolean armorOnLeatherHead,
+            boolean armorOnLeatherTorso,
+            boolean armorOnIronHead,
+            boolean armorOnIronTorso
+
     ) {
         this.objectsInHome = objectsInHome;
         this.playerGold = playerGold;
@@ -35,6 +42,10 @@ public class HomePanelData implements Serializable {
         this.playerMaxLife = playerMaxLife;
         this.playerScreenX = playerScreenX;
         this.playerScreenY = playerScreenY;
+        this.armorOnLeatherHead = armorOnLeatherHead;
+        this.armorOnLeatherTorso = armorOnLeatherTorso;
+        this.armorOnIronHead = armorOnIronHead;
+        this.armorOnIronTorso = armorOnIronTorso;
     }
 
     @Override
@@ -48,6 +59,10 @@ public class HomePanelData implements Serializable {
                 "\n  playerMaxLife: " + playerMaxLife +
                 "\n  playerScreenX: " + playerScreenX +
                 "\n  playerScreenY: " + playerScreenY +
+                "\n  armorOnLeatherHead: " + armorOnLeatherHead +
+                "\n  armorOnLeatherTorso: " + armorOnLeatherTorso +
+                "\n  armorOnIronHead: " + armorOnIronHead +
+                "\n  armorOnIronTorso: " + armorOnIronTorso +
                 "\n}";
     }
 }

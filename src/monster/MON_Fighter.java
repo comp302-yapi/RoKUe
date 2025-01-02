@@ -61,7 +61,7 @@ public class MON_Fighter extends Entity {
 		name = "Fighter Monster";
 		speed = 1; // Added minimal movement
 		maxLife = 4;
-		damage = 2;
+		damage = 4;
 		life = maxLife;
 
 		// Solid area for collision detection

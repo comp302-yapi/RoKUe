@@ -63,6 +63,11 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
         if (code == KeyEvent.VK_RIGHT) {
             rightPressed = true;
         }
+
+        if (code == KeyEvent.VK_SPACE) {
+            spacePressed = true;
+            hallPanel.getPlayer().attacking = true;
+        }
         
         if (code == KeyEvent.VK_E) {
         	monsterSpawn = true;
@@ -129,6 +134,10 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
 
         if (code == KeyEvent.VK_RIGHT) {
             rightPressed = false;
+        }
+
+        if (code == KeyEvent.VK_SPACE) {
+            spacePressed = false;
         }
     }
 }
