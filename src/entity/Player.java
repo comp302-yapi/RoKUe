@@ -942,29 +942,6 @@ public class Player extends Entity{
 		}
 	}
 
-	public void damageMonster(int i, Entity entity) {
-		if (i != 999) {
-			if (panel instanceof HallPanel hallPanel) {
-				if (!hallPanel.getMonsters()[i].invincible) {
-					hallPanel.playSE(7);
-					hallPanel.getMonsters()[i].life -= 1;
-					hallPanel.getMonsters()[i].invincible = true;
-					hallPanel.getMonsters()[i].damageReceived = true;
-
-					if (entity instanceof Fireball) {
-						knockback(hallPanel.getMonsters()[i], entity, fireball.knockbackValue);
-					}  else {
-						knockback(hallPanel.getMonsters()[i], this, knockbackValue);
-					}
-//
-//					if (!hallPanel.getMonsters()[i].alive) {
-//						hallPanel.getHallMonsters().set(i, null);
-//					}
-				}
-			}
-		}
-	}
-
 	public void knockback(Entity entity, Entity hitEntity, int knockbackValue) {
 		if (hitEntity instanceof Fireball fireball) {
 			entity.tempDirection = entity.direction;
@@ -1021,7 +998,6 @@ public class Player extends Entity{
 
 		fireball = new Fireball(panel, screenX, screenY, fireballDirection);
 	}
-
 
 	public void AoEDamage(HallPanel hallPanel) {
 		if (aoeActive) {
@@ -1663,6 +1639,34 @@ public class Player extends Entity{
 
 	}
 
+	public void damageMonster(int i, Entity entity) {
+		if (i != 999) {
+			if (panel instanceof HallPanel hallPanel) {
+				if (!hallPanel.getMonsters()[i].invincible) {
+					hallPanel.playSE(7);
+					hallPanel.getMonsters()[i].life -= 1;
+					hallPanel.getMonsters()[i].invincible = true;
+					hallPanel.getMonsters()[i].damageReceived = true;
+
+					if (entity instanceof Fireball) {
+						knockback(hallPanel.getMonsters()[i], entity, fireball.knockbackValue);
+					}  else {
+						knockback(hallPanel.getMonsters()[i], this, knockbackValue);
+					}
+				}
+			}
+		}
+	}
+
+
+	public void killEntity(Entity entity) {
+		if (entity.life <= 0) {
+			entity.alive = false;
+			if (panel instanceof HallPanel hallPanel)  {
+				hallPanel.getHallMonsters().remove(entity);
+			}
+		}
+	}
 }
 
 

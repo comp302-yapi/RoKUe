@@ -778,13 +778,15 @@ public class HallPanel extends PlayablePanel{
                     newBloodParticle.worldY = monster.worldY;
                     activeBloodParticles.add(newBloodParticle);
 
-                    SuperParticle newBurningParticle = new PRTCL_Burning(burningAnimation, monster);
-                    newBurningParticle.worldX = monster.worldX;
-                    newBurningParticle.worldY = monster.worldY;
-                    activeBurningParticles.add(newBurningParticle);
+                    if (monster.isBurning) {
+                        SuperParticle newBurningParticle = new PRTCL_Burning(burningAnimation, monster);
+                        newBurningParticle.worldX = monster.worldX;
+                        newBurningParticle.worldY = monster.worldY;
+                        activeBurningParticles.add(newBurningParticle);
+                        activeParticles.add(newBurningParticle);
+                    }
 
                     activeParticles.add(newBloodParticle);
-                    activeParticles.add(newBurningParticle);
 
                     monster.damageReceived = false;
 

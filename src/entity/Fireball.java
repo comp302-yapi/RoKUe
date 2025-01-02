@@ -124,8 +124,13 @@ public class Fireball extends Entity {
             int monsterIdx = panel.getCollisionChecker().checkEntity(this, hallPanel.getMonsters());
             if (monsterIdx != 999 && !hallPanel.getMonsters()[monsterIdx].invincible) {
 
+                hallPanel.getMonsters()[monsterIdx].isBurning = true;
+                hallPanel.getHallMonsters().get(monsterIdx).isBurning = true;
+                hallPanel.getMonsters()[monsterIdx].damageReceived = true;
+                hallPanel.getHallMonsters().get(monsterIdx).damageReceived = true;
+
                 hallPanel.getPlayer().damageMonster(monsterIdx, this);
-//                System.out.println("Expired1");
+//              System.out.println("Expired1");
                 expired = true;
             }
 
@@ -133,9 +138,6 @@ public class Fireball extends Entity {
             collisionOn = false;
             hallPanel.getCollisionCheckerForHall().checkTile(this);
             if (collisionOn) {
-//                System.out.println(this.worldX + "Fireball" + this.worldY);
-//                System.out.println(hallPanel.getPlayer().screenX + "Player" + hallPanel.getPlayer().screenY);
-//                System.out.println("Expired3");
                 expired = true;
             }
         }

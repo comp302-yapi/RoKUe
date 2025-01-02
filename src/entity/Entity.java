@@ -18,7 +18,7 @@ import views.HomePanel;
 public class Entity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public BasePanel panel;
 	public int worldX, worldY;
 	public int speed;
@@ -172,7 +172,7 @@ public class Entity implements Serializable {
 
 	public int spriteCounter = 0;
 	public int spriteNum = 1;
-	
+
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public int solidAreaDefaultWidth, solidAreaDefaultHeight;
@@ -196,6 +196,9 @@ public class Entity implements Serializable {
 	public boolean damageReceived;
 	public boolean alive = true;
 
+	public boolean isBurning;
+	public int burnTimer;
+
 	public transient BufferedImage image, image2, image3;
 	public String name;
 	public boolean collision = false;
@@ -205,20 +208,20 @@ public class Entity implements Serializable {
 
 
 	public int type; // 0 = player, 1 = npc, 2 = monster
-	
+
 	// CHARACTER STATUS
 	public int maxLife;
 	public int life;
 	public int damage;
 	public int armor;
 
-	
+
 	public Entity(BasePanel panel) {
 		this.panel = panel;
 	}
-	
+
 	public void setAction() {
-		
+
 	}
 
 	public void chooseImage() {
@@ -226,15 +229,30 @@ public class Entity implements Serializable {
 	}
 
 	public boolean isAttackingFighter() {
-        return false;
-    }
+		return false;
+	}
 
-	public boolean isAttackingArcher(){
+	public boolean isAttackingArcher() {
 		return false;
 	}
 
 	public void update() {
 
+		if (isBurning) {
+//			System.out.println("BURNING");
+
+			burnTimer++;
+			if (burnTimer % (60) == 0) {
+				takeDamage(1);
+				this.damageReceived = true;
+			}
+
+			if (burnTimer > 60 * 3) {
+				isBurning = false;
+				this.damageReceived = false;
+				burnTimer = 0;
+			}
+		}
 		if (knockback) {
 			monsterHit = 999;
 
@@ -251,6 +269,7 @@ public class Entity implements Serializable {
 
 			if (collisionOn) {
 				this.life -= 1;
+				this.damageReceived = true;
 
 				if (monsterHit != 999) {
 					panel.getMonsters()[monsterHit].life -= 1;
@@ -397,6 +416,15 @@ public class Entity implements Serializable {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
 
+	}
+
+	public void applyBurning() {
+		isBurning = true;
+		burnTimer = 0;
+	}
+
+	private void takeDamage(int damage) {
+		this.life -= damage;
 	}
 
 	public void animate() {
