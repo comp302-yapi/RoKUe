@@ -66,8 +66,13 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
         }
 
         if (code == KeyEvent.VK_SPACE) {
+            hallPanel.attackSoundPlayed = false;
             spacePressed = true;
             hallPanel.getPlayer().attacking = true;
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_2) {
+            hallPanel.activateFireBall();
         }
 
         if (e.getKeyCode() == KeyEvent.VK_1) {

@@ -188,11 +188,13 @@ public class Entity implements Serializable {
 	public int invincibleCounterCloak;
 
 	public boolean knockback;
+	public int knockbackValue;
 	public int defaultSpeed;
 	public int knockBackCounter;
 	public String tempDirection;
 	public int monsterHit;
-
+	public boolean damageReceived;
+	public boolean alive = true;
 
 	public transient BufferedImage image, image2, image3;
 	public String name;
@@ -388,7 +390,9 @@ public class Entity implements Serializable {
 			}
 		}
 
-        g2.drawImage(image, tempScreenX, tempScreenY, image.getWidth(), image.getHeight(), null);
+		if (image != null) {
+			g2.drawImage(image, tempScreenX, tempScreenY, image.getWidth(), image.getHeight(), null);
+		}
 
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 

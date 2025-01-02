@@ -6,6 +6,7 @@ import controllers.HallController;
 import data.HallPanelData;
 import entity.Arrow;
 import entity.Entity;
+import entity.Fireball;
 import entity.Player;
 import enums.Hall;
 import listeners.keylisteners.HallPanelKeyListener;
@@ -22,7 +23,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.List;
 
 public class HallPanel extends PlayablePanel{
 
@@ -41,6 +44,7 @@ public class HallPanel extends PlayablePanel{
     boolean availableSpot = false;
     private ImageIcon backgroundImage;
     public soundManager soundManager = new soundManager();
+    public boolean attackSoundPlayed;
     public boolean checkInventoryForReveal = false;
     public boolean checkInventoryForCloak = false;
     public boolean checkInventoryForLuringGem = false;
@@ -55,6 +59,18 @@ public class HallPanel extends PlayablePanel{
     public ArrayList<SuperPower> superPowers = new ArrayList<>(); // List of superpowers
 
     public boolean groundSlamActive = false;
+
+    // Particles
+    transient ArrayList<BufferedImage> bloodAnimation = new ArrayList<>();
+    public PRTCL_Blood bloodParticle;
+    private final List<SuperParticle> activeBloodParticles = new ArrayList<>();
+
+    transient ArrayList<BufferedImage> burningAnimation = new ArrayList<>();
+    public PRTCL_Burning burningParticle;
+    private final List<SuperParticle> activeBurningParticles = new ArrayList<>();
+
+    private final List<SuperParticle> activeParticles = new ArrayList<>();
+
 
     // Set the new time
 
@@ -80,6 +96,11 @@ public class HallPanel extends PlayablePanel{
 
         Player player = Player.getInstance(this);
         player.addKeyListener(keyListener);
+
+        // PARTICLES
+        bloodParticle = new PRTCL_Blood(bloodAnimation, 400, 400);
+
+        burningParticle = new PRTCL_Burning(burningAnimation, null);
 
         // SUPERPOWER
         initSuperPowerPanel();
@@ -285,6 +306,13 @@ public class HallPanel extends PlayablePanel{
                 }
             }
 
+            if (getPlayer().fireball != null) {
+                getPlayer().fireball.update();
+                if (getPlayer().fireball.isExpired()) {
+                    getPlayer().fireball = null;
+                }
+            }
+
             HallController.shouldSwitchHallsInGame(getTileM(), getPlayer(), this);
 
             // Generate Monster
@@ -340,7 +368,7 @@ public class HallPanel extends PlayablePanel{
 
         Random random = new Random();
         String pickMonster = monsterTypes[random.nextInt(monsterTypes.length)]; // Get a random index
-      pickMonster = "Fighter";
+//      pickMonster = "Fighter";
 
         int locationX = random.nextInt(1,13) + 7;
         int locationY = random.nextInt(1,14) + 2;
@@ -534,6 +562,7 @@ public class HallPanel extends PlayablePanel{
                         g2.drawImage(superObject.image, superObject.worldX, superObject.worldY, tileSize, tileSize, null);
                     }
                 }
+
 
                 // Draw the Timer
                 g2.setFont(new Font("Arial", Font.BOLD, 30)); // Set font size and style
@@ -737,9 +766,44 @@ public class HallPanel extends PlayablePanel{
 
         drawPlayerLife(g2);
 
-        for (Entity monster : monsters) {
+        Iterator<Entity> iteratorMonster = monsters.iterator();
+        while (iteratorMonster.hasNext()) {
+            Entity monster = iteratorMonster.next();
             if (monster != null) {
                 monster.draw(g2);
+
+                if (monster.damageReceived) {
+                    SuperParticle newBloodParticle = new PRTCL_Blood(bloodAnimation, 400, 400);
+                    newBloodParticle.worldX = monster.worldX;
+                    newBloodParticle.worldY = monster.worldY;
+                    activeBloodParticles.add(newBloodParticle);
+
+                    SuperParticle newBurningParticle = new PRTCL_Burning(burningAnimation, monster);
+                    newBurningParticle.worldX = monster.worldX;
+                    newBurningParticle.worldY = monster.worldY;
+                    activeBurningParticles.add(newBurningParticle);
+
+                    activeParticles.add(newBloodParticle);
+                    activeParticles.add(newBurningParticle);
+
+                    monster.damageReceived = false;
+
+                    if (monster.life <= 0) {
+                        monster.alive = false;
+                        iteratorMonster.remove();
+                    }
+                }
+            }
+        }
+
+        Iterator<SuperParticle> iteratorParticles = activeParticles.iterator();
+        while (iteratorParticles.hasNext()) {
+            SuperParticle particle = iteratorParticles.next();
+            particle.updateAnimation();
+
+            particle.draw(g2, this);
+            if (particle.isAnimationComplete()) {
+                iteratorParticles.remove();
             }
         }
 
@@ -747,6 +811,10 @@ public class HallPanel extends PlayablePanel{
             if (arrow != null) {
                 arrow.draw(g2);
             }
+        }
+
+        if (getPlayer().fireball != null) {
+            getPlayer().fireball.draw(g2);
         }
 
         drawInventory(g2);
@@ -952,7 +1020,7 @@ public class HallPanel extends PlayablePanel{
     private void initSuperPowerPanel() {
         superPowers.add(new SuperPower("Ground Slam", "/res/objects/chain.png", 180));
         superPowers.add(new SuperPower("Shield", "/res/objects/shield_blue.png", 100));
-        superPowers.add(new SuperPower("Fireball", "/res/objects/axe.png", 300));
+        superPowers.add(new SuperPower("Fireball", "/res/projectiles/FireBall/right1.png", 300));
     }
 
     public void drawSuperPowers(Graphics2D g2) {
@@ -998,6 +1066,17 @@ public class HallPanel extends PlayablePanel{
                 getPlayer().AoEDamage(this);
                 triggerScreenShake(5, 10);
                 groundSlamActive = true;
+                break;
+            }
+        }
+    }
+
+    public void activateFireBall() {
+        for (SuperPower power : superPowers) {
+            if (power.getName().equals("Fireball") && power.getRemainingCooldown() <= 0) {
+                power.startCooldown();
+                playSE(4);
+                getPlayer().shootFireball();
                 break;
             }
         }

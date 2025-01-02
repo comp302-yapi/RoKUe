@@ -16,6 +16,7 @@ public class SuperObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public transient BufferedImage image, image2, image3;
+	public transient BufferedImage bloodAnimation[];
 	public String name;
 	public boolean collision = false;
 	public int worldX, worldY;

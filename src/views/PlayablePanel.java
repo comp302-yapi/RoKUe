@@ -2,6 +2,7 @@ package views;
 
 import entity.Arrow;
 import entity.Entity;
+import entity.Fireball;
 import entity.Player;
 import managers.CollisionChecker;
 import managers.TileManager;
@@ -74,6 +75,5 @@ public abstract class PlayablePanel extends JPanel implements BasePanel {
     public Arrow[] getArrows() {
         return arrows;
     }
-
 }
 

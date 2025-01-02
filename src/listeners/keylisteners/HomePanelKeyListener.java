@@ -61,6 +61,7 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
         }
 
         if (code == KeyEvent.VK_SPACE) {
+            homePanel.attackSoundPlayed = false;
             spacePressed = true;
             homePanel.getPlayer().attacking = true;
         }

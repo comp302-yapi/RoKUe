@@ -3,6 +3,7 @@ package managers;
 import containers.HallContainer;
 import containers.TileContainer;
 import entity.Entity;
+import entity.Fireball;
 import entity.Player;
 import object.SuperObject;
 import views.BasePanel;
@@ -31,8 +32,8 @@ public class CollisionCheckerForHall implements Serializable {
             entity.solidArea.y = e.screenY - 96 + entity.solidArea.y;
         }
         else {
-        	 entity.solidArea.x = entity.worldX - 336 + entity.solidArea.x;
-             entity.solidArea.y = entity.worldY - 96 + entity.solidArea.y;
+        	 entity.solidArea.x = entity.worldX - 336 + entity.solidAreaDefaultX;
+             entity.solidArea.y = entity.worldY - 96 + entity.solidAreaDefaultY;
         }
 
        int entityLeftWorldX = entity.solidArea.x;
@@ -40,16 +41,16 @@ public class CollisionCheckerForHall implements Serializable {
         int entityTopWorldY = entity.solidArea.y;
         int entityBottomWorldY = entity.solidArea.y + entity.solidArea.height;
 
-        int entityLeftCol = entityLeftWorldX/BasePanel.tileSize;
-        int entityRightCol = entityRightWorldX/BasePanel.tileSize;
-        int entityTopRow = entityTopWorldY/BasePanel.tileSize;
-        int entityBottomRow = entityBottomWorldY/BasePanel.tileSize;
+        int entityLeftCol = entityLeftWorldX/HallPanel.tileSize;
+        int entityRightCol = entityRightWorldX/HallPanel.tileSize;
+        int entityTopRow = entityTopWorldY/HallPanel.tileSize;
+        int entityBottomRow = entityBottomWorldY/HallPanel.tileSize;
 
         int tileNum1, tileNum2;
 
         switch (entity.direction) {
             case "up" -> {
-                entityTopRow = (entityTopWorldY - entity.speed) / BasePanel.tileSize;
+                entityTopRow = (entityTopWorldY - entity.speed) / HallPanel.tileSize;
                 tileNum1 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityRightCol][entityTopRow];
                 if (TileContainer.getTile()[tileNum1].collision || TileContainer.getTile()[tileNum2].collision) {
@@ -58,7 +59,7 @@ public class CollisionCheckerForHall implements Serializable {
             }
 
             case "down" -> {
-                entityBottomRow = (entityBottomWorldY + entity.speed) / BasePanel.tileSize;
+                entityBottomRow = (entityBottomWorldY + entity.speed) / HallPanel.tileSize;
                 tileNum1 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityLeftCol][entityBottomRow];
                 tileNum2 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityRightCol][entityBottomRow];
                 if (TileContainer.getTile()[tileNum1].collision || TileContainer.getTile()[tileNum2].collision) {
@@ -67,7 +68,7 @@ public class CollisionCheckerForHall implements Serializable {
             }
 
             case "left" -> {
-                entityLeftCol = (entityLeftWorldX - entity.speed) / BasePanel.tileSize;
+                entityLeftCol = (entityLeftWorldX - entity.speed) / HallPanel.tileSize;
                 tileNum1 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityLeftCol][entityBottomRow];
                 if (TileContainer.getTile()[tileNum1].collision || TileContainer.getTile()[tileNum2].collision) {
@@ -76,7 +77,7 @@ public class CollisionCheckerForHall implements Serializable {
             }
 
             case "right" -> {
-                entityRightCol = (entityRightWorldX + entity.speed) / BasePanel.tileSize;
+                entityRightCol = (entityRightWorldX + entity.speed) / HallPanel.tileSize;
                 tileNum1 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityRightCol][entityTopRow];
                 tileNum2 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityRightCol][entityBottomRow];
                 if (TileContainer.getTile()[tileNum1].collision || TileContainer.getTile()[tileNum2].collision) {

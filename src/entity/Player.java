@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 import javax.imageio.ImageIO;
 
 import enums.Hall;
@@ -36,6 +37,8 @@ public class Player extends Entity{
 	private int aoeCounter = 0;         // Timer for AoE
 	private int aoeRadius = 100;        // AoE radius
 	private int aoeDamage = 2;          // AoE damage
+
+	public Fireball fireball;
 
 	private Player(BasePanel panel) {
 		super(panel);
@@ -89,7 +92,7 @@ public class Player extends Entity{
 		armor = 0;
 		gold = 10;
 		direction = "down";
-		
+		knockbackValue = 10;
 		maxLife = 12;
 		life = maxLife;
 		
@@ -864,6 +867,26 @@ public class Player extends Entity{
 	}
 
 	public void attacking() {
+
+		Random random = new Random();
+		int soundToPlay = random.nextBoolean() ? 5 : 6;
+
+		if (panel instanceof HallPanel hallPanel) {
+			if (!hallPanel.attackSoundPlayed) {
+				hallPanel.playSE(soundToPlay);
+				hallPanel.attackSoundPlayed = true; // Set flag to prevent replay
+			}
+		}
+
+		if (panel instanceof HomePanel homePanel) {
+			if (!homePanel.attackSoundPlayed) {
+				homePanel.playSE(soundToPlay);
+				homePanel.attackSoundPlayed = true; // Set flag to prevent replay
+			}
+		}
+
+
+
 		if (firstAttackCall) {
 			spriteNum = 1;
 			firstAttackCall = false;
@@ -898,8 +921,8 @@ public class Player extends Entity{
 					int monsterIndex = hallPanel.getCollisionCheckerForHall().checkEntity(this, hallPanel.getMonsters());
 
 					// Apply damage to the collided monster
-					if (monsterIndex != -1) {
-						damageMonster(monsterIndex);
+					if (monsterIndex != 999) {
+						damageMonster(monsterIndex, this);
 					}
 
 					// Restore the original data
@@ -919,27 +942,43 @@ public class Player extends Entity{
 		}
 	}
 
-	public void damageMonster(int i) {
+	public void damageMonster(int i, Entity entity) {
 		if (i != 999) {
 			if (panel instanceof HallPanel hallPanel) {
 				if (!hallPanel.getMonsters()[i].invincible) {
+					hallPanel.playSE(7);
 					hallPanel.getMonsters()[i].life -= 1;
 					hallPanel.getMonsters()[i].invincible = true;
-					knockback(hallPanel.getMonsters()[i]);
+					hallPanel.getMonsters()[i].damageReceived = true;
 
-					if (hallPanel.getMonsters()[i].life <= 0) {
-						hallPanel.getHallMonsters().set(i, null);
+					if (entity instanceof Fireball) {
+						knockback(hallPanel.getMonsters()[i], entity, fireball.knockbackValue);
+					}  else {
+						knockback(hallPanel.getMonsters()[i], this, knockbackValue);
 					}
+//
+//					if (!hallPanel.getMonsters()[i].alive) {
+//						hallPanel.getHallMonsters().set(i, null);
+//					}
 				}
 			}
 		}
 	}
 
-	public void knockback(Entity entity) {
-		entity.tempDirection = entity.direction;
-		entity.direction = direction;
-		entity.speed += 10;
-		entity.knockback = true;
+	public void knockback(Entity entity, Entity hitEntity, int knockbackValue) {
+		if (hitEntity instanceof Fireball fireball) {
+			entity.tempDirection = entity.direction;
+			entity.direction = fireball.direction;
+			entity.speed += knockbackValue;
+			System.out.println(knockbackValue);
+			entity.knockback = true;
+		} else {
+			entity.tempDirection = entity.direction;
+			entity.direction = direction;
+			entity.speed += knockbackValue;
+			entity.knockback = true;
+		}
+
 	}
 
 	public void aoeKnockback(Player player, Entity monster, int knockbackDistance) {
@@ -974,6 +1013,16 @@ public class Player extends Entity{
 		}
 	}
 
+	public void shootFireball() {
+		attacking = true;
+		this.collisionOn = true;
+
+		String fireballDirection = this.direction;
+
+		fireball = new Fireball(panel, screenX, screenY, fireballDirection);
+	}
+
+
 	public void AoEDamage(HallPanel hallPanel) {
 		if (aoeActive) {
 			aoeCounter++;
@@ -990,6 +1039,7 @@ public class Player extends Entity{
 						monster.invincible = true;
 						aoeKnockback(this, monster, 10);
 						if (monster.life <= 0) {
+							monster.alive = false;
 							hallPanel.getHallMonsters().remove(monster);
 						}
 					} else {
@@ -1561,14 +1611,20 @@ public class Player extends Entity{
 				(int) (image.getHeight() * 1.3),
 				null);
 
-// Draw torso armor image
+//		 Draw blood effect
+//		if (panel instanceof HallPanel hallPanel) {
+//			hallPanel.burningParticle.draw(g2, hallPanel);
+//			hallPanel.burningParticle.updateAnimation();
+//		}
+
+		// Draw torso armor image
 		if (torsoArmorImage != null) {
 			int scaledWidth = (int) (BasePanel.tileSize * 1.3);
 			int scaledHeight = (int) (BasePanel.tileSize * 1.3);
 			g2.drawImage(torsoArmorImage, tempScreenXLeft, tempScreenYDown, scaledWidth, scaledHeight, null);
 		}
 
-// Draw head armor image
+		// Draw head armor image
 		if (headArmorImage != null) {
 			int scaledWidth = (int) (BasePanel.tileSize * 1.3);
 			int scaledHeight = (int) (BasePanel.tileSize * 1.3);
@@ -1580,7 +1636,7 @@ public class Player extends Entity{
 		// RESET INVINCIBLE EFFECT SO IT DOES NOT AFFECT MONSTERS
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
-//	g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+		//	g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 	}
 
 	public int inventoryLength() {

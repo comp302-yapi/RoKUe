@@ -1,6 +1,11 @@
 package superpower;
 
-public class SuperPower {
+import java.io.Serializable;
+
+public class SuperPower implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String name;
     private String iconPath;
     private int cooldown;

@@ -27,6 +27,9 @@ public class HomePanel extends PlayablePanel {
     SuperObject leatherArmorTorso = new ARMOR_LeatherArmorTorso();
     SuperObject ironHelmet = new ARMOR_IronArmorHead();
     SuperObject ironTorso = new ARMOR_IronArmorTorso();
+    public soundManager soundManager = new soundManager();
+    public boolean attackSoundPlayed;
+
 
     public HomePanel(ViewManager viewManager) {
         super(viewManager);
@@ -290,6 +293,13 @@ public class HomePanel extends PlayablePanel {
 
     public boolean isPaused() {
         return isPaused;
+    }
+
+    public void playSE(int i) {
+
+        soundManager.setFile(i);
+        soundManager.play();
+
     }
 
     public HomePanelData exportData() {

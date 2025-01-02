@@ -3,6 +3,7 @@ package managers;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import java.io.Serializable;
 import java.net.URL;
 
@@ -12,6 +13,7 @@ public class soundManager implements Serializable {
 
     public transient Clip clip;
     URL[] soundURL = new URL[30];
+    private transient FloatControl volumeControl;
 
     public soundManager() {
 
@@ -20,6 +22,11 @@ public class soundManager implements Serializable {
         soundURL[2] = getClass().getResource("/res/sound/unlock.wav");
         soundURL[3] = getClass().getResource("/res/sound/receivedamage2.wav");
         soundURL[4] = getClass().getResource("/res/sound/burning.wav");
+        soundURL[5] = getClass().getResource("/res/sound/sword1.wav");
+        soundURL[6] = getClass().getResource("/res/sound/sword2.wav");
+        soundURL[7] = getClass().getResource("/res/sound/hit-flesh.wav");
+
+        setVolumeForSound7(10.0f);
 
     }
 
@@ -34,6 +41,19 @@ public class soundManager implements Serializable {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public void increaseVolume(float amount) {
+        if (volumeControl != null) {
+            float currentVolume = volumeControl.getValue();
+            float maxVolume = volumeControl.getMaximum();
+            volumeControl.setValue(Math.min(currentVolume + amount, maxVolume));
+        }
+    }
+
+    public void setVolumeForSound7(float amount) {
+        setFile(7);
+        increaseVolume(amount);
     }
 
     public void play() {

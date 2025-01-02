@@ -2,6 +2,7 @@ package views;
 
 import entity.Arrow;
 import entity.Entity;
+import entity.Fireball;
 import entity.Player;
 import managers.CollisionChecker;
 import managers.TileManager;
@@ -45,5 +46,4 @@ public interface BasePanel {
     TileManager getTileManager();
     ViewManager getViewManager();
     Arrow[] getArrows();
-
 }
