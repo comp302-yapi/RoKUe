@@ -1020,7 +1020,7 @@ public class HallPanel extends PlayablePanel{
     private void initSuperPowerPanel() {
         superPowers.add(new SuperPower("Ground Slam", "/res/objects/chain.png", 180));
         superPowers.add(new SuperPower("Shield", "/res/objects/shield_blue.png", 100));
-        superPowers.add(new SuperPower("Fireball", "/res/projectiles/FireBall/right1.png", 300));
+        superPowers.add(new SuperPower("Fireball", "/res/projectiles/FireBall/right1.png", 60));
     }
 
     public void drawSuperPowers(Graphics2D g2) {
@@ -1075,7 +1075,11 @@ public class HallPanel extends PlayablePanel{
         for (SuperPower power : superPowers) {
             if (power.getName().equals("Fireball") && power.getRemainingCooldown() <= 0) {
                 power.startCooldown();
-                playSE(4);
+
+                int randomSound = new java.util.Random().nextInt(2) + 8;
+                System.out.println(randomSound);
+                playSE(randomSound);
+
                 getPlayer().shootFireball();
                 break;
             }

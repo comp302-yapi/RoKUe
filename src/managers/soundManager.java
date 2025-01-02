@@ -25,6 +25,10 @@ public class soundManager implements Serializable {
         soundURL[5] = getClass().getResource("/res/sound/sword1.wav");
         soundURL[6] = getClass().getResource("/res/sound/sword2.wav");
         soundURL[7] = getClass().getResource("/res/sound/hit-flesh.wav");
+        soundURL[8] = getClass().getResource("/res/sound/fireball1.wav");
+        soundURL[9] = getClass().getResource("/res/sound/fireball2.wav");
+
+
 
         setVolumeForSound7(10.0f);
 
