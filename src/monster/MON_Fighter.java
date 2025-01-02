@@ -59,7 +59,8 @@ public class MON_Fighter extends Entity {
 
 		type = 2; // monster type
 		name = "Fighter Monster";
-		speed = 1; // Added minimal movement
+		defaultSpeed = 1;
+		speed = defaultSpeed;
 		maxLife = 4;
 		damage = 4;
 		life = maxLife;
@@ -468,4 +469,6 @@ public class MON_Fighter extends Entity {
 						Math.pow(worldY - playerY, 2)
 		);
 	}
+
+
 }

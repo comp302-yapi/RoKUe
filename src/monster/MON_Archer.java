@@ -68,7 +68,8 @@ public class MON_Archer extends Entity {
 
 		type = 2; // monster type
 		name = "Archer Monster";
-		speed = 1; // Added minimal movement
+		defaultSpeed = 1;
+		speed = defaultSpeed;
 		maxLife = 4;
 		damage = 1;
 		life = maxLife;

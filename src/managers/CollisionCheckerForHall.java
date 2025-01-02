@@ -152,27 +152,35 @@ public class CollisionCheckerForHall implements Serializable {
                 target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
                 target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
 
-                switch (entity.direction) {
-                    case "up" -> entity.solidArea.y -= entity.speed;
-                    case "down" -> entity.solidArea.y += entity.speed;
-                    case "left" -> entity.solidArea.x -= entity.speed;
-                    case "right" -> entity.solidArea.x += entity.speed;
+
+                if (entity.knockback) {
+                    switch (player.direction) {
+                        case "up" -> entity.solidArea.y -= entity.speed;
+                        case "down" -> entity.solidArea.y += entity.speed;
+                        case "left" -> entity.solidArea.x -= entity.speed;
+                        case "right" -> entity.solidArea.x += entity.speed;
+                    }
+                } else {
+                    switch (entity.direction) {
+                        case "up" -> entity.solidArea.y -= entity.speed;
+                        case "down" -> entity.solidArea.y += entity.speed;
+                        case "left" -> entity.solidArea.x -= entity.speed;
+                        case "right" -> entity.solidArea.x += entity.speed;
+                    }
                 }
 
                 if (entity.solidArea.intersects(target[i].solidArea)) {
                     if (target[i] != entity) {
                         entity.collisionOn = true;
                     }
-                    index = i;
+                        index = i;
                 }
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.solidAreaDefaultY;
                 target[i].solidArea.x = target[i].solidAreaDefaultX;
                 target[i].solidArea.y = target[i].solidAreaDefaultY;
             }
-
         }
-
         return index;
     }
 

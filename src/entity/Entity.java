@@ -186,12 +186,22 @@ public class Entity implements Serializable {
 
 	public boolean invincibleCloak = false;
 	public int invincibleCounterCloak;
-	
+
+	public boolean knockback;
+	public int defaultSpeed;
+	public int knockBackCounter;
+	public String tempDirection;
+	public int monsterHit;
+
+
 	public transient BufferedImage image, image2, image3;
 	public String name;
 	public boolean collision = false;
-	
-	
+
+	public boolean hpBarOn;
+	public int hpBarCounter;
+
+
 	public int type; // 0 = player, 1 = npc, 2 = monster
 	
 	// CHARACTER STATUS
@@ -199,7 +209,7 @@ public class Entity implements Serializable {
 	public int life;
 	public int damage;
 	public int armor;
-	
+
 	
 	public Entity(BasePanel panel) {
 		this.panel = panel;
@@ -222,78 +232,123 @@ public class Entity implements Serializable {
 	}
 
 	public void update() {
-		
-		setAction();
-		chooseImage();
 
-		// THE GAME WORKS WITHOUT THE BELOW CODE
-		// TODO FIND OUT WHY, CAN WE DELETE THESE?
+		if (knockback) {
+			monsterHit = 999;
 
-		boolean contactPlayer;
-		if (panel instanceof HallPanel p) {
-			collisionOn = false;
-			p.getCollisionCheckerForHall().checkTile(this);
-			p.getCollisionCheckerForHall().checkObject(this, false);
-			p.getCollisionCheckerForHall().checkEntity(this, panel.getMonsters());
-			contactPlayer = p.getCollisionCheckerForHall().checkPlayer(this);
-		}
+			if (panel instanceof HallPanel p) {
+				collisionOn = false;
+				p.getCollisionCheckerForHall().checkTile(this);
+				p.getCollisionCheckerForHall().checkObject(this, false);
+				monsterHit = p.getCollisionCheckerForHall().checkEntity(this, p.getMonsters());
 
-		else if (panel instanceof HomePanel p) {
-			collisionOn = false;
-			System.out.println("Checking for home...");
-			p.getCollisionCheckerForHome().checkTile(this);
-			contactPlayer = p.getCollisionCheckerForHome().checkPlayer(this);
-			System.out.println(contactPlayer);
-
-		}
-
-		else {
-			collisionOn = false;
-			panel.getCollisionChecker().checkTile(this);
-			panel.getCollisionChecker().checkObject(this, false);
-			panel.getCollisionChecker().checkEntity(this, panel.getMonsters());
-			contactPlayer = panel.getCollisionChecker().checkPlayer(this);
-		}
-
-		// This doesn't do anything (?)
-		if (this.type == 2 && contactPlayer) {
-			if(!panel.getPlayer().invincible) {
-				if(!panel.getPlayer().invincibleCloak) {
-					panel.getPlayer().life -= 1;
-					if (panel instanceof HallPanel) {
-						((HallPanel) panel).playSE(3);
-					}
-					panel.getPlayer().invincible = true;
+				if (collisionOn) {
+					p.triggerScreenShake(5,5);
 				}
 			}
-		}
 
+			if (collisionOn) {
+				this.life -= 1;
 
-		// IF COLLISION FALSE, PLAYER CAN MOVE
-		if (!collisionOn) {
-			switch (direction) {
-				case "up" -> worldY -= speed;
-				case "down" -> worldY += speed;
-				case "left" -> worldX -= speed;
-				case "right" -> worldX += speed;
+				if (monsterHit != 999) {
+					panel.getMonsters()[monsterHit].life -= 1;
+					panel.getMonsters()[monsterHit].invincible = true;
+				}
+
+				knockBackCounter = 0;
+				knockback = false;
+				speed = defaultSpeed;
+
+			} else {
+                switch (direction) {
+                    case "up" -> worldY -= speed;
+                    case "down" -> worldY += speed;
+                    case "left" -> worldX -= speed;
+                    case "right" -> worldX += speed;
+                }
+            }
+
+			knockBackCounter++;
+			if (knockBackCounter == 15) {
+				knockBackCounter = 0;
+				knockback = false;
+				direction = tempDirection;
+				speed = defaultSpeed;
+			}
+
+		} else {
+
+			setAction();
+			chooseImage();
+
+			// THE GAME WORKS WITHOUT THE BELOW CODE
+			// TODO FIND OUT WHY, CAN WE DELETE THESE?
+
+			boolean contactPlayer;
+			if (panel instanceof HallPanel p) {
+				collisionOn = false;
+				p.getCollisionCheckerForHall().checkTile(this);
+				p.getCollisionCheckerForHall().checkObject(this, false);
+				p.getCollisionCheckerForHall().checkEntity(this, panel.getMonsters());
+				contactPlayer = p.getCollisionCheckerForHall().checkPlayer(this);
+			}
+
+			else if (panel instanceof HomePanel p) {
+				collisionOn = false;
+				System.out.println("Checking for home...");
+				p.getCollisionCheckerForHome().checkTile(this);
+				contactPlayer = p.getCollisionCheckerForHome().checkPlayer(this);
+				System.out.println(contactPlayer);
+
+			}
+
+			else {
+				collisionOn = false;
+				panel.getCollisionChecker().checkTile(this);
+				panel.getCollisionChecker().checkObject(this, false);
+				panel.getCollisionChecker().checkEntity(this, panel.getMonsters());
+				contactPlayer = panel.getCollisionChecker().checkPlayer(this);
+			}
+
+			// This doesn't do anything (?)
+			if (this.type == 2 && contactPlayer) {
+				if(!panel.getPlayer().invincible) {
+					if(!panel.getPlayer().invincibleCloak) {
+						panel.getPlayer().life -= 1;
+						if (panel instanceof HallPanel) {
+							((HallPanel) panel).playSE(3);
+						}
+						panel.getPlayer().invincible = true;
+					}
+				}
+			}
+
+			// IF COLLISION FALSE, PLAYER CAN MOVE
+			if (!collisionOn) {
+				switch (direction) {
+					case "up" -> worldY -= speed;
+					case "down" -> worldY += speed;
+					case "left" -> worldX -= speed;
+					case "right" -> worldX += speed;
+				}
+			}
+
+			if(invincible) {
+				invincibleCounter++;
+			}
+
+			if (invincibleCounter >= 40) {
+				invincible = false;
+				invincibleCounter = 0;
 			}
 		}
 
-		if(invincible) {
-			invincibleCounter++;
-		}
-
-		if (invincibleCounter >= 40) {
-			invincible = false;
-			invincibleCounter = 0;
-		}
 
 	}
 	
 	public void draw(Graphics2D g2) {
 		
 		BufferedImage image = null;
-
 
 		animateDirection();
 		animate();
@@ -308,7 +363,29 @@ public class Entity implements Serializable {
 		}
 
 		if (invincible) {
+			hpBarOn = true;
+			hpBarCounter = 0;
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+		}
+
+		// Monster HP bar
+		if (type == 2 && hpBarOn) {
+
+			double oneScale = (double) 48 / maxLife;
+			double hpBarValue = oneScale * life;
+
+			g2.setColor(new Color(35, 35, 35));
+			g2.fillRect(worldX - 1, worldY - 16, 48 + 2, 12);
+
+			g2.setColor(new Color(255, 0, 30));
+			g2.fillRect(worldX, worldY - 15, (int) hpBarValue, 10);
+
+			hpBarCounter++;
+
+			if (hpBarCounter > 600) {
+				hpBarCounter = 0;
+				hpBarOn = false;
+			}
 		}
 
         g2.drawImage(image, tempScreenX, tempScreenY, image.getWidth(), image.getHeight(), null);

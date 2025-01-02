@@ -31,6 +31,12 @@ public class Player extends Entity{
 	private boolean firstAttackCall = true; // Flag to track the first call of attacking()
 	private int tempScreenXLeft;
 
+	private boolean aoeActive = false;   // Tracks if AoE is active
+	private int aoeDuration = 20;       // Duration of AoE in frames
+	private int aoeCounter = 0;         // Timer for AoE
+	private int aoeRadius = 100;        // AoE radius
+	private int aoeDamage = 2;          // AoE damage
+
 	private Player(BasePanel panel) {
 		super(panel);
 		System.out.println("PLAYER CREATED");
@@ -78,7 +84,8 @@ public class Player extends Entity{
 		
 		worldX = BasePanel.tileSize*37;
 		worldY = BasePanel.tileSize*37;
-		speed = 4;
+		defaultSpeed = 4;
+		speed = defaultSpeed;
 		armor = 0;
 		gold = 10;
 		direction = "down";
@@ -671,6 +678,8 @@ public class Player extends Entity{
 
 			chooseImage();
 
+			AoEDamage(hallPanel);
+
 			if (attacking) {
 				attacking();
 			}
@@ -916,11 +925,82 @@ public class Player extends Entity{
 				if (!hallPanel.getMonsters()[i].invincible) {
 					hallPanel.getMonsters()[i].life -= 1;
 					hallPanel.getMonsters()[i].invincible = true;
+					knockback(hallPanel.getMonsters()[i]);
 
 					if (hallPanel.getMonsters()[i].life <= 0) {
 						hallPanel.getHallMonsters().set(i, null);
 					}
 				}
+			}
+		}
+	}
+
+	public void knockback(Entity entity) {
+		entity.tempDirection = entity.direction;
+		entity.direction = direction;
+		entity.speed += 10;
+		entity.knockback = true;
+	}
+
+	public void aoeKnockback(Player player, Entity monster, int knockbackDistance) {
+		int deltaX = monster.worldX - player.screenX;
+		int deltaY = monster.worldY - player.screenY;
+
+		if (deltaX == 0 && deltaY == 0) return;
+
+		double magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+		double normalizedX = deltaX / magnitude;
+		double normalizedY = deltaY / magnitude;
+
+		monster.worldX += (int) (normalizedX * knockbackDistance);
+		monster.worldY += (int) (normalizedY * knockbackDistance);
+
+		monster.tempDirection = monster.direction;
+
+		if (Math.abs(normalizedX) > Math.abs(normalizedY)) {
+			monster.direction = (normalizedX > 0) ? "right" : "left";
+		} else {
+			monster.direction = (normalizedY > 0) ? "down" : "up";
+		}
+		monster.knockback = true;
+
+		monster.speed += 10;
+	}
+
+	public void triggerAoE() {
+		if (!aoeActive) {
+			aoeActive = true;
+			aoeCounter = 0;
+		}
+	}
+
+	public void AoEDamage(HallPanel hallPanel) {
+		if (aoeActive) {
+			aoeCounter++;
+
+			for (Entity monster : hallPanel.getMonsters()) {
+				if (monster != null && !monster.invincible) {
+					int monsterCenterX = monster.worldX + monster.solidArea.width / 2;
+					int monsterCenterY = monster.worldY + monster.solidArea.height / 2;
+
+					double distance = Math.sqrt(Math.pow(monsterCenterX - screenX, 2) + Math.pow(monsterCenterY - screenY, 2));
+
+					if (distance <= aoeRadius) {
+						monster.life -= aoeDamage;
+						monster.invincible = true;
+						aoeKnockback(this, monster, 10);
+						if (monster.life <= 0) {
+							hallPanel.getHallMonsters().remove(monster);
+						}
+					} else {
+//						System.out.println(distance);
+					}
+				}
+			}
+			// End AoE after duration
+			if (aoeCounter >= aoeDuration) {
+				hallPanel.groundSlamActive = false;
+				aoeActive = false;
 			}
 		}
 	}
@@ -934,7 +1014,6 @@ public class Player extends Entity{
 		tempScreenY = screenY;
 		tempScreenXLeft = screenX;
 		tempScreenYDown = screenY;
-
 
 		// Select base image and torso armor image
 		switch (direction) {

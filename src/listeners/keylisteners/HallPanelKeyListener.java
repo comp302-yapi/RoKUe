@@ -7,6 +7,7 @@ import listeners.BaseKeyListener;
 import object.ENCH_Reveal;
 import object.OBJ_Door;
 import object.SuperObject;
+import superpower.SuperPower;
 import views.BuildPanel;
 import views.GamePanel;
 import views.HallPanel;
@@ -68,6 +69,11 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
             spacePressed = true;
             hallPanel.getPlayer().attacking = true;
         }
+
+        if (e.getKeyCode() == KeyEvent.VK_1) {
+            hallPanel.activateGroundSlam();
+        }
+
         
         if (code == KeyEvent.VK_E) {
         	monsterSpawn = true;

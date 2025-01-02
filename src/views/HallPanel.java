@@ -15,6 +15,7 @@ import monster.MON_Archer;
 import monster.MON_Fighter;
 import monster.MON_Wizard;
 import object.*;
+import superpower.SuperPower;
 import utils.PanelUtils;
 
 import javax.swing.*;
@@ -45,6 +46,15 @@ public class HallPanel extends PlayablePanel{
     public boolean checkInventoryForLuringGem = false;
     public boolean drawReveal = false;
     public int revealX, revealY, revealCounter, change;
+    private int shakeMagnitude = 0;
+    private int shakeDuration = 0;
+    private Random shakeRandom = new Random();
+
+    // SUPERPOWERS
+    private JPanel superPowerPanel; // Panel for superpowers
+    public ArrayList<SuperPower> superPowers = new ArrayList<>(); // List of superpowers
+
+    public boolean groundSlamActive = false;
 
     // Set the new time
 
@@ -71,6 +81,8 @@ public class HallPanel extends PlayablePanel{
         Player player = Player.getInstance(this);
         player.addKeyListener(keyListener);
 
+        // SUPERPOWER
+        initSuperPowerPanel();
 
         // RESETTING
         HallContainer.getHallOfEarth().objects.clear();
@@ -251,6 +263,10 @@ public class HallPanel extends PlayablePanel{
         if (!isPaused()) {
             getPlayer().move();
 
+            for (SuperPower power : superPowers) {
+                power.tickCooldown();
+            }
+
             for (Entity monster : monsters) {
                 if (monster != null) {
                     monster.update();
@@ -324,7 +340,7 @@ public class HallPanel extends PlayablePanel{
 
         Random random = new Random();
         String pickMonster = monsterTypes[random.nextInt(monsterTypes.length)]; // Get a random index
-//      pickMonster = "Fighter";
+      pickMonster = "Fighter";
 
         int locationX = random.nextInt(1,13) + 7;
         int locationY = random.nextInt(1,14) + 2;
@@ -501,6 +517,9 @@ public class HallPanel extends PlayablePanel{
 
                 // Draw tiles
                 HallContainer.getHallOfEarth().draw(g2);
+
+                // Draw superpowers
+                drawSuperPowers(g2);
 
                 // Draw super objects
                 for (SuperObject superObject : HallContainer.getHallOfEarth().objects) {
@@ -701,6 +720,19 @@ public class HallPanel extends PlayablePanel{
             drawReveal = false;
         }
 
+        if (shakeDuration > 0) {
+            int offsetX = shakeRandom.nextInt(shakeMagnitude * 2 + 1) - shakeMagnitude;
+            int offsetY = shakeRandom.nextInt(shakeMagnitude * 2 + 1) - shakeMagnitude;
+            g2.translate(offsetX, offsetY); // Apply offset to graphics
+            shakeDuration--; // Decrease shake duration
+        }
+
+        if (groundSlamActive) {
+            performGroundSlam(g2);
+        }
+
+        g2.translate(0, 0);
+
         getPlayer().draw(g2);
 
         drawPlayerLife(g2);
@@ -719,11 +751,15 @@ public class HallPanel extends PlayablePanel{
 
         drawInventory(g2);
 
-
         if (isPaused()) {
             drawPauseScreen(g2);
         }
         g2.dispose();
+    }
+
+    public void triggerScreenShake(int magnitude, int duration) {
+        this.shakeMagnitude = magnitude;
+        this.shakeDuration = duration;
     }
 
     private void drawPauseScreen(Graphics2D g2) {
@@ -911,6 +947,112 @@ public class HallPanel extends PlayablePanel{
             default -> throw new IllegalArgumentException("Invalid hall type: " + currentHall);
         }
         return num;
+    }
+
+    private void initSuperPowerPanel() {
+        superPowers.add(new SuperPower("Ground Slam", "/res/objects/chain.png", 180));
+        superPowers.add(new SuperPower("Shield", "/res/objects/shield_blue.png", 100));
+        superPowers.add(new SuperPower("Fireball", "/res/objects/axe.png", 300));
+    }
+
+    public void drawSuperPowers(Graphics2D g2) {
+        int x = 20;
+        int y = 100;
+        int iconSize = 48;
+        int padding = 10;
+        int panelWidth = 150;
+        int panelHeight = iconSize + 10;
+
+        for (SuperPower power : superPowers) {
+
+            g2.setColor(new Color(0, 0, 0, 200));
+            g2.fillRect(x - 10, y - 5, panelWidth, panelHeight);
+
+            g2.setColor(Color.BLACK);
+            g2.drawRect(x - 10, y - 5, panelWidth, panelHeight);
+
+            try {
+                Image icon = new ImageIcon(getClass().getResource(power.getIconPath())).getImage();
+                g2.drawImage(icon, x, y, iconSize, iconSize, null);
+
+                g2.setFont(new Font("Arial", Font.BOLD, 14));
+                g2.setColor(Color.WHITE);
+                String cooldownText = power.getRemainingCooldown() > 0 ? power.getRemainingCooldown() + "s" : "Ready";
+                g2.drawString(cooldownText, x + iconSize + 10, y + iconSize / 2 + 5);
+
+            } catch (Exception e) {
+                System.err.println("Failed to load icon: " + power.getIconPath());
+            }
+
+            y += panelHeight + padding;
+        }
+    }
+
+
+    public void activateGroundSlam() {
+        for (SuperPower power : superPowers) {
+            if (power.getName().equals("Ground Slam") && power.getRemainingCooldown() <= 0) {
+                power.startCooldown();
+                playSE(4);
+                getPlayer().triggerAoE();
+                getPlayer().AoEDamage(this);
+                triggerScreenShake(5, 10);
+                groundSlamActive = true;
+                break;
+            }
+        }
+    }
+
+    public void drawGroundCracks(Graphics2D g2, int centerX, int centerY, int radius) {
+        Random random = new Random();
+
+        int crackCount = 10;
+        int maxLength = 100;
+        int minLength = 30;
+
+        ArrayList<Rectangle> crackAreas = new ArrayList<>();
+
+        g2.setColor(new Color(100, 50, 0));
+
+        for (int i = 0; i < crackCount; i++) {
+            int startX = centerX + random.nextInt(2 * radius) - radius;
+            int startY = centerY + random.nextInt(2 * radius) - radius;
+
+            Rectangle potentialArea = new Rectangle(startX - 10, startY - 10, 20, 20);
+            boolean overlaps = crackAreas.stream().anyMatch(area -> area.intersects(potentialArea));
+            if (overlaps) {
+                i--;
+                continue;
+            }
+            crackAreas.add(potentialArea);
+
+            int length = random.nextInt(maxLength - minLength) + minLength;
+            double angle = random.nextDouble() * 2 * Math.PI; // Random angle
+
+            int endX = startX + (int) (length * Math.cos(angle));
+            int endY = startY + (int) (length * Math.sin(angle));
+
+            g2.setStroke(new BasicStroke(2 + random.nextInt(2))); // Random thickness
+            g2.drawLine(startX, startY, endX, endY);
+
+            if (random.nextBoolean()) {
+                int subLength = random.nextInt(maxLength / 3) + 10;
+                double subAngle = angle + (random.nextDouble() * Math.PI / 4 - Math.PI / 8);
+
+                int subEndX = endX + (int) (subLength * Math.cos(subAngle));
+                int subEndY = endY + (int) (subLength * Math.sin(subAngle));
+
+                g2.drawLine(endX, endY, subEndX, subEndY);
+            }
+        }
+    }
+
+    public void performGroundSlam(Graphics2D g2) {
+        int centerX = getPlayer().screenX;
+        int centerY = getPlayer().screenY;
+
+        triggerScreenShake(5, 10);
+        drawGroundCracks(g2, centerX, centerY, 100);
     }
 }
 
