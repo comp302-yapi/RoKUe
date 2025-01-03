@@ -15,8 +15,8 @@ public class OBJ_Heart extends SuperObject {
         ImageUtils scaler = new ImageUtils();
 
         // Scale images
-        if (image != null) image = scaler.scaleImage(image, 64, 64);
-        if (image2 != null) image2 = scaler.scaleImage(image2, 64, 64);
-        if (image3 != null) image3 = scaler.scaleImage(image3, 64, 64);
+        if (image != null) image = scaler.scaleImage(image, 32, 32);
+        if (image2 != null) image2 = scaler.scaleImage(image2, 32, 32);
+        if (image3 != null) image3 = scaler.scaleImage(image3, 32, 32);
     }
 }

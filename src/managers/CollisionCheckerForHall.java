@@ -91,6 +91,10 @@ public class CollisionCheckerForHall implements Serializable {
     public int checkObject(Entity entity, boolean player) {
         int index = 999;
         for (SuperObject obj: HallContainer.getCurrentHallManager(hallPanel.currentHall).objects) {
+            entity.solidArea.x = entity.solidAreaDefaultX;
+            entity.solidArea.y = entity.solidAreaDefaultY;
+            obj.solidArea.x = obj.solidAreaDefaultX;
+            obj.solidArea.y = obj.solidAreaDefaultY;
 
             if (player) {
                 Player e = (Player)entity;
@@ -140,6 +144,11 @@ public class CollisionCheckerForHall implements Serializable {
         for (int i = 0; i < target.length; i++) {
 
             if (target[i] != null) {
+                entity.solidArea.x = entity.solidAreaDefaultX;
+                entity.solidArea.y = entity.solidAreaDefaultY;
+                target[i].solidArea.x = target[i].solidAreaDefaultX;
+                target[i].solidArea.y = target[i].solidAreaDefaultY;
+
                 // Get entity's solid area position
                 if (entity instanceof Player e) {
                     entity.solidArea.x = e.screenX + entity.solidArea.x;

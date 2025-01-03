@@ -38,6 +38,11 @@ public class Player extends Entity{
 	private int aoeRadius = 100;        // AoE radius
 	private int aoeDamage = 2;          // AoE damage
 
+	public int level;
+	public int maxLevel;
+	public int xpCurrent;
+	public int xpMax;
+
 	public Fireball fireball;
 
 	private Player(BasePanel panel) {
@@ -95,6 +100,10 @@ public class Player extends Entity{
 		knockbackValue = 10;
 		maxLife = 12;
 		life = maxLife;
+		xpCurrent = 0;
+		xpMax = 100;
+		level = 1;
+		maxLevel = 10;
 		
 	}
 
@@ -885,8 +894,6 @@ public class Player extends Entity{
 			}
 		}
 
-
-
 		if (firstAttackCall) {
 			spriteNum = 1;
 			firstAttackCall = false;
@@ -947,7 +954,6 @@ public class Player extends Entity{
 			entity.tempDirection = entity.direction;
 			entity.direction = fireball.direction;
 			entity.speed += knockbackValue;
-			System.out.println(knockbackValue);
 			entity.knockback = true;
 		} else {
 			entity.tempDirection = entity.direction;
@@ -1008,13 +1014,14 @@ public class Player extends Entity{
 					int monsterCenterX = monster.worldX + monster.solidArea.width / 2;
 					int monsterCenterY = monster.worldY + monster.solidArea.height / 2;
 
-					double distance = Math.sqrt(Math.pow(monsterCenterX - screenX, 2) + Math.pow(monsterCenterY - screenY, 2));
+					double distance = Math.sqrt(Math.pow(monsterCenterX - screenX + 16, 2) + Math.pow(monsterCenterY - screenY + 16, 2));
 
 					if (distance <= aoeRadius) {
 						monster.life -= aoeDamage;
 						monster.invincible = true;
 						aoeKnockback(this, monster, 10);
 						if (monster.life <= 0) {
+							addXp(20);
 							monster.alive = false;
 							hallPanel.getHallMonsters().remove(monster);
 						}
@@ -1625,6 +1632,21 @@ public class Player extends Entity{
 		return count;
 	}
 
+	public void addXp(int xp) {
+
+		if (xpCurrent + xp >= xpMax) {
+			xpCurrent = 0;
+			if (level < maxLevel) {
+				level += 1;
+				if (panel instanceof HallPanel hallPanel) {
+					hallPanel.playSE(10);
+				}
+			}
+		} else {
+			xpCurrent += xp;
+		}
+	}
+
 	public void damagePlayer(int attackDamage) {
 
 		int finalDamage = Math.max(attackDamage - armor, 0);
@@ -1644,6 +1666,9 @@ public class Player extends Entity{
 			if (panel instanceof HallPanel hallPanel) {
 				if (!hallPanel.getMonsters()[i].invincible) {
 					hallPanel.playSE(7);
+					int randomSE = new Random().nextInt(3) + 13;
+					hallPanel.playSE(randomSE);
+
 					hallPanel.getMonsters()[i].life -= 1;
 					hallPanel.getMonsters()[i].invincible = true;
 					hallPanel.getMonsters()[i].damageReceived = true;
@@ -1654,16 +1679,6 @@ public class Player extends Entity{
 						knockback(hallPanel.getMonsters()[i], this, knockbackValue);
 					}
 				}
-			}
-		}
-	}
-
-
-	public void killEntity(Entity entity) {
-		if (entity.life <= 0) {
-			entity.alive = false;
-			if (panel instanceof HallPanel hallPanel)  {
-				hallPanel.getHallMonsters().remove(entity);
 			}
 		}
 	}

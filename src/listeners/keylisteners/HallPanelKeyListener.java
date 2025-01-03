@@ -2,6 +2,7 @@ package listeners.keylisteners;
 
 import controllers.HallController;
 import entity.GameState;
+import entity.Player;
 import enums.Hall;
 import listeners.BaseKeyListener;
 import object.ENCH_Reveal;
@@ -71,12 +72,38 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
             hallPanel.getPlayer().attacking = true;
         }
 
+        if (e.getKeyCode() == KeyEvent.VK_3) {
+            if (hallPanel.getPlayer().level >= 10) {
+                hallPanel.activateLightning();
+            } else {
+                hallPanel.triggerShake(2);
+            }
+        }
+
         if (e.getKeyCode() == KeyEvent.VK_2) {
-            hallPanel.activateFireBall();
+            if (hallPanel.getPlayer().level >= 5) {
+                hallPanel.activateFireBall();
+            } else {
+                hallPanel.triggerShake(1);
+            }
         }
 
         if (e.getKeyCode() == KeyEvent.VK_1) {
-            hallPanel.activateGroundSlam();
+            if (hallPanel.getPlayer().level >= 2) {
+                hallPanel.activateGroundSlam();
+            } else {
+                hallPanel.triggerShake(0);
+            }
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_G) {
+            Player player = hallPanel.getPlayer();
+
+            player.level = player.maxLevel;
+            player.xpCurrent = player.xpMax - 1;
+            player.gold = 9999;
+            player.life = 100;
+
         }
 
         

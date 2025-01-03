@@ -206,6 +206,7 @@ public class Entity implements Serializable {
 	public boolean hpBarOn;
 	public int hpBarCounter;
 
+	private static int activeBurningSounds = 0;
 
 	public int type; // 0 = player, 1 = npc, 2 = monster
 
@@ -242,6 +243,12 @@ public class Entity implements Serializable {
 //			System.out.println("BURNING");
 
 			burnTimer++;
+			if (burnTimer % (60) == 1) {
+				if (panel instanceof HallPanel hallPanel) {
+					hallPanel.playSE(16);
+					activeBurningSounds++;
+				}
+			}
 			if (burnTimer % (60) == 0) {
 				takeDamage(1);
 				this.damageReceived = true;
@@ -251,6 +258,9 @@ public class Entity implements Serializable {
 				isBurning = false;
 				this.damageReceived = false;
 				burnTimer = 0;
+				if (activeBurningSounds > 0) {
+					activeBurningSounds--;
+				}
 			}
 		}
 		if (knockback) {
@@ -319,7 +329,6 @@ public class Entity implements Serializable {
 				System.out.println("Checking for home...");
 				p.getCollisionCheckerForHome().checkTile(this);
 				contactPlayer = p.getCollisionCheckerForHome().checkPlayer(this);
-				System.out.println(contactPlayer);
 
 			}
 

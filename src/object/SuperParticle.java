@@ -69,6 +69,7 @@ public abstract class SuperParticle implements Serializable {
 //        System.out.println("In draw");
         if (animationFrames != null && currentFrame < animationFrames.size()) {
             g2.drawImage(animationFrames.get(currentFrame), this.worldX, this.worldY, BasePanel.tileSize, BasePanel.tileSize, null);
+
         }
     }
 

@@ -53,12 +53,17 @@ public class HallPanel extends PlayablePanel{
     private int shakeMagnitude = 0;
     private int shakeDuration = 0;
     private Random shakeRandom = new Random();
+    public Font maruMonica;
+
 
     // SUPERPOWERS
     private JPanel superPowerPanel; // Panel for superpowers
     public ArrayList<SuperPower> superPowers = new ArrayList<>(); // List of superpowers
 
     public boolean groundSlamActive = false;
+
+    private int lightningCounter = 0;
+    private List<Entity> lightningTargets = new ArrayList<>();
 
     // Particles
     transient ArrayList<BufferedImage> bloodAnimation = new ArrayList<>();
@@ -69,7 +74,16 @@ public class HallPanel extends PlayablePanel{
     public PRTCL_Burning burningParticle;
     private final List<SuperParticle> activeBurningParticles = new ArrayList<>();
 
+    transient ArrayList<BufferedImage> lightningAnimation = new ArrayList<>();
+    public PRTCL_Lightning lightningParticle;
+    private final List<SuperParticle> activeLightningParticles = new ArrayList<>();
+
     private final List<SuperParticle> activeParticles = new ArrayList<>();
+
+    public boolean isShaking = false;
+    public int shakeCounter = 0;
+    public int shakeOffset = 0;
+    public int shakingIndex = -1;
 
 
     // Set the new time
@@ -97,10 +111,16 @@ public class HallPanel extends PlayablePanel{
         Player player = Player.getInstance(this);
         player.addKeyListener(keyListener);
 
+        PanelUtils panelUtil = new PanelUtils();
+
+        this.maruMonica = panelUtil.getNewFont();
+
         // PARTICLES
         bloodParticle = new PRTCL_Blood(bloodAnimation, 400, 400);
 
         burningParticle = new PRTCL_Burning(burningAnimation, null);
+
+        lightningParticle = new PRTCL_Lightning(lightningAnimation, null);
 
         // SUPERPOWER
         initSuperPowerPanel();
@@ -284,6 +304,8 @@ public class HallPanel extends PlayablePanel{
         if (!isPaused()) {
             getPlayer().move();
 
+            updateLightningEffect();
+
             for (SuperPower power : superPowers) {
                 power.tickCooldown();
             }
@@ -326,7 +348,7 @@ public class HallPanel extends PlayablePanel{
             // Generate Enchantment
             spawnEnchantmentCounter++;
 
-            if (spawnEnchantmentCounter >= 60 * 6) {
+            if (spawnEnchantmentCounter >= 60 * 15) {
                 tileM.generateEnchantment();
                 tileM.generateGold();
                 spawnEnchantmentCounter = 0;
@@ -474,38 +496,18 @@ public class HallPanel extends PlayablePanel{
         return isPaused;
     }
 
-    private void drawPlayerLife(Graphics2D g2) {
-
-        int x = tileSize/2;
-        int y = tileSize/2;
-        int i = 0;
-
-        while(i < getPlayer().maxLife/2) {
-            g2.drawImage(heart_blank, x, y, null);
-            i++;
-            x += tileSize*1.5;
-        }
-
-        x = tileSize/2;
-        y = tileSize/2;
-        i = 0;
-
-        while(i < getPlayer().life) {
-            g2.drawImage(heart_half, x, y, null);
-            i++;
-            if(i < getPlayer().life) {
-                g2.drawImage(heart_full, x, y, null);
-            }
-            i++;
-            x += tileSize*1.5;
-        }
-
-    }
-
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
+
+        g2.setFont(maruMonica);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+
+        g2.setColor(Color.WHITE);
+
+        long drawStart = 0;
+        drawStart = System.nanoTime();
 
         if (!isPaused()) {
             update();
@@ -791,6 +793,7 @@ public class HallPanel extends PlayablePanel{
                     monster.damageReceived = false;
 
                     if (monster.life <= 0) {
+                        getPlayer().addXp(20);
                         monster.alive = false;
                         iteratorMonster.remove();
                     }
@@ -821,24 +824,130 @@ public class HallPanel extends PlayablePanel{
 
         drawInventory(g2);
 
+        drawCharacterInfo(g2);
+
         if (isPaused()) {
             drawPauseScreen(g2);
         }
+
+        // DEBUGGING
+//      long drawEnd = System.nanoTime();
+//      long passed = drawEnd - drawStart;
+//      g2.setColor(Color.white);
+//      g2.drawString("Draw Time: " + passed, 10, 400);
+//      System.out.println("Draw Time: " + passed);
+
         g2.dispose();
     }
 
-    public void triggerScreenShake(int magnitude, int duration) {
-        this.shakeMagnitude = magnitude;
-        this.shakeDuration = duration;
+    // GETTERS
+    public ArrayList<Entity> getHallMonsters() {
+        return monsters;
     }
 
-    private void drawPauseScreen(Graphics2D g2) {
-        int x, y;
-        String text = "PAUSED";
-        x = PanelUtils.getXForCenteredText(text, this, g2);
-        y = BasePanel.screenHeight / 2;
-        g2.setColor(Color.WHITE);
-        g2.drawString(text, x - 100, y);
+    public int getSuperObjectLength() {
+        int num = 0;
+
+        switch (currentHall) {
+            case HallOfEarth -> {
+                for (int i = 0; i <= HallContainer.getHallOfEarth().objects.size() - 1; i++) {
+                    if (HallContainer.getHallOfEarth().objects.get(i) != null) {
+                        num++;
+                    }
+                }
+            }
+            case HallOfFire -> {
+                for (int i = 0; i <= HallContainer.getHallOfFire().objects.size() - 1; i++) {
+                    if (HallContainer.getHallOfFire().objects.get(i) != null) {
+                        num++;
+                    }
+                }
+            }
+            case HallOfAir -> {
+                for (int i = 0; i <= HallContainer.getHallOfAir().objects.size() - 1; i++) {
+                    if (HallContainer.getHallOfAir().objects.get(i) != null) {
+                        num++;
+                    }
+                }
+            }
+            case HallOfWater -> {
+                for (int i = 0; i <= HallContainer.getHallOfWater().objects.size() - 1; i++) {
+                    if (HallContainer.getHallOfWater().objects.get(i) != null) {
+                        num++;
+                    }
+                }
+            }
+            default -> throw new IllegalArgumentException("Invalid hall type: " + currentHall);
+        }
+        return num;
+    }
+
+    // DRAW METHODS
+
+    public void drawSuperPowers(Graphics2D g2) {
+        int currentLevel = getPlayer().level;
+        int x = 20;
+        int y = 325;
+        int iconSize = 48;
+        int padding = 10;
+        int panelWidth = 150;
+        int panelHeight = iconSize + 10;
+
+        int[] levelRequirements = {2, 5, 10};
+
+        for (int i = 0; i < superPowers.size(); i++) {
+            SuperPower power = superPowers.get(i);
+
+            int xOffset = (isShaking && i == shakingIndex) ? shakeOffset : 0;
+
+            g2.setColor(new Color(30, 30, 30, 200));
+            g2.fillRoundRect(x - 10 + xOffset, y - 5, panelWidth, panelHeight, 15, 15);
+
+            g2.setColor(Color.BLACK);
+            g2.setStroke(new BasicStroke(5));
+            g2.drawRoundRect(x - 10 + xOffset, y - 5, panelWidth, panelHeight, 15, 15);
+
+            g2.setFont(maruMonica);
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+
+            if (currentLevel < levelRequirements[i]) {
+                g2.setColor((isShaking && i == shakingIndex) ? Color.RED : Color.WHITE);
+                g2.drawString("LOCKED", x + 20 + xOffset, y + iconSize / 2 + 12);
+            } else {
+                try {
+                    Image icon = new ImageIcon(getClass().getResource(power.getIconPath())).getImage();
+                    g2.drawImage(icon, x + xOffset, y, iconSize, iconSize, null);
+
+                    g2.setColor(Color.WHITE);
+                    String cooldownText = power.getRemainingCooldown() > 0 ? power.getRemainingCooldown() + "s" : "Ready";
+                    g2.drawString(cooldownText, x + iconSize + 15 + xOffset, y + iconSize / 2 + 12);
+                } catch (Exception e) {
+                    System.err.println("Failed to load icon: " + power.getIconPath());
+                }
+            }
+
+            y += panelHeight + padding;
+        }
+
+        if (isShaking) {
+            shakeCounter++;
+            shakeOffset = (shakeCounter % 2 == 0) ? -2 : 2;
+
+            if (shakeCounter >= 10) {
+                isShaking = false;
+                shakeCounter = 0;
+                shakeOffset = 0;
+                shakingIndex = -1;
+            }
+        }
+    }
+
+    public void triggerShake(int index) {
+        isShaking = true;
+        shakeCounter = 0;
+        shakeOffset = 0;
+        shakingIndex = index;
+        playSE(12);
     }
 
     public void drawInventory(Graphics2D g2) {
@@ -850,6 +959,121 @@ public class HallPanel extends PlayablePanel{
             }
         }
     }
+
+    private void drawPauseScreen(Graphics2D g2) {
+        int x, y;
+        String text = "PAUSED";
+        x = PanelUtils.getXForCenteredText(text, this, g2);
+        y = BasePanel.screenHeight / 2;
+        g2.setColor(Color.WHITE);
+        g2.drawString(text, x - 100, y);
+    }
+
+    public void drawGroundCracks(Graphics2D g2, int centerX, int centerY, int radius) {
+        Random random = new Random();
+
+        int crackCount = 10;
+        int maxLength = 100;
+        int minLength = 30;
+
+        ArrayList<Rectangle> crackAreas = new ArrayList<>();
+
+        g2.setColor(new Color(100, 50, 0));
+
+        for (int i = 0; i < crackCount; i++) {
+            int startX = centerX + random.nextInt(2 * radius) - radius;
+            int startY = centerY + random.nextInt(2 * radius) - radius;
+
+            Rectangle potentialArea = new Rectangle(startX - 10, startY - 10, 20, 20);
+            boolean overlaps = crackAreas.stream().anyMatch(area -> area.intersects(potentialArea));
+            if (overlaps) {
+                i--;
+                continue;
+            }
+            crackAreas.add(potentialArea);
+
+            int length = random.nextInt(maxLength - minLength) + minLength;
+            double angle = random.nextDouble() * 2 * Math.PI; // Random angle
+
+            int endX = startX + (int) (length * Math.cos(angle));
+            int endY = startY + (int) (length * Math.sin(angle));
+
+            g2.setStroke(new BasicStroke(2 + random.nextInt(2))); // Random thickness
+            g2.drawLine(startX, startY, endX, endY);
+
+            if (random.nextBoolean()) {
+                int subLength = random.nextInt(maxLength / 3) + 10;
+                double subAngle = angle + (random.nextDouble() * Math.PI / 4 - Math.PI / 8);
+
+                int subEndX = endX + (int) (subLength * Math.cos(subAngle));
+                int subEndY = endY + (int) (subLength * Math.sin(subAngle));
+
+                g2.drawLine(endX, endY, subEndX, subEndY);
+            }
+        }
+    }
+
+    private void drawPlayerLife(Graphics2D g2) {
+
+        int x = tileSize/4 + 8;
+        int y = tileSize;
+        int i = 0;
+
+        while(i < getPlayer().maxLife/2) {
+            g2.drawImage(heart_blank, x, y, null);
+            i++;
+            x += tileSize;
+        }
+
+        x = tileSize/4 + 8;
+        y = tileSize;
+        i = 0;
+
+        while(i < getPlayer().life) {
+            g2.drawImage(heart_half, x, y, null);
+            i++;
+            if(i < getPlayer().life) {
+                g2.drawImage(heart_full, x, y, null);
+            }
+            i++;
+            x += tileSize;
+        }
+
+    }
+
+    public void drawCharacterInfo(Graphics2D g2) {
+        g2.setColor(new Color(30, 30, 30, 200));
+        g2.fillRoundRect(10, 10, 300, 300, 15, 15);
+
+        g2.setColor(Color.BLACK);
+        g2.setStroke(new BasicStroke(5));
+        g2.drawRoundRect(10, 10, 300, 300, 15, 15);
+
+        g2.setColor(Color.DARK_GRAY);
+        g2.fillRect(20, 20, 260, 20);
+
+        g2.setColor(Color.YELLOW);
+        int xpPercentage = (int) (getPlayer().xpCurrent / (float) getPlayer().xpMax * 260);
+        g2.fillRect(20, 20, xpPercentage, 20);
+
+        g2.setColor(Color.WHITE);
+        g2.setStroke(new BasicStroke(2));
+        g2.drawRect(20, 20, 260, 20);
+
+        drawPlayerLife(g2);
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(maruMonica);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+
+        g2.drawString("Level: " + getPlayer().level, 20, 120);
+        g2.drawString("Gold: " + getPlayer().gold, 20, 160);
+        g2.drawString("Armor: " + getPlayer().armor, 20, 200);
+        g2.drawString("Life: " + getPlayer().life + "/" + getPlayer().maxLife, 20, 240);
+        g2.drawString("Xp: " + getPlayer().xpCurrent + "/" + getPlayer().xpMax, 20, 290);
+    }
+
+    // ENCHANTMENT METHODS
 
     public void reveal(Graphics2D g2) {
         switch (currentHall) {
@@ -944,17 +1168,6 @@ public class HallPanel extends PlayablePanel{
         return hasEnchantment;
     }
 
-    public ArrayList<Entity> getHallMonsters() {
-        return monsters;
-    }
-
-    public void playSE(int i) {
-
-        soundManager.setFile(i);
-        soundManager.play();
-
-    }
-
     public void throwGem(String direction) {
         OBJ_LuringGem lg = new OBJ_LuringGem();
         lg.collision = true;
@@ -982,82 +1195,18 @@ public class HallPanel extends PlayablePanel{
         }
     }
 
-    public int getSuperObjectLength() {
-        int num = 0;
+    // SUPER POWER METHODS
 
-        switch (currentHall) {
-            case HallOfEarth -> {
-                for (int i = 0; i <= HallContainer.getHallOfEarth().objects.size() - 1; i++) {
-                    if (HallContainer.getHallOfEarth().objects.get(i) != null) {
-                        num++;
-                    }
-                }
-            }
-            case HallOfFire -> {
-                for (int i = 0; i <= HallContainer.getHallOfFire().objects.size() - 1; i++) {
-                    if (HallContainer.getHallOfFire().objects.get(i) != null) {
-                        num++;
-                    }
-                }
-            }
-            case HallOfAir -> {
-                for (int i = 0; i <= HallContainer.getHallOfAir().objects.size() - 1; i++) {
-                    if (HallContainer.getHallOfAir().objects.get(i) != null) {
-                        num++;
-                    }
-                }
-            }
-            case HallOfWater -> {
-                for (int i = 0; i <= HallContainer.getHallOfWater().objects.size() - 1; i++) {
-                    if (HallContainer.getHallOfWater().objects.get(i) != null) {
-                        num++;
-                    }
-                }
-            }
-            default -> throw new IllegalArgumentException("Invalid hall type: " + currentHall);
-        }
-        return num;
+    public void triggerScreenShake(int magnitude, int duration) {
+        this.shakeMagnitude = magnitude;
+        this.shakeDuration = duration;
     }
 
     private void initSuperPowerPanel() {
-        superPowers.add(new SuperPower("Ground Slam", "/res/objects/chain.png", 180));
-        superPowers.add(new SuperPower("Shield", "/res/objects/shield_blue.png", 100));
+        superPowers.add(new SuperPower("Ground Slam", "/res/objects/chain.png", 100));
         superPowers.add(new SuperPower("Fireball", "/res/projectiles/FireBall/right1.png", 60));
+        superPowers.add(new SuperPower("Lightning", "/res/objects/LightningIcon.png", 180));
     }
-
-    public void drawSuperPowers(Graphics2D g2) {
-        int x = 20;
-        int y = 100;
-        int iconSize = 48;
-        int padding = 10;
-        int panelWidth = 150;
-        int panelHeight = iconSize + 10;
-
-        for (SuperPower power : superPowers) {
-
-            g2.setColor(new Color(0, 0, 0, 200));
-            g2.fillRect(x - 10, y - 5, panelWidth, panelHeight);
-
-            g2.setColor(Color.BLACK);
-            g2.drawRect(x - 10, y - 5, panelWidth, panelHeight);
-
-            try {
-                Image icon = new ImageIcon(getClass().getResource(power.getIconPath())).getImage();
-                g2.drawImage(icon, x, y, iconSize, iconSize, null);
-
-                g2.setFont(new Font("Arial", Font.BOLD, 14));
-                g2.setColor(Color.WHITE);
-                String cooldownText = power.getRemainingCooldown() > 0 ? power.getRemainingCooldown() + "s" : "Ready";
-                g2.drawString(cooldownText, x + iconSize + 10, y + iconSize / 2 + 5);
-
-            } catch (Exception e) {
-                System.err.println("Failed to load icon: " + power.getIconPath());
-            }
-
-            y += panelHeight + padding;
-        }
-    }
-
 
     public void activateGroundSlam() {
         for (SuperPower power : superPowers) {
@@ -1071,6 +1220,14 @@ public class HallPanel extends PlayablePanel{
                 break;
             }
         }
+    }
+
+    public void performGroundSlam(Graphics2D g2) {
+        int centerX = getPlayer().screenX + 16;
+        int centerY = getPlayer().screenY + 16;
+
+        triggerScreenShake(5, 10);
+        drawGroundCracks(g2, centerX, centerY, 100);
     }
 
     public void activateFireBall() {
@@ -1088,56 +1245,70 @@ public class HallPanel extends PlayablePanel{
         }
     }
 
-    public void drawGroundCracks(Graphics2D g2, int centerX, int centerY, int radius) {
-        Random random = new Random();
-
-        int crackCount = 10;
-        int maxLength = 100;
-        int minLength = 30;
-
-        ArrayList<Rectangle> crackAreas = new ArrayList<>();
-
-        g2.setColor(new Color(100, 50, 0));
-
-        for (int i = 0; i < crackCount; i++) {
-            int startX = centerX + random.nextInt(2 * radius) - radius;
-            int startY = centerY + random.nextInt(2 * radius) - radius;
-
-            Rectangle potentialArea = new Rectangle(startX - 10, startY - 10, 20, 20);
-            boolean overlaps = crackAreas.stream().anyMatch(area -> area.intersects(potentialArea));
-            if (overlaps) {
-                i--;
-                continue;
-            }
-            crackAreas.add(potentialArea);
-
-            int length = random.nextInt(maxLength - minLength) + minLength;
-            double angle = random.nextDouble() * 2 * Math.PI; // Random angle
-
-            int endX = startX + (int) (length * Math.cos(angle));
-            int endY = startY + (int) (length * Math.sin(angle));
-
-            g2.setStroke(new BasicStroke(2 + random.nextInt(2))); // Random thickness
-            g2.drawLine(startX, startY, endX, endY);
-
-            if (random.nextBoolean()) {
-                int subLength = random.nextInt(maxLength / 3) + 10;
-                double subAngle = angle + (random.nextDouble() * Math.PI / 4 - Math.PI / 8);
-
-                int subEndX = endX + (int) (subLength * Math.cos(subAngle));
-                int subEndY = endY + (int) (subLength * Math.sin(subAngle));
-
-                g2.drawLine(endX, endY, subEndX, subEndY);
+    public void activateLightning() {
+        for (SuperPower power : superPowers) {
+            if (power.getName().equals("Lightning") && power.getRemainingCooldown() <= 0) {
+                dropLightning();
+                power.startCooldown();
+                break;
             }
         }
     }
 
-    public void performGroundSlam(Graphics2D g2) {
-        int centerX = getPlayer().screenX;
-        int centerY = getPlayer().screenY;
+    public void dropLightning() {
+        if (monsters.isEmpty()) return;
 
-        triggerScreenShake(5, 10);
-        drawGroundCracks(g2, centerX, centerY, 100);
+        Random random = new Random();
+
+        // Clear any previous targets
+        lightningTargets.clear();
+
+        // Pick 3 unique random monsters
+        while (lightningTargets.size() < 3 && lightningTargets.size() < monsters.size()) {
+            int randomIndex = random.nextInt(monsters.size());
+            Entity targetMonster = monsters.get(randomIndex);
+
+            if (targetMonster != null && targetMonster.alive && !lightningTargets.contains(targetMonster)) {
+                lightningTargets.add(targetMonster);
+            }
+        }
+
+        // Reset the counter to control the delay
+        lightningCounter = 0;
+    }
+
+    public void updateLightningEffect() {
+        if (!lightningTargets.isEmpty() && lightningCounter % 60 == 0) { // 60 frames = 1 second
+            playSE(11);
+            Entity targetMonster = lightningTargets.remove(0);
+
+            PRTCL_Lightning newLightningParticle = new PRTCL_Lightning(lightningAnimation, targetMonster);
+            newLightningParticle.worldX = targetMonster.worldX;
+            newLightningParticle.worldY = targetMonster.worldY;
+
+            activeParticles.add(newLightningParticle);
+
+            triggerScreenShake(10, 5);
+            targetMonster.life -= 2;
+            targetMonster.hpBarOn = true;
+            targetMonster.damageReceived = true;
+        }
+
+        if (!lightningTargets.isEmpty()) {
+            lightningCounter++;
+        }
+    }
+
+    // SOUND EFFECT
+
+    public void playSE(int i) {
+        soundManager.setFile(i);
+        soundManager.play();
+    }
+
+    public void stopSE(int i) {
+        soundManager.setFile(i);
+        soundManager.stop();
     }
 }
 
