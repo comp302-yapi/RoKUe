@@ -6,6 +6,7 @@ import entity.Player;
 import enums.BuildDirection;
 import enums.Hall;
 import managers.TileManagerForHall;
+import managers.TimeManager;
 import managers.ViewManager;
 import object.SuperObject;
 import validators.HallValidator;
@@ -31,9 +32,16 @@ public class HallController {
     }
 
     public void addObject(TileManagerForHall currentHall, SuperObject obj, int x, int y) {
-
-        x -= x % 48;
-        y -= y % 48;
+    	
+    	int rx = x % 48;
+    	int ry = y % 48;
+    	
+    	if(rx <= 24) x = x - rx;
+    	if (rx > 24) x = x + (48 - rx);
+    	
+    	if(ry <= 24) y = y - ry;
+    	if (ry > 24) y = y + (48 - ry);
+        
 
 //        System.out.println(x + " | " + y);
 
@@ -155,7 +163,8 @@ public class HallController {
     public static void shouldSwitchHallsInGame(TileManagerForHall currentHall, Player player, HallPanel hallPanel) {
         if (player.screenY > currentHall.getBottomWorldBorder()) {
 
-            hallPanel.nullTimer();
+           TimeManager.getInstance().stopTimer();
+           TimeManager.getInstance().timer = null;
 
             switch (currentHall.hall) {
                 case HallOfEarth -> {

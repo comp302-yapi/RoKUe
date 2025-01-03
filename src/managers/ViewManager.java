@@ -44,6 +44,9 @@ public class ViewManager implements Runnable {
 
             ((TitlePanel) panelToSwitch).soundManager.stop();
             panels.clear();
+            
+            TimeManager.getInstance().stopTimer();
+            TimeManager.getInstance().timer = null;
 
             JPanel titlePanel = new TitlePanel(this);
             JPanel buildPanel = new BuildPanel(this);

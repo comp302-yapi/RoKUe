@@ -5,10 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TimeManager {
-    private static TimeManager instance;
-    private Timer timer;
-    private int timeLeft;
-    private TimeListener listener;
+    public static TimeManager instance;
+    public Timer timer;
+    public int timeLeft;
+    public TimeListener listener;
+    public boolean timeStopped;
 
     // Private constructor for singleton pattern
     public TimeManager() {}
@@ -30,8 +31,10 @@ public class TimeManager {
     }
 
     public void startTimer(int durationInSeconds) {
+    	
         stopTimer(); // Stop any running timer
         timeLeft = durationInSeconds;
+        timeStopped = false;
 
         timer = new Timer(1000, new ActionListener() {
             @Override
@@ -52,10 +55,13 @@ public class TimeManager {
 
         timer.start();
     }
+    
+
 
     public void stopTimer() {
         if (timer != null && timer.isRunning()) {
             timer.stop();
+            timeStopped = true;
         }
     }
 

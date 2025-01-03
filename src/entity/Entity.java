@@ -92,8 +92,12 @@ public class Entity {
 		
 		boolean contactPlayer;
 		if (panel instanceof HallPanel p) {
+			
 			collisionOn = false;
 			p.getCollisionCheckerForHall().checkTile(this);
+			
+			solidArea.x = this.solidAreaDefaultX;
+			solidArea.y = this.solidAreaDefaultY;
 			p.getCollisionCheckerForHall().checkObject(this, false);
 			p.getCollisionCheckerForHall().checkEntity(this, panel.getMonsters());
 			contactPlayer = p.getCollisionCheckerForHall().checkPlayer(this);
@@ -120,12 +124,6 @@ public class Entity {
 			}
 		}
 
-		if (life == 0) {
-			if (panel instanceof HallPanel) {
-				System.out.println("Life = 0");
-			}
-			panel.getViewManager().switchTo("TitlePanel", true);
-		}
 
 
 		// IF COLLISION FALSE, PLAYER CAN MOVE
