@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
+import object.OBJ_LuringGem;
 
 import containers.HallContainer;
 
@@ -222,8 +223,10 @@ public class MON_Wizard extends Entity {
 
 			if(keyObject != null) {
 				keyObject.hasRune = false;
-		        int randomIndex = random.nextInt(objs.size());
-		        SuperObject randomObj = objs.get(randomIndex);
+				SuperObject randomObj = objs.get(random.nextInt(objs.size()));
+		        while(randomObj instanceof OBJ_LuringGem) {
+		        	randomObj = objs.get(random.nextInt(objs.size()));
+		        }
 		        randomObj.hasRune = true;
 
 			}
