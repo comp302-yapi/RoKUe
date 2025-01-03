@@ -6,6 +6,6 @@ public class ARMOR_IronArmorTorso extends SuperObject {
         super("/res/objects/iron_armor.png", null, null); // Pass the image path for image1, others are null if unused
         name = "Iron Chestplate";
         cost = 4;
-        armor = 3;
+        armor = 6;
     }
 }

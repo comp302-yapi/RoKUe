@@ -71,7 +71,7 @@ public class MON_Archer extends Entity {
 		defaultSpeed = 1;
 		speed = defaultSpeed;
 		maxLife = 4;
-		damage = 1;
+		damage = 5;
 		life = maxLife;
 
 		// Solid area for collision detection
@@ -339,7 +339,7 @@ public class MON_Archer extends Entity {
 					boolean playerHitAttackCheck = panel.getCollisionChecker().checkPlayer(this);
 
 					if (playerHitAttackCheck && !panel.getPlayer().invincible) {
-						panel.getPlayer().life -= damage;
+						panel.getPlayer().damagePlayer(damage);
 						panel.getPlayer().invincible = true;
 
 						if (panel instanceof HallPanel) {

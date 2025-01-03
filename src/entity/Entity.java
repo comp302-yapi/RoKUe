@@ -36,6 +36,11 @@ public class Entity implements Serializable {
 	public transient BufferedImage left_attacking1, left_attacking2, left_attacking3, left_attacking4, left_attacking5;
 	public transient BufferedImage right_attacking1, right_attacking2, right_attacking3, right_attacking4, right_attacking5;
 
+	public transient BufferedImage up_attacking_diamond1, up_attacking_diamond2, up_attacking_diamond3, up_attacking_diamond4, up_attacking_diamond5;
+	public transient BufferedImage down_attacking_diamond1, down_attacking_diamond2, down_attacking_diamond3, down_attacking_diamond4, down_attacking_diamond5;
+	public transient BufferedImage left_attacking_diamond1, left_attacking_diamond2, left_attacking_diamond3, left_attacking_diamond4, left_attacking_diamond5;
+	public transient BufferedImage right_attacking_diamond1, right_attacking_diamond2, right_attacking_diamond3, right_attacking_diamond4, right_attacking_diamond5;
+
 	public transient BufferedImage up_walking1, up_walking2, up_walking3, up_walking4, up_walking5, up_walking6, up_walking7, up_walking8, up_walking9;
 	public transient BufferedImage down_walking1, down_walking2, down_walking3, down_walking4, down_walking5, down_walking6, down_walking7, down_walking8, down_walking9;
 	public transient BufferedImage left_walking1, left_walking2, left_walking3, left_walking4, left_walking5, left_walking6, left_walking7, left_walking8, left_walking9;

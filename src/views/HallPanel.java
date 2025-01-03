@@ -39,6 +39,8 @@ public class HallPanel extends PlayablePanel{
     boolean wizardChecker = false;
     transient BufferedImage heart_full, heart_half, heart_blank;
     SuperObject heart = new OBJ_Heart();
+    transient BufferedImage armor_full, armor_half, armor_blank;
+    SuperObject armor = new OBJ_Armor();
     public SuperObject[][] gridWorld = new SuperObject[13][14];
     public int[][] gridWorldAll;
     boolean availableSpot = false;
@@ -152,6 +154,10 @@ public class HallPanel extends PlayablePanel{
         heart_half = heart.image2;
         heart_blank = heart.image3;
 
+        armor_full = armor.image;
+        armor_half = armor.image2;
+        armor_blank = armor.image3;
+
         monsterTypes[0] = "Archer";
         monsterTypes[1] = "Wizard";
         monsterTypes[2] = "Fighter";
@@ -185,7 +191,14 @@ public class HallPanel extends PlayablePanel{
                 HallContainer.getHallOfAir().enchantments,
                 HallContainer.getHallOfWater().enchantments,
                 HallContainer.getHallOfFire().enchantments,
-                this.getPlayer().gold);
+                this.getPlayer().gold,
+                this.getPlayer().level,
+                this.getPlayer().xpCurrent,
+                this.getPlayer().armorOnIronHead,
+                this.getPlayer().armorOnIronTorso,
+                this.getPlayer().armorOnLeatherHead,
+                this.getPlayer().armorOnLeatherTorso
+                );
     }
 
     public void restoreData(HallPanelData data) {
@@ -194,6 +207,14 @@ public class HallPanel extends PlayablePanel{
         this.monsters.addAll(data.monsters);
 
         this.getPlayer().gold = data.gold;
+        this.getPlayer().level = data.level;
+        this.getPlayer().xpCurrent = data.xp;
+
+        this.getPlayer().armorOnIronHead = data.armorOnIronHead;
+        this.getPlayer().armorOnIronTorso = data.armorOnIronTorso;
+        this.getPlayer().armorOnLeatherHead = data.armorOnLeatherHead;
+        this.getPlayer().armorOnLeatherTorso = data.armorOnLeatherTorso;
+
 
         for (Entity monster : getMonsters()) {
             if (monster != null) {
@@ -340,7 +361,7 @@ public class HallPanel extends PlayablePanel{
             // Generate Monster
             spawnCounter++;
 
-            if (spawnCounter >= 60 * 3) {
+            if (spawnCounter >= 60 * 1.5) {
                 generateMonster();
                 spawnCounter = 0;
             }
@@ -766,8 +787,6 @@ public class HallPanel extends PlayablePanel{
 
         getPlayer().draw(g2);
 
-        drawPlayerLife(g2);
-
         Iterator<Entity> iteratorMonster = monsters.iterator();
         while (iteratorMonster.hasNext()) {
             Entity monster = iteratorMonster.next();
@@ -887,7 +906,7 @@ public class HallPanel extends PlayablePanel{
     public void drawSuperPowers(Graphics2D g2) {
         int currentLevel = getPlayer().level;
         int x = 20;
-        int y = 325;
+        int y = 357;
         int iconSize = 48;
         int padding = 10;
         int panelWidth = 150;
@@ -1015,17 +1034,17 @@ public class HallPanel extends PlayablePanel{
 
     private void drawPlayerLife(Graphics2D g2) {
 
-        int x = tileSize/4 + 8;
+        int x = tileSize/4;
         int y = tileSize;
         int i = 0;
 
         while(i < getPlayer().maxLife/2) {
             g2.drawImage(heart_blank, x, y, null);
             i++;
-            x += tileSize;
+            x += tileSize/2 + 5;
         }
 
-        x = tileSize/4 + 8;
+        x = tileSize/4;
         y = tileSize;
         i = 0;
 
@@ -1036,18 +1055,46 @@ public class HallPanel extends PlayablePanel{
                 g2.drawImage(heart_full, x, y, null);
             }
             i++;
-            x += tileSize;
+            x += tileSize/2 + 5;
+        }
+
+    }
+
+    private void drawPlayerArmor(Graphics2D g2) {
+
+        int x = tileSize/4;
+        int y = 87;
+        int i = 0;
+
+        while(i < getPlayer().maxArmor/2) {
+            g2.drawImage(armor_blank, x, y, null);
+            i++;
+            x += tileSize/2 + 5;
+        }
+
+        x = tileSize/4;
+        y = 87;
+        i = 0;
+
+        while(i < getPlayer().armor) {
+            g2.drawImage(armor_half, x, y, null);
+            i++;
+            if(i < getPlayer().armor) {
+                g2.drawImage(armor_full, x, y, null);
+            }
+            i++;
+            x += tileSize/2 + 5;
         }
 
     }
 
     public void drawCharacterInfo(Graphics2D g2) {
         g2.setColor(new Color(30, 30, 30, 200));
-        g2.fillRoundRect(10, 10, 300, 300, 15, 15);
+        g2.fillRoundRect(10, 10, 300, 332, 15, 15);
 
         g2.setColor(Color.BLACK);
         g2.setStroke(new BasicStroke(5));
-        g2.drawRoundRect(10, 10, 300, 300, 15, 15);
+        g2.drawRoundRect(10, 10, 300, 332, 15, 15);
 
         g2.setColor(Color.DARK_GRAY);
         g2.fillRect(20, 20, 260, 20);
@@ -1061,16 +1108,36 @@ public class HallPanel extends PlayablePanel{
         g2.drawRect(20, 20, 260, 20);
 
         drawPlayerLife(g2);
+        drawPlayerArmor(g2);
 
         g2.setColor(Color.WHITE);
         g2.setFont(maruMonica);
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
 
-        g2.drawString("Level: " + getPlayer().level, 20, 120);
-        g2.drawString("Gold: " + getPlayer().gold, 20, 160);
-        g2.drawString("Armor: " + getPlayer().armor, 20, 200);
-        g2.drawString("Life: " + getPlayer().life + "/" + getPlayer().maxLife, 20, 240);
-        g2.drawString("Xp: " + getPlayer().xpCurrent + "/" + getPlayer().xpMax, 20, 290);
+        g2.drawString("Level: " + getPlayer().level, 20, 152);
+        g2.drawString("Gold: " + getPlayer().gold, 20, 192);
+        g2.drawString("Armor: " + getPlayer().armor, 20, 232);
+        g2.drawString("Life: " + getPlayer().life + "/" + getPlayer().maxLife, 20, 272);
+        g2.drawString("Xp: " + getPlayer().xpCurrent + "/" + getPlayer().xpMax, 20, 312);
+    }
+
+    public void drawAoE(Graphics2D g2) {
+
+        int aoeRadius = 100;
+        int aoeDiameter = aoeRadius * 2; // Diameter of the AoE circle
+
+        // Set transparency and color for the AoE circle
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f)); // 30% transparency
+        g2.setColor(new Color(255, 0, 0)); // Red color for the AoE
+
+        // Draw the circle centered on the player
+        int centerX = getPlayer().screenX - aoeRadius + 16; // Adjust for player's position
+        int centerY = getPlayer().screenY - aoeRadius + 16;
+        g2.fillOval(centerX, centerY, aoeDiameter, aoeDiameter);
+
+        // Reset transparency to default
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+
     }
 
     // ENCHANTMENT METHODS
@@ -1228,6 +1295,7 @@ public class HallPanel extends PlayablePanel{
 
         triggerScreenShake(5, 10);
         drawGroundCracks(g2, centerX, centerY, 100);
+
     }
 
     public void activateFireBall() {

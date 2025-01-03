@@ -37,6 +37,7 @@ public class soundManager implements Serializable {
         soundURL[14] = getClass().getResource("/res/sound/ZombieHit1_1.wav");
         soundURL[15] = getClass().getResource("/res/sound/ZombieHit2.wav");
         soundURL[16] = getClass().getResource("/res/sound/BurningFinal.wav");
+        soundURL[17] = getClass().getResource("/res/sound/purchase.wav");
 
     }
 

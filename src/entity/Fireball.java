@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Fireball extends Entity {
-    private int damage;
+    int damage;
     private final int speed;
     private final int range;
     private int travelDistance;
@@ -57,7 +57,7 @@ public class Fireball extends Entity {
         // Arrow characteristics
         damage = 1;
         speed = 8;
-        range = 4 * gp.tileSize; // 4 squares range
+        range = 16 * gp.tileSize; // 4 squares range
         travelDistance = 0;
         knockbackValue = 5;
 

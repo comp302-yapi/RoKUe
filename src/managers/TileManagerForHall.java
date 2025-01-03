@@ -181,7 +181,7 @@ public class TileManagerForHall implements Serializable {
 		// Randomly pick a type of object
 		SuperObject obj;
 		int randomType = random.nextInt(4);
-		randomType = 0;
+//		randomType = 0;
 
 		switch (randomType) {
 			case 0 -> obj = new ENCH_Reveal();

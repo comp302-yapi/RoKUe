@@ -10,6 +10,8 @@ import javax.imageio.ImageIO;
 
 import enums.Hall;
 import listeners.BaseKeyListener;
+import object.SWORD_DiamondSword;
+import object.SWORD_IronSword;
 import object.SuperObject;
 import views.BasePanel;
 import views.GamePanel;
@@ -43,6 +45,14 @@ public class Player extends Entity{
 	public int xpCurrent;
 	public int xpMax;
 
+	SuperObject ironSwordObj = new SWORD_IronSword();
+	SWORD_DiamondSword diamondSwordObj = new SWORD_DiamondSword();
+
+	public int maxArmor;
+
+	public boolean diamondSword;
+	public boolean ironSword = true;
+
 	public Fireball fireball;
 
 	private Player(BasePanel panel) {
@@ -65,6 +75,7 @@ public class Player extends Entity{
 		getIronArmorHead();
 		getLeatherArmorHead();
 		getPlayerImageAttacking();
+		getPlayerImageAttackingDiamond();
 		getIronArmorTorsoKnifeAttacking();
 		getLeatherArmorTorsoKnifeAttacking();
 		getIronArmorHeadKnifeAttacking();
@@ -98,12 +109,14 @@ public class Player extends Entity{
 		gold = 10;
 		direction = "down";
 		knockbackValue = 10;
-		maxLife = 12;
+		maxLife = 20;
+		maxArmor = 20;
 		life = maxLife;
 		xpCurrent = 0;
 		xpMax = 100;
 		level = 1;
 		maxLevel = 10;
+		damage = 1;
 		
 	}
 
@@ -190,32 +203,87 @@ public class Player extends Entity{
 		}
 	}
 
+	public void getPlayerImageAttackingDiamond() {
+		try {
+			up_attacking_diamond1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_1.png")));
+			up_attacking_diamond2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_2.png")));
+			up_attacking_diamond3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_3.png")));
+			up_attacking_diamond4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_4.png")));
+			up_attacking_diamond5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_5.png")));
+
+			down_attacking_diamond1 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_1", 80, 64);
+			down_attacking_diamond2 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_2", 80, 64);
+			down_attacking_diamond3 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_3", 80, 64);
+			down_attacking_diamond4 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_4", 80, 64);
+			down_attacking_diamond5 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_5", 80, 64);
+
+			left_attacking_diamond1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_1.png")));
+			left_attacking_diamond2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_2.png")));
+			left_attacking_diamond3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_3.png")));
+			left_attacking_diamond4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_4.png")));
+			left_attacking_diamond5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_5.png")));
+
+			right_attacking_diamond1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_1.png")));
+			right_attacking_diamond2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_2.png")));
+			right_attacking_diamond3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_3.png")));
+			right_attacking_diamond4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_4.png")));
+			right_attacking_diamond5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_5.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void chooseImageAttacking() {
 
-		up1 = up_attacking1;
-		up2 = up_attacking2;
-		up3 = up_attacking3;
-		up4 = up_attacking4;
-		up5 = up_attacking5;
+		if (diamondSword) {
+			up1 = up_attacking_diamond1;
+			up2 = up_attacking_diamond2;
+			up3 = up_attacking_diamond3;
+			up4 = up_attacking_diamond4;
+			up5 = up_attacking_diamond5;
 
-		down1 = down_attacking1;
-		down2 = down_attacking2;
-		down3 = down_attacking3;
-		down4 = down_attacking4;
-		down5 = down_attacking5;
+			down1 = down_attacking_diamond1;
+			down2 = down_attacking_diamond2;
+			down3 = down_attacking_diamond3;
+			down4 = down_attacking_diamond4;
+			down5 = down_attacking_diamond5;
 
-		left1 = left_attacking1;
-		left2 = left_attacking2;
-		left3 = left_attacking3;
-		left4 = left_attacking4;
-		left5 = left_attacking5;
+			left1 = left_attacking_diamond1;
+			left2 = left_attacking_diamond2;
+			left3 = left_attacking_diamond3;
+			left4 = left_attacking_diamond4;
+			left5 = left_attacking_diamond5;
 
-		right1 = right_attacking1;
-		right2 = right_attacking2;
-		right3 = right_attacking3;
-		right4 = right_attacking4;
-		right5 = right_attacking5;
+			right1 = right_attacking_diamond1;
+			right2 = right_attacking_diamond2;
+			right3 = right_attacking_diamond3;
+			right4 = right_attacking_diamond4;
+			right5 = right_attacking_diamond5;
+		} else if (ironSword) {
+			up1 = up_attacking1;
+			up2 = up_attacking2;
+			up3 = up_attacking3;
+			up4 = up_attacking4;
+			up5 = up_attacking5;
 
+			down1 = down_attacking1;
+			down2 = down_attacking2;
+			down3 = down_attacking3;
+			down4 = down_attacking4;
+			down5 = down_attacking5;
+
+			left1 = left_attacking1;
+			left2 = left_attacking2;
+			left3 = left_attacking3;
+			left4 = left_attacking4;
+			left5 = left_attacking5;
+
+			right1 = right_attacking1;
+			right2 = right_attacking2;
+			right3 = right_attacking3;
+			right4 = right_attacking4;
+			right5 = right_attacking5;
+		}
 	}
 
 	public void chooseImageWalking() {
@@ -633,7 +701,22 @@ public class Player extends Entity{
 		armorOnIronHead = false;
 		armorOnLeatherHead = true;
 	}
-	
+
+	// SWORDS
+
+	public void equipIronSword() {
+		diamondSword = false;
+		ironSword = true;
+		damage = ironSwordObj.damage;
+	}
+
+	public void equipDiamondSword() {
+		diamondSword = true;
+		ironSword = false;
+		damage = diamondSwordObj.damage;
+	}
+
+
 	public void move() {
 		if(panel instanceof GamePanel) {
 			if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
@@ -1014,7 +1097,7 @@ public class Player extends Entity{
 					int monsterCenterX = monster.worldX + monster.solidArea.width / 2;
 					int monsterCenterY = monster.worldY + monster.solidArea.height / 2;
 
-					double distance = Math.sqrt(Math.pow(monsterCenterX - screenX + 16, 2) + Math.pow(monsterCenterY - screenY + 16, 2));
+					double distance = Math.sqrt(Math.pow(monsterCenterX - screenX, 2) + Math.pow(monsterCenterY - screenY, 2));
 
 					if (distance <= aoeRadius) {
 						monster.life -= aoeDamage;
@@ -1638,6 +1721,7 @@ public class Player extends Entity{
 			xpCurrent = 0;
 			if (level < maxLevel) {
 				level += 1;
+				xpMax += 50;
 				if (panel instanceof HallPanel hallPanel) {
 					hallPanel.playSE(10);
 				}
@@ -1649,7 +1733,10 @@ public class Player extends Entity{
 
 	public void damagePlayer(int attackDamage) {
 
-		int finalDamage = Math.max(attackDamage - armor, 0);
+		float damageReduction = armor / 20.0f;
+		int finalDamage = Math.max((int) (attackDamage * (1 - damageReduction)), 1);
+//		System.out.printf("Damage Calculation: %d * (1 - %.2f) = %d (Final Damage)%n",
+//				attackDamage, damageReduction, finalDamage);
 
 		panel.getPlayer().life -= finalDamage;
 
@@ -1669,13 +1756,15 @@ public class Player extends Entity{
 					int randomSE = new Random().nextInt(3) + 13;
 					hallPanel.playSE(randomSE);
 
-					hallPanel.getMonsters()[i].life -= 1;
 					hallPanel.getMonsters()[i].invincible = true;
 					hallPanel.getMonsters()[i].damageReceived = true;
 
 					if (entity instanceof Fireball) {
+						hallPanel.getMonsters()[i].life -= fireball.damage;
 						knockback(hallPanel.getMonsters()[i], entity, fireball.knockbackValue);
 					}  else {
+						System.out.println(damage);
+						hallPanel.getMonsters()[i].life -= damage;
 						knockback(hallPanel.getMonsters()[i], this, knockbackValue);
 					}
 				}

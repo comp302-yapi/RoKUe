@@ -2,6 +2,7 @@ package listeners.keylisteners;
 
 import controllers.HallController;
 import entity.GameState;
+import entity.Player;
 import enums.Hall;
 import listeners.BaseKeyListener;
 import object.ENCH_Reveal;
@@ -60,10 +61,30 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
             homePanel.buyArmor();
         }
 
+        if (e.getKeyCode() == KeyEvent.VK_G) {
+            Player player = homePanel.getPlayer();
+
+            player.level = player.maxLevel;
+            player.xpCurrent = player.xpMax - 1;
+            player.gold = 9999;
+            player.life = 100;
+
+        }
+
         if (code == KeyEvent.VK_SPACE) {
             homePanel.attackSoundPlayed = false;
             spacePressed = true;
             homePanel.getPlayer().attacking = true;
+        }
+
+        if (code == KeyEvent.VK_8) {
+            homePanel.getPlayer().diamondSword = true;
+            homePanel.getPlayer().ironSword = false;
+        }
+
+        if (code == KeyEvent.VK_9) {
+            homePanel.getPlayer().diamondSword = false;
+            homePanel.getPlayer().ironSword = true;
         }
 
         if (code == KeyEvent.VK_Q) {

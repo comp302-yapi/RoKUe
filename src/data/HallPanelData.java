@@ -31,8 +31,12 @@ public class HallPanelData implements Serializable {
     public ArrayList<SuperObject> enchantmentsWater;
     public ArrayList<SuperObject> enchantmentsFire;
     public int gold;
+    public int xp, level;
+    public boolean armorOnIronHead;
+    public boolean armorOnIronTorso;
+    public boolean armorOnLeatherHead;
+    public boolean armorOnLeatherTorso;
 
-    // Constructor to initialize data
     public HallPanelData(Hall currentHall, ArrayList<Entity> monsters, SuperObject[][] gridWorld, int[][] gridWorldAll,
                          int timeLeft, boolean isPaused, boolean checkInventoryForReveal,
                          boolean checkInventoryForCloak, boolean checkInventoryForLuringGem,
@@ -41,7 +45,8 @@ public class HallPanelData implements Serializable {
                          int playerX, int playerY, boolean wizardChecker,
                          ArrayList<SuperObject> enchantmentsEarth, ArrayList<SuperObject> enchantmentsAir,
                          ArrayList<SuperObject> enchantmentsWater, ArrayList<SuperObject> enchantmentsFire,
-                         int gold) {
+                         int gold, int level, int xp, boolean armorOnIronHead, boolean armorOnIronTorso,
+                         boolean armorOnLeatherHead, boolean armorOnLeatherTorso) {
 
         this.currentHall = currentHall;
         this.monsters = monsters;
@@ -64,6 +69,12 @@ public class HallPanelData implements Serializable {
         this.enchantmentsWater = enchantmentsWater;
         this.enchantmentsFire = enchantmentsFire;
         this.gold = gold;
+        this.xp = xp;
+        this.level = level;
+        this.armorOnIronHead = armorOnIronHead;
+        this.armorOnIronTorso = armorOnIronTorso;
+        this.armorOnLeatherHead = armorOnLeatherHead;
+        this.armorOnLeatherTorso = armorOnLeatherTorso;
     }
 
     @Override
@@ -89,6 +100,12 @@ public class HallPanelData implements Serializable {
                 "\n  Enchantments Water: " + enchantmentsWater +
                 "\n  Enchantments Fire: " + enchantmentsFire +
                 "\n  Gold: " + gold +
+                "\n  XP: " + xp +
+                "\n  Level: " + level +
+                "\n  Iron Armor Head: " + armorOnIronHead +
+                "\n  Iron Armor Torso: " + armorOnIronTorso +
+                "\n  Leather Armor Head: " + armorOnLeatherHead +
+                "\n  Leather Armor Torso: " + armorOnLeatherTorso +
                 "\n}";
     }
 }

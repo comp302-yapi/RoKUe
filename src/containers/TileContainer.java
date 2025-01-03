@@ -38,6 +38,9 @@ public class TileContainer {
 
 	public static transient BufferedImage tableLeft, tableMiddle, tableRight;
 
+	public static transient BufferedImage tableLeftVertical, tableMiddleVertical, tableRightVertical;
+
+
 
 
 	public TileContainer() {
@@ -115,6 +118,10 @@ public class TileContainer {
 			tableLeft = allTiles.getSubimage(272, 128, 16, 16);
 			tableMiddle = allTiles.getSubimage(288, 128, 16, 16);
 			tableRight = allTiles.getSubimage(304, 128, 16, 16);
+
+			tableLeftVertical = allTiles.getSubimage(272, 144, 16, 16);
+			tableMiddleVertical = allTiles.getSubimage(272, 160, 16, 16);
+			tableRightVertical = allTiles.getSubimage(272, 176, 16, 16);
 
 			// ROCKY TILE
 			
@@ -280,6 +287,18 @@ public class TileContainer {
 			tile[43] = new Tile();
 			tile[43].image = tableRight;
 			tile[43].collision = true;
+
+			tile[44] = new Tile();
+			tile[44].image = tableLeftVertical;
+			tile[44].collision = true;
+
+			tile[45] = new Tile();
+			tile[45].image = tableMiddleVertical;
+			tile[45].collision = true;
+
+			tile[46] = new Tile();
+			tile[46].image = tableRightVertical;
+			tile[46].collision = true;
 
 		} catch(IOException e) {
 			e.printStackTrace();

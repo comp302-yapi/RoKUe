@@ -62,7 +62,7 @@ public class MON_Fighter extends Entity {
 		defaultSpeed = 1;
 		speed = defaultSpeed;
 		maxLife = 4;
-		damage = 4;
+		damage = 5;
 		life = maxLife;
 
 		// Solid area for collision detection

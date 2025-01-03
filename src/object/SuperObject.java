@@ -25,6 +25,7 @@ public class SuperObject implements Serializable {
 	public int solidAreaDefaultY = 0;
 	public int cost;
 	public int armor;
+	public int damage;
 
 	private String imagePath, image2Path, image3Path;
 
