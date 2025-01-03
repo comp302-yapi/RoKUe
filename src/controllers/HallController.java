@@ -43,6 +43,8 @@ public class HallController implements Serializable {
     	
     	if(ry <= 24) y = y - ry;
     	if (ry > 24) y = y + (48 - ry);
+    	
+    	currentHall.addObject(obj, x, y);
     }
 
     public boolean toNextHall(TileManagerForHall currentHall, BuildDirection direction) {
