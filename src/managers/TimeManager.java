@@ -65,12 +65,9 @@ public class TimeManager {
         }
     }
 
-    public void resetTimer() {
-        stopTimer();
-        timeLeft = 0;
-        if (listener != null) {
-            listener.onTimeUpdate(timeLeft);
-        }
+    public void testMethod(){
+    	// test
+    	
     }
 
     public int getTimeLeft() {
