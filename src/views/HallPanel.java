@@ -241,7 +241,8 @@ public class HallPanel extends PlayablePanel{
         HallContainer.getHallOfWater().enchantments = data.enchantmentsWater;
         HallContainer.getHallOfFire().enchantments = data.enchantmentsFire;
 
-        this.timeLeftSave = data.timeLeftSave;
+        this.timeLeft = data.timeLeftSave;
+        TimeManager.getInstance().startTimer(this.timeLeft);
         this.isPaused = data.isPaused;
 
         this.checkInventoryForReveal = data.checkInventoryForReveal;
@@ -303,7 +304,9 @@ public class HallPanel extends PlayablePanel{
         if (!isPaused()) {
         	
             if (TimeManager.getInstance().timer == null) {
-                timeLeft = this.getSuperObjectLength() * 10;
+                if(timeLeft <= 0) {
+                	timeLeft = this.getSuperObjectLength() * 10;
+                }
                 TimeManager.getInstance().startTimer(timeLeft);                    
             }
             
