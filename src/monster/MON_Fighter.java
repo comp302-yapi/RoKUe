@@ -174,7 +174,7 @@ public class MON_Fighter extends Entity {
 			panel.getPlayer().invincible = true;
 		}
 
-		if (calculateDistanceToPlayer() <= 120) {
+		if (calculateDistanceToPlayer() <= 96) {
 			attacking = true;
 			direction = determineDirection();
 			if (checkLuringGem()) {
@@ -341,8 +341,11 @@ public class MON_Fighter extends Entity {
 							((HallPanel) panel).playSE(3);
 						}
 
+						System.out.println("HIT PLAYER");
+					} else {
+						System.out.println("Miss");
 
-					} 
+					}
 
 					worldX = currentWorldX;
 					worldY = currentWorldY;
