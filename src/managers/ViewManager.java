@@ -86,7 +86,7 @@ public class ViewManager implements Runnable, Serializable {
             }
 
             if (panelToSwitch instanceof HallPanel hallPanel) {
-                hallPanel.timeLeft = hallPanel.getSuperObjectLength() * 100;
+                hallPanel.timeLeft = hallPanel.getSuperObjectLength() * 10;
                 hallPanel.getPlayer().life = hallPanel.getPlayer().maxLife;
 
                 HallPanelKeyListener hallKeyListener = new HallPanelKeyListener(hallPanel);
