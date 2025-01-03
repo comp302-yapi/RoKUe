@@ -95,6 +95,11 @@ public class ViewManager implements Runnable, Serializable {
 
                 player.keyH = hallKeyListener;
             } else if (panelToSwitch instanceof HomePanel homePanel) {
+            	
+                TimeManager.getInstance().stopTimer();
+                TimeManager.getInstance().timer = null;
+
+            	
                 if (currentPanel instanceof HallPanel hallPanel) {
                     if (hallPanel.tileM.objectsEarth != null) hallPanel.tileM.objectsEarth.clear();
                     if (hallPanel.getSuperObjects() != null) Arrays.fill(hallPanel.getSuperObjects(), null);
@@ -104,7 +109,7 @@ public class ViewManager implements Runnable, Serializable {
                     if (hallPanel.tileM.enchantments != null) hallPanel.tileM.enchantments.clear();
                     if (hallPanel.getHallMonsters() != null) hallPanel.getHallMonsters().clear();
                 }
-
+                
                 HomePanelKeyListener homeKeyListener = new HomePanelKeyListener(homePanel);
                 panelToSwitch.addKeyListener(homeKeyListener);
                 player.addKeyListener(homeKeyListener);
