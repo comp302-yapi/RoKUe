@@ -294,9 +294,9 @@ public class MON_Archer extends Entity {
 							((HallPanel) panel).playSE(3);
 						}
 
-					
+						System.out.println("HIT PLAYER");
 					} else {
-			
+						System.out.println("Miss");
 
 					}
 
