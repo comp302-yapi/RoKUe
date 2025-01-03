@@ -64,14 +64,11 @@ public class TimeManager {
             timeStopped = true;
         }
     }
-
-    public void resetTimer() {
-        stopTimer();
-        timeLeft = 0;
-        if (listener != null) {
-            listener.onTimeUpdate(timeLeft);
-        }
+    
+    public void testMethod() {
+    	// test method
     }
+
 
     public int getTimeLeft() {
         return timeLeft;
