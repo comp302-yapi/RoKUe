@@ -106,7 +106,7 @@ public class Player extends Entity{
 		defaultSpeed = 4;
 		speed = defaultSpeed;
 		armor = 0;
-		gold = 10;
+		gold = 50;
 		direction = "down";
 		knockbackValue = 10;
 		maxLife = 20;
