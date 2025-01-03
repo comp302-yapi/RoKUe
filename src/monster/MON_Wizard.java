@@ -6,6 +6,9 @@ import views.BasePanel;
 import views.HallPanel;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,6 +20,14 @@ public class MON_Wizard extends Entity {
 	public boolean spawned = false;
 	private final int TELEPORT_INTERVAL = 300; // 5 seconds at 60 FPS
 	public int tempScreenX, tempScreenY;
+
+	// Transient images
+	private transient BufferedImage up1, up2;
+	private transient BufferedImage down1, down2;
+	private transient BufferedImage left1, left2;
+	private transient BufferedImage right1, right2;
+
+	private final String wizardImagePath = "/res/monster/wizard";
 
 
 	public MON_Wizard(BasePanel panel) {
@@ -43,11 +54,20 @@ public class MON_Wizard extends Entity {
 		return image;
 	}
 
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		getImage();
+	}
+
 	public void getImage() {
-		// Load wizard sprite images - you'll need to create these sprites
-		up1 = setup("/res/monster/wizard", panel.tileSize, panel.tileSize);
-		up2 = setup("/res/monster/wizard", panel.tileSize, panel.tileSize);
-		// Use same sprite for all directions since wizard doesn't move
+		// Load wizard sprite images
+		up1 = setup(wizardImagePath, BasePanel.tileSize, BasePanel.tileSize);
+		up2 = setup(wizardImagePath, BasePanel.tileSize, BasePanel.tileSize);
+		// Use the same sprite for all directions since the wizard doesn't move
 		down1 = up1;
 		down2 = up2;
 		left1 = up1;

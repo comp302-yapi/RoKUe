@@ -3,14 +3,18 @@ package managers;
 import containers.HallContainer;
 import containers.TileContainer;
 import entity.Entity;
+import entity.Fireball;
 import entity.Player;
 import object.SuperObject;
 import views.BasePanel;
 import views.HallPanel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CollisionCheckerForHall {
+public class CollisionCheckerForHall implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final HallPanel hallPanel;
     private final Player player;
@@ -28,8 +32,8 @@ public class CollisionCheckerForHall {
             entity.solidArea.y = e.screenY - 96 + entity.solidArea.y;
         }
         else {
-        	 entity.solidArea.x = entity.worldX - 336 + entity.solidArea.x;
-             entity.solidArea.y = entity.worldY - 96 + entity.solidArea.y;
+        	 entity.solidArea.x = entity.worldX - 336 + entity.solidAreaDefaultX;
+             entity.solidArea.y = entity.worldY - 96 + entity.solidAreaDefaultY;
         }
 
        int entityLeftWorldX = entity.solidArea.x;
@@ -37,16 +41,16 @@ public class CollisionCheckerForHall {
         int entityTopWorldY = entity.solidArea.y;
         int entityBottomWorldY = entity.solidArea.y + entity.solidArea.height;
 
-        int entityLeftCol = entityLeftWorldX/BasePanel.tileSize;
-        int entityRightCol = entityRightWorldX/BasePanel.tileSize;
-        int entityTopRow = entityTopWorldY/BasePanel.tileSize;
-        int entityBottomRow = entityBottomWorldY/BasePanel.tileSize;
+        int entityLeftCol = entityLeftWorldX/HallPanel.tileSize;
+        int entityRightCol = entityRightWorldX/HallPanel.tileSize;
+        int entityTopRow = entityTopWorldY/HallPanel.tileSize;
+        int entityBottomRow = entityBottomWorldY/HallPanel.tileSize;
 
         int tileNum1, tileNum2;
 
         switch (entity.direction) {
             case "up" -> {
-                entityTopRow = (entityTopWorldY - entity.speed) / BasePanel.tileSize;
+                entityTopRow = (entityTopWorldY - entity.speed) / HallPanel.tileSize;
                 tileNum1 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityRightCol][entityTopRow];
                 if (TileContainer.getTile()[tileNum1].collision || TileContainer.getTile()[tileNum2].collision) {
@@ -55,7 +59,7 @@ public class CollisionCheckerForHall {
             }
 
             case "down" -> {
-                entityBottomRow = (entityBottomWorldY + entity.speed) / BasePanel.tileSize;
+                entityBottomRow = (entityBottomWorldY + entity.speed) / HallPanel.tileSize;
                 tileNum1 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityLeftCol][entityBottomRow];
                 tileNum2 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityRightCol][entityBottomRow];
                 if (TileContainer.getTile()[tileNum1].collision || TileContainer.getTile()[tileNum2].collision) {
@@ -64,7 +68,7 @@ public class CollisionCheckerForHall {
             }
 
             case "left" -> {
-                entityLeftCol = (entityLeftWorldX - entity.speed) / BasePanel.tileSize;
+                entityLeftCol = (entityLeftWorldX - entity.speed) / HallPanel.tileSize;
                 tileNum1 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityLeftCol][entityBottomRow];
                 if (TileContainer.getTile()[tileNum1].collision || TileContainer.getTile()[tileNum2].collision) {
@@ -73,7 +77,7 @@ public class CollisionCheckerForHall {
             }
 
             case "right" -> {
-                entityRightCol = (entityRightWorldX + entity.speed) / BasePanel.tileSize;
+                entityRightCol = (entityRightWorldX + entity.speed) / HallPanel.tileSize;
                 tileNum1 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityRightCol][entityTopRow];
                 tileNum2 = HallContainer.getCurrentHallManager(hallPanel.currentHall).mapTileNum[entityRightCol][entityBottomRow];
                 if (TileContainer.getTile()[tileNum1].collision || TileContainer.getTile()[tileNum2].collision) {
@@ -87,6 +91,10 @@ public class CollisionCheckerForHall {
     public int checkObject(Entity entity, boolean player) {
         int index = 999;
         for (SuperObject obj: HallContainer.getCurrentHallManager(hallPanel.currentHall).objects) {
+            entity.solidArea.x = entity.solidAreaDefaultX;
+            entity.solidArea.y = entity.solidAreaDefaultY;
+            obj.solidArea.x = obj.solidAreaDefaultX;
+            obj.solidArea.y = obj.solidAreaDefaultY;
 
             if (player) {
                 Player e = (Player)entity;
@@ -136,6 +144,11 @@ public class CollisionCheckerForHall {
         for (int i = 0; i < target.length; i++) {
 
             if (target[i] != null) {
+                entity.solidArea.x = entity.solidAreaDefaultX;
+                entity.solidArea.y = entity.solidAreaDefaultY;
+                target[i].solidArea.x = target[i].solidAreaDefaultX;
+                target[i].solidArea.y = target[i].solidAreaDefaultY;
+
                 // Get entity's solid area position
                 if (entity instanceof Player e) {
                     entity.solidArea.x = e.screenX + entity.solidArea.x;
@@ -149,27 +162,35 @@ public class CollisionCheckerForHall {
                 target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
                 target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
 
-                switch (entity.direction) {
-                    case "up" -> entity.solidArea.y -= entity.speed;
-                    case "down" -> entity.solidArea.y += entity.speed;
-                    case "left" -> entity.solidArea.x -= entity.speed;
-                    case "right" -> entity.solidArea.x += entity.speed;
+
+                if (entity.knockback) {
+                    switch (player.direction) {
+                        case "up" -> entity.solidArea.y -= entity.speed;
+                        case "down" -> entity.solidArea.y += entity.speed;
+                        case "left" -> entity.solidArea.x -= entity.speed;
+                        case "right" -> entity.solidArea.x += entity.speed;
+                    }
+                } else {
+                    switch (entity.direction) {
+                        case "up" -> entity.solidArea.y -= entity.speed;
+                        case "down" -> entity.solidArea.y += entity.speed;
+                        case "left" -> entity.solidArea.x -= entity.speed;
+                        case "right" -> entity.solidArea.x += entity.speed;
+                    }
                 }
 
                 if (entity.solidArea.intersects(target[i].solidArea)) {
                     if (target[i] != entity) {
                         entity.collisionOn = true;
                     }
-                    index = i;
+                        index = i;
                 }
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.solidAreaDefaultY;
                 target[i].solidArea.x = target[i].solidAreaDefaultX;
                 target[i].solidArea.y = target[i].solidAreaDefaultY;
             }
-
         }
-
         return index;
     }
 

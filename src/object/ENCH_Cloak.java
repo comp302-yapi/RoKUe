@@ -1,20 +1,10 @@
 package object;
 
-import java.io.IOException;
-import javax.imageio.ImageIO;
-
 public class ENCH_Cloak extends SuperObject {
 
     public ENCH_Cloak() {
+        super("/res/objects/cloak.png", null, null); // Pass the image path for image1, others are null if unused
         name = "Cloak";
-        collision = false;
-
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/objects/cloak.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.collision = false;
     }
 }
-
-

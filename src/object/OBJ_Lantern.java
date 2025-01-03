@@ -1,18 +1,10 @@
 package object;
 
-import java.io.IOException;
-import javax.imageio.ImageIO;
-
 public class OBJ_Lantern extends SuperObject {
 
     public OBJ_Lantern() {
+        super("/res/objects/lantern.png", null, null); // Pass the image path for image1, others are null if unused
         name = "Lantern";
         collision = true;
-
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/objects/lantern.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

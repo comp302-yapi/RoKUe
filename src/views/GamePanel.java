@@ -18,7 +18,7 @@ public class GamePanel extends PlayablePanel {
     private final GamePanelKeyListener keyListener;
     private boolean isPaused;
 
-    BufferedImage heart_full, heart_half, heart_blank;
+    transient BufferedImage heart_full, heart_half, heart_blank;
     SuperObject heart = new OBJ_Heart();
 
     public GamePanel(ViewManager viewManager) {

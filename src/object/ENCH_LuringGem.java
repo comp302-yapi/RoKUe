@@ -1,20 +1,10 @@
 package object;
 
-import java.io.IOException;
-import javax.imageio.ImageIO;
-
 public class ENCH_LuringGem extends SuperObject {
 
     public ENCH_LuringGem() {
+        super("/res/objects/LuringGem.png", null, null); // Pass the image path for image1, others are null if unused
         name = "LuringGem";
-        collision = false;
-
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/objects/LuringGem.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.collision = false;
     }
 }
-
-

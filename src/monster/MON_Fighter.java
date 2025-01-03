@@ -9,8 +9,12 @@ import object.SuperObject;
 import views.BasePanel;
 import views.HallPanel;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 
 public class MON_Fighter extends Entity {
@@ -23,6 +27,31 @@ public class MON_Fighter extends Entity {
 	public int tempScreenY, tempScreenX;
 	public int loadCountWalk, loadCountAttacking;
 
+
+	private transient BufferedImage up_walking1, up_walking2, down_walking1, down_walking2;
+	private transient BufferedImage left_walking1, left_walking2, right_walking1, right_walking2;
+	private transient BufferedImage up_attacking1, up_attacking2, down_attacking1, down_attacking2;
+	private transient BufferedImage left_attacking1, left_attacking2, right_attacking1, right_attacking2;
+
+	private final String upWalking1Path = "/res/monster/orc_up_1";
+	private final String upWalking2Path = "/res/monster/orc_up_2";
+	private final String downWalking1Path = "/res/monster/orc_down_1";
+	private final String downWalking2Path = "/res/monster/orc_down_2";
+	private final String leftWalking1Path = "/res/monster/orc_left_1";
+	private final String leftWalking2Path = "/res/monster/orc_left_2";
+	private final String rightWalking1Path = "/res/monster/orc_right_1";
+	private final String rightWalking2Path = "/res/monster/orc_right_2";
+
+	private final String upAttacking1Path = "/res/monster/orc_attack_up_1";
+	private final String upAttacking2Path = "/res/monster/orc_attack_up_2";
+	private final String downAttacking1Path = "/res/monster/orc_attack_down_1";
+	private final String downAttacking2Path = "/res/monster/orc_attack_down_2";
+	private final String leftAttacking1Path = "/res/monster/orc_attack_left_1";
+	private final String leftAttacking2Path = "/res/monster/orc_attack_left_2";
+	private final String rightAttacking1Path = "/res/monster/orc_attack_right_1";
+	private final String rightAttacking2Path = "/res/monster/orc_attack_right_2";
+
+
 	public MON_Fighter(BasePanel gp) {
 		super(gp);
 
@@ -30,8 +59,10 @@ public class MON_Fighter extends Entity {
 
 		type = 2; // monster type
 		name = "Fighter Monster";
-		speed = 1; // Added minimal movement
+		defaultSpeed = 1;
+		speed = defaultSpeed;
 		maxLife = 4;
+		damage = 5;
 		life = maxLife;
 
 		// Solid area for collision detection
@@ -52,22 +83,18 @@ public class MON_Fighter extends Entity {
 
 		getImage();
 		getImageAttacking();
-
 		chooseImage();
 	}
 
 	public void getImage() {
-		// Load archer monster images
-//		loadCountWalk++;
-//		System.out.println(loadCountWalk + "Walking");
-		up_walking1 = setup("/res/monster/orc_up_1", BasePanel.tileSize, BasePanel.tileSize);
-		up_walking2 = setup("/res/monster/orc_up_2", BasePanel.tileSize, BasePanel.tileSize);
-		down_walking1 = setup("/res/monster/orc_down_1", BasePanel.tileSize, BasePanel.tileSize);;
-		down_walking2 = setup("/res/monster/orc_down_2", BasePanel.tileSize, BasePanel.tileSize);;
-		left_walking1 = setup("/res/monster/orc_left_1", BasePanel.tileSize, BasePanel.tileSize);;
-		left_walking2 = setup("/res/monster/orc_left_2", BasePanel.tileSize, BasePanel.tileSize);;
-		right_walking1 = setup("/res/monster/orc_right_1", BasePanel.tileSize, BasePanel.tileSize);;
-		right_walking2 = setup("/res/monster/orc_right_2", BasePanel.tileSize, BasePanel.tileSize);;
+		up_walking1 = setup(upWalking1Path, BasePanel.tileSize, BasePanel.tileSize);
+		up_walking2 = setup(upWalking2Path, BasePanel.tileSize, BasePanel.tileSize);
+		down_walking1 = setup(downWalking1Path, BasePanel.tileSize, BasePanel.tileSize);
+		down_walking2 = setup(downWalking2Path, BasePanel.tileSize, BasePanel.tileSize);
+		left_walking1 = setup(leftWalking1Path, BasePanel.tileSize, BasePanel.tileSize);
+		left_walking2 = setup(leftWalking2Path, BasePanel.tileSize, BasePanel.tileSize);
+		right_walking1 = setup(rightWalking1Path, BasePanel.tileSize, BasePanel.tileSize);
+		right_walking2 = setup(rightWalking2Path, BasePanel.tileSize, BasePanel.tileSize);
 	}
 
 	public void chooseImage() {
@@ -81,16 +108,24 @@ public class MON_Fighter extends Entity {
 	}
 
 	public void getImageAttacking() {
-//		loadCountAttacking++;
-//		System.out.println(loadCountAttacking + "Attacking");
-		up_attacking1 = setup("/res/monster/orc_attack_up_1", BasePanel.tileSize, BasePanel.tileSize*2);
-		up_attacking2 = setup("/res/monster/orc_attack_up_2", BasePanel.tileSize, BasePanel.tileSize*2);
-		down_attacking1 = setup("/res/monster/orc_attack_down_1", BasePanel.tileSize, BasePanel.tileSize*2);
-		down_attacking2 = setup("/res/monster/orc_attack_down_2", BasePanel.tileSize, BasePanel.tileSize*2);
-		left_attacking1 = setup("/res/monster/orc_attack_left_1", BasePanel.tileSize*2, BasePanel.tileSize);
-		left_attacking2 = setup("/res/monster/orc_attack_left_2", BasePanel.tileSize*2, BasePanel.tileSize);
-		right_attacking1 = setup("/res/monster/orc_attack_right_1", BasePanel.tileSize*2, BasePanel.tileSize);
-		right_attacking2 = setup("/res/monster/orc_attack_right_2", BasePanel.tileSize*2, BasePanel.tileSize);
+		up_attacking1 = setup(upAttacking1Path, BasePanel.tileSize, BasePanel.tileSize * 2);
+		up_attacking2 = setup(upAttacking2Path, BasePanel.tileSize, BasePanel.tileSize * 2);
+		down_attacking1 = setup(downAttacking1Path, BasePanel.tileSize, BasePanel.tileSize * 2);
+		down_attacking2 = setup(downAttacking2Path, BasePanel.tileSize, BasePanel.tileSize * 2);
+		left_attacking1 = setup(leftAttacking1Path, BasePanel.tileSize * 2, BasePanel.tileSize);
+		left_attacking2 = setup(leftAttacking2Path, BasePanel.tileSize * 2, BasePanel.tileSize);
+		right_attacking1 = setup(rightAttacking1Path, BasePanel.tileSize * 2, BasePanel.tileSize);
+		right_attacking2 = setup(rightAttacking2Path, BasePanel.tileSize * 2, BasePanel.tileSize);
+	}
+
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		getImage();
+		getImageAttacking();
 	}
 
 	public void chooseImageAttacking() {
@@ -165,13 +200,7 @@ public class MON_Fighter extends Entity {
 		boolean hitPlayer = panel.getCollisionChecker().checkPlayer(this);
 
 		if (hitPlayer && !panel.getPlayer().invincible) {
-			panel.getPlayer().life -= 1;
-
-			if (panel instanceof HallPanel) {
-				((HallPanel) panel).playSE(3);
-			}
-
-			panel.getPlayer().invincible = true;
+			panel.getPlayer().damagePlayer(damage);
 		}
 
 		if (calculateDistanceToPlayer() <= 96) {
@@ -231,8 +260,8 @@ public class MON_Fighter extends Entity {
 	}
 
 	private String determineDirection() {
-		int playerX = gp.getPlayer().screenX;
-		int playerY = gp.getPlayer().screenY;
+		int playerX = panel.getPlayer().screenX;
+		int playerY = panel.getPlayer().screenY;
 
 		if (Math.abs(playerX - worldX) > Math.abs(playerY - worldY)) {
 			return playerX > worldX ? "right" : "left";
@@ -334,26 +363,13 @@ public class MON_Fighter extends Entity {
 					boolean playerHitAttackCheck = panel.getCollisionChecker().checkPlayer(this);
 
 					if (playerHitAttackCheck && !panel.getPlayer().invincible) {
-						panel.getPlayer().life -= 1;
-						panel.getPlayer().invincible = true;
-
-						if (panel instanceof HallPanel) {
-							((HallPanel) panel).playSE(3);
-						}
-
-						System.out.println("HIT PLAYER");
-					} else {
-						System.out.println("Miss");
-
+						panel.getPlayer().damagePlayer(damage);
 					}
-
 					worldX = currentWorldX;
 					worldY = currentWorldY;
 					solidArea.width = solidAreaWidth;
 					solidArea.height = solidAreaHeight;
-
 				}
-
 				spriteNum = 2;
 			} else if (spriteNum == 2) {
 				spriteNum = 1;
@@ -445,12 +461,14 @@ public class MON_Fighter extends Entity {
 	}
 
 	private int calculateDistanceToPlayer() {
-		int playerX = gp.getPlayer().screenX;
-		int playerY = gp.getPlayer().screenY;
+		int playerX = panel.getPlayer().screenX;
+		int playerY = panel.getPlayer().screenY;
 
 		return (int) Math.sqrt(
 				Math.pow(worldX - playerX, 2) +
 						Math.pow(worldY - playerY, 2)
 		);
 	}
+
+
 }

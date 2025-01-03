@@ -2,14 +2,15 @@ package views;
 
 import entity.Arrow;
 import entity.Entity;
+import entity.Fireball;
 import entity.Player;
 import managers.CollisionChecker;
 import managers.TileManager;
+import managers.TileManagerForHome;
 import managers.ViewManager;
 import object.SuperObject;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 
 public interface BasePanel {
@@ -45,5 +46,4 @@ public interface BasePanel {
     TileManager getTileManager();
     ViewManager getViewManager();
     Arrow[] getArrows();
-
 }

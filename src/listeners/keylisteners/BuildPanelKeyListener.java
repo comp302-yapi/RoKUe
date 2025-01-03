@@ -1,13 +1,18 @@
 package listeners.keylisteners;
 
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 
+import entity.GameState;
 import listeners.BaseKeyListener;
 import views.BuildPanel;
 import enums.Hall;
+import views.HallPanel;
 
-public class BuildPanelKeyListener extends BaseKeyListener{
-	
+public class BuildPanelKeyListener extends BaseKeyListener implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private final BuildPanel buildPanel;
 	
 	public BuildPanelKeyListener(BuildPanel buildPanel) {
@@ -26,6 +31,22 @@ public class BuildPanelKeyListener extends BaseKeyListener{
 		
 		int code = e.getKeyCode();
 
+		if (code == KeyEvent.VK_O) {
+			GameState gs = buildPanel.getViewManager().collectGameState();
+			gs.currentMode = "Build";
+			buildPanel.getViewManager().saveGame("newSave.ser", gs);
+			System.out.println(gs);
+		}
+
+		if (code == KeyEvent.VK_L) {
+			System.out.println("Pressed Load");
+
+			GameState gs = buildPanel.getViewManager().loadGame("newSave.ser");
+			buildPanel.getViewManager().restoreGameState(gs);
+
+			System.out.println(gs);
+		}
+
         if (code == KeyEvent.VK_ENTER) {
         	
         	switch(buildPanel.getCurrentHall()) {
@@ -43,11 +64,8 @@ public class BuildPanelKeyListener extends BaseKeyListener{
         	case HallOfFire:
         		buildPanel.getViewManager().switchTo("GamePanel", true);
         		break;
-        	
-        	
+
         	}
-        	
-                
 
         }
 		

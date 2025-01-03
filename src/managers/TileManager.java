@@ -2,10 +2,7 @@ package managers;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
@@ -13,7 +10,9 @@ import containers.TileContainer;
 import tile.Tile;
 import views.BasePanel;
 
-public class TileManager {
+public class TileManager implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	BasePanel panel;
 	public int mapTileNum[][];

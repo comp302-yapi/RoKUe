@@ -22,7 +22,7 @@ public class Arrow extends Entity {
         this.panel = gp;
 
         // Arrow characteristics
-        damage = 1;
+        damage = 5;
         speed = 5;
         range = 4 * gp.tileSize; // 4 squares range
         travelDistance = 0;
@@ -61,7 +61,7 @@ public class Arrow extends Entity {
         if (hitPlayer && !panel.getPlayer().invincible) {
             // Reduce player life
             if (!panel.getPlayer().invincibleCloak) {
-                panel.getPlayer().life -= damage;
+                panel.getPlayer().damagePlayer(damage);
                 panel.getPlayer().invincible = true;
 
                 if (panel instanceof HallPanel) {

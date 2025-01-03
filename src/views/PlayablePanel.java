@@ -2,9 +2,11 @@ package views;
 
 import entity.Arrow;
 import entity.Entity;
+import entity.Fireball;
 import entity.Player;
 import managers.CollisionChecker;
 import managers.TileManager;
+import managers.TileManagerForHome;
 import managers.ViewManager;
 import object.SuperObject;
 
@@ -21,7 +23,7 @@ public abstract class PlayablePanel extends JPanel implements BasePanel {
     private final ViewManager viewManager;
 
     protected PlayablePanel(ViewManager viewManager) {
-        this.player = new Player(this);
+        this.player = Player.getInstance(this);
         this.tileM = new TileManager(this);
         this.obj = new SuperObject[10];
         this.monsters = new Entity[20];
@@ -41,7 +43,7 @@ public abstract class PlayablePanel extends JPanel implements BasePanel {
 
     @Override
     public Player getPlayer() {
-        return player;
+        return Player.getInstance(this); // Always retrieve the singleton instance
     }
 
     @Override
@@ -73,6 +75,5 @@ public abstract class PlayablePanel extends JPanel implements BasePanel {
     public Arrow[] getArrows() {
         return arrows;
     }
-
 }
 

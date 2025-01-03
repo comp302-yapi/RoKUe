@@ -7,8 +7,11 @@ import object.*;
 import views.HallPanel;
 
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
-public class HallPanelMouseListener extends BaseMouseListener {
+public class HallPanelMouseListener extends BaseMouseListener implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private HallPanel hallPanel;
 
@@ -44,23 +47,18 @@ public class HallPanelMouseListener extends BaseMouseListener {
                 clickedEnchantment.worldX = (48 * (23 + numForX)) + 16;
                 clickedEnchantment.worldY = (48 * (7 + (numForY)));
 
-
-//            System.out.println("Printing Inventory");
-//            for (SuperObject object : hallPanel.getPlayer().inventory) {
-//                if (object != null) {
-//                    System.out.println(object.name);
-//                }
-//            }
-
                 hallPanel.getTileM().enchantments.remove(clickedEnchantment);
 
-            } else {
+            } else if (clickedEnchantment instanceof ENCH_ExtraLife && hallPanel.getPlayer().life < 6){
 
                 hallPanel.getTileM().enchantments.remove(clickedEnchantment);
+                hallPanel.getPlayer().life += 1;
 
-                if (clickedEnchantment instanceof ENCH_ExtraLife && hallPanel.getPlayer().life < 6) {
-                    hallPanel.getPlayer().life += 1;
-                }
+            } else if (clickedEnchantment instanceof MISC_Gold) {
+                hallPanel.getPlayer().gold += 1;
+                hallPanel.playSE(1);
+                System.out.println("Player Gold: " + hallPanel.getPlayer().gold);
+                hallPanel.getTileM().enchantments.remove(clickedEnchantment);
             }
         }
 

@@ -1,21 +1,32 @@
 package managers;
 
-import enums.Hall;
-import views.BuildPanel;
-import views.HallPanel;
-import views.TitlePanel;
+import data.BuildPanelData;
+import data.HallPanelData;
+import data.HomePanelData;
+import entity.GameState;
+import entity.Player;
+import listeners.keylisteners.HallPanelKeyListener;
+import listeners.keylisteners.HomePanelKeyListener;
+import utils.GameLoader;
+import utils.GameSaver;
+import views.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViewManager implements Runnable {
+public class ViewManager implements Runnable, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final JFrame frame;
-    private final Map<String, JPanel> panels;
+    public final Map<String, JPanel> panels;
     private JPanel currentPanel;
-    private final Thread gameThread;
+    private final transient Thread gameThread;
 
     public ViewManager(JFrame frame) {
         this.frame = frame;
@@ -25,34 +36,78 @@ public class ViewManager implements Runnable {
     }
 
     public void addPanel(String name, JPanel panel) {
+        System.out.println("Added:" + name);
         panels.putIfAbsent(name, panel);
     }
 
     public void switchTo(String panelName, Boolean closeCurrentPanel) throws IllegalArgumentException {
         if (!panels.containsKey(panelName)) {
-            // TODO: Decide on proper logging - if we need
             throw new IllegalArgumentException("Panel with that key does not exist");
         }
 
-
         JPanel panelToSwitch = panels.get(panelName);
         if (currentPanel != null && closeCurrentPanel) {
+            // Remove key listeners from the current panel
+            for (KeyListener keyListener : currentPanel.getKeyListeners()) {
+                currentPanel.removeKeyListener(keyListener);
+            }
+
             frame.remove(currentPanel);
         }
 
+        // If switching back to TitlePanel, reset and reload panels
         if (panelToSwitch instanceof TitlePanel) {
-
             ((TitlePanel) panelToSwitch).soundManager.stop();
             panels.clear();
 
             JPanel titlePanel = new TitlePanel(this);
             JPanel buildPanel = new BuildPanel(this);
+            JPanel homePanel = new HomePanel(this);
             JPanel hallPanel = new HallPanel(this);
 
-            addPanel("HallPanel", hallPanel);
             addPanel("TitlePanel", titlePanel);
             addPanel("BuildPanel", buildPanel);
+            addPanel("HomePanel", homePanel);
+            addPanel("HallPanel", hallPanel);
 
+            panelToSwitch = titlePanel;
+        }
+
+        if (panelToSwitch instanceof PlayablePanel playablePanel) {
+            Player player = Player.getInstance(playablePanel);
+
+            Arrays.stream(panelToSwitch.getKeyListeners()).forEach(panelToSwitch::removeKeyListener);
+
+            if (player.keyH != null) {
+                player.removeKeyListener(player.keyH);
+            }
+
+            if (panelToSwitch instanceof HallPanel hallPanel) {
+                hallPanel.timeLeft = hallPanel.getSuperObjectLength() * 100;
+                hallPanel.getPlayer().life = hallPanel.getPlayer().maxLife;
+
+                HallPanelKeyListener hallKeyListener = new HallPanelKeyListener(hallPanel);
+                panelToSwitch.addKeyListener(hallKeyListener);
+                player.addKeyListener(hallKeyListener);
+
+                player.keyH = hallKeyListener;
+            } else if (panelToSwitch instanceof HomePanel homePanel) {
+                if (currentPanel instanceof HallPanel hallPanel) {
+                    if (hallPanel.tileM.objectsEarth != null) hallPanel.tileM.objectsEarth.clear();
+                    if (hallPanel.getSuperObjects() != null) Arrays.fill(hallPanel.getSuperObjects(), null);
+                    if (hallPanel.tileM.objectsAir != null) hallPanel.tileM.objectsAir.clear();
+                    if (hallPanel.tileM.objectsWater != null) hallPanel.tileM.objectsWater.clear();
+                    if (hallPanel.tileM.objectsFire != null) hallPanel.tileM.objectsFire.clear();
+                    if (hallPanel.tileM.enchantments != null) hallPanel.tileM.enchantments.clear();
+                    if (hallPanel.getHallMonsters() != null) hallPanel.getHallMonsters().clear();
+                }
+
+                HomePanelKeyListener homeKeyListener = new HomePanelKeyListener(homePanel);
+                panelToSwitch.addKeyListener(homeKeyListener);
+                player.addKeyListener(homeKeyListener);
+
+                player.keyH = homeKeyListener;
+            }
         }
 
         currentPanel = panelToSwitch;
@@ -60,6 +115,39 @@ public class ViewManager implements Runnable {
         frame.revalidate();
         frame.repaint();
         panelToSwitch.requestFocusInWindow();
+    }
+
+    public GameState collectGameState() {
+
+        HallPanel h = (HallPanel) panels.get("HallPanel");
+        HallPanelData hallPanelData = h.exportData();
+
+        BuildPanel b = (BuildPanel) panels.get("BuildPanel");
+        BuildPanelData buildPanelData = b.exportData();
+
+        HomePanel home = (HomePanel) panels.get("HomePanel");
+        HomePanelData homePanelData = home.exportData();
+
+        return new GameState(hallPanelData, buildPanelData, homePanelData);
+    }
+
+    public void restoreGameState(GameState gameState) {
+        HallPanel h = (HallPanel) panels.get("HallPanel");
+        h.restoreData(gameState.getHallPanelData());
+
+        BuildPanel b = (BuildPanel) panels.get("BuildPanel");
+        b.restoreData(gameState.getBuildPanelData());
+
+        HomePanel home = (HomePanel) panels.get("HomePanel");
+        home.restoreData(gameState.getHomePanelData());
+    }
+
+    public void saveGame(String filePath, GameState gameState) {
+        GameSaver.saveGame(gameState, filePath);
+    }
+
+    public GameState loadGame(String filePath) {
+        return GameLoader.loadGame(filePath);
     }
 
     public void startThread() {

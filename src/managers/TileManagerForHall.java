@@ -2,10 +2,7 @@ package managers;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
@@ -19,17 +16,23 @@ import tile.Tile;
 import views.BasePanel;
 import views.HallPanel;
 
-public class TileManagerForHall{
+public class TileManagerForHall implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public Hall hall;
 
 	public int[][] mapTileNum;
 	public ArrayList<SuperObject> objects = new ArrayList<>();
+	public ArrayList<SuperObject> objectsEarth;
+	public ArrayList<SuperObject> objectsAir;
+	public ArrayList<SuperObject> objectsWater;
+	public ArrayList<SuperObject> objectsFire;
 	public ArrayList<SuperObject> enchantments = new ArrayList<>();
 	public SuperObject[][] gridWorld = new SuperObject[13][14];
 	//public ArrayList<Entity> monsters = new ArrayList<>();
 	public int maxCol,maxRow,idx;
-	private boolean isOpened = false;
+	public boolean isOpened = false;
 	private final int bottomWorldBorder;
 
 	public TileManagerForHall(Hall hall, String path, int maxCol, int maxRow) {
@@ -178,6 +181,7 @@ public class TileManagerForHall{
 		// Randomly pick a type of object
 		SuperObject obj;
 		int randomType = random.nextInt(4);
+//		randomType = 0;
 
 		switch (randomType) {
 			case 0 -> obj = new ENCH_Reveal();
@@ -193,6 +197,19 @@ public class TileManagerForHall{
 
 		// Add the object to enchantments list
 		enchantments.add(obj);
+	}
+
+	public void generateGold() {
+		Random random = new Random();
+
+		SuperObject gold = new MISC_Gold();
+
+		// Set random position
+		gold.worldX = (random.nextInt(1, 13) + 7) * 48;
+		gold.worldY = (random.nextInt(1, 14) + 2) * 48;
+
+		// Add the object to enchantments list
+		enchantments.add(gold);
 	}
 
 	public SuperObject[] convertToArray() {

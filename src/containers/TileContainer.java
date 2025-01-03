@@ -12,32 +12,37 @@ public class TileContainer {
 	
 	public static Tile[] tile = new Tile[50];
 	
-	public static BufferedImage allTiles;
-	public static BufferedImage pinkTile;
-	public static BufferedImage rockyTile00, rockyTile01, rockyTile02, rockyTile03, rockyTile10, rockyTile11,
+	public static transient BufferedImage allTiles;
+	public static transient BufferedImage pinkTile;
+	public static transient BufferedImage rockyTile00, rockyTile01, rockyTile02, rockyTile03, rockyTile10, rockyTile11,
 	rockyTile12, rockyTile13, rockyTile20, rockyTile21, rockyTile22, rockyTile23;
-	public static BufferedImage wallTile;
-	public static BufferedImage columnTileTop, columnTileBottom, columnTileMiddle;
-	public static BufferedImage boxTileTop, boxTileBottom;
-	public static BufferedImage buildModeChest;
-	public static BufferedImage entrance;
-	public static BufferedImage openDoorTopLeft, openDoorTopRight, openDoorBottomLeft, openDoorBottomRight;
-	public static BufferedImage closeDoorTopLeft, closeDoorTopRight, closeDoorBottomLeft, closeDoorBottomRight;
+	public static transient BufferedImage wallTile;
+	public static transient BufferedImage columnTileTop, columnTileBottom, columnTileMiddle;
+	public static transient BufferedImage boxTileTop, boxTileBottom;
+	public static transient BufferedImage buildModeChest;
+	public static transient BufferedImage entrance;
+	public static transient BufferedImage openDoorTopLeft, openDoorTopRight, openDoorBottomLeft, openDoorBottomRight;
+	public static transient BufferedImage closeDoorTopLeft, closeDoorTopRight, closeDoorBottomLeft, closeDoorBottomRight;
 
-	public static BufferedImage fireFountainTop, fireFountainMiddle, fireFountainBottom;
-	public static BufferedImage fireBanner;
+	public static transient BufferedImage fireFountainTop, fireFountainMiddle, fireFountainBottom;
+	public static transient BufferedImage fireBanner;
 
-	public static BufferedImage earthFountainTop, earthFountainMiddle, earthFountainBottom;
-	public static BufferedImage earthBanner;
+	public static transient BufferedImage earthFountainTop, earthFountainMiddle, earthFountainBottom;
+	public static transient BufferedImage earthBanner;
 
-	public static BufferedImage waterFountainTop, waterFountainMiddle, waterFountainBottom;
-	public static BufferedImage waterBanner;
+	public static transient BufferedImage waterFountainTop, waterFountainMiddle, waterFountainBottom;
+	public static transient BufferedImage waterBanner;
 
-	public static BufferedImage airFountainTop, airFountainMiddle, airFountainBottom;
-	public static BufferedImage airBanner;
+	public static transient BufferedImage airFountainTop, airFountainMiddle, airFountainBottom;
+	public static transient BufferedImage airBanner;
 
-	
-	
+	public static transient BufferedImage tableLeft, tableMiddle, tableRight;
+
+	public static transient BufferedImage tableLeftVertical, tableMiddleVertical, tableRightVertical;
+
+
+
+
 	public TileContainer() {
 		
 	}
@@ -108,6 +113,15 @@ public class TileContainer {
 			airFountainBottom = allTiles.getSubimage(112, 80, 16, 16);
 
 			airBanner = allTiles.getSubimage(256, 64, 16, 16);
+
+			// Table
+			tableLeft = allTiles.getSubimage(272, 128, 16, 16);
+			tableMiddle = allTiles.getSubimage(288, 128, 16, 16);
+			tableRight = allTiles.getSubimage(304, 128, 16, 16);
+
+			tableLeftVertical = allTiles.getSubimage(272, 144, 16, 16);
+			tableMiddleVertical = allTiles.getSubimage(272, 160, 16, 16);
+			tableRightVertical = allTiles.getSubimage(272, 176, 16, 16);
 
 			// ROCKY TILE
 			
@@ -261,6 +275,30 @@ public class TileContainer {
 			tile[40] = new Tile();
 			tile[40].image = airBanner;
 			tile[40].collision = true;
+
+			tile[41] = new Tile();
+			tile[41].image = tableLeft;
+			tile[41].collision = true;
+
+			tile[42] = new Tile();
+			tile[42].image = tableMiddle;
+			tile[42].collision = true;
+
+			tile[43] = new Tile();
+			tile[43].image = tableRight;
+			tile[43].collision = true;
+
+			tile[44] = new Tile();
+			tile[44].image = tableLeftVertical;
+			tile[44].collision = true;
+
+			tile[45] = new Tile();
+			tile[45].image = tableMiddleVertical;
+			tile[45].collision = true;
+
+			tile[46] = new Tile();
+			tile[46].image = tableRightVertical;
+			tile[46].collision = true;
 
 		} catch(IOException e) {
 			e.printStackTrace();
