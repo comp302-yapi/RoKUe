@@ -63,7 +63,8 @@ public class BuildPanelMouseListener extends BaseMouseListener implements MouseM
 		
 		
 			// If selected an object in map
-			SuperObject objInMap = hallController.getObjectSelectedInHall(buildPanel.getCurrentHallManager(), x, y);
+			SuperObject objInMap = HallController.getObjectSelectedInHall(buildPanel.getCurrentHallManager(), x, y);
+			
 			if (objInMap != null) {
 				// If selected an object on the map
 				buildPanel.getCurrentHallManager().removeObject(objInMap);
@@ -103,34 +104,41 @@ public class BuildPanelMouseListener extends BaseMouseListener implements MouseM
 		int y = e.getY();
 		if(buildPanel.selected) {
 			if(checkBorder(x,y)) {
-				SuperObject newObj = null; 
 				
-				if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Barrel) {
-					newObj = new OBJ_Barrel();
-				}
-				
-				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Chest) {
-					newObj = new OBJ_Chest();
-				}
+				SuperObject objInMap = HallController.getObjectSelectedInHall(buildPanel.getCurrentHallManager(), x, y);
+				if (objInMap == null) {
+					
+					SuperObject newObj = null; 
+					
+					
+					if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Barrel) {
+						newObj = new OBJ_Barrel();
+					}
+					
+					else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Chest) {
+						newObj = new OBJ_Chest();
+					}
 
-				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Cactus) {
-					newObj = new OBJ_Cactus();
-				}
-				
-				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Lantern) {
-					newObj = new OBJ_Lantern();
-				}
-				
-				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Chain) {
-					newObj = new OBJ_Chain();
-				}
+					else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Cactus) {
+						newObj = new OBJ_Cactus();
+					}
+					
+					else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Lantern) {
+						newObj = new OBJ_Lantern();
+					}
+					
+					else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Chain) {
+						newObj = new OBJ_Chain();
+					}
 
-				else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Pot) {
-					newObj = new OBJ_Pot();
-				}
+					else if(buildPanel.objectsToDraw.get(buildPanel.selectedIdx) instanceof OBJ_Pot) {
+						newObj = new OBJ_Pot();
+					}
 
-				if (newObj != null) {
-					hallController.addObject(buildPanel.getCurrentHallManager(), newObj, x - (int)(BasePanel.tileSize / 2), y - (int)(BasePanel.tileSize / 2));
+					if (newObj != null) {
+						hallController.addObject(buildPanel.getCurrentHallManager(), newObj, x - (int)(BasePanel.tileSize / 2), y - (int)(BasePanel.tileSize / 2));
+					}
+					
 				}
 
 			}
