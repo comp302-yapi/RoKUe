@@ -16,6 +16,7 @@ import views.HallPanel;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
+import managers.TimeManager;
 
 
 public class HallController implements Serializable {
@@ -25,6 +26,7 @@ public class HallController implements Serializable {
     private final HallValidator hallValidator;
     private final BuildPanel buildPanel;
     public boolean isLureModeActive = false;
+    
 
 
     public HallController(BuildPanel buildPanel) {
@@ -162,7 +164,8 @@ public class HallController implements Serializable {
     public static void shouldSwitchHallsInGame(TileManagerForHall currentHall, Player player, HallPanel hallPanel) {
         if (player.screenY > currentHall.getBottomWorldBorder()) {
 
-            hallPanel.nullTimer();
+            TimeManager.getInstance().stopTimer();
+            TimeManager.getInstance().timer = null; 
 
             switch (currentHall.hall) {
                 case HallOfEarth -> {

@@ -291,28 +291,6 @@ public class HallPanel extends PlayablePanel{
         return this.monsters.toArray(new Entity[0]);
     }
 
-    public void startTimer() {
-        // Stop any existing timer
-        if (timer != null && timer.isRunning()) {
-            timer.stop();
-        }
-
-        // Create and start the timer
-        timer = new Timer(1000, e -> {
-            if (timeLeft > 0) {
-                timeLeft--;
-//                System.out.println("Time Left: " + timeLeft + " seconds");
-            } else {
-                timer.stop();
-                soundManager.stop();
-                soundManager = null;
-                System.out.println("SWITCH4");
-                getViewManager().switchTo("HomePanel", true);
-//                System.out.println("Time's up!");
-            }
-        });
-        timer.start();
-    }
 
     @Override
     public void addNotify() {
@@ -323,6 +301,23 @@ public class HallPanel extends PlayablePanel{
     @Override
     public void update() {
         if (!isPaused()) {
+        	
+            if (TimeManager.getInstance().timer == null) {
+                timeLeft = this.getSuperObjectLength() * 10;
+                TimeManager.getInstance().startTimer(timeLeft);                    
+            }
+            
+            if(TimeManager.getInstance().timeStopped) {
+            	TimeManager.getInstance().startTimer(timeLeft);
+            }
+            
+            if (getPlayer().life <= 0 || timeLeft <= 0) {
+            	 System.out.println("SWITCH5");
+                getViewManager().switchTo("HomePanel", true);
+            }
+        	
+        	timeLeft = TimeManager.getInstance().timeLeft;
+        	
             getPlayer().move();
 
             updateLightningEffect();
@@ -374,6 +369,14 @@ public class HallPanel extends PlayablePanel{
                 tileM.generateGold();
                 spawnEnchantmentCounter = 0;
             }
+        }
+        
+        else {
+        	
+            if(!TimeManager.getInstance().timeStopped) {
+            	TimeManager.getInstance().stopTimer();
+            }
+        	
         }
     }
 
@@ -502,10 +505,6 @@ public class HallPanel extends PlayablePanel{
         }
     }
 
-    public void nullTimer() {
-        timer.stop();
-        timer = null;
-    }
 
     public CollisionCheckerForHall getCollisionCheckerForHall(){return this.cChecker;}
 
@@ -530,32 +529,12 @@ public class HallPanel extends PlayablePanel{
         long drawStart = 0;
         drawStart = System.nanoTime();
 
-        if (!isPaused()) {
-            update();
-        }
+   
+        update();
+        
 
         switch (currentHall) {
             case HallOfEarth -> {
-
-                if (getPlayer().life <= 0) {
-                    System.out.println("SWITCH5");
-                    getViewManager().switchTo("HomePanel", true);
-                }
-
-                if (timer == null) {
-                    timeLeft = this.getSuperObjectLength() * 100;
-
-                    if (timeLeftSave != timeLeft && timeLeftSave > 0) {
-                        System.out.println("TimeLeft: " + timeLeft);
-                        System.out.println("TimeLeftSave: " + timeLeftSave);
-
-                        timeLeft = timeLeftSave;
-                    }
-
-                    System.out.println(timeLeft);
-                    startTimer();
-                }
-
                 // Repaint game
                 g2.setFont(arial_40);
 
@@ -596,19 +575,7 @@ public class HallPanel extends PlayablePanel{
             }
             case HallOfAir -> {
 
-                if (timer == null) {
-                    timeLeft = this.getSuperObjectLength() * 10;
-
-                    if (timeLeftSave != timeLeft && timeLeftSave > 0) {
-                        System.out.println("TimeLeft: " + timeLeft);
-                        System.out.println("TimeLeftSave: " + timeLeftSave);
-
-                        timeLeft = timeLeftSave;
-                    }
-
-                    System.out.println(timeLeft);
-                    startTimer();
-                }
+  
 
                 // Repaint game
                 g2.setFont(arial_40);
@@ -646,19 +613,6 @@ public class HallPanel extends PlayablePanel{
             }
             case HallOfWater -> {
 
-                if (timer == null) {
-                    timeLeft = this.getSuperObjectLength() * 10;
-
-                    if (timeLeftSave != timeLeft && timeLeftSave > 0) {
-                        System.out.println("TimeLeft: " + timeLeft);
-                        System.out.println("TimeLeftSave: " + timeLeftSave);
-
-                        timeLeft = timeLeftSave;
-                    }
-
-                    System.out.println(timeLeft);
-                    startTimer();
-                }
 
                 // Repaint game
                 g2.setFont(arial_40);
@@ -695,19 +649,7 @@ public class HallPanel extends PlayablePanel{
             }
             case HallOfFire -> {
 
-                if (timer == null) {
-                    timeLeft = this.getSuperObjectLength() * 10;
 
-                    if (timeLeftSave != timeLeft && timeLeftSave > 0) {
-                        System.out.println("TimeLeft: " + timeLeft);
-                        System.out.println("TimeLeftSave: " + timeLeftSave);
-
-                        timeLeft = timeLeftSave;
-                    }
-
-                    System.out.println(timeLeft);
-                    startTimer();
-                }
 
                 // Repaint game
                 g2.setFont(arial_40);

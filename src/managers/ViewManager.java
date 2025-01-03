@@ -59,6 +59,9 @@ public class ViewManager implements Runnable, Serializable {
         if (panelToSwitch instanceof TitlePanel) {
             ((TitlePanel) panelToSwitch).soundManager.stop();
             panels.clear();
+            
+            TimeManager.getInstance().stopTimer();
+            TimeManager.getInstance().timer = null;
 
             JPanel titlePanel = new TitlePanel(this);
             JPanel buildPanel = new BuildPanel(this);
