@@ -2,6 +2,8 @@ package monster;
 
 import entity.Entity;
 import object.SuperObject;
+import strategy.TeleportPlayerStrategy;
+import strategy.TeleportRuneStrategy;
 import views.BasePanel;
 import views.HallPanel;
 
@@ -18,8 +20,13 @@ import containers.HallContainer;
 public class MON_Wizard extends Entity {
 
 	private int teleportCounter = 0;
-	public boolean spawned = false;
-	private final int TELEPORT_INTERVAL = 300; // 5 seconds at 60 FPS
+	private int waitCounter = 0;
+	private int teleportPlayerCounter;
+	public boolean spawned = false; 
+	private final int TELEPORT_INTERVAL = 180; 
+	private final int WAIT_INTERVAL = 120; 
+	private final int TELEPORT_PLAYER_INTERVAL = 60;
+	public boolean playerTeleported = false;
 	public int tempScreenX, tempScreenY;
 
 	// Transient images
@@ -173,65 +180,56 @@ public class MON_Wizard extends Entity {
 		// Initial spawn logic
 		if (!spawned) {
 			Random random = new Random();
-			worldX = random.nextInt(panel.screenWidth * 2); // Adjust range as needed
-			worldY = random.nextInt(panel.screenHeight * 2); // Adjust range as needed
+			worldX = random.nextInt(BasePanel.screenWidth * 2); // Adjust range as needed
+			worldY = random.nextInt(BasePanel.screenHeight * 2); // Adjust range as needed
 			spawned = true;
 		}
 
 		// Handle rune teleportation
-		teleportCounter++;
-		if (teleportCounter >= TELEPORT_INTERVAL) {
-			teleportRune();
-			teleportCounter = 0;
-		}
-	}
-
-	private void teleportRune() {
-
-		if(panel instanceof HallPanel hp) {
-
-			Random random = new Random();
-
-			ArrayList<SuperObject> objs = null;
-
-			switch(hp.currentHall) {
-
-
-			case HallOfWater -> {
-				objs = HallContainer.getHallOfWater().objects;
-
+		
+		if (panel instanceof HallPanel hp) {
+			
+			if(hp.timeLeft < HallContainer.getCurrentHallManager(hp.currentHall).objects.size() * hp.secondPerObject * 0.3) {
+				
+				teleportPlayerCounter++;
+				if(teleportPlayerCounter >= TELEPORT_PLAYER_INTERVAL && !playerTeleported) {
+					
+					TeleportPlayerStrategy.teleportPlayer(hp);
+					
+					playerTeleported = true;
+					hp.wizardChecker = false;
+					hp.getHallMonsters().remove(this);
+					teleportPlayerCounter = 0;
+				}
+				
+				
 			}
-			case HallOfEarth -> {
-				objs = HallContainer.getHallOfEarth().objects;
-						}
-			case HallOfFire -> {
-				objs = HallContainer.getHallOfFire().objects;
-			}
-			case HallOfAir -> {
-				objs = HallContainer.getHallOfAir().objects;
-			}
-
-			}
-
-			SuperObject keyObject = null;
-			for(SuperObject obj:objs) {
-				if(obj.hasRune) {
-					keyObject = obj;
-					break;
+			else if (hp.timeLeft > HallContainer.getCurrentHallManager(hp.currentHall).objects.size() * hp.secondPerObject *  0.7) {
+				
+				teleportCounter++;
+				if (teleportCounter >= TELEPORT_INTERVAL) {
+					
+					TeleportRuneStrategy.teleportRune(hp);
+					
+					teleportCounter = 0;
 				}
 			}
-
-			if(keyObject != null) {
-				keyObject.hasRune = false;
-				SuperObject randomObj = objs.get(random.nextInt(objs.size()));
-		        while(randomObj instanceof OBJ_LuringGem) {
-		        	randomObj = objs.get(random.nextInt(objs.size()));
-		        }
-		        randomObj.hasRune = true;
-
+			
+			else {
+				
+				waitCounter++;
+				if(waitCounter >= WAIT_INTERVAL) {
+					hp.wizardChecker = false;
+					hp.getHallMonsters().remove(this);
+					waitCounter = 0;
+				}
+				
 			}
+		
+		
 		}
 	}
+
 
 	@Override
 	public void update() {
