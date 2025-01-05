@@ -108,6 +108,10 @@ public class ViewManager implements Runnable, Serializable {
                     if (hallPanel.tileM.objectsFire != null) hallPanel.tileM.objectsFire.clear();
                     if (hallPanel.tileM.enchantments != null) hallPanel.tileM.enchantments.clear();
                     if (hallPanel.getHallMonsters() != null) hallPanel.getHallMonsters().clear();
+                    
+                    hallPanel.getPlayer().screenX = BasePanel.screenWidth/2 - (BasePanel.tileSize/2);
+                    hallPanel.getPlayer().screenY = BasePanel.screenHeight/2 - (BasePanel.tileSize/2);
+
                 }
                 
                 HomePanelKeyListener homeKeyListener = new HomePanelKeyListener(homePanel);
