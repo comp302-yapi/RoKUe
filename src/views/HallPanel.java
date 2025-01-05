@@ -45,6 +45,10 @@ public class HallPanel extends PlayablePanel{
     public int[][] gridWorldAll;
     boolean availableSpot = false;
     private ImageIcon backgroundImage;
+    private final ImageIcon backgroundEarth = new ImageIcon(getClass().getResource("/res/tiles/forest.png"));
+    private final ImageIcon backgroundWater = new ImageIcon(getClass().getResource("/res/tiles/water.png"));
+    private final ImageIcon backgroundAir = new ImageIcon(getClass().getResource("/res/tiles/glacial_mountains.png"));
+    private final ImageIcon backgroundFire = new ImageIcon(getClass().getResource("/res/tiles/fire.png"));
     public soundManager soundManager = new soundManager();
     public boolean attackSoundPlayed;
     public boolean checkInventoryForReveal = false;
@@ -537,7 +541,7 @@ public class HallPanel extends PlayablePanel{
                 g2.setFont(arial_40);
 
                 // Set background image
-                backgroundImage = new ImageIcon(getClass().getResource("/res/tiles/forest.png"));
+                backgroundImage = backgroundEarth;
                 Image scaledImage = backgroundImage.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
@@ -579,7 +583,7 @@ public class HallPanel extends PlayablePanel{
                 g2.setFont(arial_40);
 
                 // Set background image
-                backgroundImage = new ImageIcon(getClass().getResource("/res/tiles/glacial_mountains.png"));
+                backgroundImage = backgroundAir;
                 Image scaledImage = backgroundImage.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
@@ -616,7 +620,7 @@ public class HallPanel extends PlayablePanel{
                 g2.setFont(arial_40);
 
                 // Set background image
-                backgroundImage = new ImageIcon(getClass().getResource("/res/tiles/water.png"));
+                backgroundImage = backgroundWater;
                 Image scaledImage = backgroundImage.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
@@ -653,7 +657,7 @@ public class HallPanel extends PlayablePanel{
                 g2.setFont(arial_40);
 
                 // Set background image
-                backgroundImage = new ImageIcon(getClass().getResource("/res/tiles/fire.png"));
+                backgroundImage = backgroundFire;
                 Image scaledImage = backgroundImage.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
