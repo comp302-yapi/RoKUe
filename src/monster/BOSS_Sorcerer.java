@@ -75,7 +75,7 @@ public class BOSS_Sorcerer extends Entity {
         name = "Sorcerer Monster";
         defaultSpeed = 1;
         speed = defaultSpeed;
-        maxLife = 60;
+        maxLife = 80;
         damage = 5;
         life = maxLife;
 
