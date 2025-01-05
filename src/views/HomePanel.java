@@ -68,7 +68,6 @@ public class HomePanel extends PlayablePanel {
         PanelUtils panelUtil = new PanelUtils();
         this.maruMonica = panelUtil.getNewFont();
 
-
         ARMOR_IronArmorTorso ironArmorTorso = new ARMOR_IronArmorTorso();
         ARMOR_LeatherArmorTorso leatherArmorTorso = new ARMOR_LeatherArmorTorso();
         ARMOR_IronArmorHead ironArmorHead = new ARMOR_IronArmorHead();

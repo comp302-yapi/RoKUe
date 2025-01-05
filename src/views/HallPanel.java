@@ -12,6 +12,7 @@ import enums.Hall;
 import listeners.keylisteners.HallPanelKeyListener;
 import listeners.mouselisteners.HallPanelMouseListener;
 import managers.*;
+import monster.BOSS_Sorcerer;
 import monster.MON_Archer;
 import monster.MON_Fighter;
 import monster.MON_Wizard;
@@ -292,7 +293,6 @@ public class HallPanel extends PlayablePanel{
         return this.monsters.toArray(new Entity[0]);
     }
 
-
     @Override
     public void addNotify() {
         super.addNotify();
@@ -304,7 +304,7 @@ public class HallPanel extends PlayablePanel{
         if (!isPaused()) {
         	
             if (TimeManager.getInstance().timer == null) {
-                	timeLeft = this.getSuperObjectLength() * 10;
+                	timeLeft = this.getSuperObjectLength() * 100;
                 
                 TimeManager.getInstance().startTimer(timeLeft);                    
             }
@@ -416,7 +416,7 @@ public class HallPanel extends PlayablePanel{
 
         Random random = new Random();
         String pickMonster = monsterTypes[random.nextInt(monsterTypes.length)]; // Get a random index
-//      pickMonster = "Fighter";
+//        pickMonster = "Sorcerer";
 
         int locationX = random.nextInt(1,13) + 7;
         int locationY = random.nextInt(1,14) + 2;
@@ -433,7 +433,27 @@ public class HallPanel extends PlayablePanel{
             gY = (BasePanel.tileSize*locationY - 96) / 48;
         }
 
+
         switch (pickMonster) {
+            case "Sorcerer":
+                BOSS_Sorcerer boss = new BOSS_Sorcerer(this);
+                boss.worldX = BasePanel.tileSize*locationX;
+                boss.worldY = BasePanel.tileSize*locationY;
+
+                boss.spawned = true;
+
+                for (int i = 0; i < getMonsters().length; i++) {
+
+                    if (getMonsters()[i] == null) {
+                        getMonsters()[i] = boss;
+                        break;
+                    }
+                }
+
+                monsters.add(boss);
+
+                break;
+
             case "Archer":
                 MON_Archer archer = new MON_Archer(this);
                 archer.worldX = BasePanel.tileSize*locationX;
@@ -507,7 +527,6 @@ public class HallPanel extends PlayablePanel{
         }
     }
 
-
     public CollisionCheckerForHall getCollisionCheckerForHall(){return this.cChecker;}
 
     public void setPaused(boolean paused) {
@@ -530,10 +549,8 @@ public class HallPanel extends PlayablePanel{
 
         long drawStart = 0;
         drawStart = System.nanoTime();
-
    
         update();
-        
 
         switch (currentHall) {
             case HallOfEarth -> {
@@ -650,8 +667,6 @@ public class HallPanel extends PlayablePanel{
                 g2.drawString(timerText, this.getWidth()-250, 40);
             }
             case HallOfFire -> {
-
-
 
                 // Repaint game
                 g2.setFont(arial_40);

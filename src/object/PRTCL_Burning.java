@@ -22,7 +22,7 @@ public class PRTCL_Burning extends SuperParticle {
         setFollowEntity(entityToFollow); // Set the entity to follow
     }
 
-    public void draw(Graphics2D g2, HallPanel panel) {
+    public void draw(Graphics2D g2, BasePanel panel) {
 //        System.out.println("In draw");
         if (animationFrames != null && currentFrame < animationFrames.size() && followEntity.alive) {
             g2.drawImage(animationFrames.get(currentFrame), this.followEntity.worldX + 5, this.followEntity.worldY, BasePanel.tileSize, BasePanel.tileSize, null);

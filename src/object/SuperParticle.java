@@ -65,11 +65,16 @@ public abstract class SuperParticle implements Serializable {
         }
     }
 
-    public void draw(Graphics2D g2, HallPanel panel) {
+    public void draw(Graphics2D g2, BasePanel panel) {
 //        System.out.println("In draw");
-        if (animationFrames != null && currentFrame < animationFrames.size()) {
-            g2.drawImage(animationFrames.get(currentFrame), this.worldX, this.worldY, BasePanel.tileSize, BasePanel.tileSize, null);
-
+        if (this instanceof PRTCL_Lightning) {
+            if (animationFrames != null && currentFrame < animationFrames.size()) {
+                g2.drawImage(animationFrames.get(currentFrame), this.worldX - 150, this.worldY - 230, 300, 300, null);
+            }
+        } else {
+            if (animationFrames != null && currentFrame < animationFrames.size()) {
+                g2.drawImage(animationFrames.get(currentFrame), this.worldX, this.worldY, BasePanel.tileSize, BasePanel.tileSize, null);
+            }
         }
     }
 

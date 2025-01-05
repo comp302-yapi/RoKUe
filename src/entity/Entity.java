@@ -7,10 +7,13 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
+import monster.BOSS_Sorcerer;
 import monster.MON_Archer;
 import monster.MON_Fighter;
+import monster.MON_LandmineBot;
 import utils.ImageUtils;
 import views.BasePanel;
+import views.BossPanel;
 import views.HallPanel;
 import views.HomePanel;
 
@@ -31,10 +34,19 @@ public class Entity implements Serializable {
 	public transient BufferedImage left1, left2, left3, left4, left5, left6, left7, left8, left9;
 	public transient BufferedImage right1, right2, right3, right4, right5, right6, right7, right8, right9;
 
-	public transient BufferedImage up_attacking1, up_attacking2, up_attacking3, up_attacking4, up_attacking5;
-	public transient BufferedImage down_attacking1, down_attacking2, down_attacking3, down_attacking4, down_attacking5;
-	public transient BufferedImage left_attacking1, left_attacking2, left_attacking3, left_attacking4, left_attacking5;
-	public transient BufferedImage right_attacking1, right_attacking2, right_attacking3, right_attacking4, right_attacking5;
+	public transient BufferedImage farLeft1, farLeft2, farLeft3, farLeft4, farLeft5, farLeft6, farLeft7, farLeft8, farLeft9;
+	public transient BufferedImage closeLeft1, closeLeft2, closeLeft3, closeLeft4, closeLeft5, closeLeft6, closeLeft7, closeLeft8, closeLeft9;
+	public transient BufferedImage farRight1, farRight2, farRight3, farRight4, farRight5, farRight6, farRight7, farRight8, farRight9;
+	public transient BufferedImage closeRight1, closeRight2, closeRight3, closeRight4, closeRight5, closeRight6, closeRight7, closeRight8, closeRight9;
+
+	public transient BufferedImage up_attacking1, up_attacking2, up_attacking3, up_attacking4, up_attacking5,
+	up_attacking6, up_attacking7, up_attacking8;
+	public transient BufferedImage down_attacking1, down_attacking2, down_attacking3, down_attacking4, down_attacking5,
+	down_attacking6, down_attacking7, down_attacking8;
+	public transient BufferedImage left_attacking1, left_attacking2, left_attacking3, left_attacking4, left_attacking5,
+	left_attacking6, left_attacking7, left_attacking8 ;
+	public transient BufferedImage right_attacking1, right_attacking2, right_attacking3, right_attacking4, right_attacking5,
+			right_attacking6, right_attacking7, right_attacking8;
 
 	public transient BufferedImage up_attacking_diamond1, up_attacking_diamond2, up_attacking_diamond3, up_attacking_diamond4, up_attacking_diamond5;
 	public transient BufferedImage down_attacking_diamond1, down_attacking_diamond2, down_attacking_diamond3, down_attacking_diamond4, down_attacking_diamond5;
@@ -185,6 +197,7 @@ public class Entity implements Serializable {
 	public Rectangle attackArea = new Rectangle(0, 0, 48, 48);
 
 	public boolean collisionOn = false;
+	public boolean stopMovingAttacking;
 	public int actionLockCounter = 0;
 	public boolean invincible = false;
 	public int invincibleCounter;
@@ -235,6 +248,10 @@ public class Entity implements Serializable {
 	}
 
 	public boolean isAttackingFighter() {
+		return false;
+	}
+
+	public boolean isAttackingLandmineBot() {
 		return false;
 	}
 
@@ -335,8 +352,14 @@ public class Entity implements Serializable {
 				p.getCollisionCheckerForHome().checkTile(this);
 				contactPlayer = p.getCollisionCheckerForHome().checkPlayer(this);
 
-			}
+			} else if (panel instanceof BossPanel b) {
+				collisionOn = false;
+//				System.out.println("Checking for boss...");
+				b.getCollisionCheckerForBoss().checkTile(this);
+				b.getCollisionCheckerForBoss().checkEntity(this, panel.getMonsters());
+				contactPlayer = b.getCollisionCheckerForBoss().checkPlayer(this);
 
+			}
 			else {
 				collisionOn = false;
 				panel.getCollisionChecker().checkTile(this);
@@ -358,13 +381,27 @@ public class Entity implements Serializable {
 				}
 			}
 
-			// IF COLLISION FALSE, PLAYER CAN MOVE
-			if (!collisionOn) {
-				switch (direction) {
-					case "up" -> worldY -= speed;
-					case "down" -> worldY += speed;
-					case "left" -> worldX -= speed;
-					case "right" -> worldX += speed;
+			if (this instanceof BOSS_Sorcerer) {
+				if (!collisionOn && !((BOSS_Sorcerer) this).attacking) {
+				}
+			} else if (this instanceof MON_LandmineBot) {
+				if (!collisionOn && !((MON_LandmineBot) this).attacking) {
+					switch (direction) {
+						case "up" -> worldY -= speed;
+						case "down" -> worldY += speed;
+						case "left" -> worldX -= speed;
+						case "right" -> worldX += speed;
+					}
+				}
+			}
+			else {
+				if (!collisionOn) {
+					switch (direction) {
+						case "up" -> worldY -= speed;
+						case "down" -> worldY += speed;
+						case "left" -> worldX -= speed;
+						case "right" -> worldX += speed;
+					}
 				}
 			}
 
@@ -393,10 +430,6 @@ public class Entity implements Serializable {
 		tempScreenX = getBufferX();
 		tempScreenY = getBufferY();
 
-		if (image == null) {
-			System.out.println(this.name);
-		}
-
 		if (invincible) {
 			hpBarOn = true;
 			hpBarCounter = 0;
@@ -424,7 +457,26 @@ public class Entity implements Serializable {
 		}
 
 		if (image != null) {
-			g2.drawImage(image, tempScreenX, tempScreenY, image.getWidth(), image.getHeight(), null);
+			if (this instanceof BOSS_Sorcerer boss) {
+				g2.drawImage(image, tempScreenX- (95 * 2), tempScreenY- (190 * 2), image.getWidth(), image.getHeight(), null);
+
+				int collisionX = tempScreenX + solidArea.x;
+				int collisionY = tempScreenY + solidArea.y;
+
+//				g2.setColor(Color.RED);
+//				g2.drawRect(collisionX, collisionY, solidArea.width, solidArea.height);
+
+			} else if (this instanceof MON_LandmineBot) {
+				g2.drawImage(image, tempScreenX- (95), tempScreenY - (140), image.getWidth(), image.getHeight(), null);
+
+				int collisionX = tempScreenX + solidArea.x;
+				int collisionY = tempScreenY + solidArea.y;
+//				g2.setColor(Color.RED);
+//				g2.drawRect(collisionX, collisionY, solidArea.width, solidArea.height);
+
+			} else {
+				g2.drawImage(image, tempScreenX, tempScreenY, image.getWidth(), image.getHeight(), null);
+			}
 		}
 
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));

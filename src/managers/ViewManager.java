@@ -5,6 +5,7 @@ import data.HallPanelData;
 import data.HomePanelData;
 import entity.GameState;
 import entity.Player;
+import listeners.keylisteners.BossPanelKeyListener;
 import listeners.keylisteners.HallPanelKeyListener;
 import listeners.keylisteners.HomePanelKeyListener;
 import utils.GameLoader;
@@ -67,11 +68,13 @@ public class ViewManager implements Runnable, Serializable {
             JPanel buildPanel = new BuildPanel(this);
             JPanel homePanel = new HomePanel(this);
             JPanel hallPanel = new HallPanel(this);
+            JPanel bossPanel = new BossPanel(this);
 
             addPanel("TitlePanel", titlePanel);
             addPanel("BuildPanel", buildPanel);
             addPanel("HomePanel", homePanel);
             addPanel("HallPanel", hallPanel);
+            addPanel("BossPanel", bossPanel);
 
             panelToSwitch = titlePanel;
         }
@@ -115,6 +118,16 @@ public class ViewManager implements Runnable, Serializable {
                 player.addKeyListener(homeKeyListener);
 
                 player.keyH = homeKeyListener;
+            } else if (panelToSwitch instanceof BossPanel bossPanel) {
+
+                TimeManager.getInstance().stopTimer();
+                TimeManager.getInstance().timer = null;
+
+                BossPanelKeyListener bossPanelKeyListener = new BossPanelKeyListener(bossPanel);
+                panelToSwitch.addKeyListener(bossPanelKeyListener);
+                player.addKeyListener(bossPanelKeyListener);
+
+                player.keyH = bossPanelKeyListener;
             }
         }
 

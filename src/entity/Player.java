@@ -13,10 +13,7 @@ import listeners.BaseKeyListener;
 import object.SWORD_DiamondSword;
 import object.SWORD_IronSword;
 import object.SuperObject;
-import views.BasePanel;
-import views.GamePanel;
-import views.HallPanel;
-import views.HomePanel;
+import views.*;
 
 public class Player extends Entity{
 
@@ -103,7 +100,7 @@ public class Player extends Entity{
 		
 		worldX = BasePanel.tileSize*37;
 		worldY = BasePanel.tileSize*37;
-		defaultSpeed = 4;
+		defaultSpeed = 5;
 		speed = defaultSpeed;
 		armor = 0;
 		gold = 10;
@@ -509,7 +506,6 @@ public class Player extends Entity{
 		}
 	}
 
-
 	// LEATHER ARMOR
 	public void getLeatherArmorTorso() {
 		try {
@@ -715,7 +711,6 @@ public class Player extends Entity{
 		ironSword = false;
 		damage = diamondSwordObj.damage;
 	}
-
 
 	public void move() {
 		if(panel instanceof GamePanel) {
@@ -949,6 +944,97 @@ public class Player extends Entity{
 				spriteNum = 1;
 				spriteCounter = 0;
 			}
+		} else if (panel instanceof BossPanel bossPanel) {
+
+			chooseImage();
+
+			AoEDamage(bossPanel);
+
+			if (attacking) {
+				attacking();
+			}
+
+			else if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.spacePressed) {
+				if (keyH.upPressed) {
+					direction = "up";
+				}
+				if (keyH.downPressed) {
+					direction = "down";
+				}
+				if (keyH.leftPressed) {
+					direction = "left";
+				}
+				if (keyH.rightPressed) {
+					direction = "right";
+				}
+
+				// CHECK TILE COLLISION
+				collisionOn = false;
+				bossPanel.getCollisionCheckerForBoss().checkTile(this);
+
+				// CHECK OBJECT COLLISION
+				this.solidArea.x = 8;
+				this.solidArea.y = 16;
+
+				this.solidArea.x = 8;
+				this.solidArea.y = 16;
+
+				// INVINCIBLE
+				if(invincible) {
+					invincibleCounter++;
+				}
+
+				if (invincibleCounter >= 60) {
+					invincible = false;
+					invincibleCounter = 0;
+				}
+
+				if (invincibleCloak) {
+					invincibleCounterCloak++;
+				}
+
+				if (invincibleCounterCloak >= 2) {
+					invincibleCloak = false;
+					invincibleCounterCloak = 0;
+				}
+
+				// CHECK MONSTER COLLISION
+				int monsterIndex = bossPanel.getCollisionCheckerForBoss().checkEntity(this, bossPanel.getMonsters());
+
+				// IF COLLISION FALSE, PLAYER CAN MOVE
+				if (!collisionOn) {
+					switch (direction) {
+						case "up" -> {
+							screenY -= speed;
+
+						}
+						case "down" -> {
+							screenY += speed;
+
+						}
+						case "left" -> {
+							screenX -= speed;
+
+						}
+						case "right" -> {
+							screenX += speed;
+
+						}
+					}
+				}
+
+				spriteCounter++;
+				if (spriteCounter > 3) {
+					spriteNum++;
+					if (spriteNum > 9) { // Reset after 9
+						spriteNum = 1;
+					}
+					spriteCounter = 0; // Reset counter after switching sprite
+				}
+			} else {
+				spriteNum = 1;
+				spriteCounter = 0;
+			}
 		}
 	}
 
@@ -974,6 +1060,14 @@ public class Player extends Entity{
 			if (!homePanel.attackSoundPlayed) {
 				homePanel.playSE(soundToPlay);
 				homePanel.attackSoundPlayed = true; // Set flag to prevent replay
+			}
+		}
+
+
+		if (panel instanceof BossPanel bossPanel) {
+			if (!bossPanel.attackSoundPlayed) {
+				bossPanel.playSE(soundToPlay);
+				bossPanel.attackSoundPlayed = true; // Set flag to prevent replay
 			}
 		}
 
@@ -1020,6 +1114,40 @@ public class Player extends Entity{
 					screenY = currentWorldY;
 					solidArea.width = solidAreaWidth;
 					solidArea.height = solidAreaHeight;
+				} else if (panel instanceof BossPanel bossPanel) {
+
+					// Save the current worldX, worldY, solidArea
+					int currentWorldX = screenX;
+					int currentWorldY = screenY;
+					int solidAreaWidth = solidArea.width;
+					int solidAreaHeight = solidArea.height;
+
+					// Adjust player's worldX/Y for the attackArea
+					switch (direction) {
+						case "up" -> screenY -= attackArea.height;
+						case "down" -> screenY += attackArea.height;
+						case "left" -> screenX -= attackArea.width;
+						case "right" -> screenX += attackArea.width;
+					}
+
+					solidArea.width = attackArea.width;
+					solidArea.height = attackArea.height;
+
+					// Check monster collision with the updated worldX, worldY, and solidArea
+					int monsterIndex = bossPanel.getCollisionCheckerForBoss().checkEntity(this, bossPanel.getMonsters());
+
+					// Apply damage to the collided monster
+					if (monsterIndex != 999) {
+						System.out.println("Damaging monster idx: " + monsterIndex);
+						damageMonster(monsterIndex, this);
+					}
+
+					// Restore the original data
+					screenX = currentWorldX;
+					screenY = currentWorldY;
+					solidArea.width = solidAreaWidth;
+					solidArea.height = solidAreaHeight;
+
 				}
 			}
 
@@ -1088,8 +1216,9 @@ public class Player extends Entity{
 		fireball = new Fireball(panel, screenX, screenY, fireballDirection);
 	}
 
-	public void AoEDamage(HallPanel hallPanel) {
+	public void AoEDamage(BasePanel panel) {
 		if (aoeActive) {
+			if (panel instanceof HallPanel hallPanel) {
 			aoeCounter++;
 
 			for (Entity monster : hallPanel.getMonsters()) {
@@ -1117,6 +1246,36 @@ public class Player extends Entity{
 			if (aoeCounter >= aoeDuration) {
 				hallPanel.groundSlamActive = false;
 				aoeActive = false;
+			}
+
+			} else if (panel instanceof BossPanel bossPanel) {
+					aoeCounter++;
+
+					for (Entity monster : bossPanel.getMonsters()) {
+						if (monster != null && !monster.invincible) {
+							int monsterCenterX = monster.worldX + monster.solidArea.width / 2;
+							int monsterCenterY = monster.worldY + monster.solidArea.height / 2;
+
+							double distance = Math.sqrt(Math.pow(monsterCenterX - screenX, 2) + Math.pow(monsterCenterY - screenY, 2));
+
+							if (distance <= aoeRadius) {
+								monster.life -= aoeDamage;
+								monster.invincible = true;
+								if (monster.life <= 0) {
+									addXp(20);
+									monster.alive = false;
+									bossPanel.getBossMonsters().remove(monster);
+								}
+							} else {
+	//						System.out.println(distance);
+							}
+						}
+					}
+					// End AoE after duration
+				if (aoeCounter >= aoeDuration) {
+					bossPanel.groundSlamActive = false;
+					aoeActive = false;
+			}
 			}
 		}
 	}
@@ -1766,6 +1925,22 @@ public class Player extends Entity{
 						System.out.println(damage);
 						hallPanel.getMonsters()[i].life -= damage;
 						knockback(hallPanel.getMonsters()[i], this, knockbackValue);
+					}
+				}
+			} else if (panel instanceof BossPanel bossPanel) {
+				if (!bossPanel.getMonsters()[i].invincible) {
+					bossPanel.playSE(7);
+					int randomSE = new Random().nextInt(3) + 13;
+					bossPanel.playSE(randomSE);
+
+					bossPanel.getMonsters()[i].invincible = true;
+					bossPanel.getMonsters()[i].damageReceived = true;
+
+					if (entity instanceof Fireball) {
+						bossPanel.getMonsters()[i].life -= fireball.damage;
+					}  else {
+						System.out.println(damage);
+						bossPanel.getMonsters()[i].life -= damage;
 					}
 				}
 			}
