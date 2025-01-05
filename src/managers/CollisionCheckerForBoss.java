@@ -3,7 +3,9 @@ package managers;
 import containers.HallContainer;
 import containers.TileContainer;
 import entity.Entity;
+import entity.Laser;
 import entity.Player;
+import monster.MON_LandmineBot;
 import object.SuperObject;
 import views.BasePanel;
 import views.BossPanel;
@@ -201,31 +203,57 @@ public class CollisionCheckerForBoss implements Serializable {
     public boolean checkPlayer(Entity entity) {
         boolean contactPlayer = false;
 
-        if (!entity.isAttackingLandmineBot()) {
-            // Get entity's solid area position
-            entity.solidArea.x = entity.worldX + entity.solidArea.x;
-            entity.solidArea.y = entity.worldY + entity.solidArea.y;
+        if (entity instanceof MON_LandmineBot) {
+            if (!entity.isAttackingLandmineBot()) {
+                // Get entity's solid area position
+                entity.solidArea.x = entity.worldX + entity.solidArea.x;
+                entity.solidArea.y = entity.worldY + entity.solidArea.y;
 
-            // Get the object's solid are position
-            player.solidArea.x = player.screenX + player.solidArea.x;
-            player.solidArea.y = player.screenY + player.solidArea.y;
+                // Get the object's solid are position
+                player.solidArea.x = player.screenX + player.solidArea.x;
+                player.solidArea.y = player.screenY + player.solidArea.y;
 
-            switch (entity.direction) {
-                case "up" -> entity.solidArea.y -= entity.speed;
-                case "down" -> entity.solidArea.y += entity.speed;
-                case "left" -> entity.solidArea.x -= entity.speed;
-                case "right" -> entity.solidArea.x += entity.speed;
+                switch (entity.direction) {
+                    case "up" -> entity.solidArea.y -= entity.speed;
+                    case "down" -> entity.solidArea.y += entity.speed;
+                    case "left" -> entity.solidArea.x -= entity.speed;
+                    case "right" -> entity.solidArea.x += entity.speed;
+                }
+            } else {
+                // Get entity's solid area position
+                entity.solidArea.x = entity.worldX + entity.solidArea.x - 80;
+                entity.solidArea.y = entity.worldY + entity.solidArea.y - 100;
+
+                // Get the object's solid are position
+                player.solidArea.x = player.screenX + player.solidArea.x;
+                player.solidArea.y = player.screenY + player.solidArea.y;
             }
         } else {
             // Get entity's solid area position
-            entity.solidArea.x = entity.worldX + entity.solidArea.x - 80;
-            entity.solidArea.y = entity.worldY + entity.solidArea.y - 100;
+//            if (entity instanceof Laser) {
+//                System.out.println("Changing y to: " + (200 + entity.solidArea.y) + " from: " + entity.solidArea.y);
+//            }
+            entity.solidArea.x = entity.worldX + entity.solidArea.x;
+            entity.solidArea.y = 200  + entity.solidArea.y;
 
             // Get the object's solid are position
             player.solidArea.x = player.screenX + player.solidArea.x;
             player.solidArea.y = player.screenY + player.solidArea.y;
 
+            if (!(entity instanceof Laser)) {
+                switch (entity.direction) {
+                    case "up" -> entity.solidArea.y -= entity.speed;
+                    case "down" -> entity.solidArea.y += entity.speed;
+                    case "left" -> entity.solidArea.x -= entity.speed;
+                    case "right" -> entity.solidArea.x += entity.speed;
+                }
+            }
         }
+
+//        if (entity instanceof Laser) {
+//            System.out.println(entity.solidArea.x + " X Y " + entity.solidArea.y);
+//            System.out.println(entity.solidArea.width + " WIDHT HEIGHT " + entity.solidArea.height);
+//        }
 
         if (entity.solidArea.intersects(player.solidArea)) {
             entity.collisionOn = true;

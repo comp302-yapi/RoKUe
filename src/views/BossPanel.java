@@ -140,6 +140,7 @@ public class BossPanel extends PlayablePanel {
         getPlayer().move();
 
         if (getPlayer().life <= 0) {
+            getPlayer().life = getPlayer().maxLife;
             System.out.println("SWITCH5");
             getViewManager().switchTo("HomePanel", true);
         }

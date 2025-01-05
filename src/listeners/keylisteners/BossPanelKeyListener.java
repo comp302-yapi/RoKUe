@@ -63,7 +63,7 @@ public class BossPanelKeyListener extends BaseKeyListener implements Serializabl
             player.level = player.maxLevel;
             player.xpCurrent = player.xpMax - 1;
             player.gold = 9999;
-            player.life = 100;
+//            player.life = 100;
 
         }
 

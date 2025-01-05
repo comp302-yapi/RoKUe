@@ -1,6 +1,7 @@
 package entity;
 
 import views.BasePanel;
+import views.BossPanel;
 import views.HallPanel;
 
 import java.awt.*;
@@ -67,20 +68,22 @@ public class Laser extends Entity {
         travelDistance += speed;
 
 //        System.out.println((this.solidArea.x + this.worldX) + " " + (this.solidArea.y + this.worldY));
-        boolean hitPlayer = panel.getCollisionChecker().checkPlayer(this);
-        if (hitPlayer && !panel.getPlayer().invincible) {
-            // Reduce player life
-            if (!panel.getPlayer().invincibleCloak) {
-                panel.getPlayer().damagePlayer(damage);
-                panel.getPlayer().invincible = true;
+        if (panel instanceof BossPanel bossPanel) {
+            boolean hitPlayer = bossPanel.getCollisionCheckerForBoss().checkPlayer(this);
 
-                if (panel instanceof HallPanel) {
-                    ((HallPanel) panel).playSE(3);
-                }
+            if (hitPlayer && !bossPanel.getPlayer().invincible) {
+                // Reduce player life
+                if (!bossPanel.getPlayer().invincibleCloak) {
+                    bossPanel.getPlayer().damagePlayer(damage);
+                    bossPanel.getPlayer().invincible = true;
+
+                    if (panel instanceof HallPanel) {
+                        ((HallPanel) panel).playSE(3);
+                    }
 //                expired = true;
+                }
             }
         }
-
         if (panel instanceof HallPanel hallPanel) {
 
             // Check if arrow exceeded range
@@ -138,6 +141,7 @@ public class Laser extends Entity {
     }
 
     public void animate() {
+        this.solidArea.y = this.worldY;
         sorcererProjectileCounter++;
         if (sorcererProjectileCounter > 30) {
             spriteNum = (spriteNum % 6) + 1;
@@ -150,7 +154,6 @@ public class Laser extends Entity {
 
         }
         if (spriteNum > 2) {
-            this.solidArea.y = this.worldY - 150;
             this.solidArea.x -= 650;
 
             solidArea.width = 1440;
