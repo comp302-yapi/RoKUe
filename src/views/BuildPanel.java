@@ -23,7 +23,7 @@ public class BuildPanel extends NonPlayablePanel {
 	private final BuildPanelMouseListener buildPanelMouseListener;
 	public ArrayList<SuperObject> objectsToDraw = new ArrayList<>();
 
-	private Hall currentHall;// enum oluşturabiliriz bunun için
+	public Hall currentHall;// enum oluşturabiliriz bunun için
 
 	private final BuildPanelKeyListener keyListener;
 
