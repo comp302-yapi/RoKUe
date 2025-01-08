@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import enums.Hall;
 import listeners.BaseKeyListener;
 import object.SWORD_DiamondSword;
+import object.SWORD_GoldSword;
 import object.SWORD_IronSword;
 import object.SuperObject;
 import views.*;
@@ -27,6 +28,7 @@ public class Player extends Entity{
 	private static Player instance; // Static instance of the singleton
 	public boolean armorOnIronTorso, armorOnLeatherTorso;
 	public boolean armorOnIronHead, armorOnLeatherHead;
+	public boolean armorOnIronLeg, armorOnLeatherLeg;
 	public boolean attacking;
 	private boolean firstAttackCall = true; // Flag to track the first call of attacking()
 	private int tempScreenXLeft;
@@ -42,13 +44,12 @@ public class Player extends Entity{
 	public int xpCurrent;
 	public int xpMax;
 
-	SuperObject ironSwordObj = new SWORD_IronSword();
-	SWORD_DiamondSword diamondSwordObj = new SWORD_DiamondSword();
-
+	SWORD_IronSword ironSwordObj = SWORD_IronSword.getInstance();	SWORD_DiamondSword diamondSwordObj = SWORD_DiamondSword.getInstance();	SWORD_GoldSword goldSwordObj = SWORD_GoldSword.getInstance();
 	public int maxArmor;
 
 	public boolean diamondSword;
 	public boolean ironSword = true;
+	public boolean goldSword;
 
 	public Fireball fireball;
 
@@ -67,16 +68,26 @@ public class Player extends Entity{
 		
 		setDefaultValues();
 		getPlayerImage();
+
 		getIronArmorTorso();
-		getLeatherArmorTorso();
 		getIronArmorHead();
+		getIronArmorLeg();
+
+		getLeatherArmorTorso();
 		getLeatherArmorHead();
+		getLeatherArmorLeg();
+
 		getPlayerImageAttacking();
 		getPlayerImageAttackingDiamond();
+		getPlayerImageAttackingGold();
+
 		getIronArmorTorsoKnifeAttacking();
-		getLeatherArmorTorsoKnifeAttacking();
 		getIronArmorHeadKnifeAttacking();
+		getIronArmorLegKnifeAttacking();
+
+		getLeatherArmorTorsoKnifeAttacking();
 		getLeatherArmorHeadKnifeAttacking();
+		getLeatherArmorLegKnifeAttacking();
 	}
 
 	// Static method to get the single instance
@@ -100,6 +111,8 @@ public class Player extends Entity{
 		
 		worldX = BasePanel.tileSize*37;
 		worldY = BasePanel.tileSize*37;
+		defaultScreenX = BasePanel.screenWidth/2 - (BasePanel.tileSize/2);
+		defaultScreenY = BasePanel.screenHeight/2 - (BasePanel.tileSize/2);
 		defaultSpeed = 5;
 		speed = defaultSpeed;
 		armor = 0;
@@ -164,72 +177,6 @@ public class Player extends Entity{
 		}
 	}
 
-	public void getPlayerImageAttacking() {
-		try {
-			up_attacking1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_up_1.png")));
-			up_attacking2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_up_2.png")));
-			up_attacking3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_up_3.png")));
-			up_attacking4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_up_4.png")));
-			up_attacking5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_up_5.png")));
-
-			down_attacking1 = setup("/res/player/MainCharacterAttackKnife/attack_down_1", 80, 64);
-			down_attacking2 = setup("/res/player/MainCharacterAttackKnife/attack_down_2", 80, 64);
-			down_attacking3 = setup("/res/player/MainCharacterAttackKnife/attack_down_3", 80, 64);
-			down_attacking4 = setup("/res/player/MainCharacterAttackKnife/attack_down_4", 80, 64);
-			down_attacking5 = setup("/res/player/MainCharacterAttackKnife/attack_down_5", 80, 64);
-//			down_attacking1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_down_1.png")));
-//			down_attacking2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_down_2.png")));
-//			down_attacking3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_down_3.png")));
-//			down_attacking4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_down_4.png")));
-//			down_attacking5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_down_5.png")));
-
-			left_attacking1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_left_1.png")));
-			left_attacking2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_left_2.png")));
-			left_attacking3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_left_3.png")));
-			left_attacking4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_left_4.png")));
-			left_attacking5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_left_5.png")));
-
-			right_attacking1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_right_1.png")));
-			right_attacking2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_right_2.png")));
-			right_attacking3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_right_3.png")));
-			right_attacking4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_right_4.png")));
-			right_attacking5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_right_5.png")));
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void getPlayerImageAttackingDiamond() {
-		try {
-			up_attacking_diamond1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_1.png")));
-			up_attacking_diamond2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_2.png")));
-			up_attacking_diamond3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_3.png")));
-			up_attacking_diamond4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_4.png")));
-			up_attacking_diamond5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_5.png")));
-
-			down_attacking_diamond1 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_1", 80, 64);
-			down_attacking_diamond2 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_2", 80, 64);
-			down_attacking_diamond3 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_3", 80, 64);
-			down_attacking_diamond4 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_4", 80, 64);
-			down_attacking_diamond5 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_5", 80, 64);
-
-			left_attacking_diamond1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_1.png")));
-			left_attacking_diamond2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_2.png")));
-			left_attacking_diamond3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_3.png")));
-			left_attacking_diamond4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_4.png")));
-			left_attacking_diamond5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_5.png")));
-
-			right_attacking_diamond1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_1.png")));
-			right_attacking_diamond2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_2.png")));
-			right_attacking_diamond3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_3.png")));
-			right_attacking_diamond4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_4.png")));
-			right_attacking_diamond5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_5.png")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void chooseImageAttacking() {
 
 		if (diamondSword) {
@@ -280,6 +227,30 @@ public class Player extends Entity{
 			right3 = right_attacking3;
 			right4 = right_attacking4;
 			right5 = right_attacking5;
+		} else if (goldSword) {
+			up1 = up_attacking_gold1;
+			up2 = up_attacking_gold2;
+			up3 = up_attacking_gold3;
+			up4 = up_attacking_gold4;
+			up5 = up_attacking_gold5;
+
+			down1 = down_attacking_gold1;
+			down2 = down_attacking_gold2;
+			down3 = down_attacking_gold3;
+			down4 = down_attacking_gold4;
+			down5 = down_attacking_gold5;
+
+			left1 = left_attacking_gold1;
+			left2 = left_attacking_gold2;
+			left3 = left_attacking_gold3;
+			left4 = left_attacking_gold4;
+			left5 = left_attacking_gold5;
+
+			right1 = right_attacking_gold1;
+			right2 = right_attacking_gold2;
+			right3 = right_attacking_gold3;
+			right4 = right_attacking_gold4;
+			right5 = right_attacking_gold5;
 		}
 	}
 
@@ -506,6 +477,92 @@ public class Player extends Entity{
 		}
 	}
 
+	public void getIronArmorLeg() {
+		try {
+			ironarmor_leg_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_up_1.png")));
+			ironarmor_leg_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_up_2.png")));
+			ironarmor_leg_up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_up_3.png")));
+			ironarmor_leg_up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_up_4.png")));
+			ironarmor_leg_up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_up_5.png")));
+			ironarmor_leg_up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_up_6.png")));
+			ironarmor_leg_up7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_up_7.png")));
+			ironarmor_leg_up8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_up_8.png")));
+			ironarmor_leg_up9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_up_9.png")));
+
+			ironarmor_leg_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_down_1.png")));
+			ironarmor_leg_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_down_2.png")));
+			ironarmor_leg_down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_down_3.png")));
+			ironarmor_leg_down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_down_4.png")));
+			ironarmor_leg_down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_down_5.png")));
+			ironarmor_leg_down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_down_6.png")));
+			ironarmor_leg_down7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_down_7.png")));
+			ironarmor_leg_down8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_down_8.png")));
+			ironarmor_leg_down9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_down_9.png")));
+
+			ironarmor_leg_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_left_1.png")));
+			ironarmor_leg_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_left_2.png")));
+			ironarmor_leg_left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_left_3.png")));
+			ironarmor_leg_left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_left_4.png")));
+			ironarmor_leg_left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_left_5.png")));
+			ironarmor_leg_left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_left_6.png")));
+			ironarmor_leg_left7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_left_7.png")));
+			ironarmor_leg_left8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_left_8.png")));
+			ironarmor_leg_left9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_left_9.png")));
+
+			ironarmor_leg_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_right_1.png")));
+			ironarmor_leg_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_right_2.png")));
+			ironarmor_leg_right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_right_3.png")));
+			ironarmor_leg_right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_right_4.png")));
+			ironarmor_leg_right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_right_5.png")));
+			ironarmor_leg_right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_right_6.png")));
+			ironarmor_leg_right7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_right_7.png")));
+			ironarmor_leg_right8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_right_8.png")));
+			ironarmor_leg_right9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainIronArmorLeg/ironarmor_leg_right_9.png")));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getIronArmorLegKnifeAttacking() {
+		try {
+			// UP direction
+			ironarmor_leg_knife_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_up_1.png")));
+			ironarmor_leg_knife_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_up_2.png")));
+			ironarmor_leg_knife_up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_up_3.png")));
+			ironarmor_leg_knife_up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_up_4.png")));
+			ironarmor_leg_knife_up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_up_5.png")));
+			ironarmor_leg_knife_up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_up_6.png")));
+
+			// DOWN direction
+			ironarmor_leg_knife_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_down_1.png")));
+			ironarmor_leg_knife_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_down_2.png")));
+			ironarmor_leg_knife_down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_down_3.png")));
+			ironarmor_leg_knife_down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_down_4.png")));
+			ironarmor_leg_knife_down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_down_5.png")));
+			ironarmor_leg_knife_down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_down_6.png")));
+
+			// LEFT direction
+			ironarmor_leg_knife_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_left_1.png")));
+			ironarmor_leg_knife_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_left_2.png")));
+			ironarmor_leg_knife_left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_left_3.png")));
+			ironarmor_leg_knife_left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_left_4.png")));
+			ironarmor_leg_knife_left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_left_5.png")));
+			ironarmor_leg_knife_left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_left_6.png")));
+
+			// RIGHT direction
+			ironarmor_leg_knife_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_right_1.png")));
+			ironarmor_leg_knife_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_right_2.png")));
+			ironarmor_leg_knife_right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_right_3.png")));
+			ironarmor_leg_knife_right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_right_4.png")));
+			ironarmor_leg_knife_right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_right_5.png")));
+			ironarmor_leg_knife_right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/IronArmorLegKnife/ironarmor_leg_knife_right_6.png")));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// LEATHER ARMOR
 	public void getLeatherArmorTorso() {
 		try {
@@ -678,40 +735,240 @@ public class Player extends Entity{
 		}
 	}
 
+	public void getLeatherArmorLeg() {
+		try {
+			leatherarmor_leg_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_up_1.png")));
+			leatherarmor_leg_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_up_2.png")));
+			leatherarmor_leg_up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_up_3.png")));
+			leatherarmor_leg_up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_up_4.png")));
+			leatherarmor_leg_up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_up_5.png")));
+			leatherarmor_leg_up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_up_6.png")));
+			leatherarmor_leg_up7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_up_7.png")));
+			leatherarmor_leg_up8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_up_8.png")));
+			leatherarmor_leg_up9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_up_9.png")));
+
+			leatherarmor_leg_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_down_1.png")));
+			leatherarmor_leg_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_down_2.png")));
+			leatherarmor_leg_down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_down_3.png")));
+			leatherarmor_leg_down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_down_4.png")));
+			leatherarmor_leg_down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_down_5.png")));
+			leatherarmor_leg_down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_down_6.png")));
+			leatherarmor_leg_down7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_down_7.png")));
+			leatherarmor_leg_down8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_down_8.png")));
+			leatherarmor_leg_down9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_down_9.png")));
+
+			leatherarmor_leg_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_left_1.png")));
+			leatherarmor_leg_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_left_2.png")));
+			leatherarmor_leg_left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_left_3.png")));
+			leatherarmor_leg_left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_left_4.png")));
+			leatherarmor_leg_left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_left_5.png")));
+			leatherarmor_leg_left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_left_6.png")));
+			leatherarmor_leg_left7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_left_7.png")));
+			leatherarmor_leg_left8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_left_8.png")));
+			leatherarmor_leg_left9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_left_9.png")));
+
+			leatherarmor_leg_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_right_1.png")));
+			leatherarmor_leg_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_right_2.png")));
+			leatherarmor_leg_right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_right_3.png")));
+			leatherarmor_leg_right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_right_4.png")));
+			leatherarmor_leg_right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_right_5.png")));
+			leatherarmor_leg_right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_right_6.png")));
+			leatherarmor_leg_right7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_right_7.png")));
+			leatherarmor_leg_right8 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_right_8.png")));
+			leatherarmor_leg_right9 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainLeatherArmorLeg/ironarmor_leg_right_9.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getLeatherArmorLegKnifeAttacking() {
+		try {
+			// UP direction
+			leatherarmor_leg_knife_up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_up_1.png")));
+			leatherarmor_leg_knife_up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_up_2.png")));
+			leatherarmor_leg_knife_up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_up_3.png")));
+			leatherarmor_leg_knife_up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_up_4.png")));
+			leatherarmor_leg_knife_up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_up_5.png")));
+			leatherarmor_leg_knife_up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_up_6.png")));
+
+			// DOWN direction
+			leatherarmor_leg_knife_down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_down_1.png")));
+			leatherarmor_leg_knife_down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_down_2.png")));
+			leatherarmor_leg_knife_down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_down_3.png")));
+			leatherarmor_leg_knife_down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_down_4.png")));
+			leatherarmor_leg_knife_down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_down_5.png")));
+			leatherarmor_leg_knife_down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_down_6.png")));
+
+			// LEFT direction
+			leatherarmor_leg_knife_left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_left_1.png")));
+			leatherarmor_leg_knife_left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_left_2.png")));
+			leatherarmor_leg_knife_left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_left_3.png")));
+			leatherarmor_leg_knife_left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_left_4.png")));
+			leatherarmor_leg_knife_left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_left_5.png")));
+			leatherarmor_leg_knife_left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_left_6.png")));
+
+			// RIGHT direction
+			leatherarmor_leg_knife_right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_right_1.png")));
+			leatherarmor_leg_knife_right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_right_2.png")));
+			leatherarmor_leg_knife_right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_right_3.png")));
+			leatherarmor_leg_knife_right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_right_4.png")));
+			leatherarmor_leg_knife_right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_right_5.png")));
+			leatherarmor_leg_knife_right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/LeatherArmorLegKnife/leatherarmor_leg_knife_right_6.png")));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	// WEAR ARMOR
 	public void wearArmorIronTorso() {
 		armorOnLeatherTorso = false;
 		armorOnIronTorso = true;
 	}
-
-	public void wearArmorLeatherTorso() {
-		armorOnIronTorso = false;
-		armorOnLeatherTorso = true;
-	}
-
 	public void wearArmorIronHead() {
 		armorOnLeatherHead = false;
 		armorOnIronHead = true;
 	}
+	public void wearArmorIronLeg() {
+		armorOnLeatherLeg = false;
+		armorOnIronLeg = true;
+	}
 
+	public void wearArmorLeatherLeg() {
+		armorOnLeatherLeg = true;
+		armorOnIronLeg = false;
+	}
+	public void wearArmorLeatherTorso() {
+		armorOnIronTorso = false;
+		armorOnLeatherTorso = true;
+	}
 	public void wearArmorLeatherHead() {
 		armorOnIronHead = false;
 		armorOnLeatherHead = true;
 	}
 
-	// SWORDS
+	// GET SWORD IMAGE
+	public void getPlayerImageAttacking() {
+		try {
+			up_attacking1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_up_1.png")));
+			up_attacking2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_up_2.png")));
+			up_attacking3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_up_3.png")));
+			up_attacking4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_up_4.png")));
+			up_attacking5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_up_5.png")));
 
+			down_attacking1 = setup("/res/player/MainCharacterAttackKnife/attack_down_1", 80, 64);
+			down_attacking2 = setup("/res/player/MainCharacterAttackKnife/attack_down_2", 80, 64);
+			down_attacking3 = setup("/res/player/MainCharacterAttackKnife/attack_down_3", 80, 64);
+			down_attacking4 = setup("/res/player/MainCharacterAttackKnife/attack_down_4", 80, 64);
+			down_attacking5 = setup("/res/player/MainCharacterAttackKnife/attack_down_5", 80, 64);
+//			down_attacking1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_down_1.png")));
+//			down_attacking2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_down_2.png")));
+//			down_attacking3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_down_3.png")));
+//			down_attacking4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_down_4.png")));
+//			down_attacking5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_down_5.png")));
+
+			left_attacking1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_left_1.png")));
+			left_attacking2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_left_2.png")));
+			left_attacking3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_left_3.png")));
+			left_attacking4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_left_4.png")));
+			left_attacking5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_left_5.png")));
+
+			right_attacking1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_right_1.png")));
+			right_attacking2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_right_2.png")));
+			right_attacking3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_right_3.png")));
+			right_attacking4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_right_4.png")));
+			right_attacking5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnife/attack_right_5.png")));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getPlayerImageAttackingDiamond() {
+		try {
+			up_attacking_diamond1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_1.png")));
+			up_attacking_diamond2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_2.png")));
+			up_attacking_diamond3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_3.png")));
+			up_attacking_diamond4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_4.png")));
+			up_attacking_diamond5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_up_diamond_5.png")));
+
+			down_attacking_diamond1 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_1", 80, 64);
+			down_attacking_diamond2 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_2", 80, 64);
+			down_attacking_diamond3 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_3", 80, 64);
+			down_attacking_diamond4 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_4", 80, 64);
+			down_attacking_diamond5 = setup("/res/player/MainCharacterAttackKnifeDiamond/attack_down_diamond_5", 80, 64);
+
+			left_attacking_diamond1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_1.png")));
+			left_attacking_diamond2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_2.png")));
+			left_attacking_diamond3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_3.png")));
+			left_attacking_diamond4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_4.png")));
+			left_attacking_diamond5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_left_diamond_5.png")));
+
+			right_attacking_diamond1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_1.png")));
+			right_attacking_diamond2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_2.png")));
+			right_attacking_diamond3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_3.png")));
+			right_attacking_diamond4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_4.png")));
+			right_attacking_diamond5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeDiamond/attack_right_diamond_5.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getPlayerImageAttackingGold() {
+		try {
+			up_attacking_gold1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_up_gold_1.png")));
+			up_attacking_gold2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_up_gold_2.png")));
+			up_attacking_gold3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_up_gold_3.png")));
+			up_attacking_gold4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_up_gold_4.png")));
+			up_attacking_gold5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_up_gold_5.png")));
+
+			down_attacking_gold1 = setup("/res/player/MainCharacterAttackKnifeGold/attack_down_gold_1", 80, 64);
+			down_attacking_gold2 = setup("/res/player/MainCharacterAttackKnifeGold/attack_down_gold_2", 80, 64);
+			down_attacking_gold3 = setup("/res/player/MainCharacterAttackKnifeGold/attack_down_gold_3", 80, 64);
+			down_attacking_gold4 = setup("/res/player/MainCharacterAttackKnifeGold/attack_down_gold_4", 80, 64);
+			down_attacking_gold5 = setup("/res/player/MainCharacterAttackKnifeGold/attack_down_gold_5", 80, 64);
+
+			left_attacking_gold1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_left_gold_1.png")));
+			left_attacking_gold2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_left_gold_2.png")));
+			left_attacking_gold3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_left_gold_3.png")));
+			left_attacking_gold4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_left_gold_4.png")));
+			left_attacking_gold5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_left_gold_5.png")));
+
+			right_attacking_gold1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_right_gold_1.png")));
+			right_attacking_gold2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_right_gold_2.png")));
+			right_attacking_gold3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_right_gold_3.png")));
+			right_attacking_gold4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_right_gold_4.png")));
+			right_attacking_gold5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/MainCharacterAttackKnifeGold/attack_right_gold_5.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// EQUIP SWORD
 	public void equipIronSword() {
 		diamondSword = false;
 		ironSword = true;
+		goldSword = false;
 		damage = ironSwordObj.damage;
 	}
 
 	public void equipDiamondSword() {
 		diamondSword = true;
 		ironSword = false;
+		goldSword = false;
 		damage = diamondSwordObj.damage;
 	}
 
+	public void equipGoldSword() {
+		goldSword = true;
+		diamondSword = false;
+		ironSword = false;
+		damage = goldSwordObj.damage;
+	}
+
+
+	// OTHER STUFF
 	public void move() {
 		if(panel instanceof GamePanel) {
 			if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
@@ -773,6 +1030,7 @@ public class Player extends Entity{
 			if (attacking) {
 				attacking();
 			}
+
 
             else if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.spacePressed) {
 				if (keyH.upPressed) {
@@ -1114,8 +1372,8 @@ public class Player extends Entity{
 					screenY = currentWorldY;
 					solidArea.width = solidAreaWidth;
 					solidArea.height = solidAreaHeight;
-				} else if (panel instanceof BossPanel bossPanel) {
 
+				} else if (panel instanceof BossPanel bossPanel) {
 					// Save the current worldX, worldY, solidArea
 					int currentWorldX = screenX;
 					int currentWorldY = screenY;
@@ -1138,7 +1396,7 @@ public class Player extends Entity{
 
 					// Apply damage to the collided monster
 					if (monsterIndex != 999) {
-						System.out.println("Damaging monster idx: " + monsterIndex);
+//						System.out.println("Damaging monster idx: " + monsterIndex);
 						damageMonster(monsterIndex, this);
 					}
 
@@ -1150,7 +1408,6 @@ public class Player extends Entity{
 
 				}
 			}
-
 			if (spriteNum > 5) {
 				spriteNum = 1;
 				attacking = false;
@@ -1285,6 +1542,8 @@ public class Player extends Entity{
 		BufferedImage image = null;
 		BufferedImage torsoArmorImage = null;
 		BufferedImage headArmorImage = null;
+		BufferedImage legArmorImage = null;
+
 		tempScreenX = screenX;
 		tempScreenY = screenY;
 		tempScreenXLeft = screenX;
@@ -1305,11 +1564,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_up1;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_up1;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_up1;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_up1;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_up1;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up1;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up1;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up1;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_up1;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_up1;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_up1;
 						}
 					}
 					case 2 -> {
@@ -1319,11 +1582,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_up2;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_up2;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_up2;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_up2;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_up2;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up2;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up2;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up2;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_up2;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_up2;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_up2;
 						}
 					}
 					case 3 -> {
@@ -1333,11 +1600,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_up3;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_up3;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_up3;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_up3;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_up3;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up3;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up3;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up3;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_up3;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_up3;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_up3;
 						}
 					}
 					case 4 -> {
@@ -1347,11 +1618,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_up4;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_up4;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_up4;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_up4;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_up4;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up4;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up4;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up4;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_up4;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_up4;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_up4;
 						}
 					}
 					case 5 -> {
@@ -1361,11 +1636,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_up5;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_up5;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_up5;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_up5;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_up5;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up5;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up5;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up5;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_up5;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_up5;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_up5;
 						}
 					}
 					case 6 -> {
@@ -1375,11 +1654,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_up6;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_up6;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_up6;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_up6;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_up6;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up6;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up6;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up6;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_up6;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_up6;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_up6;
 						}
 					}
 					case 7 -> {
@@ -1389,11 +1672,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_up7;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_up7;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_up7;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_up7;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_up7;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up7;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up7;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up7;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_up7;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_up7;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_up7;
 						}
 					}
 					case 8 -> {
@@ -1403,11 +1690,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_up8;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_up8;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_up8;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_up8;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_up8;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up8;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up8;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up8;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_up8;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_up8;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_up8;
 						}
 					}
 					case 9 -> {
@@ -1417,11 +1708,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_up9;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_up9;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_up9;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_up9;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_up9;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_up9;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_up9;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_up9;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_up9;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_up9;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_up9;
 						}
 					}
 				}
@@ -1435,11 +1730,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_down1;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_down1;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_down1;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_down1;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_down1;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down1;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down1;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down1;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_down1;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_down1;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_down1;
 						}
 					}
 					case 2 -> {
@@ -1449,11 +1748,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_down2;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_down2;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_down2;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_down2;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_down2;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down2;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down2;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down2;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_down2;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_down2;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_down2;
 						}
 					}
 					case 3 -> {
@@ -1463,11 +1766,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_down3;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_down3;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_down3;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_down3;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_down3;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down3;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down3;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down3;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_down3;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_down3;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_down3;
 						}
 					}
 					case 4 -> {
@@ -1477,11 +1784,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_down4;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_down4;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_down4;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_down4;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_down4;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down4;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down4;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down4;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_down4;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_down4;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_down4;
 						}
 					}
 					case 5 -> {
@@ -1491,11 +1802,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_down5;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_down5;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_down5;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_down5;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_down5;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down5;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down5;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down5;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_down5;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_down5;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_down5;
 						}
 					}
 					case 6 -> {
@@ -1505,11 +1820,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_down6;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_down6;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_down6;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_down6;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_down6;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down6;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down6;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down6;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_down6;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_down6;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_down6;
 						}
 					}
 					case 7 -> {
@@ -1519,11 +1838,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_down7;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_down7;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_down7;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_down7;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_down7;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down7;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down7;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down7;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_down7;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_down7;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_down7;
 						}
 					}
 					case 8 -> {
@@ -1533,11 +1856,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_down8;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_down8;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_down8;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_down8;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_down8;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down8;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down8;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down8;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_down8;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_down8;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_down8;
 						}
 					}
 					case 9 -> {
@@ -1547,11 +1874,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_down9;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_down9;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_down9;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_down9;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_down9;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_down9;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_down9;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_down9;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_down9;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_down9;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_down9;
 						}
 					}
 				}
@@ -1569,11 +1900,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_left1;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_left1;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_left1;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_left1;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_left1;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left1;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left1;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left1;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_left1;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_left1;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_left1;
 						}
 					}
 					case 2 -> {
@@ -1583,11 +1918,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_left2;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_left2;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_left2;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_left2;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_left2;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left2;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left2;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left2;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_left2;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_left2;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_left2;
 						}
 					}
 					case 3 -> {
@@ -1597,11 +1936,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_left3;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_left3;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_left3;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_left3;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_left3;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left3;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left3;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left3;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_left3;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_left3;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_left3;
 						}
 					}
 					case 4 -> {
@@ -1611,11 +1954,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_left4;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_left4;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_left4;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_left4;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_left4;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left4;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left4;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left4;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_left4;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_left4;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_left4;
 						}
 					}
 					case 5 -> {
@@ -1625,11 +1972,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_left5;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_left5;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_left5;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_left5;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_left5;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left5;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left5;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left5;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_left5;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_left5;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_left5;
 						}
 					}
 					case 6 -> {
@@ -1639,11 +1990,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_left6;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_left6;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_left6;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_left6;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_left6;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left6;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left6;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left6;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_left6;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_left6;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_left6;
 						}
 					}
 					case 7 -> {
@@ -1653,11 +2008,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_left7;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_left7;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_left7;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_left7;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_left7;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left7;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left7;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left7;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_left7;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_left7;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_left7;
 						}
 					}
 					case 8 -> {
@@ -1667,11 +2026,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_left8;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_left8;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_left8;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_left8;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_left8;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left8;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left8;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left8;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_left8;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_left8;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_left8;
 						}
 					}
 					case 9 -> {
@@ -1681,11 +2044,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_left9;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_left9;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_left9;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_left9;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_left9;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_left9;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_left9;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_left9;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_left9;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_left9;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_left9;
 						}
 					}
 				}
@@ -1699,11 +2066,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_right1;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_right1;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_right1;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_right1;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_right1;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right1;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right1;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right1;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_right1;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_right1;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_right1;
 						}
 					}
 					case 2 -> {
@@ -1713,11 +2084,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_right2;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_right2;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_right2;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_right2;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_right2;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right2;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right2;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right2;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_right2;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_right2;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_right2;
 						}
 					}
 					case 3 -> {
@@ -1727,11 +2102,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_right3;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_right3;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_right3;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_right3;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_right3;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right3;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right3;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right3;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_right3;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_right3;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_right3;
 						}
 					}
 					case 4 -> {
@@ -1741,11 +2120,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_right4;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_right4;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_right4;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_right4;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_right4;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right4;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right4;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right4;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_right4;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_right4;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_right4;
 						}
 					}
 					case 5 -> {
@@ -1755,11 +2138,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_right5;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_right5;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_right5;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_right5;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_right5;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right5;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right5;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right5;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_right5;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_right5;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_right5;
 						}
 					}
 					case 6 -> {
@@ -1769,11 +2156,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_right6;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_right6;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_right6;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_right6;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_right6;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right6;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right6;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right6;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_right6;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_right6;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_right6;
 						}
 					}
 					case 7 -> {
@@ -1783,11 +2174,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_right7;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_right7;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_right7;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_right7;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_right7;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right7;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right7;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right7;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_right7;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_right7;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_right7;
 						}
 					}
 					case 8 -> {
@@ -1797,11 +2192,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_right8;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_right8;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_right8;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_right8;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_right8;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right8;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right8;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right8;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_right8;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_right8;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_right8;
 						}
 					}
 					case 9 -> {
@@ -1811,11 +2210,15 @@ public class Player extends Entity{
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_knife_right9;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_knife_right9;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_knife_right9;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_knife_right9;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_knife_right9;
 						} else {
 							if (armorOnLeatherTorso) torsoArmorImage = leatherarmor_torso_right9;
 							else if (armorOnIronTorso) torsoArmorImage = ironarmor_torso_right9;
 							if (armorOnLeatherHead) headArmorImage = leatherarmor_head_right9;
 							else if (armorOnIronHead) headArmorImage = ironarmor_head_right9;
+							if (armorOnLeatherLeg) legArmorImage = leatherarmor_leg_right9;
+							else if (armorOnIronLeg) legArmorImage = ironarmor_leg_right9;
 						}
 					}
 				}
@@ -1854,6 +2257,13 @@ public class Player extends Entity{
 			int scaledWidth = (int) (BasePanel.tileSize * 1.3);
 			int scaledHeight = (int) (BasePanel.tileSize * 1.3);
 			g2.drawImage(headArmorImage, tempScreenXLeft, tempScreenYDown - 2, scaledWidth, scaledHeight, null);
+		}
+
+		// Draw leg armor image
+		if (legArmorImage != null) {
+			int scaledWidth = (int) (BasePanel.tileSize * 1.3);
+			int scaledHeight = (int) (BasePanel.tileSize * 1.3);
+			g2.drawImage(legArmorImage, tempScreenXLeft, tempScreenYDown - 2, scaledWidth, scaledHeight, null);
 		}
 
 		g2.setColor(Color.red);

@@ -7,6 +7,7 @@ import enums.BuildDirection;
 import enums.Hall;
 import managers.TileManagerForHall;
 import managers.ViewManager;
+import managers.soundManager;
 import object.SuperObject;
 import validators.HallValidator;
 import views.BasePanel;
@@ -112,6 +113,7 @@ public class HallController implements Serializable {
 
     public static SuperObject getObjectSelectedInHall(TileManagerForHall currentHall, int mouseX, int mouseY) {
         for (SuperObject obj : currentHall.objects) {
+//            System.out.println(obj.name + " " + currentHall);
             if (mouseX > obj.worldX && mouseX < obj.worldX + obj.image.getWidth() * BasePanel.scale
                     && mouseY > obj.worldY && mouseY < obj.worldY + obj.image.getHeight() * BuildPanel.scale) {
                 return obj;
@@ -139,6 +141,8 @@ public class HallController implements Serializable {
     }
 
     public static void assignRunesToObjects(TileManagerForHall currentHall) {
+//        System.out.println("Assigning AGAIN");
+//        System.out.println("Currnet Hall: " + currentHall);
         Random random = new Random();
 
         // Get all objects in the current hall (for example purposes, using HallOfEarth)
@@ -155,6 +159,7 @@ public class HallController implements Serializable {
             do {
                 randomIndex = random.nextInt(objects.length);
             } while (objects[randomIndex] == null || objects[randomIndex].hasRune);
+//            System.out.println("Assigned to " + objects[randomIndex].name);
 
             // Assign a rune to the object
             objects[randomIndex].hasRune = true;
@@ -181,24 +186,30 @@ public class HallController implements Serializable {
                     initNewHall(hallPanel.currentHall, player, hallPanel);
                 }
                 case HallOfFire -> {
-                    System.out.println("HallOfFire");
                     System.out.println("SWITCH3");
-                    hallPanel.getViewManager().switchTo("HomePanel", true);
+                    assignRunesToObjects(hallPanel.tileM);
+                    HallContainer.getHallOfEarth().closeDoor();
+                    HallContainer.getHallOfAir().closeDoor();
+                    HallContainer.getHallOfWater().closeDoor();
+                    HallContainer.getHallOfFire().closeDoor();
+                    hallPanel.currentHall = Hall.HallOfEarth;
 
+                    hallPanel.getPlayer().screenX = player.defaultScreenX;
+                    hallPanel.getPlayer().screenY = player.defaultScreenY;
+                    hallPanel.getViewManager().switchTo("BossPanel", true);
                 }
             }
         }
     }
 
     private static void initNewHall(Hall nextHall, Player player, HallPanel hallPanel) {
-        player.screenX = 700;
-        player.screenY = 96 + BasePanel.tileSize * 15 - 100;
+        player.screenX = player.defaultScreenX;
+        player.screenY = player.defaultScreenY;
         hallPanel.tileM = HallContainer.getCurrentHallManager(nextHall);
         assignRunesToObjects(hallPanel.tileM);
         hallPanel.getHallMonsters().clear();
         hallPanel.getTileM().enchantments.clear();
         hallPanel.zeroMonsters();
-        player.life = 6;
     }
 
     public static void movePlayerIfCollision(TileManagerForHall currentHall, Player player) {

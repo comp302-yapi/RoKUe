@@ -5,6 +5,7 @@ import entity.GameState;
 import entity.Player;
 import enums.Hall;
 import listeners.BaseKeyListener;
+import managers.soundManager;
 import object.ENCH_Reveal;
 import object.OBJ_Door;
 import object.SuperObject;
@@ -34,6 +35,7 @@ public class BossPanelKeyListener extends BaseKeyListener implements Serializabl
         int code = e.getKeyCode();
 
         if (code == KeyEvent.VK_UP) {
+            startEasterEgg();
             upPressed = true;
         }
 
@@ -119,19 +121,35 @@ public class BossPanelKeyListener extends BaseKeyListener implements Serializabl
         if (code == KeyEvent.VK_O) {
             GameState gs = bossPanel.getViewManager().collectGameState();
             gs.currentMode = "Boss";
-            bossPanel.getViewManager().saveGame("newSave.ser", gs);
+            bossPanel.getViewManager().saveGame("src/saves/newSave.ser", gs);
             System.out.println(gs);
         }
 
 
         if (code == KeyEvent.VK_E) {
             monsterSpawn = true;
+            System.out.println(soundManager.getInstance().clip);
+            System.out.println(soundManager.getInstance().clip.getFrameLength());
+            System.out.println(soundManager.getInstance().activeClips);
+            soundManager.getInstance().clip.stop();
+            soundManager.getInstance().stop();
         }
 
         if (code == KeyEvent.VK_P) {
             bossPanel.setPaused(!bossPanel.isPaused());
         }
 
+    }
+
+    public void startEasterEgg() {
+        if (bossPanel.easterEggFinal) {
+            System.out.println("Starting Easter Egg");
+            managers.soundManager.getInstance().stop();
+            managers.soundManager.getInstance().setFile(18);
+            managers.soundManager.getInstance().play();
+            managers.soundManager.getInstance().loop();
+            bossPanel.easterEggFinal = false;
+        }
     }
 
     @Override

@@ -537,8 +537,7 @@ public class BOSS_Sorcerer extends Entity {
 
     public void shootLaser() {
         Random random = new Random();
-        int randomY = random.nextInt(600 - 288 + 1) + 288; // Random Y between 288 and 816
-
+        int randomY = random.nextInt(550 - 230 + 1) + 230;
         Laser laser = new Laser(panel, worldX, randomY, "right");
         if (panel instanceof BossPanel bossPanel) {
             bossPanel.addLaser(laser);

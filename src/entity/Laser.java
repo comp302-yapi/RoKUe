@@ -26,7 +26,6 @@ public class Laser extends Entity {
     private final String right5Path = "/res/projectiles/LaserAnimation/tile007";
     private final String right6Path = "/res/projectiles/LaserAnimation/tile008";
 
-
     public Laser(BasePanel gp, int worldX, int worldY, String direction) {
         super(gp);
 
@@ -143,7 +142,7 @@ public class Laser extends Entity {
     public void animate() {
         this.solidArea.y = this.worldY;
         sorcererProjectileCounter++;
-        if (sorcererProjectileCounter > 30) {
+        if (sorcererProjectileCounter > 45) {
             spriteNum = (spriteNum % 6) + 1;
             sorcererProjectileCounter = 0;
         }

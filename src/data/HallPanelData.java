@@ -36,6 +36,7 @@ public class HallPanelData implements Serializable {
     public boolean armorOnIronTorso;
     public boolean armorOnLeatherHead;
     public boolean armorOnLeatherTorso;
+    public boolean earthOpened, airOpened, waterOpened, fireOpened;
 
     public HallPanelData(Hall currentHall, ArrayList<Entity> monsters, SuperObject[][] gridWorld, int[][] gridWorldAll,
                          int timeLeft, boolean isPaused, boolean checkInventoryForReveal,
@@ -46,7 +47,8 @@ public class HallPanelData implements Serializable {
                          ArrayList<SuperObject> enchantmentsEarth, ArrayList<SuperObject> enchantmentsAir,
                          ArrayList<SuperObject> enchantmentsWater, ArrayList<SuperObject> enchantmentsFire,
                          int gold, int level, int xp, boolean armorOnIronHead, boolean armorOnIronTorso,
-                         boolean armorOnLeatherHead, boolean armorOnLeatherTorso) {
+                         boolean armorOnLeatherHead, boolean armorOnLeatherTorso,
+                         boolean earthOpened, boolean airOpened, boolean waterOpened, boolean fireOpened) {
 
         this.currentHall = currentHall;
         this.monsters = monsters;
@@ -75,6 +77,10 @@ public class HallPanelData implements Serializable {
         this.armorOnIronTorso = armorOnIronTorso;
         this.armorOnLeatherHead = armorOnLeatherHead;
         this.armorOnLeatherTorso = armorOnLeatherTorso;
+        this.earthOpened = earthOpened;
+        this.airOpened = airOpened;
+        this.waterOpened = waterOpened;
+        this.fireOpened = fireOpened;
     }
 
     @Override
@@ -106,6 +112,10 @@ public class HallPanelData implements Serializable {
                 "\n  Iron Armor Torso: " + armorOnIronTorso +
                 "\n  Leather Armor Head: " + armorOnLeatherHead +
                 "\n  Leather Armor Torso: " + armorOnLeatherTorso +
+                "\n  Earth Opened: " + earthOpened +
+                "\n  Water Opened: " + waterOpened +
+                "\n  Air Opened: " + airOpened +
+                "\n  Fire Opened: " + fireOpened +
                 "\n}";
     }
 }

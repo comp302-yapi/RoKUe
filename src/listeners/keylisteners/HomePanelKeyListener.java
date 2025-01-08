@@ -3,6 +3,7 @@ package listeners.keylisteners;
 import controllers.HallController;
 import entity.GameState;
 import entity.Player;
+import managers.*;
 import enums.Hall;
 import listeners.BaseKeyListener;
 import object.ENCH_Reveal;
@@ -23,10 +24,12 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
     private final HomePanel homePanel;
     public boolean monsterSpawn = false;
     boolean isLureModeActive = false;
+    private soundManager soundManager;
 
     public HomePanelKeyListener(HomePanel homePanel) {
         super();
         this.homePanel = homePanel;
+        this.soundManager = managers.soundManager.getInstance();
     }
 
     @Override
@@ -59,6 +62,10 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
 
         if (code == KeyEvent.VK_B) {
             homePanel.buyArmor();
+        }
+
+        if (code == KeyEvent.VK_E) {
+            homePanel.equipBought();
         }
 
         if (e.getKeyCode() == KeyEvent.VK_G) {
@@ -95,17 +102,25 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
             homePanel.getViewManager().switchTo("BuildPanel", true);
         }
 
+        if (code == KeyEvent.VK_N) {
+            homePanel.getPlayer().wearArmorLeatherLeg();
+        }
+
+        if (code == KeyEvent.VK_M) {
+            homePanel.getPlayer().wearArmorIronLeg();
+        }
+
 
         if (code == KeyEvent.VK_O) {
             GameState gs = homePanel.getViewManager().collectGameState();
             gs.currentMode = "Home";
-            homePanel.getViewManager().saveGame("newSave.ser", gs);
+            homePanel.getViewManager().saveGame("src/saves/newSave.ser", gs);
             System.out.println(gs);
         }
 
 
-        if (code == KeyEvent.VK_E) {
-            monsterSpawn = true;
+        if (code == KeyEvent.VK_L) {
+            managers.soundManager.getInstance().stop();
         }
 
         if (code == KeyEvent.VK_P) {

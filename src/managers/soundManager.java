@@ -12,14 +12,16 @@ public class soundManager implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private static soundManager instance; // Singleton instance
+
     public transient Clip clip;
     URL[] soundURL = new URL[30];
     private transient FloatControl volumeControl;
     public final HashMap<Integer, Clip> activeClips = new HashMap<>();
     public Clip currentClip;
 
-    public soundManager() {
-
+    // Private constructor to prevent direct instantiation
+    private soundManager() {
         soundURL[0] = getClass().getResource("/res/sound/BattleMusic.wav");
         soundURL[1] = getClass().getResource("/res/sound/coin.wav");
         soundURL[2] = getClass().getResource("/res/sound/unlock.wav");
@@ -38,7 +40,16 @@ public class soundManager implements Serializable {
         soundURL[15] = getClass().getResource("/res/sound/ZombieHit2.wav");
         soundURL[16] = getClass().getResource("/res/sound/BurningFinal.wav");
         soundURL[17] = getClass().getResource("/res/sound/purchase.wav");
+        soundURL[18] = getClass().getResource("/res/sound/115.wav");
 
+    }
+
+    // Public method to access the Singleton instance
+    public static synchronized soundManager getInstance() {
+        if (instance == null) {
+            instance = new soundManager();
+        }
+        return instance;
     }
 
     public void setFile(int i) {
@@ -46,11 +57,9 @@ public class soundManager implements Serializable {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
             clip = AudioSystem.getClip();
             clip.open(ais);
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public void increaseVolume(float amount) {
@@ -81,12 +90,10 @@ public class soundManager implements Serializable {
 
     public void play() {
         clip.start();
-
     }
 
     public void loop() {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
-
     }
 
     public void stop() {

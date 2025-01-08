@@ -43,25 +43,32 @@ public class TitlePanelKeyListener extends BaseKeyListener implements Serializab
             }
 
             if (titlePanel.getCommandNum() == 1) {
-                System.out.println("Loading Game...");
-                GameState gs = titlePanel.getViewManager().loadGame("newSave.ser");
-
-                if (gs.currentMode.equals("Build")) {
-                    titlePanel.getViewManager().restoreGameState(gs);
-                    titlePanel.getViewManager().switchTo("BuildPanel", true);
-                }
-
-                if (gs.currentMode.equals("Play")) {
-                    titlePanel.getViewManager().restoreGameState(gs);
-                    titlePanel.getViewManager().switchTo("HallPanel", true);
-                }
-
-                if (gs.currentMode.equals("Home")) {
-                    titlePanel.getViewManager().restoreGameState(gs);
-                    titlePanel.getViewManager().switchTo("HomePanel", true);
-                }
-
-                System.out.println(gs.toString());
+//                System.out.println("HERE");
+                titlePanel.getViewManager().switchTo("LoadPanel", true);
+//                System.out.println("Loading Game...");
+//                GameState gs = titlePanel.getViewManager().loadGame("src/saves/newSave.ser");
+//
+//                if (gs.currentMode.equals("Build")) {
+//                    titlePanel.getViewManager().restoreGameState(gs);
+//                    titlePanel.getViewManager().switchTo("BuildPanel", true);
+//                }
+//
+//                if (gs.currentMode.equals("Play")) {
+//                    titlePanel.getViewManager().restoreGameState(gs);
+//                    titlePanel.getViewManager().switchTo("HallPanel", true);
+//                }
+//
+//                if (gs.currentMode.equals("Home")) {
+//                    titlePanel.getViewManager().restoreGameState(gs);
+//                    titlePanel.getViewManager().switchTo("HomePanel", true);
+//                }
+//
+//                if (gs.currentMode.equals("Boss")) {
+//                    titlePanel.getViewManager().restoreGameState(gs);
+//                    titlePanel.getViewManager().switchTo("BossPanel", true);
+//                }
+//
+//                System.out.println(gs.toString());
             }
 
             if (titlePanel.getCommandNum() == 2) {

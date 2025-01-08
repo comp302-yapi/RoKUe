@@ -2,6 +2,7 @@ package views;
 
 import containers.HallContainer;
 import containers.TileContainer;
+import data.BossPanelData;
 import data.HomePanelData;
 import entity.*;
 import listeners.keylisteners.BossPanelKeyListener;
@@ -30,6 +31,8 @@ public class BossPanel extends PlayablePanel {
     private final ArrayList<Entity> monsters = new ArrayList<>();
     public ArrayList<SuperObject> objects = new ArrayList<>();
 
+    public boolean easterEggFinal;
+
     private int shakeMagnitude = 0;
     private int shakeDuration = 0;
     private Random shakeRandom = new Random();
@@ -38,10 +41,11 @@ public class BossPanel extends PlayablePanel {
     SuperObject leatherArmorTorso = new ARMOR_LeatherArmorTorso();
     SuperObject ironHelmet = new ARMOR_IronArmorHead();
     SuperObject ironTorso = new ARMOR_IronArmorTorso();
+    SuperObject ironLeggings = new ARMOR_IronArmorLeg();
+    SuperObject leatherLeggings = new ARMOR_LeatherArmorLeg();
 
-    SuperObject ironSword = new SWORD_IronSword();
-
-    public soundManager soundManager = new soundManager();
+    SWORD_IronSword ironSwordObj = SWORD_IronSword.getInstance();
+    public soundManager soundManager;
     public boolean attackSoundPlayed;
 
     transient BufferedImage heart_full, heart_half, heart_blank;
@@ -53,8 +57,6 @@ public class BossPanel extends PlayablePanel {
     // SUPERPOWERS
     private JPanel superPowerPanel; // Panel for superpowers
     public ArrayList<SuperPower> superPowers = new ArrayList<>(); // List of superpowers
-
-
 
     public boolean groundSlamActive = false;
 
@@ -80,9 +82,10 @@ public class BossPanel extends PlayablePanel {
     private final java.util.List<SuperParticle> activeLightningParticles = new ArrayList<>();
 
     private final List<SuperParticle> activeParticles = new ArrayList<>();
-    private final List<SorcererProjectile> sorcererProjectiles = new ArrayList<>();
-    private final List<Laser> lasers = new ArrayList<>();
+    private List<SorcererProjectile> sorcererProjectiles = new ArrayList<>();
+    private List<Laser> lasers = new ArrayList<>();
 
+    public boolean bossSpawned;
 
     public int spawnCounter;
 
@@ -99,6 +102,8 @@ public class BossPanel extends PlayablePanel {
 
         Player player = Player.getInstance(this);
         player.addKeyListener(keyListener);
+
+        this.soundManager = managers.soundManager.getInstance();
 
         this.tileM = new TileManagerForBoss(this,  "/res/maps/Boss.txt", 30, 18);
         getPlayer().addKeyListener(keyListener);
@@ -130,10 +135,11 @@ public class BossPanel extends PlayablePanel {
         ARMOR_LeatherArmorTorso leatherArmorTorso = new ARMOR_LeatherArmorTorso();
         ARMOR_IronArmorHead ironArmorHead = new ARMOR_IronArmorHead();
         ARMOR_LeatherArmorHead leatherArmorHead = new ARMOR_LeatherArmorHead();
+        ARMOR_LeatherArmorLeg leatherArmorLeggings = new ARMOR_LeatherArmorLeg();
+        ARMOR_IronArmorLeg ironArmorLeg = new ARMOR_IronArmorLeg();
 
-        SuperObject ironSword = new SWORD_IronSword();
-        SWORD_DiamondSword diamondSword = new SWORD_DiamondSword();
-    }
+        SWORD_IronSword ironSwordObj = SWORD_IronSword.getInstance();
+        SWORD_DiamondSword diamondSwordObj = SWORD_DiamondSword.getInstance();    }
 
     @Override
     public void update() {
@@ -236,6 +242,8 @@ public class BossPanel extends PlayablePanel {
 
                     case "Iron Sword" -> getPlayer().equipIronSword();
                     case "Diamond Sword" -> getPlayer().equipDiamondSword();
+                    case "Gold Sword" -> getPlayer().equipGoldSword();
+
                 }
                 getPlayer().armor = calculateArmor();
             }
@@ -259,6 +267,14 @@ public class BossPanel extends PlayablePanel {
 
         if (getPlayer().armorOnIronTorso) {
             armor += ironTorso.armor;
+        }
+
+        if (getPlayer().armorOnLeatherLeg) {
+            armor += leatherLeggings.armor;
+        }
+
+        if (getPlayer().armorOnIronLeg) {
+            armor += ironLeggings.armor;
         }
 
         return armor;
@@ -315,7 +331,7 @@ public class BossPanel extends PlayablePanel {
         displayClosestObjectName(g2);
 
         // Draw Character Info
-        drawPlayerAttributes(g2);
+//        drawPlayerAttributes(g2);
 
         // Draw the player
         getPlayer().draw(g2);
@@ -471,6 +487,7 @@ public class BossPanel extends PlayablePanel {
         boss.worldY = BasePanel.tileSize*locationY;
 
         boss.spawned = true;
+        bossSpawned = true;
 
         for (int i = 0; i < getMonsters().length; i++) {
 
@@ -606,8 +623,8 @@ public class BossPanel extends PlayablePanel {
     }
 
     private void drawPlayerLife(Graphics2D g2) {
-        int offsetX = 1120;
-        int offsetY = 520;
+        int offsetX = 1070;
+        int offsetY = 50;
 
         int x = offsetX + tileSize / 4;
         int y = offsetY + tileSize;
@@ -635,8 +652,8 @@ public class BossPanel extends PlayablePanel {
     }
 
     private void drawPlayerArmor(Graphics2D g2) {
-        int offsetX = 1120;
-        int offsetY = 520;
+        int offsetX = 1070;
+        int offsetY = 50;
 
         int x = offsetX + tileSize / 4;
         int y = offsetY + 87;
@@ -669,8 +686,8 @@ public class BossPanel extends PlayablePanel {
         int screenWidth = this.getWidth();
         int screenHeight = this.getHeight();
 
-        int x = screenWidth - panelWidth - 10;
-        int y = screenHeight - panelHeight - 10;
+        int x = screenWidth - panelWidth - 60;
+        int y = 50;
 
         g2.setColor(new Color(30, 30, 30, 200));
         g2.fillRoundRect(x, y, panelWidth, panelHeight, 15, 15);
@@ -720,12 +737,10 @@ public class BossPanel extends PlayablePanel {
     }
 
     // DRAW METHODS
-
-    // DRAW METHODS
     public void drawSuperPowers(Graphics2D g2) {
         int currentLevel = getPlayer().level;
-        int x = 20;
-        int y = 357;
+        int x = 70;
+        int y = 70;
         int iconSize = 48;
         int padding = 10;
         int panelWidth = 150;
@@ -970,42 +985,48 @@ public class BossPanel extends PlayablePanel {
         return monsters;
     }
 
-    public HomePanelData exportData() {
-        return new HomePanelData(
-                new ArrayList<>(tileM.objects), // Clone the list of objects
-                getPlayer().gold,
-                getPlayer().armor,
-                getPlayer().speed,
-                getPlayer().life,
-                getPlayer().maxLife,
+    public BossPanelData exportData() {
+        return new BossPanelData(
+                new ArrayList<>(monsters),
+                isPaused,
                 getPlayer().screenX,
                 getPlayer().screenY,
+                getPlayer().gold,
+                getPlayer().level,
+                getPlayer().xpCurrent,
                 getPlayer().armorOnIronHead,
                 getPlayer().armorOnIronTorso,
+                getPlayer().armorOnIronLeg,
                 getPlayer().armorOnLeatherHead,
-                getPlayer().armorOnLeatherTorso
+                getPlayer().armorOnLeatherTorso,
+                getPlayer().armorOnLeatherLeg,
+                canSpawnBoss,
+                sorcererProjectiles,
+                lasers
         );
     }
 
-    public void restoreData(HomePanelData data) {
-        tileM.objects.clear();
-        tileM.objects.addAll(data.objectsInHome); // Restore objects in HomePanel
-
+    public void restoreData(BossPanelData data) {
+        monsters.clear();
+        monsters.addAll(data.monsters);
+        isPaused = data.isPaused;
         Player player = getPlayer();
-        player.gold = data.playerGold;
-        player.armor = data.playerArmor;
-        player.speed = data.playerSpeed;
-        player.life = data.playerLife;
-        player.maxLife = data.playerMaxLife;
-        player.screenX = data.playerScreenX;
-        player.screenY = data.playerScreenY;
-        player.armorOnLeatherTorso = data.armorOnLeatherTorso;
-        player.armorOnLeatherHead = data.armorOnLeatherHead;
-        player.armorOnIronTorso = data.armorOnIronTorso;
+        player.screenX = data.playerX;
+        player.screenY = data.playerY;
+        player.gold = data.gold;
+        player.level = data.level;
+        player.xpCurrent = data.xp;
         player.armorOnIronHead = data.armorOnIronHead;
-
+        player.armorOnIronTorso = data.armorOnIronTorso;
+        player.armorOnIronLeg = data.armorOnIronLeg;
+        player.armorOnLeatherHead = data.armorOnLeatherHead;
+        player.armorOnLeatherTorso = data.armorOnLeatherTorso;
+        player.armorOnLeatherLeg = data.armorOnLeatherLeg;
+        canSpawnBoss = data.spawned;
+        sorcererProjectiles = data.sorcererProjectiles;
+        lasers = data.lasers;
+        if (!monsters.isEmpty() && monsters.get(0) != null) {
+            this.boss = (BOSS_Sorcerer) monsters.get(0);
+        }
     }
-
-
-
 }

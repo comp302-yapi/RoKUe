@@ -10,15 +10,18 @@ public class TitlePanel extends NonPlayablePanel {
 
     private int commandNum;
     private final TitlePanelKeyListener titlePanelKeyListener;
-    public soundManager soundManager = new soundManager();
+    private soundManager soundManager;
 
     public TitlePanel(ViewManager viewManager) {
         super(viewManager);
+        this.soundManager = soundManager.getInstance();
         setCommandNum(0);
         this.titlePanelKeyListener = new TitlePanelKeyListener(this);
         this.addKeyListener(titlePanelKeyListener);
 
-//        playMusic(0);
+        playMusic(0);
+        managers.soundManager.getInstance().activeClips.put(1, soundManager.clip);
+        System.out.println(managers.soundManager.getInstance().activeClips);
     }
 
     public void playMusic(int i) {

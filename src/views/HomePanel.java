@@ -29,10 +29,11 @@ public class HomePanel extends PlayablePanel {
     SuperObject leatherArmorTorso = new ARMOR_LeatherArmorTorso();
     SuperObject ironHelmet = new ARMOR_IronArmorHead();
     SuperObject ironTorso = new ARMOR_IronArmorTorso();
+    SuperObject ironLeggings = new ARMOR_IronArmorLeg();
+    SuperObject leatherLeggings = new ARMOR_LeatherArmorLeg();
 
-    SuperObject ironSword = new SWORD_IronSword();
-
-    public soundManager soundManager = new soundManager();
+    SWORD_IronSword ironSwordObj = SWORD_IronSword.getInstance();
+    private soundManager soundManager;
     public boolean attackSoundPlayed;
 
     transient BufferedImage heart_full, heart_half, heart_blank;
@@ -51,6 +52,8 @@ public class HomePanel extends PlayablePanel {
 
         Player player = Player.getInstance(this);
         player.addKeyListener(keyListener);
+
+        this.soundManager = managers.soundManager.getInstance();
 
         this.tileM = new TileManagerForHome(this,  "/res/maps/Home.txt", 30, 18);
         getPlayer().addKeyListener(keyListener);
@@ -72,13 +75,15 @@ public class HomePanel extends PlayablePanel {
         ARMOR_LeatherArmorTorso leatherArmorTorso = new ARMOR_LeatherArmorTorso();
         ARMOR_IronArmorHead ironArmorHead = new ARMOR_IronArmorHead();
         ARMOR_LeatherArmorHead leatherArmorHead = new ARMOR_LeatherArmorHead();
+        ARMOR_IronArmorLeg ironArmorLeg = new ARMOR_IronArmorLeg();
+        ARMOR_LeatherArmorLeg leatherArmorLeg = new ARMOR_LeatherArmorLeg();
 
-        SuperObject ironSword = new SWORD_IronSword();
-        SWORD_DiamondSword diamondSword = new SWORD_DiamondSword();
-
-        tileM.addObject(ironSword, 290, 350);
-        tileM.addObject(diamondSword, 290, 450);
-
+        SWORD_IronSword ironSwordObj = SWORD_IronSword.getInstance();
+        SWORD_DiamondSword diamondSwordObj = SWORD_DiamondSword.getInstance();
+        SWORD_GoldSword goldSwordObj = SWORD_GoldSword.getInstance();
+        tileM.addObject(ironSwordObj, 290, 350);
+        tileM.addObject(diamondSwordObj, 290, 450);
+        tileM.addObject(goldSwordObj, 290, 550);
 
         tileM.addObject(leatherArmorHead, 800, 188);
         tileM.addObject(leatherArmorTorso, 900, 188);
@@ -86,6 +91,8 @@ public class HomePanel extends PlayablePanel {
         tileM.addObject(ironArmorTorso, 500, 188);
         tileM.addObject(ironArmorHead, 600, 188);
 
+        tileM.addObject(ironArmorLeg, 1110, 350);
+        tileM.addObject(leatherArmorLeg, 1110, 450);
     }
 
     @Override
@@ -108,23 +115,48 @@ public class HomePanel extends PlayablePanel {
 
         SuperObject armorToBuy = chooseBuy();
 
-        if (armorToBuy != null) {
+        if (armorToBuy != null && !armorToBuy.bought) {
             if (getPlayer().gold >= armorToBuy.cost) {
                 playSE(17);
                 getPlayer().gold -= armorToBuy.cost;
+
+                armorToBuy.bought = true;
 
                 switch (armorToBuy.name) {
                     case "Iron Chestplate" -> getPlayer().wearArmorIronTorso();
                     case "Leather Chestplate" -> getPlayer().wearArmorLeatherTorso();
                     case "Leather Helmet" -> getPlayer().wearArmorLeatherHead();
                     case "Iron Helmet" -> getPlayer().wearArmorIronHead();
-
+                    case "Iron Leggings" -> getPlayer().wearArmorIronLeg();
+                    case "Leather Leggings" -> getPlayer().wearArmorLeatherLeg();
                     case "Iron Sword" -> getPlayer().equipIronSword();
                     case "Diamond Sword" -> getPlayer().equipDiamondSword();
+                    case "Gold Sword" -> getPlayer().equipGoldSword();
                 }
 
                 getPlayer().armor = calculateArmor();
             }
+        }
+    }
+
+    public void equipBought() {
+        SuperObject armorToEquip = chooseBuy();
+
+        if (armorToEquip != null && armorToEquip.bought) {
+
+            switch (armorToEquip.name) {
+                case "Iron Chestplate" -> getPlayer().wearArmorIronTorso();
+                case "Leather Chestplate" -> getPlayer().wearArmorLeatherTorso();
+                case "Leather Helmet" -> getPlayer().wearArmorLeatherHead();
+                case "Iron Helmet" -> getPlayer().wearArmorIronHead();
+                case "Iron Leggings" -> getPlayer().wearArmorIronLeg();
+                case "Leather Leggings" -> getPlayer().wearArmorLeatherLeg();
+                case "Iron Sword" -> getPlayer().equipIronSword();
+                case "Diamond Sword" -> getPlayer().equipDiamondSword();
+                case "Gold Sword" -> getPlayer().equipGoldSword();
+            }
+
+            getPlayer().armor = calculateArmor();
         }
     }
 
@@ -145,6 +177,14 @@ public class HomePanel extends PlayablePanel {
 
         if (getPlayer().armorOnIronTorso) {
             armor += ironTorso.armor;
+        }
+
+        if (getPlayer().armorOnLeatherLeg) {
+            armor += leatherLeggings.armor;
+        }
+
+        if (getPlayer().armorOnIronLeg) {
+            armor += ironLeggings.armor;
         }
 
         return armor;
@@ -173,8 +213,6 @@ public class HomePanel extends PlayablePanel {
         return closestObject;
     }
 
-
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -199,7 +237,7 @@ public class HomePanel extends PlayablePanel {
         displayClosestObjectName(g2);
 
         // Draw Character Info
-        drawPlayerAttributes(g2);
+//        drawPlayerAttributes(g2);
 
         // Draw the player
         getPlayer().draw(g2);
@@ -251,13 +289,15 @@ public class HomePanel extends PlayablePanel {
             damageImage = uTool.scaleImage(damageImage, 32, 32);
             armorImage = uTool.scaleImage(armorImage, 32, 32);
 
-
             int panelWidth = 200;
-            int panelHeight = 130;
+            int panelHeight = 150;
             int panelX, panelY;
 
-            if (closestObject instanceof SWORD_IronSword || closestObject instanceof SWORD_DiamondSword) {
+            if (closestObject instanceof SWORD_IronSword || closestObject instanceof SWORD_DiamondSword || closestObject instanceof SWORD_GoldSword) {
                 panelX = closestObject.worldX - panelWidth - 20;
+                panelY = closestObject.worldY + HomePanel.tileSize / 2 - panelHeight / 2;
+            } else if (closestObject instanceof ARMOR_IronArmorLeg || closestObject instanceof ARMOR_LeatherArmorLeg) {
+                panelX = closestObject.worldX + HomePanel.tileSize + 20;
                 panelY = closestObject.worldY + HomePanel.tileSize / 2 - panelHeight / 2;
             } else {
                 panelX = closestObject.worldX + HomePanel.tileSize / 2 - panelWidth / 2;
@@ -274,11 +314,12 @@ public class HomePanel extends PlayablePanel {
             int objImageX = panelX + 10;
             int objImageY = panelY + 10;
             g2.drawImage(uTool.scaleImage(closestObject.image, 32, 32), objImageX, objImageY, null);
-            g2.setFont(new Font("Arial", Font.BOLD, 16));
+            g2.setFont(maruMonica);
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 25F));
             g2.setColor(Color.WHITE);
             g2.drawString(closestObject.name, objImageX + 40, objImageY + 20);
 
-            if (closestObject instanceof SWORD_IronSword || closestObject instanceof SWORD_DiamondSword) {
+            if (closestObject instanceof SWORD_IronSword || closestObject instanceof SWORD_DiamondSword || closestObject instanceof SWORD_GoldSword) {
                 int damageX = objImageX;
                 int damageY = objImageY + 40;
                 g2.drawImage(damageImage, damageX, damageY, null);
@@ -286,7 +327,7 @@ public class HomePanel extends PlayablePanel {
             } else {
                 int armorX = objImageX;
                 int armorY = objImageY + 40;
-                g2.drawImage(armorImage, armorX, armorY, null); // Placeholder for armor icon
+                g2.drawImage(armorImage, armorX, armorY, null);
                 g2.drawString(String.valueOf(closestObject.armor), armorX + 40, armorY + 20);
             }
 
@@ -294,6 +335,15 @@ public class HomePanel extends PlayablePanel {
             int goldY = objImageY + 80;
             g2.drawImage(goldImage, goldX, goldY, null);
             g2.drawString(String.valueOf(closestObject.cost), goldX + 40, goldY + 20);
+
+            g2.setFont(maruMonica);
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 25F));
+            g2.setColor(Color.YELLOW);
+            if (closestObject.bought) {
+                g2.drawString("Press E to equip", panelX + 10, panelY + panelHeight - 10);
+            } else {
+                g2.drawString("Press B to buy", panelX + 10, panelY + panelHeight - 10);
+            }
         }
     }
 
@@ -339,102 +389,113 @@ public class HomePanel extends PlayablePanel {
     }
 
     private void drawPlayerLife(Graphics2D g2) {
-        int offsetX = 1120;
-        int offsetY = 520;
+        int panelWidth = 150;
+        int panelHeight = 166;
+        int screenWidth = this.getWidth();
+        int screenHeight = this.getHeight();
 
-        int x = offsetX + tileSize / 4;
-        int y = offsetY + tileSize;
+        int offsetX = 560;
+        int offsetY = 260;
+
+        int x = screenWidth - panelWidth - 5 - 40;
+        int y = 60;
+
+
         int i = 0;
 
         while (i < getPlayer().maxLife / 2) {
-            g2.drawImage(heart_blank, x, y, null);
+            g2.drawImage(heart_blank, x, y, tileSize / 2, tileSize / 2, null);
             i++;
-            x += tileSize / 2 + 5;
+            x += tileSize / 4 + 2;
         }
 
-        x = offsetX + tileSize / 4;
-        y = offsetY + tileSize;
+        x = screenWidth - panelWidth - 5 - 40;
         i = 0;
 
         while (i < getPlayer().life) {
-            g2.drawImage(heart_half, x, y, null);
+            g2.drawImage(heart_half, x, y, tileSize / 2, tileSize / 2, null);
             i++;
             if (i < getPlayer().life) {
-                g2.drawImage(heart_full, x, y, null);
+                g2.drawImage(heart_full, x, y, tileSize / 2, tileSize / 2, null);
             }
             i++;
-            x += tileSize / 2 + 5;
+            x += tileSize / 4 + 2;
         }
     }
 
     private void drawPlayerArmor(Graphics2D g2) {
-        int offsetX = 1120;
-        int offsetY = 520;
+        int panelWidth = 150;
+        int panelHeight = 166;
+        int screenWidth = this.getWidth();
+        int screenHeight = this.getHeight();
 
-        int x = offsetX + tileSize / 4;
-        int y = offsetY + 87;
+        int offsetX = 560;
+        int offsetY = 260;
+
+        int x = screenWidth - panelWidth - 5 - 40;
+        int y = 80;
         int i = 0;
 
         while (i < getPlayer().maxArmor / 2) {
-            g2.drawImage(armor_blank, x, y, null);
+            g2.drawImage(armor_blank, x, y, tileSize / 2, tileSize / 2, null);
             i++;
-            x += tileSize / 2 + 5;
+            x += tileSize / 4 + 2;
         }
 
-        x = offsetX + tileSize / 4;
-        y = offsetY + 87;
+        x = screenWidth - panelWidth - 5 - 40;
+        y = 80;
         i = 0;
 
         while (i < getPlayer().armor) {
-            g2.drawImage(armor_half, x, y, null);
+            g2.drawImage(armor_half, x, y, tileSize / 2, tileSize / 2, null);
             i++;
             if (i < getPlayer().armor) {
-                g2.drawImage(armor_full, x, y, null);
+                g2.drawImage(armor_full, x, y, tileSize / 2, tileSize / 2, null);
             }
             i++;
-            x += tileSize / 2 + 5;
+            x += tileSize / 4 + 2;
         }
     }
 
     public void drawCharacterInfo(Graphics2D g2) {
-        int panelWidth = 300;
-        int panelHeight = 332;
+        int panelWidth = 150;
+        int panelHeight = 166;
         int screenWidth = this.getWidth();
         int screenHeight = this.getHeight();
 
-        int x = screenWidth - panelWidth - 10;
-        int y = screenHeight - panelHeight - 10;
+        int x = screenWidth - panelWidth - 5 - 40;
+        int y = 40;
 
         g2.setColor(new Color(30, 30, 30, 200));
-        g2.fillRoundRect(x, y, panelWidth, panelHeight, 15, 15);
+        g2.fillRoundRect(x, y, panelWidth, panelHeight, 10, 10);
 
         g2.setColor(Color.BLACK);
-        g2.setStroke(new BasicStroke(5));
-        g2.drawRoundRect(x, y, panelWidth, panelHeight, 15, 15);
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRoundRect(x, y, panelWidth, panelHeight, 10, 10);
 
         g2.setColor(Color.DARK_GRAY);
-        g2.fillRect(x + 10, y + 10, 260, 20);
+        g2.fillRect(x + 5, y + 5, 130, 10);
 
         g2.setColor(Color.YELLOW);
-        int xpPercentage = (int) (getPlayer().xpCurrent / (float) getPlayer().xpMax * 260);
-        g2.fillRect(x + 10, y + 10, xpPercentage, 20);
+        int xpPercentage = (int) (getPlayer().xpCurrent / (float) getPlayer().xpMax * 130);
+        g2.fillRect(x + 5, y + 5, xpPercentage, 10);
 
         g2.setColor(Color.WHITE);
-        g2.setStroke(new BasicStroke(2));
-        g2.drawRect(x + 10, y + 10, 260, 20);
+        g2.setStroke(new BasicStroke(1));
+        g2.drawRect(x + 5, y + 5, 130, 10);
 
         drawPlayerLife(g2);
         drawPlayerArmor(g2);
 
         g2.setColor(Color.WHITE);
         g2.setFont(maruMonica);
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 16F));
 
-        g2.drawString("Level: " + getPlayer().level, x + 10, y + 160);
-        g2.drawString("Gold: " + getPlayer().gold, x + 10, y + 200);
-        g2.drawString("Armor: " + getPlayer().armor, x + 10, y + 240);
-        g2.drawString("Life: " + getPlayer().life + "/" + getPlayer().maxLife, x + 10, y + 280);
-        g2.drawString("Xp: " + getPlayer().xpCurrent + "/" + getPlayer().xpMax, x + 10, y + 320);
+        g2.drawString("Level: " + getPlayer().level, x + 5, y + 80);
+        g2.drawString("Gold: " + getPlayer().gold, x + 5, y + 100);
+        g2.drawString("Armor: " + getPlayer().armor, x + 5, y + 120);
+        g2.drawString("Life: " + getPlayer().life + "/" + getPlayer().maxLife, x + 5, y + 140);
+        g2.drawString("Xp: " + getPlayer().xpCurrent + "/" + getPlayer().xpMax, x + 5, y + 160);
     }
 
     public void playSE(int i) {
@@ -454,10 +515,10 @@ public class HomePanel extends PlayablePanel {
                 getPlayer().maxLife,
                 getPlayer().screenX,
                 getPlayer().screenY,
-                getPlayer().armorOnIronHead,
-                getPlayer().armorOnIronTorso,
                 getPlayer().armorOnLeatherHead,
-                getPlayer().armorOnLeatherTorso
+                getPlayer().armorOnLeatherTorso,
+                getPlayer().armorOnIronHead,
+                getPlayer().armorOnIronTorso
         );
     }
 

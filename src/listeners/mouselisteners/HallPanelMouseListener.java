@@ -1,6 +1,8 @@
 package listeners.mouselisteners;
 
+import containers.HallContainer;
 import controllers.HallController;
+import enums.Hall;
 import listeners.BaseMouseListener;
 import managers.TileManagerForHall;
 import object.*;
@@ -24,12 +26,40 @@ public class HallPanelMouseListener extends BaseMouseListener implements Seriali
         int mouseX = e.getX();
         int mouseY = e.getY();
 
+        System.out.println("Clicking mouse");
+
         // Use the hallController instance to call getObjectSelectedInHall
-        SuperObject clickedObject = HallController.getObjectSelectedInHall(hallPanel.getTileM(), mouseX, mouseY);
+        SuperObject clickedObject;
+
+        switch (hallPanel.currentHall) {
+            case Hall.HallOfWater ->
+                    clickedObject = HallController.getObjectSelectedInHall(HallContainer.getHallOfWater(), mouseX, mouseY);
+            case Hall.HallOfAir ->
+                    clickedObject = HallController.getObjectSelectedInHall(HallContainer.getHallOfAir(), mouseX, mouseY);
+            case Hall.HallOfFire ->
+                    clickedObject = HallController.getObjectSelectedInHall(HallContainer.getHallOfFire(), mouseX, mouseY);
+            case Hall.HallOfEarth ->
+                    clickedObject = HallController.getObjectSelectedInHall(HallContainer.getHallOfEarth(), mouseX, mouseY);
+            default ->
+                    throw new IllegalStateException("Unexpected value: " + hallPanel.currentHall);
+        }
+
         if (clickedObject != null) {
+            System.out.println("Clicked Obj: " + clickedObject.name);
             boolean foundRune = clickedObject.interact(hallPanel); // Call interact method to handle rune detection
             if (foundRune) {
-                hallPanel.getTileM().openDoor();
+                switch (hallPanel.currentHall) {
+                    case Hall.HallOfWater ->
+                            HallContainer.getHallOfWater().openDoor();
+                    case Hall.HallOfAir ->
+                            HallContainer.getHallOfAir().openDoor();
+                    case Hall.HallOfFire ->
+                            HallContainer.getHallOfFire().openDoor();
+                    case Hall.HallOfEarth ->
+                            HallContainer.getHallOfEarth().openDoor();
+                    default ->
+                            throw new IllegalStateException("Unexpected value: " + hallPanel.currentHall);
+                }
             }
         }
 
