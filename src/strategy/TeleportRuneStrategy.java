@@ -10,53 +10,42 @@ import views.HallPanel;
 
 public class TeleportRuneStrategy {
 	
-	public static void teleportRune(HallPanel panel) {
-		
-		if(panel instanceof HallPanel hp) {
+	public static void teleportRune(HallPanel hp) {
 
-			Random random = new Random();
+		Random random = new Random();
+		ArrayList<SuperObject> objs = null;
 
-			ArrayList<SuperObject> objs = null;
-
-			switch(hp.currentHall) {
-
-
+		switch(hp.currentHall) {
 			case HallOfWater -> {
 				objs = HallContainer.getHallOfWater().objects;
-
 			}
 			case HallOfEarth -> {
 				objs = HallContainer.getHallOfEarth().objects;
-						}
+			}
 			case HallOfFire -> {
 				objs = HallContainer.getHallOfFire().objects;
 			}
 			case HallOfAir -> {
 				objs = HallContainer.getHallOfAir().objects;
 			}
+		}
 
-			}
-
-			SuperObject keyObject = null;
-			for(SuperObject obj:objs) {
-				if(obj.hasRune) {
-					keyObject = obj;
-					break;
-				}
-			}
-
-			if(keyObject != null) {
-				keyObject.hasRune = false;
-				SuperObject randomObj = objs.get(random.nextInt(objs.size()));
-		        while(randomObj instanceof OBJ_LuringGem) {
-		        	randomObj = objs.get(random.nextInt(objs.size()));
-		        }
-		        randomObj.hasRune = true;
-
+		SuperObject keyObject = null;
+		for(SuperObject obj:objs) {
+			if(obj.hasRune) {
+				keyObject = obj;
+				break;
 			}
 		}
-		
-		
-	}
 
+		if(keyObject != null) {
+			keyObject.hasRune = false;
+			SuperObject randomObj = objs.get(random.nextInt(objs.size()));
+			while(randomObj instanceof OBJ_LuringGem) {
+				randomObj = objs.get(random.nextInt(objs.size()));
+			}
+			randomObj.hasRune = true;
+
+		}
+	}
 }
