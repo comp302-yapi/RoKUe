@@ -51,7 +51,7 @@ public class HallPanel extends PlayablePanel{
     private final ImageIcon backgroundWater = new ImageIcon(getClass().getResource("/res/tiles/water.png"));
     private final ImageIcon backgroundAir = new ImageIcon(getClass().getResource("/res/tiles/glacial_mountains.png"));
     private final ImageIcon backgroundFire = new ImageIcon(getClass().getResource("/res/tiles/fire.png"));
-    public soundManager soundManager = new soundManager();
+    public soundManager soundManager;
     public boolean attackSoundPlayed;
     public boolean checkInventoryForReveal = false;
     public boolean checkInventoryForCloak = false;

@@ -17,8 +17,8 @@ public class soundManager implements Serializable {
     public transient Clip clip;
     URL[] soundURL = new URL[30];
     private transient FloatControl volumeControl;
-    public final HashMap<Integer, Clip> activeClips = new HashMap<>();
-    public Clip currentClip;
+    public transient final HashMap<Integer, Clip> activeClips = new HashMap<>();
+    public transient Clip currentClip;
 
     // Private constructor to prevent direct instantiation
     private soundManager() {

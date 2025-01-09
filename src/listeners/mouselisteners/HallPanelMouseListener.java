@@ -32,13 +32,13 @@ public class HallPanelMouseListener extends BaseMouseListener implements Seriali
         SuperObject clickedObject;
 
         switch (hallPanel.currentHall) {
-            case Hall.HallOfWater ->
+            case HallOfWater ->
                     clickedObject = HallController.getObjectSelectedInHall(HallContainer.getHallOfWater(), mouseX, mouseY);
-            case Hall.HallOfAir ->
+            case HallOfAir ->
                     clickedObject = HallController.getObjectSelectedInHall(HallContainer.getHallOfAir(), mouseX, mouseY);
-            case Hall.HallOfFire ->
+            case HallOfFire ->
                     clickedObject = HallController.getObjectSelectedInHall(HallContainer.getHallOfFire(), mouseX, mouseY);
-            case Hall.HallOfEarth ->
+            case HallOfEarth ->
                     clickedObject = HallController.getObjectSelectedInHall(HallContainer.getHallOfEarth(), mouseX, mouseY);
             default ->
                     throw new IllegalStateException("Unexpected value: " + hallPanel.currentHall);
@@ -49,13 +49,13 @@ public class HallPanelMouseListener extends BaseMouseListener implements Seriali
             boolean foundRune = clickedObject.interact(hallPanel); // Call interact method to handle rune detection
             if (foundRune) {
                 switch (hallPanel.currentHall) {
-                    case Hall.HallOfWater ->
+                    case HallOfWater ->
                             HallContainer.getHallOfWater().openDoor();
-                    case Hall.HallOfAir ->
+                    case HallOfAir ->
                             HallContainer.getHallOfAir().openDoor();
-                    case Hall.HallOfFire ->
+                    case HallOfFire ->
                             HallContainer.getHallOfFire().openDoor();
-                    case Hall.HallOfEarth ->
+                    case HallOfEarth ->
                             HallContainer.getHallOfEarth().openDoor();
                     default ->
                             throw new IllegalStateException("Unexpected value: " + hallPanel.currentHall);

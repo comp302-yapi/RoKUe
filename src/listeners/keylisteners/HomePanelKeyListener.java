@@ -123,10 +123,9 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
             managers.soundManager.getInstance().stop();
         }
 
-        if (code == KeyEvent.VK_P) {
-            homePanel.setPaused(!homePanel.isPaused());
-        }
-
+        //if (code == KeyEvent.VK_P) {
+        //    homePanel.setPaused(!homePanel.isPaused());
+        //}
     }
 
     @Override
