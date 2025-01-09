@@ -36,7 +36,7 @@ public class HallPanel extends PlayablePanel{
     public TileManagerForHall tileM;
     final CollisionCheckerForHall cChecker;
     private boolean isPaused;
-    boolean wizardChecker = false;
+    public boolean wizardChecker = false;
     transient BufferedImage heart_full, heart_half, heart_blank;
     SuperObject heart = new OBJ_Heart();
     transient BufferedImage armor_full, armor_half, armor_blank;
@@ -56,6 +56,8 @@ public class HallPanel extends PlayablePanel{
     private int shakeDuration = 0;
     private Random shakeRandom = new Random();
     public Font maruMonica;
+    
+    public final int secondPerObject = 5; 
 
 
     // SUPERPOWERS
@@ -304,7 +306,8 @@ public class HallPanel extends PlayablePanel{
         if (!isPaused()) {
         	
             if (TimeManager.getInstance().timer == null) {
-                	timeLeft = this.getSuperObjectLength() * 10;
+            	
+            	timeLeft = this.getSuperObjectLength() * secondPerObject;;
                 
                 TimeManager.getInstance().startTimer(timeLeft);                    
             }
@@ -328,7 +331,7 @@ public class HallPanel extends PlayablePanel{
                 power.tickCooldown();
             }
 
-            for (Entity monster : monsters) {
+            for (Entity monster : new ArrayList<>(monsters)) {
                 if (monster != null) {
                     monster.update();
                 }
@@ -358,7 +361,7 @@ public class HallPanel extends PlayablePanel{
             // Generate Monster
             spawnCounter++;
 
-            if (spawnCounter >= 60 * 1.5) {
+            if (spawnCounter >= 60 * 5) {
                 generateMonster();
                 spawnCounter = 0;
             }

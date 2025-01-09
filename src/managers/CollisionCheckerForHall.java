@@ -86,6 +86,9 @@ public class CollisionCheckerForHall implements Serializable {
                 }
             }
         }
+        
+        entity.solidArea.x = entity.solidAreaDefaultX;
+        entity.solidArea.x = entity.solidAreaDefaultY;
 
     }
 

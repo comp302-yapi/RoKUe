@@ -274,6 +274,8 @@ public class Entity implements Serializable {
 			if (panel instanceof HallPanel p) {
 				collisionOn = false;
 				p.getCollisionCheckerForHall().checkTile(this);
+				solidArea.x = this.solidAreaDefaultX;
+				solidArea.y = this.solidAreaDefaultY;
 				p.getCollisionCheckerForHall().checkObject(this, false);
 				monsterHit = p.getCollisionCheckerForHall().checkEntity(this, p.getMonsters());
 
