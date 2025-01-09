@@ -1,6 +1,5 @@
 package views;
 
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -17,7 +16,6 @@ import listeners.mouselisteners.BuildPanelMouseListener;
 import managers.*;
 import object.*;
 import utils.PanelUtils;
-
 
 public class BuildPanel extends NonPlayablePanel {
 	private final BuildPanelMouseListener buildPanelMouseListener;
@@ -36,8 +34,7 @@ public class BuildPanel extends NonPlayablePanel {
 
 	private soundManager soundManager;
 
-
-	String errorMessageLine1 ="Hall does not fit the requirements";
+	String errorMessageLine1 = "Hall does not fit the requirements";
 	String errorMessageLine2 = "Please add more objects";
 
 	// For button drawings
@@ -50,12 +47,11 @@ public class BuildPanel extends NonPlayablePanel {
 	int buttonY = BasePanel.screenHeight - buttonHeight - buttonOffset;
 	Color buttonColor = new Color(26, 17, 23);
 
-
 	public BuildPanel(ViewManager viewManager) {
 		super(viewManager);
 
-        this.buildPanelMouseListener = new BuildPanelMouseListener(this);
-        this.addMouseListener(buildPanelMouseListener);
+		this.buildPanelMouseListener = new BuildPanelMouseListener(this);
+		this.addMouseListener(buildPanelMouseListener);
 		this.addMouseMotionListener(buildPanelMouseListener);
 		this.keyListener = new BuildPanelKeyListener(this);
 		this.addKeyListener(keyListener);
@@ -79,8 +75,7 @@ public class BuildPanel extends NonPlayablePanel {
 				HallContainer.getHallOfEarth().objects,
 				HallContainer.getHallOfAir().objects,
 				HallContainer.getHallOfWater().objects,
-				HallContainer.getHallOfFire().objects
-				);
+				HallContainer.getHallOfFire().objects);
 	}
 
 	public void restoreData(BuildPanelData data) {
@@ -88,7 +83,6 @@ public class BuildPanel extends NonPlayablePanel {
 		this.getCurrentHallManager().objects = new ArrayList<>(data.objectsToDraw);
 		this.isHallValidated = data.isHallValidated;
 	}
-
 
 	public Hall getCurrentHall() {
 		return this.currentHall;
@@ -117,7 +111,6 @@ public class BuildPanel extends NonPlayablePanel {
 		lantern.worldX = BasePanel.tileSize * 23 + 16;
 		lantern.worldY = BasePanel.tileSize * 9;
 
-
 		OBJ_Cactus cactus = new OBJ_Cactus();
 		cactus.worldX = BasePanel.tileSize * 25 + 16;
 		cactus.worldY = BasePanel.tileSize * 7;
@@ -143,45 +136,45 @@ public class BuildPanel extends NonPlayablePanel {
 		objectsToDraw.add(pot1);
 	}
 
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
 
-        drawBuildScreen(g2, this);
-    }
+		drawBuildScreen(g2, this);
+	}
 
-    public boolean checkObjectBorder(int x, int y) {
+	public boolean checkObjectBorder(int x, int y) {
 		return x - (int) (BasePanel.tileSize / 2) > 384 && x + (int) (BasePanel.tileSize / 2) < 960
 				&& y - (int) (BasePanel.tileSize / 2) > 144 && y + (int) (BasePanel.tileSize / 2) < 772;
 
 	}
 
-    public void drawBuildScreen(Graphics2D g2,BasePanel panel) {
+	public void drawBuildScreen(Graphics2D g2, BasePanel panel) {
 
 		getCurrentHallManager().draw(g2);
 
 		g2.setColor(new Color(62, 41, 52));
 
-		//TODO: bunun düzeltilmesi gerekiyor
-		g2.fillRect(0,0,BasePanel.screenWidth,96);
-		g2.fillRect(1008,0,BasePanel.screenWidth,BasePanel.screenHeight);
-		g2.fillRect(0,0,336,BasePanel.screenHeight);
-		g2.fillRect(0,816,BasePanel.screenWidth,BasePanel.screenHeight);
+		// TODO: bunun düzeltilmesi gerekiyor
+		g2.fillRect(0, 0, BasePanel.screenWidth, 96);
+		g2.fillRect(1008, 0, BasePanel.screenWidth, BasePanel.screenHeight);
+		g2.fillRect(0, 0, 336, BasePanel.screenHeight);
+		g2.fillRect(0, 816, BasePanel.screenWidth, BasePanel.screenHeight);
 
 		// TITLE NAME
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 72F));
 		String text = "Build Mode";
 		int x, y;
-		x = PanelUtils.getXForCenteredText(text, panel, g2) - BasePanel.tileSize*2 + 50;
+		x = PanelUtils.getXForCenteredText(text, panel, g2) - BasePanel.tileSize * 2 + 50;
 		y = BasePanel.tileSize * 3;
 
 		// SHADOW
 		g2.setColor(new Color(40, 35, 38));
-		g2.drawString(text, x+5, y-70);
+		g2.drawString(text, x + 5, y - 70);
 
 		// MAIN COLOR
 		g2.setColor(new Color(26, 17, 23));
-		g2.drawString(text, x, y-75);
+		g2.drawString(text, x, y - 75);
 
 		int hallTextXOffset = 450;
 		int hallTextYOffset = 75;
@@ -194,7 +187,7 @@ public class BuildPanel extends NonPlayablePanel {
 				y2 = BasePanel.tileSize * 3;
 				g2.setColor(new Color(26, 17, 23));
 				g2.drawString(text2, x2 - hallTextXOffset, y2 - hallTextYOffset);
-				drawHallControlButtons(g2, null , BuildDirection.Forward.label);
+				drawHallControlButtons(g2, null, BuildDirection.Forward.label);
 			}
 			case HallOfAir -> {
 				g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
@@ -228,8 +221,9 @@ public class BuildPanel extends NonPlayablePanel {
 			}
 		}
 
-		//TODO: Tilelar için ayrı bir container yapmalıyız. 
-		g2.drawImage(TileContainer.getTile()[19].image, 1075, 100, BasePanel.tileSize*7, BasePanel.tileSize*12, null);
+		// TODO: Tilelar için ayrı bir container yapmalıyız.
+		g2.drawImage(TileContainer.getTile()[19].image, 1075, 100, BasePanel.tileSize * 7, BasePanel.tileSize * 12,
+				null);
 
 		for (SuperObject obj : objectsToDraw) {
 			if (obj != null) {
@@ -237,10 +231,12 @@ public class BuildPanel extends NonPlayablePanel {
 			}
 		}
 
-		if(selected) {
-		 	//g2.setColor(Color.BLACK);
-			//g2.setStroke(new BasicStroke(2)); // Thicker border
-			//g2.drawRect(objectsToDraw.get(selectedIdx).worldX, objectsToDraw.get(selectedIdx).worldY, BasePanel.tileSize, BasePanel.tileSize);
+		if (selected) {
+			// g2.setColor(Color.BLACK);
+			// g2.setStroke(new BasicStroke(2)); // Thicker border
+			// g2.drawRect(objectsToDraw.get(selectedIdx).worldX,
+			// objectsToDraw.get(selectedIdx).worldY, BasePanel.tileSize,
+			// BasePanel.tileSize);
 
 			drawDraggedItem(g2, mouseDraggedX, mouseDraggedY);
 		}
@@ -250,10 +246,13 @@ public class BuildPanel extends NonPlayablePanel {
 		}
 
 		/*
-		g2.drawString(">", BasePanel.buildMode.objectToDraw[BasePanel.buildMode.selected].worldX - BasePanel.tileSize,
-				BasePanel.buildMode.objectToDraw[BasePanel.buildMode.selected].worldY+BasePanel.tileSize);
-		*/
-    }
+		 * g2.drawString(">",
+		 * BasePanel.buildMode.objectToDraw[BasePanel.buildMode.selected].worldX -
+		 * BasePanel.tileSize,
+		 * BasePanel.buildMode.objectToDraw[BasePanel.buildMode.selected].worldY+
+		 * BasePanel.tileSize);
+		 */
+	}
 
 	private void drawDraggedItem(Graphics2D g2, int mouseX, int mouseY) {
 		SuperObject selectedObj = objectsToDraw.get(selectedIdx);
@@ -263,12 +262,11 @@ public class BuildPanel extends NonPlayablePanel {
 				mouseX - selectedObj.image.getWidth() / 2 * scale,
 				mouseY - selectedObj.image.getHeight() / 2 * scale,
 				BasePanel.tileSize,
-				BasePanel.tileSize, null
-		);
+				BasePanel.tileSize, null);
 	}
 
 	private void drawHallControlButtons(Graphics2D g2, String prevText, String nextText) {
-		if(prevText != null) {
+		if (prevText != null) {
 			g2.setColor(buttonColor);
 			g2.fillRect(prevButtonX, buttonY, buttonWidth, buttonHeight);
 			g2.setColor(Color.WHITE);
@@ -288,15 +286,15 @@ public class BuildPanel extends NonPlayablePanel {
 
 		if (!isHallValidated) {
 			g2.setColor(new Color(180, 0, 0));
-        g2.drawString("Fix the hall before continuing", nextButtonX, buttonY - 20);
+			g2.drawString("Fix the hall before continuing", nextButtonX, buttonY - 20);
 
 		}
 	}
 
 	private void drawErrorMessage(Graphics2D g2, int xStart) {
-		g2.setColor(new Color(180, 0,0));
+		g2.setColor(new Color(180, 0, 0));
 		g2.setFont(arial_20);
-		g2.drawString(errorMessageLine1, nextButtonX  - 50, buttonY + 75);
+		g2.drawString(errorMessageLine1, nextButtonX - 50, buttonY + 75);
 		g2.drawString(errorMessageLine2, nextButtonX - 10, buttonY + 95);
 	}
 
@@ -306,22 +304,10 @@ public class BuildPanel extends NonPlayablePanel {
 	}
 
 	public boolean isInNextButton(int mouseX, int mouseY) {
-		if (!canClickNext || !isHallValidated) {
-			return false; // Eğer buton kilitliyse veya validasyon başarısızsa işlem yapılmaz
-		}
-	
-		canClickNext = false; // Tıklama işlemini geçici olarak kilitle
-		new Thread(() -> { // İşlemin tamamlanmasını bekle
-			try {
-				Thread.sleep(500); // 500ms gecikme (buton yeniden etkinleşmesi için)
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			canClickNext = true; // İşlem tamamlandığında butonu tekrar aktif et
-		}).start();
-	
-		return mouseX > nextButtonX && mouseX < nextButtonX + buttonWidth
-				&& mouseY > buttonY && mouseY < buttonY + buttonHeight;
+
+		return isHallValidated &&
+				mouseX > nextButtonX && mouseX < nextButtonX + buttonWidth &&
+				mouseY > buttonY && mouseY < buttonY + buttonHeight;
 	}
 
 }
