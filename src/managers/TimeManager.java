@@ -62,6 +62,7 @@ public class TimeManager {
         	System.out.println("Timer stopped" + timeLeft);
             timer.stop();
             timeStopped = true;
+            timer = null;
         }
     }
 

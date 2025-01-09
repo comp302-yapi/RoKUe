@@ -63,7 +63,7 @@ public class HallPanel extends PlayablePanel{
     private Random shakeRandom = new Random();
     public Font maruMonica;
 
-    public final int secondPerObject = 5;
+    public final int secondPerObject = 100;
 
 
     // SUPERPOWERS
@@ -410,7 +410,7 @@ public class HallPanel extends PlayablePanel{
             // Generate Enchantment
             spawnEnchantmentCounter++;
 
-            if (spawnEnchantmentCounter >= 60 * 15) {
+            if (spawnEnchantmentCounter >= 60 * 3) {
                 tileM.generateEnchantment();
                 tileM.generateGold();
                 spawnEnchantmentCounter = 0;
