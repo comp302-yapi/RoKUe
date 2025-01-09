@@ -106,13 +106,13 @@ public class Player extends Entity{
 	public void addKeyListener(BaseKeyListener keyListener) {
 		this.keyH = keyListener;
 	}
-	
+
 	public void setDefaultValues() {
-		
+
 		worldX = BasePanel.tileSize*37;
 		worldY = BasePanel.tileSize*37;
-		defaultScreenX = BasePanel.screenWidth/2 - (BasePanel.tileSize/2);
-		defaultScreenY = BasePanel.screenHeight/2 - (BasePanel.tileSize/2);
+		defaultScreenX = (BasePanel.screenWidth/2 - (BasePanel.tileSize/2));
+		defaultScreenY = (BasePanel.screenHeight/2 - (BasePanel.tileSize/2));
 		defaultSpeed = 5;
 		speed = defaultSpeed;
 		armor = 0;
@@ -127,7 +127,7 @@ public class Player extends Entity{
 		level = 1;
 		maxLevel = 10;
 		damage = 1;
-		
+
 	}
 
 	public void getPlayerImage() {

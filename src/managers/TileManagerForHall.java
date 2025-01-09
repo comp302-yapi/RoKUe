@@ -179,11 +179,26 @@ public class TileManagerForHall implements Serializable {
 		if(ry <= 24) y = y - ry;
 		if (ry > 24) y = y + (48 - ry);
 
-		obj.worldX = x;
-		obj.worldY = y;
+		int px = BasePanel.screenWidth/2 - (BasePanel.tileSize/2);
+		int py = BasePanel.screenHeight/2 - (BasePanel.tileSize/2);
+
+		System.out.println(y - py);
+		System.out.println(y + " y " + py);
+		System.out.println(x - px);
+		System.out.println(x + " x " + px);
+		if (Math.abs(x - px) > 48 || Math.abs(y - py) > 48){
+
+			System.out.println(y - py);
+			System.out.println(y + " y " + py);
 
 
-		objects.add(obj);
+			obj.worldX = x;
+			obj.worldY = y;
+			objects.add(obj);
+
+		}
+
+
 
 	}
 
