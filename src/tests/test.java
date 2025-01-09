@@ -1,3 +1,5 @@
+package tests;
+
 import enums.Hall;
 import managers.TileManagerForHall;
 import object.SuperObject;
