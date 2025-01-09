@@ -14,9 +14,7 @@ import utils.GameSaver;
 import views.*;
 
 import javax.swing.*;
-
 import containers.HallContainer;
-
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.io.Serializable;
@@ -100,6 +98,11 @@ public class ViewManager implements Runnable, Serializable {
 
                 player.keyH = hallKeyListener;
             } else if (panelToSwitch instanceof HomePanel homePanel) {
+
+                TimeManager.getInstance().stopTimer();
+                TimeManager.getInstance().timer = null;
+
+
                 if (currentPanel instanceof HallPanel hallPanel) {
                     if (hallPanel.tileM.objectsEarth != null) hallPanel.tileM.objectsEarth.clear();
                     if (hallPanel.getSuperObjects() != null) Arrays.fill(hallPanel.getSuperObjects(), null);
@@ -108,18 +111,20 @@ public class ViewManager implements Runnable, Serializable {
                     if (hallPanel.tileM.objectsFire != null) hallPanel.tileM.objectsFire.clear();
                     if (hallPanel.tileM.enchantments != null) hallPanel.tileM.enchantments.clear();
                     if (hallPanel.getHallMonsters() != null) hallPanel.getHallMonsters().clear();
-                    
+
                     HallContainer.getHallOfAir().objects.clear();
                     HallContainer.getHallOfEarth().objects.clear();
                     HallContainer.getHallOfWater().objects.clear();
                     HallContainer.getHallOfFire().objects.clear();
-                    
+
                     HallContainer.getHallOfAir().gridWorld =  new SuperObject[13][14];
                     HallContainer.getHallOfEarth().gridWorld =  new SuperObject[13][14];
                     HallContainer.getHallOfWater().gridWorld =  new SuperObject[13][14];
                     HallContainer.getHallOfFire().gridWorld =  new SuperObject[13][14];
-                    
-                    
+
+                    hallPanel.getPlayer().screenX = BasePanel.screenWidth/2 - (BasePanel.tileSize/2);
+                    hallPanel.getPlayer().screenY = BasePanel.screenHeight/2 - (BasePanel.tileSize/2);
+
                 }
 
                 HomePanelKeyListener homeKeyListener = new HomePanelKeyListener(homePanel);

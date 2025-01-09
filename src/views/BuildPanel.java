@@ -32,6 +32,7 @@ public class BuildPanel extends NonPlayablePanel {
 	public int selectedIdx = -1;
 	public boolean selected = false;
 	public boolean isHallValidated = true;
+	private boolean canClickNext = true; // Tıklama kontrolü için
 
 	String errorMessageLine1 ="Hall does not fit the requirements";
 	String errorMessageLine2 = "Please add more objects";
@@ -277,6 +278,8 @@ public class BuildPanel extends NonPlayablePanel {
 		g2.drawString(nextText, textXNext, textYNext);
 
 		if (!isHallValidated) {
+			g2.setColor(new Color(180, 0, 0));
+        g2.drawString("Fix the hall before continuing", nextButtonX, buttonY - 20);
 
 		}
 	}
@@ -294,6 +297,20 @@ public class BuildPanel extends NonPlayablePanel {
 	}
 
 	public boolean isInNextButton(int mouseX, int mouseY) {
+		if (!canClickNext || !isHallValidated) {
+			return false; // Eğer buton kilitliyse veya validasyon başarısızsa işlem yapılmaz
+		}
+	
+		canClickNext = false; // Tıklama işlemini geçici olarak kilitle
+		new Thread(() -> { // İşlemin tamamlanmasını bekle
+			try {
+				Thread.sleep(500); // 500ms gecikme (buton yeniden etkinleşmesi için)
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			canClickNext = true; // İşlem tamamlandığında butonu tekrar aktif et
+		}).start();
+	
 		return mouseX > nextButtonX && mouseX < nextButtonX + buttonWidth
 				&& mouseY > buttonY && mouseY < buttonY + buttonHeight;
 	}
