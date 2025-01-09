@@ -38,7 +38,7 @@ public class HallPanel extends PlayablePanel{
     public TileManagerForHall tileM;
     final CollisionCheckerForHall cChecker;
     private boolean isPaused;
-    boolean wizardChecker = false;
+    public boolean wizardChecker = false;
     transient BufferedImage heart_full, heart_half, heart_blank;
     SuperObject heart = new OBJ_Heart();
     transient BufferedImage armor_full, armor_half, armor_blank;
@@ -47,7 +47,11 @@ public class HallPanel extends PlayablePanel{
     public int[][] gridWorldAll;
     boolean availableSpot = false;
     private ImageIcon backgroundImage;
-    public soundManager soundManager;
+    private final ImageIcon backgroundEarth = new ImageIcon(getClass().getResource("/res/tiles/forest.png"));
+    private final ImageIcon backgroundWater = new ImageIcon(getClass().getResource("/res/tiles/water.png"));
+    private final ImageIcon backgroundAir = new ImageIcon(getClass().getResource("/res/tiles/glacial_mountains.png"));
+    private final ImageIcon backgroundFire = new ImageIcon(getClass().getResource("/res/tiles/fire.png"));
+    public soundManager soundManager = new soundManager();
     public boolean attackSoundPlayed;
     public boolean checkInventoryForReveal = false;
     public boolean checkInventoryForCloak = false;
@@ -58,6 +62,8 @@ public class HallPanel extends PlayablePanel{
     private int shakeDuration = 0;
     private Random shakeRandom = new Random();
     public Font maruMonica;
+
+    public final int secondPerObject = 5;
 
 
     // SUPERPOWERS
@@ -341,7 +347,8 @@ public class HallPanel extends PlayablePanel{
         if (!isPaused()) {
         	
             if (TimeManager.getInstance().timer == null) {
-                	timeLeft = this.getSuperObjectLength() * 100;
+
+            	timeLeft = this.getSuperObjectLength() * secondPerObject;;
                 
                 TimeManager.getInstance().startTimer(timeLeft);                    
             }
@@ -365,7 +372,7 @@ public class HallPanel extends PlayablePanel{
                 power.tickCooldown();
             }
 
-            for (Entity monster : monsters) {
+            for (Entity monster : new ArrayList<>(monsters)) {
                 if (monster != null) {
                     monster.update();
                 }
@@ -395,7 +402,7 @@ public class HallPanel extends PlayablePanel{
             // Generate Monster
             spawnCounter++;
 
-            if (spawnCounter >= 60 * 1.5) {
+            if (spawnCounter >= 60 * 5) {
                 generateMonster();
                 spawnCounter = 0;
             }
@@ -403,7 +410,7 @@ public class HallPanel extends PlayablePanel{
             // Generate Enchantment
             spawnEnchantmentCounter++;
 
-            if (spawnEnchantmentCounter >= 6 * 15) {
+            if (spawnEnchantmentCounter >= 60 * 15) {
                 tileM.generateEnchantment();
                 tileM.generateGold();
                 spawnEnchantmentCounter = 0;
@@ -447,26 +454,29 @@ public class HallPanel extends PlayablePanel{
 
     }
 
-    public void generateMonster(){
-
+    public void generateMonster() {
         Random random = new Random();
-        String pickMonster = monsterTypes[random.nextInt(monsterTypes.length)]; // Get a random index
-//        pickMonster = "Sorcerer";
+        String pickMonster = monsterTypes[random.nextInt(monsterTypes.length)]; // Get a random monster type
+        // pickMonster = "Fighter";
 
-        int locationX = random.nextInt(1,13) + 7;
-        int locationY = random.nextInt(1,14) + 2;
-        
-        int gX = (BasePanel.tileSize*locationX - 336)/48;
-        int gY = (BasePanel.tileSize*locationY - 96) / 48;
+        int locationX;
+        int locationY;
+        int worldX, worldY;
 
-        setGridWorld();
+        boolean positionValid = false;
 
-        while (gridWorldAll[locationX - 8][locationY - 3] != 0 || getTileM().gridWorld[gX][gY] != null)  {
-            locationX = random.nextInt(1,13) + 7;
-            locationY = random.nextInt(1,14) + 2;
-            gX = (BasePanel.tileSize*locationX - 336)/48;
-            gY = (BasePanel.tileSize*locationY - 96) / 48;
-        }
+        // Repeat until a valid spawn position is found
+        do {
+            locationX = random.nextInt(1, 13) + 7; // Generate random location
+            locationY = random.nextInt(1, 14) + 2;
+            worldX = BasePanel.tileSize * locationX;
+            worldY = BasePanel.tileSize * locationY;
+
+            // Check if the position is not occupied using isPositionOccupied
+            if (!this.getCollisionCheckerForHall().isPositionOccupied(worldX, worldY)) {
+                positionValid = true;
+            }
+        } while (!positionValid);
 
 
         switch (pickMonster) {
@@ -491,13 +501,11 @@ public class HallPanel extends PlayablePanel{
 
             case "Archer":
                 MON_Archer archer = new MON_Archer(this);
-                archer.worldX = BasePanel.tileSize*locationX;
-                archer.worldY = BasePanel.tileSize*locationY;
-
+                archer.worldX = worldX;
+                archer.worldY = worldY;
                 archer.spawned = true;
 
                 for (int i = 0; i < getMonsters().length; i++) {
-
                     if (getMonsters()[i] == null) {
                         getMonsters()[i] = archer;
                         break;
@@ -505,40 +513,34 @@ public class HallPanel extends PlayablePanel{
                 }
 
                 monsters.add(archer);
-
                 break;
 
             case "Wizard":
-
                 if (!wizardChecker) {
-                MON_Wizard wizard = new MON_Wizard(this);
-                wizard.worldX = BasePanel.tileSize * locationX;
-                wizard.worldY = BasePanel.tileSize * locationY;
-                wizard.spawned = true;
+                    MON_Wizard wizard = new MON_Wizard(this);
+                    wizard.worldX = worldX;
+                    wizard.worldY = worldY;
+                    wizard.spawned = true;
 
-
-                for (int i = 0; i < getMonsters().length; i++) {
-
-                    if (getMonsters()[i] == null) {
-                        getMonsters()[i] = wizard;
-                        break;
+                    for (int i = 0; i < getMonsters().length; i++) {
+                        if (getMonsters()[i] == null) {
+                            getMonsters()[i] = wizard;
+                            break;
+                        }
                     }
-                }
+
                     monsters.add(wizard);
                     wizardChecker = true;
                 }
-
                 break;
 
             case "Fighter":
-
                 MON_Fighter fighter = new MON_Fighter(this);
-                fighter.worldX = BasePanel.tileSize*locationX;
-                fighter.worldY = BasePanel.tileSize*locationY;
+                fighter.worldX = worldX;
+                fighter.worldY = worldY;
                 fighter.spawned = true;
 
                 for (int i = 0; i < getMonsters().length; i++) {
-
                     if (getMonsters()[i] == null) {
                         getMonsters()[i] = fighter;
                         break;
@@ -547,6 +549,7 @@ public class HallPanel extends PlayablePanel{
 
                 monsters.add(fighter);
                 break;
+
             default:
                 System.out.println("Unknown character type.");
         }
@@ -601,7 +604,7 @@ public class HallPanel extends PlayablePanel{
                 g2.setFont(arial_40);
 
                 // Set background image
-                backgroundImage = new ImageIcon(getClass().getResource("/res/tiles/forest.png"));
+                backgroundImage = backgroundEarth;
                 Image scaledImage = backgroundImage.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
@@ -643,7 +646,7 @@ public class HallPanel extends PlayablePanel{
                 g2.setFont(arial_40);
 
                 // Set background image
-                backgroundImage = new ImageIcon(getClass().getResource("/res/tiles/glacial_mountains.png"));
+                backgroundImage = backgroundAir;
                 Image scaledImage = backgroundImage.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
@@ -680,7 +683,7 @@ public class HallPanel extends PlayablePanel{
                 g2.setFont(arial_40);
 
                 // Set background image
-                backgroundImage = new ImageIcon(getClass().getResource("/res/tiles/water.png"));
+                backgroundImage = backgroundWater;
                 Image scaledImage = backgroundImage.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
@@ -715,7 +718,7 @@ public class HallPanel extends PlayablePanel{
                 g2.setFont(arial_40);
 
                 // Set background image
-                backgroundImage = new ImageIcon(getClass().getResource("/res/tiles/fire.png"));
+                backgroundImage = backgroundFire;
                 Image scaledImage = backgroundImage.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
 

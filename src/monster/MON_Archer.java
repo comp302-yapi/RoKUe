@@ -230,21 +230,11 @@ public class MON_Archer extends Entity {
 
 		int distance = calculateDistanceToPlayer();
 
-		if (distance < 48 * 4) {
-			if (!inOppositeMode) {
-				switch (gp.getPlayer().direction) {
-					case "up":    direction = "down";  break;
-					case "down":  direction = "up";    break;
-					case "left":  direction = "right"; break;
-					case "right": direction = "left";  break;
-					default:      direction = "unknown";
-				}
-				inOppositeMode = true;
-			}
+		if (distance < gp.tileSize * 4) {
+			direction = getDominantDirectionToPlayer();
+			inOppositeMode = true;
 		} else {
-			if (inOppositeMode) {
-				inOppositeMode = false;
-			}
+			inOppositeMode = false;
 			// Random movement
 			actionLockCounter++;
 			if (actionLockCounter == 120) {
@@ -262,7 +252,6 @@ public class MON_Archer extends Entity {
 		shootCounter++;
 		if (shootCounter >= 60) {
 			shootArrow();
-			shootCounter = 0;
 		}
 	}
 
@@ -285,6 +274,10 @@ public class MON_Archer extends Entity {
 			this.collisionOn = true;
 
 			String arrowDirection = determineArrowDirection();
+			if (arrowDirection == null) {
+				shootCounter = 60;
+				return;
+			}
 
 			// Create and launch arrow
 			Arrow arrow = new Arrow(panel, worldX, worldY, arrowDirection);
@@ -297,10 +290,12 @@ public class MON_Archer extends Entity {
 					break;
 				}
 			}
+
+			shootCounter = 0;
+			if(inOppositeMode) inOppositeMode = false;
 		} else {
 			attacking = false;
 			shootCounter = 60;
-
 		}
 	}
 
@@ -538,14 +533,34 @@ public class MON_Archer extends Entity {
 		);
 	}
 
+	private String getDominantDirectionToPlayer() {
+		int playerX = panel.getPlayer().screenX;
+		int playerY = panel.getPlayer().screenY;
+
+		int diffX = worldX - playerX;
+		int diffY = worldY - playerY;
+
+		if (Math.abs(diffX) >= Math.abs(diffY)) {
+			return diffX > 0  ? "left" : "right";
+		}
+		else {
+			return diffY > 0  ? "up" : "down";
+		}
+	}
+
+
 	private String determineArrowDirection() {
 		int playerX = panel.getPlayer().screenX;
 		int playerY = panel.getPlayer().screenY;
 
-		if (Math.abs(playerX - worldX) > Math.abs(playerY - worldY)) {
-			return playerX > worldX ? "right" : "left";
-		} else {
+		int arrowThreshold = 5;
+
+		if (Math.abs(playerY - worldY) > arrowThreshold) {
 			return playerY > worldY ? "down" : "up";
 		}
+		else if (Math.abs(playerX - worldX) > arrowThreshold) {
+			return playerX > worldX ? "right" : "left";
+		}
+		else return null;
 	}
 }

@@ -9,6 +9,7 @@ import object.SuperObject;
 import views.BasePanel;
 import views.HallPanel;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -85,6 +86,9 @@ public class CollisionCheckerForHall implements Serializable {
                 }
             }
         }
+        
+        entity.solidArea.x = entity.solidAreaDefaultX;
+        entity.solidArea.x = entity.solidAreaDefaultY;
 
     }
 
@@ -223,6 +227,47 @@ public class CollisionCheckerForHall implements Serializable {
         player.solidArea.y = player.solidAreaDefaultY;
 
         return contactPlayer;
+    }
+    // Check if a world position is already occupied by a player or another entity
+    public boolean isPositionOccupied(int x, int y) {
+        // Check collision with the player
+        if (player != null) {
+            Rectangle playerSolidArea = new Rectangle(
+                    player.worldX + player.solidAreaDefaultX,
+                    player.worldY + player.solidAreaDefaultY,
+                    player.solidAreaDefaultWidth,
+                    player.solidAreaDefaultHeight
+            );
+            Rectangle spawnArea = new Rectangle(
+                    x + HallPanel.tileSize / 2,
+                    y + HallPanel.tileSize / 2,
+                    HallPanel.tileSize, HallPanel.tileSize
+            );
+            if (playerSolidArea.intersects(spawnArea)) {
+                return true; // Position collides with the player
+            }
+        }
+
+        // Check collisions with other existing entities (e.g., monsters, NPCs)
+        Entity[] monsters = hallPanel.getMonsters(); // Replace with actual fetching of monsters
+        if (monsters != null) {
+            for (Entity monster : monsters) {
+                if (monster != null && monster.alive) {
+                    Rectangle monsterSolidArea = new Rectangle(
+                            monster.worldX + monster.solidAreaDefaultX,
+                            monster.worldY + monster.solidAreaDefaultY,
+                            monster.solidAreaDefaultWidth,
+                            monster.solidAreaDefaultHeight
+                    );
+                    if (monsterSolidArea.intersects(x, y, HallPanel.tileSize, HallPanel.tileSize)) {
+                        return true; // Position collides with a monster
+                    }
+                }
+            }
+        }
+
+        // If no collision was detected
+        return false;
     }
 }
 
