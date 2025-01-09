@@ -1,5 +1,6 @@
 package managers;
 
+import controllers.HallController;
 import data.BossPanelData;
 import data.BuildPanelData;
 import data.HallPanelData;
@@ -135,6 +136,12 @@ public class ViewManager implements Runnable, Serializable {
                     hallPanel.getPlayer().screenX = BasePanel.screenWidth/2 - (BasePanel.tileSize/2);
                     hallPanel.getPlayer().screenY = BasePanel.screenHeight/2 - (BasePanel.tileSize/2);
 
+                    HallContainer.getHallOfAir().closeDoor();
+                    HallContainer.getHallOfEarth().closeDoor();
+                    HallContainer.getHallOfWater().closeDoor();
+                    HallContainer.getHallOfFire().closeDoor();
+
+                    hallPanel.currentHall = Hall.HallOfEarth;
                 }
 
                 HomePanelKeyListener homeKeyListener = new HomePanelKeyListener(homePanel);
