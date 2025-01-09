@@ -169,8 +169,20 @@ public class TileManagerForHall implements Serializable {
 	}
 	
 	public void addObject(SuperObject obj, int x, int y) {
+
+		int rx = x % 48;
+		int ry = y % 48;
+
+		if(rx <= 24) x = x - rx;
+		if (rx > 24) x = x + (48 - rx);
+
+		if(ry <= 24) y = y - ry;
+		if (ry > 24) y = y + (48 - ry);
+
 		obj.worldX = x;
 		obj.worldY = y;
+
+
 		objects.add(obj);
 
 	}

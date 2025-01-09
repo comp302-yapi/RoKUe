@@ -1,4 +1,5 @@
-/*import managers.TileManagerForHall;
+import enums.Hall;
+import managers.TileManagerForHall;
 import object.SuperObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ class TileManagerForHallTest {
 
     @BeforeEach
     void setUp() {
-        tileManager = new TileManagerForHall(HallPanel.currentHall, "/res/maps/hallOfAir.txt", 13, 14);
+        tileManager = new TileManagerForHall(Hall.HallOfEarth, "/res/maps/hallOfAir.txt", 13, 14);
     }
 
     @Test
@@ -46,8 +47,8 @@ class TileManagerForHallTest {
     @Test
     void testOutOfBoundsObject() {
         SuperObject obj1 = mock(SuperObject.class);
-        obj1.worldX = 0;
-        obj1.worldY = 0;
+        obj1.worldX = 500;
+        obj1.worldY = 323;
 
         SuperObject obj2 = mock(SuperObject.class);
         obj2.worldX = 384;
@@ -83,4 +84,4 @@ class TileManagerForHallTest {
     }
 }
 
- */
+

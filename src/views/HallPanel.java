@@ -402,7 +402,7 @@ public class HallPanel extends PlayablePanel{
             // Generate Monster
             spawnCounter++;
 
-            if (spawnCounter >= 60 * 5) {
+            if (spawnCounter >= 1 * 5) {
                 generateMonster();
                 spawnCounter = 0;
             }
@@ -454,29 +454,26 @@ public class HallPanel extends PlayablePanel{
 
     }
 
-    public void generateMonster() {
+    public void generateMonster(){
+
         Random random = new Random();
-        String pickMonster = monsterTypes[random.nextInt(monsterTypes.length)]; // Get a random monster type
-        // pickMonster = "Fighter";
+        String pickMonster = monsterTypes[random.nextInt(monsterTypes.length)]; // Get a random index
+//        pickMonster = "Sorcerer";
 
-        int locationX;
-        int locationY;
-        int worldX, worldY;
+        int locationX = random.nextInt(1,13) + 7;
+        int locationY = random.nextInt(1,14) + 2;
 
-        boolean positionValid = false;
+        int gX = (BasePanel.tileSize*locationX - 336)/48;
+        int gY = (BasePanel.tileSize*locationY - 96) / 48;
 
-        // Repeat until a valid spawn position is found
-        do {
-            locationX = random.nextInt(1, 13) + 7; // Generate random location
-            locationY = random.nextInt(1, 14) + 2;
-            worldX = BasePanel.tileSize * locationX;
-            worldY = BasePanel.tileSize * locationY;
+        setGridWorld();
 
-            // Check if the position is not occupied using isPositionOccupied
-            if (!this.getCollisionCheckerForHall().isPositionOccupied(worldX, worldY)) {
-                positionValid = true;
-            }
-        } while (!positionValid);
+        while (gridWorldAll[locationX - 8][locationY - 3] != 0 || getTileM().gridWorld[gX][gY] != null)  {
+            locationX = random.nextInt(1,13) + 7;
+            locationY = random.nextInt(1,14) + 2;
+            gX = (BasePanel.tileSize*locationX - 336)/48;
+            gY = (BasePanel.tileSize*locationY - 96) / 48;
+        }
 
 
         switch (pickMonster) {
@@ -501,11 +498,13 @@ public class HallPanel extends PlayablePanel{
 
             case "Archer":
                 MON_Archer archer = new MON_Archer(this);
-                archer.worldX = worldX;
-                archer.worldY = worldY;
+                archer.worldX = BasePanel.tileSize*locationX;
+                archer.worldY = BasePanel.tileSize*locationY;
+
                 archer.spawned = true;
 
                 for (int i = 0; i < getMonsters().length; i++) {
+
                     if (getMonsters()[i] == null) {
                         getMonsters()[i] = archer;
                         break;
@@ -513,34 +512,40 @@ public class HallPanel extends PlayablePanel{
                 }
 
                 monsters.add(archer);
+
                 break;
 
             case "Wizard":
+
                 if (!wizardChecker) {
                     MON_Wizard wizard = new MON_Wizard(this);
-                    wizard.worldX = worldX;
-                    wizard.worldY = worldY;
+                    wizard.worldX = BasePanel.tileSize * locationX;
+                    wizard.worldY = BasePanel.tileSize * locationY;
                     wizard.spawned = true;
 
+
                     for (int i = 0; i < getMonsters().length; i++) {
+
                         if (getMonsters()[i] == null) {
                             getMonsters()[i] = wizard;
                             break;
                         }
                     }
-
                     monsters.add(wizard);
                     wizardChecker = true;
                 }
+
                 break;
 
             case "Fighter":
+
                 MON_Fighter fighter = new MON_Fighter(this);
-                fighter.worldX = worldX;
-                fighter.worldY = worldY;
+                fighter.worldX = BasePanel.tileSize*locationX;
+                fighter.worldY = BasePanel.tileSize*locationY;
                 fighter.spawned = true;
 
                 for (int i = 0; i < getMonsters().length; i++) {
+
                     if (getMonsters()[i] == null) {
                         getMonsters()[i] = fighter;
                         break;
@@ -549,7 +554,6 @@ public class HallPanel extends PlayablePanel{
 
                 monsters.add(fighter);
                 break;
-
             default:
                 System.out.println("Unknown character type.");
         }
