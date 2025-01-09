@@ -402,7 +402,7 @@ public class HallPanel extends PlayablePanel{
             // Generate Monster
             spawnCounter++;
 
-            if (spawnCounter >= 1 * 5) {
+            if (spawnCounter >= 60 * 5) {
                 generateMonster();
                 spawnCounter = 0;
             }
