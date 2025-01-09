@@ -403,7 +403,7 @@ public class HallPanel extends PlayablePanel{
             // Generate Enchantment
             spawnEnchantmentCounter++;
 
-            if (spawnEnchantmentCounter >= 60 * 15) {
+            if (spawnEnchantmentCounter >= 6 * 15) {
                 tileM.generateEnchantment();
                 tileM.generateGold();
                 spawnEnchantmentCounter = 0;
