@@ -300,6 +300,11 @@ public class TileContainer {
 			tile[46].image = tableRightVertical;
 			tile[46].collision = true;
 
+			tile[47] = new Tile();
+			tile[47].image = pinkTile;
+			tile[47].collision = true;
+
+
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

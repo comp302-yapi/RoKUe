@@ -1,6 +1,7 @@
 package entity;
 
 import views.BasePanel;
+import views.BossPanel;
 import views.HallPanel;
 
 import java.awt.*;
@@ -139,6 +140,34 @@ public class Fireball extends Entity {
             // Check for tile or object collision
             collisionOn = false;
             hallPanel.getCollisionCheckerForHall().checkTile(this);
+            if (collisionOn) {
+                expired = true;
+            }
+        } else if (panel instanceof BossPanel bossPanel) {
+            // Check if arrow exceeded range
+            if (travelDistance >= range) {
+//                System.out.println("Expired2");
+                expired = true;
+            }
+
+            int monsterIdx = bossPanel.getCollisionCheckerForBoss().checkEntity(this, bossPanel.getMonsters());
+//            System.out.println(monsterIdx);
+//            System.out.println(hallPanel.getMonsters()[0]);
+            if (monsterIdx != 999 && !bossPanel.getMonsters()[monsterIdx].invincible) {
+
+                bossPanel.getMonsters()[monsterIdx].isBurning = true;
+                bossPanel.getBossMonsters().get(monsterIdx).isBurning = true;
+                bossPanel.getMonsters()[monsterIdx].damageReceived = true;
+                bossPanel.getBossMonsters().get(monsterIdx).damageReceived = true;
+
+                bossPanel.getPlayer().damageMonster(monsterIdx, this);
+//              System.out.println("Expired1");
+                expired = true;
+            }
+
+            // Check for tile or object collision
+            collisionOn = false;
+            bossPanel.getCollisionCheckerForBoss().checkTile(this);
             if (collisionOn) {
                 expired = true;
             }

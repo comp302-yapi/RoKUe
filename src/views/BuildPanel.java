@@ -34,6 +34,9 @@ public class BuildPanel extends NonPlayablePanel {
 	public boolean isHallValidated = true;
 	private boolean canClickNext = true; // Tıklama kontrolü için
 
+	private soundManager soundManager;
+
+
 	String errorMessageLine1 ="Hall does not fit the requirements";
 	String errorMessageLine2 = "Please add more objects";
 
@@ -57,6 +60,8 @@ public class BuildPanel extends NonPlayablePanel {
 		this.keyListener = new BuildPanelKeyListener(this);
 		this.addKeyListener(keyListener);
 
+		this.soundManager = managers.soundManager.getInstance();
+
 		currentHall = Hall.HallOfEarth;
 		this.objectsToDraw.clear();
 		this.getCurrentHallManager().objects.clear();
@@ -70,13 +75,17 @@ public class BuildPanel extends NonPlayablePanel {
 		return new BuildPanelData(
 				new ArrayList<>(getCurrentHallManager().objects),
 				currentHall,
-				isHallValidated
-		);
+				isHallValidated,
+				HallContainer.getHallOfEarth().objects,
+				HallContainer.getHallOfAir().objects,
+				HallContainer.getHallOfWater().objects,
+				HallContainer.getHallOfFire().objects
+				);
 	}
 
 	public void restoreData(BuildPanelData data) {
-		this.getCurrentHallManager().objects = new ArrayList<>(data.objectsToDraw);
 		this.currentHall = data.currentHall;
+		this.getCurrentHallManager().objects = new ArrayList<>(data.objectsToDraw);
 		this.isHallValidated = data.isHallValidated;
 	}
 

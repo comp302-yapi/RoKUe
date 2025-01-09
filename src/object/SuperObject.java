@@ -27,6 +27,8 @@ public class SuperObject implements Serializable {
 	public int armor;
 	public int damage;
 
+	public boolean bought;
+
 	private String imagePath, image2Path, image3Path;
 
 	// Field to track if the object contains a hidden rune

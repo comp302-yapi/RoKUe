@@ -5,6 +5,7 @@ import entity.GameState;
 import entity.Player;
 import enums.Hall;
 import listeners.BaseKeyListener;
+import managers.soundManager;
 import object.ENCH_Reveal;
 import object.OBJ_Door;
 import object.SuperObject;
@@ -23,9 +24,11 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
     private final HallPanel hallPanel;
     public boolean monsterSpawn = false;
     boolean isLureModeActive = false;
+    private soundManager soundManager;
 
     public HallPanelKeyListener(HallPanel hallPanel) {
         super();
+        this.soundManager = managers.soundManager.getInstance();
         this.hallPanel = hallPanel;
     }
 
@@ -39,14 +42,8 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
         if (code == KeyEvent.VK_O) {
             GameState gs = hallPanel.getViewManager().collectGameState();
             gs.currentMode = "Play";
-            hallPanel.getViewManager().saveGame("newSave.ser", gs);
+            hallPanel.getViewManager().saveGame("src/saves/newSave.ser", gs);
             System.out.println(gs);
-        }
-
-        if (code == KeyEvent.VK_L) {
-            System.out.println("Pressed Load");
-            GameState gs = hallPanel.getViewManager().loadGame("newSave.ser");
-            System.out.println(gs.toString());
         }
 
         if (code == KeyEvent.VK_UP) {
@@ -67,6 +64,7 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
         }
 
         if (code == KeyEvent.VK_SPACE) {
+            easterEgg();
             hallPanel.attackSoundPlayed = false;
             spacePressed = true;
             hallPanel.getPlayer().attacking = true;
@@ -103,6 +101,10 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
             player.xpCurrent = player.xpMax - 1;
             player.gold = 9999;
             player.life = 100;
+            hallPanel.easter1 = true;
+            hallPanel.easter2 = true;
+            hallPanel.easter3 = true;
+            hallPanel.easter4 = true;
 
         }
 
@@ -151,7 +153,6 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
         if (code == KeyEvent.VK_P) {
             hallPanel.setPaused(!hallPanel.isPaused());
         }
-
     }
 
     @Override
@@ -178,4 +179,20 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
             spacePressed = false;
         }
     }
+
+    public void easterEgg() {
+        if(hallPanel.getPlayer().screenX == 916 && hallPanel.getPlayer().screenY == 718) {
+            hallPanel.easter1 = true;
+        }
+        if(hallPanel.getPlayer().screenX == 916 && hallPanel.getPlayer().screenY == 128) {
+            hallPanel.easter2 = true;
+        }
+        if(hallPanel.getPlayer().screenX == 376 && hallPanel.getPlayer().screenY == 128) {
+            hallPanel.easter3 = true;
+        }
+        if(hallPanel.getPlayer().screenX == 376 && hallPanel.getPlayer().screenY == 718) {
+            hallPanel.easter4 = true;
+        }
+    }
+
 }

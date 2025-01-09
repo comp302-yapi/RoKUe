@@ -7,10 +7,13 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
+import monster.BOSS_Sorcerer;
 import monster.MON_Archer;
 import monster.MON_Fighter;
+import monster.MON_LandmineBot;
 import utils.ImageUtils;
 import views.BasePanel;
+import views.BossPanel;
 import views.HallPanel;
 import views.HomePanel;
 
@@ -21,6 +24,7 @@ public class Entity implements Serializable {
 
 	public BasePanel panel;
 	public int worldX, worldY;
+	public int defaultScreenX, defaultScreenY;
 	public int speed;
 	int tempScreenX = worldX;
 	int tempScreenY = worldY;
@@ -31,15 +35,29 @@ public class Entity implements Serializable {
 	public transient BufferedImage left1, left2, left3, left4, left5, left6, left7, left8, left9;
 	public transient BufferedImage right1, right2, right3, right4, right5, right6, right7, right8, right9;
 
-	public transient BufferedImage up_attacking1, up_attacking2, up_attacking3, up_attacking4, up_attacking5;
-	public transient BufferedImage down_attacking1, down_attacking2, down_attacking3, down_attacking4, down_attacking5;
-	public transient BufferedImage left_attacking1, left_attacking2, left_attacking3, left_attacking4, left_attacking5;
-	public transient BufferedImage right_attacking1, right_attacking2, right_attacking3, right_attacking4, right_attacking5;
+	public transient BufferedImage farLeft1, farLeft2, farLeft3, farLeft4, farLeft5, farLeft6, farLeft7, farLeft8, farLeft9;
+	public transient BufferedImage closeLeft1, closeLeft2, closeLeft3, closeLeft4, closeLeft5, closeLeft6, closeLeft7, closeLeft8, closeLeft9;
+	public transient BufferedImage farRight1, farRight2, farRight3, farRight4, farRight5, farRight6, farRight7, farRight8, farRight9;
+	public transient BufferedImage closeRight1, closeRight2, closeRight3, closeRight4, closeRight5, closeRight6, closeRight7, closeRight8, closeRight9;
+
+	public transient BufferedImage up_attacking1, up_attacking2, up_attacking3, up_attacking4, up_attacking5,
+	up_attacking6, up_attacking7, up_attacking8;
+	public transient BufferedImage down_attacking1, down_attacking2, down_attacking3, down_attacking4, down_attacking5,
+	down_attacking6, down_attacking7, down_attacking8;
+	public transient BufferedImage left_attacking1, left_attacking2, left_attacking3, left_attacking4, left_attacking5,
+	left_attacking6, left_attacking7, left_attacking8 ;
+	public transient BufferedImage right_attacking1, right_attacking2, right_attacking3, right_attacking4, right_attacking5,
+			right_attacking6, right_attacking7, right_attacking8;
 
 	public transient BufferedImage up_attacking_diamond1, up_attacking_diamond2, up_attacking_diamond3, up_attacking_diamond4, up_attacking_diamond5;
 	public transient BufferedImage down_attacking_diamond1, down_attacking_diamond2, down_attacking_diamond3, down_attacking_diamond4, down_attacking_diamond5;
 	public transient BufferedImage left_attacking_diamond1, left_attacking_diamond2, left_attacking_diamond3, left_attacking_diamond4, left_attacking_diamond5;
 	public transient BufferedImage right_attacking_diamond1, right_attacking_diamond2, right_attacking_diamond3, right_attacking_diamond4, right_attacking_diamond5;
+
+	public transient BufferedImage up_attacking_gold1, up_attacking_gold2, up_attacking_gold3, up_attacking_gold4, up_attacking_gold5;
+	public transient BufferedImage down_attacking_gold1, down_attacking_gold2, down_attacking_gold3, down_attacking_gold4, down_attacking_gold5;
+	public transient BufferedImage left_attacking_gold1, left_attacking_gold2, left_attacking_gold3, left_attacking_gold4, left_attacking_gold5;
+	public transient BufferedImage right_attacking_gold1, right_attacking_gold2, right_attacking_gold3, right_attacking_gold4, right_attacking_gold5;
 
 	public transient BufferedImage up_walking1, up_walking2, up_walking3, up_walking4, up_walking5, up_walking6, up_walking7, up_walking8, up_walking9;
 	public transient BufferedImage down_walking1, down_walking2, down_walking3, down_walking4, down_walking5, down_walking6, down_walking7, down_walking8, down_walking9;
@@ -94,6 +112,24 @@ public class Entity implements Serializable {
 			ironarmor_head_knife_right4, ironarmor_head_knife_right5, ironarmor_head_knife_right6, ironarmor_head_knife_right7,
 			ironarmor_head_knife_right8, ironarmor_head_knife_right9;
 
+	// Iron Armor Leg Knife
+	public transient BufferedImage ironarmor_leg_knife_up1, ironarmor_leg_knife_up2, ironarmor_leg_knife_up3,
+			ironarmor_leg_knife_up4, ironarmor_leg_knife_up5, ironarmor_leg_knife_up6, ironarmor_leg_knife_up7,
+			ironarmor_leg_knife_up8, ironarmor_leg_knife_up9;
+
+	public transient BufferedImage ironarmor_leg_knife_down1, ironarmor_leg_knife_down2, ironarmor_leg_knife_down3,
+			ironarmor_leg_knife_down4, ironarmor_leg_knife_down5, ironarmor_leg_knife_down6, ironarmor_leg_knife_down7,
+			ironarmor_leg_knife_down8, ironarmor_leg_knife_down9;
+
+	public transient BufferedImage ironarmor_leg_knife_left1, ironarmor_leg_knife_left2, ironarmor_leg_knife_left3,
+			ironarmor_leg_knife_left4, ironarmor_leg_knife_left5, ironarmor_leg_knife_left6, ironarmor_leg_knife_left7,
+			ironarmor_leg_knife_left8, ironarmor_leg_knife_left9;
+
+	public transient BufferedImage ironarmor_leg_knife_right1, ironarmor_leg_knife_right2, ironarmor_leg_knife_right3,
+			ironarmor_leg_knife_right4, ironarmor_leg_knife_right5, ironarmor_leg_knife_right6, ironarmor_leg_knife_right7,
+			ironarmor_leg_knife_right8, ironarmor_leg_knife_right9;
+
+
 	// Leather Armor Head Knife
 	public transient BufferedImage leatherarmor_head_knife_up1, leatherarmor_head_knife_up2, leatherarmor_head_knife_up3,
 			leatherarmor_head_knife_up4, leatherarmor_head_knife_up5, leatherarmor_head_knife_up6, leatherarmor_head_knife_up7,
@@ -110,6 +146,23 @@ public class Entity implements Serializable {
 	public transient BufferedImage leatherarmor_head_knife_right1, leatherarmor_head_knife_right2, leatherarmor_head_knife_right3,
 			leatherarmor_head_knife_right4, leatherarmor_head_knife_right5, leatherarmor_head_knife_right6, leatherarmor_head_knife_right7,
 			leatherarmor_head_knife_right8, leatherarmor_head_knife_right9;
+
+	// Leather Armor Leg Knife
+	public transient BufferedImage leatherarmor_leg_knife_up1, leatherarmor_leg_knife_up2, leatherarmor_leg_knife_up3,
+			leatherarmor_leg_knife_up4, leatherarmor_leg_knife_up5, leatherarmor_leg_knife_up6, leatherarmor_leg_knife_up7,
+			leatherarmor_leg_knife_up8, leatherarmor_leg_knife_up9;
+
+	public transient BufferedImage leatherarmor_leg_knife_down1, leatherarmor_leg_knife_down2, leatherarmor_leg_knife_down3,
+			leatherarmor_leg_knife_down4, leatherarmor_leg_knife_down5, leatherarmor_leg_knife_down6, leatherarmor_leg_knife_down7,
+			leatherarmor_leg_knife_down8, leatherarmor_leg_knife_down9;
+
+	public transient BufferedImage leatherarmor_leg_knife_left1, leatherarmor_leg_knife_left2, leatherarmor_leg_knife_left3,
+			leatherarmor_leg_knife_left4, leatherarmor_leg_knife_left5, leatherarmor_leg_knife_left6, leatherarmor_leg_knife_left7,
+			leatherarmor_leg_knife_left8, leatherarmor_leg_knife_left9;
+
+	public transient BufferedImage leatherarmor_leg_knife_right1, leatherarmor_leg_knife_right2, leatherarmor_leg_knife_right3,
+			leatherarmor_leg_knife_right4, leatherarmor_leg_knife_right5, leatherarmor_leg_knife_right6, leatherarmor_leg_knife_right7,
+			leatherarmor_leg_knife_right8, leatherarmor_leg_knife_right9;
 
 	// Leather Armor Torso Knife
 	public transient BufferedImage leatherarmor_torso_knife_up1, leatherarmor_torso_knife_up2, leatherarmor_torso_knife_up3,
@@ -142,8 +195,35 @@ public class Entity implements Serializable {
 			ironarmor_head_right4, ironarmor_head_right5, ironarmor_head_right6, ironarmor_head_right7,
 			ironarmor_head_right8, ironarmor_head_right9;
 
+	// LEG
+	public transient BufferedImage ironarmor_leg_up1, ironarmor_leg_up2, ironarmor_leg_up3, ironarmor_leg_up4,
+			ironarmor_leg_up5, ironarmor_leg_up6, ironarmor_leg_up7, ironarmor_leg_up8, ironarmor_leg_up9;
+	public transient BufferedImage ironarmor_leg_down1, ironarmor_leg_down2, ironarmor_leg_down3,
+			ironarmor_leg_down4, ironarmor_leg_down5, ironarmor_leg_down6, ironarmor_leg_down7,
+			ironarmor_leg_down8, ironarmor_leg_down9;
+	public transient BufferedImage ironarmor_leg_left1, ironarmor_leg_left2, ironarmor_leg_left3,
+			ironarmor_leg_left4, ironarmor_leg_left5, ironarmor_leg_left6, ironarmor_leg_left7,
+			ironarmor_leg_left8, ironarmor_leg_left9;
+	public transient BufferedImage ironarmor_leg_right1, ironarmor_leg_right2, ironarmor_leg_right3,
+			ironarmor_leg_right4, ironarmor_leg_right5, ironarmor_leg_right6, ironarmor_leg_right7,
+			ironarmor_leg_right8, ironarmor_leg_right9;
+
 
 	// LEATHER ARMOR
+
+	// LEG
+	public transient BufferedImage leatherarmor_leg_up1, leatherarmor_leg_up2, leatherarmor_leg_up3, leatherarmor_leg_up4,
+			leatherarmor_leg_up5, leatherarmor_leg_up6, leatherarmor_leg_up7, leatherarmor_leg_up8, leatherarmor_leg_up9;
+	public transient BufferedImage leatherarmor_leg_down1, leatherarmor_leg_down2, leatherarmor_leg_down3,
+			leatherarmor_leg_down4, leatherarmor_leg_down5, leatherarmor_leg_down6, leatherarmor_leg_down7,
+			leatherarmor_leg_down8, leatherarmor_leg_down9;
+	public transient BufferedImage leatherarmor_leg_left1, leatherarmor_leg_left2, leatherarmor_leg_left3,
+			leatherarmor_leg_left4, leatherarmor_leg_left5, leatherarmor_leg_left6, leatherarmor_leg_left7,
+			leatherarmor_leg_left8, leatherarmor_leg_left9;
+	public transient BufferedImage leatherarmor_leg_right1, leatherarmor_leg_right2, leatherarmor_leg_right3,
+			leatherarmor_leg_right4, leatherarmor_leg_right5, leatherarmor_leg_right6, leatherarmor_leg_right7,
+			leatherarmor_leg_right8, leatherarmor_leg_right9;
+
 
 	// TORSO
 	public transient BufferedImage leatherarmor_torso_up1, leatherarmor_torso_up2, leatherarmor_torso_up3,
@@ -185,6 +265,7 @@ public class Entity implements Serializable {
 	public Rectangle attackArea = new Rectangle(0, 0, 48, 48);
 
 	public boolean collisionOn = false;
+	public boolean stopMovingAttacking;
 	public int actionLockCounter = 0;
 	public boolean invincible = false;
 	public int invincibleCounter;
@@ -235,6 +316,10 @@ public class Entity implements Serializable {
 	}
 
 	public boolean isAttackingFighter() {
+		return false;
+	}
+
+	public boolean isAttackingLandmineBot() {
 		return false;
 	}
 
@@ -337,8 +422,14 @@ public class Entity implements Serializable {
 				p.getCollisionCheckerForHome().checkTile(this);
 				contactPlayer = p.getCollisionCheckerForHome().checkPlayer(this);
 
-			}
+			} else if (panel instanceof BossPanel b) {
+				collisionOn = false;
+//				System.out.println("Checking for boss...");
+				b.getCollisionCheckerForBoss().checkTile(this);
+				b.getCollisionCheckerForBoss().checkEntity(this, panel.getMonsters());
+				contactPlayer = b.getCollisionCheckerForBoss().checkPlayer(this);
 
+			}
 			else {
 				collisionOn = false;
 				panel.getCollisionChecker().checkTile(this);
@@ -360,13 +451,27 @@ public class Entity implements Serializable {
 				}
 			}
 
-			// IF COLLISION FALSE, PLAYER CAN MOVE
-			if (!collisionOn) {
-				switch (direction) {
-					case "up" -> worldY -= speed;
-					case "down" -> worldY += speed;
-					case "left" -> worldX -= speed;
-					case "right" -> worldX += speed;
+			if (this instanceof BOSS_Sorcerer) {
+				if (!collisionOn && !((BOSS_Sorcerer) this).attacking) {
+				}
+			} else if (this instanceof MON_LandmineBot) {
+				if (!collisionOn && !((MON_LandmineBot) this).attacking) {
+					switch (direction) {
+						case "up" -> worldY -= speed;
+						case "down" -> worldY += speed;
+						case "left" -> worldX -= speed;
+						case "right" -> worldX += speed;
+					}
+				}
+			}
+			else {
+				if (!collisionOn) {
+					switch (direction) {
+						case "up" -> worldY -= speed;
+						case "down" -> worldY += speed;
+						case "left" -> worldX -= speed;
+						case "right" -> worldX += speed;
+					}
 				}
 			}
 
@@ -395,10 +500,6 @@ public class Entity implements Serializable {
 		tempScreenX = getBufferX();
 		tempScreenY = getBufferY();
 
-		if (image == null) {
-			System.out.println(this.name);
-		}
-
 		if (invincible) {
 			hpBarOn = true;
 			hpBarCounter = 0;
@@ -426,7 +527,26 @@ public class Entity implements Serializable {
 		}
 
 		if (image != null) {
-			g2.drawImage(image, tempScreenX, tempScreenY, image.getWidth(), image.getHeight(), null);
+			if (this instanceof BOSS_Sorcerer boss) {
+				g2.drawImage(image, tempScreenX- (95 * 2), tempScreenY- (190 * 2), image.getWidth(), image.getHeight(), null);
+
+				int collisionX = tempScreenX + solidArea.x;
+				int collisionY = tempScreenY + solidArea.y;
+
+//				g2.setColor(Color.RED);
+//				g2.drawRect(collisionX, collisionY, solidArea.width, solidArea.height);
+
+			} else if (this instanceof MON_LandmineBot) {
+				g2.drawImage(image, tempScreenX- (95), tempScreenY - (140), image.getWidth(), image.getHeight(), null);
+
+				int collisionX = tempScreenX + solidArea.x;
+				int collisionY = tempScreenY + solidArea.y;
+//				g2.setColor(Color.RED);
+//				g2.drawRect(collisionX, collisionY, solidArea.width, solidArea.height);
+
+			} else {
+				g2.drawImage(image, tempScreenX, tempScreenY, image.getWidth(), image.getHeight(), null);
+			}
 		}
 
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));

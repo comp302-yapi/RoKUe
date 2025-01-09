@@ -3,6 +3,7 @@ package views;
 import containers.HallContainer;
 import containers.TileContainer;
 import controllers.HallController;
+import data.BuildPanelData;
 import data.HallPanelData;
 import entity.Arrow;
 import entity.Entity;
@@ -12,6 +13,7 @@ import enums.Hall;
 import listeners.keylisteners.HallPanelKeyListener;
 import listeners.mouselisteners.HallPanelMouseListener;
 import managers.*;
+import monster.BOSS_Sorcerer;
 import monster.MON_Archer;
 import monster.MON_Fighter;
 import monster.MON_Wizard;
@@ -49,7 +51,7 @@ public class HallPanel extends PlayablePanel{
     private final ImageIcon backgroundWater = new ImageIcon(getClass().getResource("/res/tiles/water.png"));
     private final ImageIcon backgroundAir = new ImageIcon(getClass().getResource("/res/tiles/glacial_mountains.png"));
     private final ImageIcon backgroundFire = new ImageIcon(getClass().getResource("/res/tiles/fire.png"));
-    public soundManager soundManager = new soundManager();
+    public soundManager soundManager;
     public boolean attackSoundPlayed;
     public boolean checkInventoryForReveal = false;
     public boolean checkInventoryForCloak = false;
@@ -60,8 +62,8 @@ public class HallPanel extends PlayablePanel{
     private int shakeDuration = 0;
     private Random shakeRandom = new Random();
     public Font maruMonica;
-    
-    public final int secondPerObject = 5; 
+
+    public final int secondPerObject = 5;
 
 
     // SUPERPOWERS
@@ -93,6 +95,8 @@ public class HallPanel extends PlayablePanel{
     public int shakeOffset = 0;
     public int shakingIndex = -1;
 
+    // EASTER EGG
+    public boolean easter1, easter2, easter3, easter4;
 
     // Set the new time
 
@@ -115,6 +119,7 @@ public class HallPanel extends PlayablePanel{
         this.keyListener = new HallPanelKeyListener(this);
         this.addKeyListener(keyListener);
         getPlayer().addKeyListener(keyListener);
+        this.soundManager = managers.soundManager.getInstance();
 
         Player player = Player.getInstance(this);
         player.addKeyListener(keyListener);
@@ -203,12 +208,17 @@ public class HallPanel extends PlayablePanel{
                 this.getPlayer().armorOnIronHead,
                 this.getPlayer().armorOnIronTorso,
                 this.getPlayer().armorOnLeatherHead,
-                this.getPlayer().armorOnLeatherTorso
+                this.getPlayer().armorOnLeatherTorso,
+                HallContainer.getHallOfEarth().isOpened,
+                HallContainer.getHallOfAir().isOpened,
+                HallContainer.getHallOfWater().isOpened,
+                HallContainer.getHallOfFire().isOpened
                 );
     }
 
-    public void restoreData(HallPanelData data) {
+    public void restoreData(HallPanelData data, BuildPanelData buildData, String currentMode) {
         this.currentHall = data.currentHall;
+
         this.monsters.clear();
         this.monsters.addAll(data.monsters);
 
@@ -265,17 +275,45 @@ public class HallPanel extends PlayablePanel{
         HallContainer.getHallOfWater().objects.clear();
         HallContainer.getHallOfFire().objects.clear();
 
-        this.tileM = HallContainer.getHallOfEarth();
-        this.tileM.objects = data.objectsEarth;
+        if (currentMode.equals("Build")) {
+            this.tileM = HallContainer.getHallOfEarth();
+//            System.out.println("PRINTING EARTH OBJECTS:" + buildData.objectsEarth.getFirst());
+            this.tileM.objects = buildData.objectsEarth;
 
-        this.tileM = HallContainer.getHallOfAir();
-        this.tileM.objects = data.objectsAir;
+            this.tileM = HallContainer.getHallOfAir();
+            this.tileM.objects = buildData.objectsAir;
 
-        this.tileM = HallContainer.getHallOfWater();
-        this.tileM.objects = data.objectsWater;
+            this.tileM = HallContainer.getHallOfWater();
+            this.tileM.objects = buildData.objectsWater;
 
-        this.tileM = HallContainer.getHallOfFire();
-        this.tileM.objects = data.objectsFire;
+            this.tileM = HallContainer.getHallOfFire();
+            this.tileM.objects = buildData.objectsFire;
+
+        } else {
+            this.tileM = HallContainer.getHallOfEarth();
+            this.tileM.objects = data.objectsEarth;
+            if (data.earthOpened) {
+                this.tileM.openDoor();
+            }
+
+            this.tileM = HallContainer.getHallOfAir();
+            this.tileM.objects = data.objectsAir;
+            if (data.airOpened) {
+                this.tileM.openDoor();
+            }
+
+            this.tileM = HallContainer.getHallOfWater();
+            this.tileM.objects = data.objectsWater;
+            if (data.waterOpened) {
+                this.tileM.openDoor();
+            }
+
+            this.tileM = HallContainer.getHallOfFire();
+            this.tileM.objects = data.objectsFire;
+            if (data.fireOpened) {
+                this.tileM.openDoor();
+            }
+        }
 
         switch (currentHall) {
             case HallOfEarth -> {
@@ -298,7 +336,6 @@ public class HallPanel extends PlayablePanel{
         return this.monsters.toArray(new Entity[0]);
     }
 
-
     @Override
     public void addNotify() {
         super.addNotify();
@@ -310,7 +347,7 @@ public class HallPanel extends PlayablePanel{
         if (!isPaused()) {
         	
             if (TimeManager.getInstance().timer == null) {
-            	
+
             	timeLeft = this.getSuperObjectLength() * secondPerObject;;
                 
                 TimeManager.getInstance().startTimer(timeLeft);                    
@@ -381,11 +418,9 @@ public class HallPanel extends PlayablePanel{
         }
         
         else {
-        	
             if(!TimeManager.getInstance().timeStopped) {
             	TimeManager.getInstance().stopTimer();
             }
-        	
         }
     }
 
@@ -443,7 +478,27 @@ public class HallPanel extends PlayablePanel{
             }
         } while (!positionValid);
 
+
         switch (pickMonster) {
+            case "Sorcerer":
+                BOSS_Sorcerer boss = new BOSS_Sorcerer(this);
+                boss.worldX = BasePanel.tileSize*locationX;
+                boss.worldY = BasePanel.tileSize*locationY;
+
+                boss.spawned = true;
+
+                for (int i = 0; i < getMonsters().length; i++) {
+
+                    if (getMonsters()[i] == null) {
+                        getMonsters()[i] = boss;
+                        break;
+                    }
+                }
+
+                monsters.add(boss);
+
+                break;
+
             case "Archer":
                 MON_Archer archer = new MON_Archer(this);
                 archer.worldX = worldX;
@@ -510,7 +565,6 @@ public class HallPanel extends PlayablePanel{
         }
     }
 
-
     public CollisionCheckerForHall getCollisionCheckerForHall(){return this.cChecker;}
 
     public void setPaused(boolean paused) {
@@ -519,6 +573,14 @@ public class HallPanel extends PlayablePanel{
 
     public boolean isPaused() {
         return isPaused;
+    }
+
+    public void playMusic(int i) {
+
+        soundManager.setFile(i);
+        soundManager.play();
+        soundManager.loop();
+
     }
 
     public void paintComponent(Graphics g) {
@@ -533,10 +595,8 @@ public class HallPanel extends PlayablePanel{
 
         long drawStart = 0;
         drawStart = System.nanoTime();
-
    
         update();
-        
 
         switch (currentHall) {
             case HallOfEarth -> {
@@ -653,8 +713,6 @@ public class HallPanel extends PlayablePanel{
                 g2.drawString(timerText, this.getWidth()-250, 40);
             }
             case HallOfFire -> {
-
-
 
                 // Repaint game
                 g2.setFont(arial_40);

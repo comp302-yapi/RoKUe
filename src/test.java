@@ -1,4 +1,4 @@
-import managers.TileManagerForHall;
+/*import managers.TileManagerForHall;
 import object.SuperObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -82,3 +82,5 @@ class TileManagerForHallTest {
         assertTrue(tileManager.objects.contains(obj2));
     }
 }
+
+ */

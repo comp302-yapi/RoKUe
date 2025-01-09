@@ -1,5 +1,6 @@
 package entity;
 
+import data.BossPanelData;
 import data.BuildPanelData;
 import data.HallPanelData;
 import data.HomePanelData;
@@ -13,18 +14,24 @@ public class GameState implements Serializable {
     private HallPanelData hallPanelData;
     private BuildPanelData buildPanelData;
     private HomePanelData homePanelData;
+    private BossPanelData bossPanelData;
     public String currentMode;
 
     // Constructor
-    public GameState(HallPanelData hallPanelData, BuildPanelData buildPanelData, HomePanelData homePanelData) {
+    public GameState(HallPanelData hallPanelData, BuildPanelData buildPanelData, HomePanelData homePanelData, BossPanelData bossPanelData) {
         this.hallPanelData = hallPanelData;
         this.buildPanelData = buildPanelData;
         this.homePanelData = homePanelData;
+        this.bossPanelData = bossPanelData;
     }
 
     // Getters
     public HallPanelData getHallPanelData() {
         return hallPanelData;
+    }
+
+    public BossPanelData getBossPanelData() {
+        return bossPanelData;
     }
 
     public BuildPanelData getBuildPanelData() {
@@ -33,15 +40,7 @@ public class GameState implements Serializable {
 
     public HomePanelData getHomePanelData() {return homePanelData;}
 
-
-    // Setters (if needed)
-    public void setHallPanelData(HallPanelData hallPanelData) {
-        this.hallPanelData = hallPanelData;
-    }
-
-    public void setBuildPanelData(BuildPanelData buildPanelData) {
-        this.buildPanelData = buildPanelData;
-    }
+    public String getCurrentMode() {return currentMode;}
 
     @Override
     public String toString() {
@@ -49,6 +48,7 @@ public class GameState implements Serializable {
                 "\n  HallPanelData: " + (hallPanelData != null ? hallPanelData.toString() : "null") +
                 "\n  BuildPanelData: " + (buildPanelData != null ? buildPanelData.toString() : "null") +
                 "\n  HomePanelData: " + (homePanelData != null ? homePanelData.toString() : "null") +
+                "\n  BossPanelData: " + (bossPanelData != null ? bossPanelData.toString() : "null") +
                 "\n  Current Mode: " + currentMode +
                 "\n}";
     }
