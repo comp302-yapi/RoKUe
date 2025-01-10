@@ -80,7 +80,7 @@ public class HallPanelMouseListener extends BaseMouseListener implements Seriali
 
                 hallPanel.getTileM().enchantments.remove(clickedEnchantment);
 
-            } else if (clickedEnchantment instanceof ENCH_ExtraLife && hallPanel.getPlayer().life < 6){
+            } else if (clickedEnchantment instanceof ENCH_ExtraLife && hallPanel.getPlayer().life < hallPanel.getPlayer().maxLife){
 
                 hallPanel.getTileM().enchantments.remove(clickedEnchantment);
                 hallPanel.getPlayer().life += 1;

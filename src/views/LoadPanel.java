@@ -5,6 +5,8 @@ import listeners.keylisteners.TitlePanelKeyListener;
 import managers.ViewManager;
 import managers.soundManager;
 import utils.PanelUtils;
+
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
@@ -13,6 +15,9 @@ public class LoadPanel extends NonPlayablePanel {
     private int commandNum;
     private final LoadPanelKeyListener loadPanelKeyListener;
     private soundManager soundManager;
+    private ImageIcon backgroundImage;
+    private final ImageIcon menuScreen = new ImageIcon(getClass().getResource("/res/tiles/MenuScreen.png"));
+    ImageIcon scaledIcon;
 
     public LoadPanel(ViewManager viewManager) {
         super(viewManager);
@@ -35,23 +40,28 @@ public class LoadPanel extends NonPlayablePanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
+        // Set background image
+        backgroundImage = menuScreen;
+        Image scaledImage = backgroundImage.getImage().getScaledInstance(1600, 1000, Image.SCALE_SMOOTH);
+        scaledIcon = new ImageIcon(scaledImage);
+
         drawTitleScreen(g2, this);
     }
 
     public void drawTitleScreen(Graphics2D g2, BasePanel panel) {
-        g2.setColor(new Color(62, 41, 52));
+        g2.setColor(Color.WHITE);
         g2.fillRect(0, 0, BasePanel.screenWidth, BasePanel.screenHeight);
+
+        // Background Image
+        g2.drawImage(scaledIcon.getImage(), 0, 0, null);
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 72F));
         String title = "Choose Save";
         int x, y;
-        x = PanelUtils.getXForCenteredText(title, panel, g2) - BasePanel.tileSize * 2;
+        x = 200;
         y = BasePanel.tileSize * 3;
 
-        g2.setColor(new Color(40, 35, 38));
-        g2.drawString(title, x + 5, y + 5);
-
-        g2.setColor(new Color(26, 17, 23));
+        g2.setColor(Color.white);
         g2.drawString(title, x, y);
 
         // Fetch save files
@@ -64,28 +74,41 @@ public class LoadPanel extends NonPlayablePanel {
         if (saveFiles != null) {
             for (int i = 0; i < saveFiles.length; i++) {
                 String saveFile = saveFiles[i];
-                x = PanelUtils.getXForCenteredText(saveFile, panel, g2) - BasePanel.tileSize * 2;
-                g2.drawString(saveFile, x, y);
+                x = 200;
+
                 if (commandNum == i) {
+                    // Special effect for the selected save file
+                    g2.setColor(Color.YELLOW); // Highlight color
+                    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 56F)); // Larger font size
                     g2.drawString(">", x - BasePanel.tileSize, y);
+                } else {
+                    g2.setColor(Color.white); // Default color
+                    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F)); // Default font size
                 }
+
+                g2.drawString(saveFile, x, y);
                 y += BasePanel.tileSize * 2;
             }
         }
 
         // Draw "Go Back" button in bottom right corner
         String goBackText = "Go Back";
-        x = BasePanel.screenWidth - 175 - BasePanel.tileSize * 2;
+        x = 200;
         y = BasePanel.screenHeight - BasePanel.tileSize * 2;
 
-        g2.setColor(new Color(26, 17, 23));
-        g2.drawString(goBackText, x, y);
-
-        // Highlight "Go Back" if selected
         if (commandNum == (saveFiles != null ? saveFiles.length : 0)) {
+            // Special effect for the selected "Go Back" button
+            g2.setColor(Color.white); // Highlight color
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 56F)); // Larger font size
             g2.drawString(">", x - BasePanel.tileSize, y);
+        } else {
+            g2.setColor(Color.white); // Default color
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F)); // Default font size
         }
+
+        g2.drawString(goBackText, x, y);
     }
+
     public static String[] listSaveFiles() {
         File saveDir = new File("src/saves");
 
