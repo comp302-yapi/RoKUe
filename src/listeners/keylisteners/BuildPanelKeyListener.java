@@ -37,30 +37,6 @@ public class BuildPanelKeyListener extends BaseKeyListener implements Serializab
 			buildPanel.getViewManager().saveGame("src/saves/newSave.ser", gs);
 			System.out.println(gs);
 		}
-
-
-        if (code == KeyEvent.VK_ENTER) {
-        	
-        	switch(buildPanel.getCurrentHall()) {
-        	
-
-        	case HallOfWater:
-        		buildPanel.setCurrentHall(Hall.HallOfEarth);
-        		break;
-        	case HallOfEarth:
-        		buildPanel.setCurrentHall(Hall.HallOfAir);
-        		break;
-        	case HallOfAir:
-        		buildPanel.setCurrentHall(Hall.HallOfFire);
-        		break;
-        	case HallOfFire:
-        		buildPanel.getViewManager().switchTo("GamePanel", true);
-        		break;
-
-        	}
-
-        }
-		
 	}
 
 	@Override
