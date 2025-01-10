@@ -553,7 +553,7 @@ public class MON_Archer extends Entity {
 		int playerX = panel.getPlayer().screenX;
 		int playerY = panel.getPlayer().screenY;
 
-		int arrowThreshold = 5;
+		int arrowThreshold = 48;
 
 		if (Math.abs(playerY - worldY) > arrowThreshold) {
 			return playerY > worldY ? "down" : "up";

@@ -207,7 +207,7 @@ public class TileManagerForHall implements Serializable {
 
 		// Randomly pick a type of object
 		SuperObject obj;
-		int randomType = random.nextInt(4);
+		int randomType = random.nextInt(5);
 //		randomType = 0;
 
 		switch (randomType) {
@@ -215,6 +215,7 @@ public class TileManagerForHall implements Serializable {
 			case 1 -> obj = new ENCH_Cloak();
 			case 2 -> obj = new ENCH_LuringGem();
 			case 3 -> obj = new ENCH_ExtraLife();
+			case 4 -> obj = new ENCH_AddTime();
 			default -> throw new IllegalStateException("Unexpected value: " + randomType);
 		}
 

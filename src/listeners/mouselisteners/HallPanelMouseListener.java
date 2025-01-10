@@ -5,6 +5,7 @@ import controllers.HallController;
 import enums.Hall;
 import listeners.BaseMouseListener;
 import managers.TileManagerForHall;
+import managers.TimeManager;
 import object.*;
 import views.HallPanel;
 
@@ -79,7 +80,7 @@ public class HallPanelMouseListener extends BaseMouseListener implements Seriali
 
                 hallPanel.getTileM().enchantments.remove(clickedEnchantment);
 
-            } else if (clickedEnchantment instanceof ENCH_ExtraLife && hallPanel.getPlayer().life < 6){
+            } else if (clickedEnchantment instanceof ENCH_ExtraLife && hallPanel.getPlayer().life < hallPanel.getPlayer().maxLife){
 
                 hallPanel.getTileM().enchantments.remove(clickedEnchantment);
                 hallPanel.getPlayer().life += 1;
@@ -90,6 +91,15 @@ public class HallPanelMouseListener extends BaseMouseListener implements Seriali
                 System.out.println("Player Gold: " + hallPanel.getPlayer().gold);
                 hallPanel.getTileM().enchantments.remove(clickedEnchantment);
             }
+
+            else if (clickedEnchantment instanceof ENCH_AddTime) {
+                int tempTime = TimeManager.getInstance().timeLeft;
+                TimeManager.getInstance().stopTimer();
+                TimeManager.getInstance().startTimer(tempTime + 5);
+                hallPanel.getTileM().enchantments.remove(clickedEnchantment);
+
+            }
+
         }
 
     }
