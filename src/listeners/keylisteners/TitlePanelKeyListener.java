@@ -25,13 +25,13 @@ public class TitlePanelKeyListener extends BaseKeyListener implements Serializab
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        // W tuşuyla yukarı hareket
-        if (code == KeyEvent.VK_W && titlePanel.getCommandNum() > 0) {
+        // Yukarı ok tuşuyla yukarı hareket
+        if (code == KeyEvent.VK_UP && titlePanel.getCommandNum() > 0) {
             titlePanel.setCommandNum(titlePanel.getCommandNum() - 1);
         }
 
-        // S tuşuyla aşağı hareket (artık sınır 3)
-        if (code == KeyEvent.VK_S && titlePanel.getCommandNum() < 3) {
+        // Aşağı ok tuşuyla aşağı hareket (artık sınır 3)
+        if (code == KeyEvent.VK_DOWN && titlePanel.getCommandNum() < 3) {
             titlePanel.setCommandNum(titlePanel.getCommandNum() + 1);
         }
 
