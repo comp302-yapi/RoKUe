@@ -23,23 +23,16 @@ import managers.TimeManager;
 public class HallController implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    private final HallValidator hallValidator;
     private final BuildPanel buildPanel;
     public boolean isLureModeActive = false;
-    
+
 
 
     public HallController(BuildPanel buildPanel) {
         this.buildPanel = buildPanel;
-        hallValidator = new HallValidator();
-
     }
 
     public void addObject(TileManagerForHall currentHall, SuperObject obj, int x, int y) {
-    	
-
-    	
     	currentHall.addObject(obj, x, y);
     }
 
@@ -49,7 +42,7 @@ public class HallController implements Serializable {
                 if (direction == BuildDirection.Backward) {
                     return true;
                 }
-                else if(hallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
+                else if(HallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
                     buildPanel.setCurrentHall(Hall.HallOfAir);
                     return true;
                 }
@@ -62,7 +55,7 @@ public class HallController implements Serializable {
                     buildPanel.setCurrentHall(Hall.HallOfEarth);
                     return true;
                 }
-                else if(hallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
+                else if(HallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
                     buildPanel.setCurrentHall(Hall.HallOfWater);
                     return true;
                 }
@@ -76,7 +69,7 @@ public class HallController implements Serializable {
                     buildPanel.setCurrentHall(Hall.HallOfAir);
                     return true;
                 }
-                else if(hallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
+                else if(HallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
                     buildPanel.setCurrentHall(Hall.HallOfFire);
                     return true;
                 }
@@ -90,7 +83,7 @@ public class HallController implements Serializable {
                     buildPanel.setCurrentHall(Hall.HallOfWater);
                     return true;
                 }
-                else if(hallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
+                else if(HallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
                     buildPanel.getViewManager().switchTo("HallPanel", true);
                     HallController.assignRunesToObjects(HallContainer.getHallOfEarth());
                     return true;
