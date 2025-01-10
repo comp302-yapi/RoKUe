@@ -348,7 +348,7 @@ public class HallPanel extends PlayablePanel{
         	
             if (TimeManager.getInstance().timer == null && !TimeManager.getInstance().timeStopped) {
 
-            	timeLeft = this.getSuperObjectLength() * secondPerObject;;
+            	timeLeft = this.getSuperObjectLength() * secondPerObject;
                 
                 TimeManager.getInstance().startTimer(timeLeft);                    
             }
@@ -1219,7 +1219,7 @@ public class HallPanel extends PlayablePanel{
         }
     }
 
-    public void checkInventoryForReveal() {
+    public void checkInventoryForReveal() { 
 
         boolean hasEnchantment = false;
 
@@ -1227,11 +1227,15 @@ public class HallPanel extends PlayablePanel{
             if (enhancement instanceof ENCH_Reveal) {
                 hasEnchantment = true;
                 getPlayer().inventory.remove(enhancement);
+                getPlayer().updateInventory();
                 break;
             }
         }
         System.out.println("Checked " + hasEnchantment);
-        this.checkInventoryForReveal = hasEnchantment;
+        this.checkInventoryForReveal = hasEnchantment; 
+        
+       
+        
     }
 
     public void checkInventoryForCloak() {
@@ -1242,6 +1246,7 @@ public class HallPanel extends PlayablePanel{
             if (enhancement instanceof ENCH_Cloak) {
                 hasEnchantment = true;
                 getPlayer().inventory.remove(enhancement);
+                getPlayer().updateInventory();
                 getPlayer().invincibleCloak = true;
                 break;
             }
@@ -1258,6 +1263,7 @@ public class HallPanel extends PlayablePanel{
                 hasEnchantment = true;
 
                 getPlayer().inventory.remove(enhancement);
+                getPlayer().updateInventory();
 
                 break;
             }

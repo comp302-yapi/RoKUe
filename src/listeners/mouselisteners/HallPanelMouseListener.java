@@ -80,7 +80,9 @@ public class HallPanelMouseListener extends BaseMouseListener implements Seriali
             if (clickedEnchantment instanceof ENCH_Cloak || clickedEnchantment instanceof ENCH_Reveal || clickedEnchantment instanceof ENCH_LuringGem) {
 
                 hallPanel.getPlayer().inventory.add(clickedEnchantment);
+                hallPanel.getPlayer().updateInventory();
 
+                /*
                 int num = hallPanel.getPlayer().inventoryLength() - 1;
 
                 int numForX = num % 5;
@@ -88,10 +90,11 @@ public class HallPanelMouseListener extends BaseMouseListener implements Seriali
 
                 clickedEnchantment.worldX = (48 * (23 + numForX)) + 16;
                 clickedEnchantment.worldY = (48 * (7 + (numForY)));
+                */
                 
                 System.out.println("Ex: " + clickedEnchantment.worldX + " Ey: " + clickedEnchantment.worldY);
 
-                hallPanel.getTileM().enchantments.remove(clickedEnchantment);
+                hallPanel.getTileM().enchantments.remove(clickedEnchantment); 
 
             } else if (clickedEnchantment instanceof ENCH_ExtraLife && hallPanel.getPlayer().life < hallPanel.getPlayer().maxLife){
 
