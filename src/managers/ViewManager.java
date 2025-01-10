@@ -64,6 +64,10 @@ public class ViewManager implements Runnable, Serializable {
 
             frame.remove(currentPanel);
         }
+        //HelpScreen
+        if (panelToSwitch instanceof HelpPanel) {
+            panelToSwitch.requestFocusInWindow();
+        }
 
         // If switching back to TitlePanel, reset and reload panels
         if (panelToSwitch instanceof TitlePanel) {
@@ -79,6 +83,8 @@ public class ViewManager implements Runnable, Serializable {
             JPanel hallPanel = new HallPanel(this);
             JPanel bossPanel = new BossPanel(this);
             JPanel loadPanel = new LoadPanel(this);
+            JPanel HelpPanel = new HelpPanel(this);
+
 
 
             addPanel("TitlePanel", titlePanel);
@@ -87,6 +93,8 @@ public class ViewManager implements Runnable, Serializable {
             addPanel("HallPanel", hallPanel);
             addPanel("BossPanel", bossPanel);
             addPanel("LoadPanel", loadPanel);
+            addPanel("HelpPanel", HelpPanel);
+
 
             panelToSwitch = titlePanel;
         }
