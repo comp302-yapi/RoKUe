@@ -850,13 +850,25 @@ public class HallPanel extends PlayablePanel{
             getPlayer().fireball.draw(g2);
         }
 
-        drawInventory(g2);
-
+        drawInventory(g2); 
+    
         drawCharacterInfo(g2);
+        
+        
+        
+
 
         if (isPaused()) {
             drawPauseScreen(g2);
+            
+            g2.drawImage(TileContainer.getTile()[50].image, 1120, 125, BasePanel.tileSize, BasePanel.tileSize, null);
         }
+        else {
+        	
+        	g2.drawImage(TileContainer.getTile()[49].image, 1120, 125, BasePanel.tileSize, BasePanel.tileSize, null);
+        }
+        
+        g2.drawImage(TileContainer.getTile()[48].image, 1190, 125, BasePanel.tileSize, BasePanel.tileSize, null);
 
         // DEBUGGING
 //      long drawEnd = System.nanoTime();

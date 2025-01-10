@@ -29,7 +29,7 @@ public class TitlePanel extends NonPlayablePanel {
         Image scaledImage = backgroundImage.getImage().getScaledInstance(1600, 1000, Image.SCALE_SMOOTH);
         scaledIcon = new ImageIcon(scaledImage);
 
-//        playMusic(0);
+        playMusic(0);
         managers.soundManager.getInstance().activeClips.put(1, soundManager.clip);
         System.out.println(managers.soundManager.getInstance().activeClips);
     }

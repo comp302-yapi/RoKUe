@@ -10,7 +10,7 @@ import tile.Tile;
 
 public class TileContainer {
 	
-	public static Tile[] tile = new Tile[50];
+	public static Tile[] tile = new Tile[75];
 	
 	public static transient BufferedImage allTiles;
 	public static transient BufferedImage pinkTile;
@@ -40,7 +40,11 @@ public class TileContainer {
 
 	public static transient BufferedImage tableLeftVertical, tableMiddleVertical, tableRightVertical;
 
+	public static transient BufferedImage pauseButton,resumeButton,exitButton;
 
+	public static transient BufferedImage playmode;
+
+	private static BufferedImage exitpauseresume;
 
 
 	public TileContainer() {
@@ -198,6 +202,7 @@ public class TileContainer {
 			buildModeChest = ImageIO.read(Objects.requireNonNull(TileContainer.class.getResourceAsStream("/res/rokue_like_assets/Buildmodechest.png")));
 			tile[19] = new Tile();
 			tile[19].image = buildModeChest;
+			
 
 			tile[20] = new Tile();
 			tile[20].image = entrance;
@@ -303,6 +308,20 @@ public class TileContainer {
 			tile[47] = new Tile();
 			tile[47].image = pinkTile;
 			tile[47].collision = true;
+			
+			exitpauseresume = ImageIO.read(Objects.requireNonNull(TileContainer.class.getResourceAsStream("/res/rokue_like_assets/exitpauseplay2x.png")));
+			
+			exitButton = exitpauseresume.getSubimage(0, 0, 32, 32);
+			tile[48] = new Tile();
+			tile[48].image = exitButton;
+			
+			pauseButton = exitpauseresume.getSubimage(50, 0, 32, 32);
+			tile[49] = new Tile();
+			tile[49].image = pauseButton;
+			
+			resumeButton = exitpauseresume.getSubimage(100, 0, 32, 32);
+			tile[50] = new Tile();
+			tile[50].image = resumeButton;
 
 
 		} catch(IOException e) {
