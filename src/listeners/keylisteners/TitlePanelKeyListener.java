@@ -25,54 +25,33 @@ public class TitlePanelKeyListener extends BaseKeyListener implements Serializab
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
+        // W tuşuyla yukarı hareket
         if (code == KeyEvent.VK_W && titlePanel.getCommandNum() > 0) {
             titlePanel.setCommandNum(titlePanel.getCommandNum() - 1);
         }
 
-        if (code == KeyEvent.VK_S && titlePanel.getCommandNum() < 2) {
+        // S tuşuyla aşağı hareket (artık sınır 3)
+        if (code == KeyEvent.VK_S && titlePanel.getCommandNum() < 3) {
             titlePanel.setCommandNum(titlePanel.getCommandNum() + 1);
         }
 
-        if (code == KeyEvent.VK_K) {
-            titlePanel.getViewManager().switchTo("BossPanel", true);
-        }
-
+        // ENTER tuşuyla seçilen menüyü aç
         if (code == KeyEvent.VK_ENTER) {
             if (titlePanel.getCommandNum() == 0) {
                 titlePanel.getViewManager().switchTo("HomePanel", true);
             }
 
             if (titlePanel.getCommandNum() == 1) {
-//                System.out.println("HERE");
                 titlePanel.getViewManager().switchTo("LoadPanel", true);
-//                System.out.println("Loading Game...");
-//                GameState gs = titlePanel.getViewManager().loadGame("src/saves/newSave.ser");
-//
-//                if (gs.currentMode.equals("Build")) {
-//                    titlePanel.getViewManager().restoreGameState(gs);
-//                    titlePanel.getViewManager().switchTo("BuildPanel", true);
-//                }
-//
-//                if (gs.currentMode.equals("Play")) {
-//                    titlePanel.getViewManager().restoreGameState(gs);
-//                    titlePanel.getViewManager().switchTo("HallPanel", true);
-//                }
-//
-//                if (gs.currentMode.equals("Home")) {
-//                    titlePanel.getViewManager().restoreGameState(gs);
-//                    titlePanel.getViewManager().switchTo("HomePanel", true);
-//                }
-//
-//                if (gs.currentMode.equals("Boss")) {
-//                    titlePanel.getViewManager().restoreGameState(gs);
-//                    titlePanel.getViewManager().switchTo("BossPanel", true);
-//                }
-//
-//                System.out.println(gs.toString());
             }
 
             if (titlePanel.getCommandNum() == 2) {
                 System.exit(0);
+            }
+
+            // Yeni eklenen seçenek (HELP)
+            if (titlePanel.getCommandNum() == 3) {
+                titlePanel.getViewManager().switchTo("HelpPanel", true);
             }
         }
     }

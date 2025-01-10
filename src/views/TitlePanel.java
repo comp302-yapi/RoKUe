@@ -83,7 +83,7 @@ public class TitlePanel extends NonPlayablePanel {
         g2.drawString(titleText, titleX, titleY);
 
         // MENU OPTIONS
-        String[] menuOptions = {"NEW GAME", "LOAD GAME", "QUIT GAME"};
+        String[] menuOptions = {"NEW GAME", "LOAD GAME", "QUIT GAME", "HELP"}; // Help seçeneğini ekledik
         int menuStartY = titleY + BasePanel.tileSize * 5;
         int lineHeight = BasePanel.tileSize * 3;
 
