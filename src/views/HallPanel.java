@@ -346,7 +346,7 @@ public class HallPanel extends PlayablePanel{
     public void update() {
         if (!isPaused()) {
         	
-            if (TimeManager.getInstance().timer == null) {
+            if (TimeManager.getInstance().timer == null && !TimeManager.getInstance().timeStopped) {
 
             	timeLeft = this.getSuperObjectLength() * secondPerObject;;
                 
