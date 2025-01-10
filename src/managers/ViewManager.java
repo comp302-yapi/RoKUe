@@ -122,6 +122,8 @@ public class ViewManager implements Runnable, Serializable {
                     if (hallPanel.tileM.objectsFire != null) hallPanel.tileM.objectsFire.clear();
                     if (hallPanel.tileM.enchantments != null) hallPanel.tileM.enchantments.clear();
                     if (hallPanel.getHallMonsters() != null) hallPanel.getHallMonsters().clear();
+                    
+                    Player.getInstance(hallPanel).inventory.clear();
 
                     HallContainer.getHallOfAir().objects.clear();
                     HallContainer.getHallOfEarth().objects.clear();

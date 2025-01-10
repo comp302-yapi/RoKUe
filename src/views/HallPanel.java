@@ -346,7 +346,7 @@ public class HallPanel extends PlayablePanel{
     public void update() {
         if (!isPaused()) {
         	
-            if (TimeManager.getInstance().timer == null) {
+            if (TimeManager.getInstance().timer == null && !TimeManager.getInstance().timeStopped) {
 
             	timeLeft = this.getSuperObjectLength() * secondPerObject;;
                 
@@ -880,6 +880,16 @@ public class HallPanel extends PlayablePanel{
         g2.dispose();
     }
 
+    public boolean isPauseOrResume(int x, int y) {
+    	
+    	return x >= 1120 && x <= 1120 + 48 && y >= 125 && y <= 125 + 48; 
+    	
+    }
+    public boolean isExit(int x, int y) {
+    	
+    	return x >= 1190 && x <= 1190 + 48 && y >= 125 && y <= 125 + 48;
+    	
+    }
     // GETTERS
     public ArrayList<Entity> getHallMonsters() {
         return monsters;
@@ -991,7 +1001,7 @@ public class HallPanel extends PlayablePanel{
     }
 
     public void drawInventory(Graphics2D g2) {
-        g2.drawImage(TileContainer.getTile()[19].image, 1075, 100, BasePanel.tileSize*7, BasePanel.tileSize*12, null);
+        g2.drawImage(TileContainer.getTile()[51].image, 1075, 100, BasePanel.tileSize*7, BasePanel.tileSize*12, null);
 
         for (SuperObject obj : getPlayer().inventory) {
             if (obj != null) {

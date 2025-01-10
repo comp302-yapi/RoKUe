@@ -46,6 +46,8 @@ public class TileContainer {
 
 	private static BufferedImage exitpauseresume;
 
+	private static BufferedImage inventory;
+
 
 	public TileContainer() {
 		
@@ -322,6 +324,10 @@ public class TileContainer {
 			resumeButton = exitpauseresume.getSubimage(100, 0, 32, 32);
 			tile[50] = new Tile();
 			tile[50].image = resumeButton;
+			
+			inventory = ImageIO.read(Objects.requireNonNull(TileContainer.class.getResourceAsStream("/res/rokue_like_assets/inventory.png")));
+			tile[51] = new Tile();
+			tile[51].image = inventory;
 
 
 		} catch(IOException e) {
