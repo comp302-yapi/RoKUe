@@ -16,6 +16,7 @@ import listeners.mouselisteners.BuildPanelMouseListener;
 import managers.*;
 import object.*;
 import utils.PanelUtils;
+import validators.HallValidator;
 
 public class BuildPanel extends NonPlayablePanel {
 	private final BuildPanelMouseListener buildPanelMouseListener;
@@ -35,7 +36,7 @@ public class BuildPanel extends NonPlayablePanel {
 	private soundManager soundManager;
 
 	String errorMessageLine1 = "Hall does not fit the requirements";
-	String errorMessageLine2 = "Please add more objects";
+	String errorMessageLine2 = "Only %d/%d objects are added";
 
 	// For button drawings
 	// TODO: Find a better way to store these values
@@ -222,8 +223,14 @@ public class BuildPanel extends NonPlayablePanel {
 		}
 
 		// TODO: Tilelar için ayrı bir container yapmalıyız.
-		g2.drawImage(TileContainer.getTile()[19].image, 1075, 100, BasePanel.tileSize * 7, BasePanel.tileSize * 12,
-				null);
+		g2.drawImage(
+			TileContainer.getTile()[19].image,
+			1075,
+			100,
+			BasePanel.tileSize * 7,
+			BasePanel.tileSize * 12,
+			null
+		);
 
 		for (SuperObject obj : objectsToDraw) {
 			if (obj != null) {
@@ -242,7 +249,7 @@ public class BuildPanel extends NonPlayablePanel {
 		}
 
 		if (!isHallValidated) {
-			drawErrorMessage(g2, nextButtonX);
+			drawErrorMessage(g2);
 		}
 
 		/*
@@ -283,19 +290,21 @@ public class BuildPanel extends NonPlayablePanel {
 		int textXNext = nextButtonX + (buttonWidth - g2.getFontMetrics().stringWidth(nextText)) / 2;
 		int textYNext = buttonY + (buttonHeight + g2.getFontMetrics().getAscent()) / 2 - 5;
 		g2.drawString(nextText, textXNext, textYNext);
-
-		if (!isHallValidated) {
-			g2.setColor(new Color(180, 0, 0));
-			g2.drawString("Fix the hall before continuing", nextButtonX, buttonY - 20);
-
-		}
 	}
 
-	private void drawErrorMessage(Graphics2D g2, int xStart) {
+	private void drawErrorMessage(Graphics2D g2) {
 		g2.setColor(new Color(180, 0, 0));
 		g2.setFont(arial_20);
 		g2.drawString(errorMessageLine1, nextButtonX - 50, buttonY + 75);
-		g2.drawString(errorMessageLine2, nextButtonX - 10, buttonY + 95);
+		g2.drawString(
+			String.format(
+					errorMessageLine2,
+					getCurrentHallManager().objects.size(),
+					HallValidator.getHallObjectLimits().get(currentHall)
+			),
+			nextButtonX - 20,
+			buttonY + 95
+		);
 	}
 
 	public boolean isInPreviousButton(int mouseX, int mouseY) {
@@ -304,10 +313,8 @@ public class BuildPanel extends NonPlayablePanel {
 	}
 
 	public boolean isInNextButton(int mouseX, int mouseY) {
-
-		return isHallValidated &&
-				mouseX > nextButtonX && mouseX < nextButtonX + buttonWidth &&
-				mouseY > buttonY && mouseY < buttonY + buttonHeight;
+		return mouseX > nextButtonX && mouseX < nextButtonX + buttonWidth
+				&& mouseY > buttonY && mouseY < buttonY + buttonHeight;
 	}
 
 }

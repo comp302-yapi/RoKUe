@@ -1,19 +1,19 @@
 package validators;
 
 import enums.Hall;
-
 import java.io.Serializable;
+import java.util.Map;
 
 public class HallValidator implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final int EARTH_HALL_MIN_OBJECTS = 1;
-    private final int AIR_HALL_MIN_OBJECTS = 1;
-    private final int WATER_HALL_MIN_OBJECTS = 1;
-    private final int FIRE_HALL_MIN_OBJECTS = 1;
+    private static final int EARTH_HALL_MIN_OBJECTS = 1;
+    private static final int AIR_HALL_MIN_OBJECTS = 2;
+    private static final int WATER_HALL_MIN_OBJECTS = 3;
+    private static final int FIRE_HALL_MIN_OBJECTS = 4;
 
-    public boolean validateHall(Hall hall, int hallObjectsCount) {
+    public static boolean validateHall(Hall hall, int hallObjectsCount) {
         switch (hall) {
             case HallOfEarth -> {
                 return validateEarthHall(hallObjectsCount);
@@ -31,19 +31,28 @@ public class HallValidator implements Serializable {
         }
     }
 
-    public boolean validateEarthHall(int hallObjectsCount) {
+    public static boolean validateEarthHall(int hallObjectsCount) {
         return hallObjectsCount >= EARTH_HALL_MIN_OBJECTS;
     }
 
-    public boolean validateAirHall(int hallObjectsCount) {
+    public static boolean validateAirHall(int hallObjectsCount) {
         return hallObjectsCount >= AIR_HALL_MIN_OBJECTS;
     }
 
-    public boolean validateWaterHall(int hallObjectsCount) {
+    public static boolean validateWaterHall(int hallObjectsCount) {
         return hallObjectsCount >= WATER_HALL_MIN_OBJECTS;
     }
 
-    public boolean validateFireHall(int hallObjectsCount) {
+    public static boolean validateFireHall(int hallObjectsCount) {
         return hallObjectsCount >= FIRE_HALL_MIN_OBJECTS;
+    }
+
+    public static Map<Hall, Integer> getHallObjectLimits() {
+        return Map.of(
+            Hall.HallOfEarth, EARTH_HALL_MIN_OBJECTS,
+            Hall.HallOfAir, AIR_HALL_MIN_OBJECTS,
+            Hall.HallOfWater, WATER_HALL_MIN_OBJECTS,
+            Hall.HallOfFire, FIRE_HALL_MIN_OBJECTS
+        );
     }
 }
