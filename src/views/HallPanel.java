@@ -348,7 +348,7 @@ public class HallPanel extends PlayablePanel{
         	
             if (TimeManager.getInstance().timer == null && !TimeManager.getInstance().timeStopped) {
 
-            	timeLeft = this.getSuperObjectLength() * secondPerObject;;
+            	timeLeft = this.getSuperObjectLength() * secondPerObject;
                 
                 TimeManager.getInstance().startTimer(timeLeft);                    
             }
@@ -850,13 +850,25 @@ public class HallPanel extends PlayablePanel{
             getPlayer().fireball.draw(g2);
         }
 
-        drawInventory(g2);
-
+        drawInventory(g2); 
+    
         drawCharacterInfo(g2);
+        
+        
+        
+
 
         if (isPaused()) {
             drawPauseScreen(g2);
+            
+            g2.drawImage(TileContainer.getTile()[50].image, 1120, 125, BasePanel.tileSize, BasePanel.tileSize, null);
         }
+        else {
+        	
+        	g2.drawImage(TileContainer.getTile()[49].image, 1120, 125, BasePanel.tileSize, BasePanel.tileSize, null);
+        }
+        
+        g2.drawImage(TileContainer.getTile()[48].image, 1190, 125, BasePanel.tileSize, BasePanel.tileSize, null);
 
         // DEBUGGING
 //      long drawEnd = System.nanoTime();
@@ -868,6 +880,16 @@ public class HallPanel extends PlayablePanel{
         g2.dispose();
     }
 
+    public boolean isPauseOrResume(int x, int y) {
+    	
+    	return x >= 1120 && x <= 1120 + 48 && y >= 125 && y <= 125 + 48; 
+    	
+    }
+    public boolean isExit(int x, int y) {
+    	
+    	return x >= 1190 && x <= 1190 + 48 && y >= 125 && y <= 125 + 48;
+    	
+    }
     // GETTERS
     public ArrayList<Entity> getHallMonsters() {
         return monsters;
@@ -979,7 +1001,7 @@ public class HallPanel extends PlayablePanel{
     }
 
     public void drawInventory(Graphics2D g2) {
-        g2.drawImage(TileContainer.getTile()[19].image, 1075, 100, BasePanel.tileSize*7, BasePanel.tileSize*12, null);
+        g2.drawImage(TileContainer.getTile()[51].image, 1075, 100, BasePanel.tileSize*7, BasePanel.tileSize*12, null);
 
         for (SuperObject obj : getPlayer().inventory) {
             if (obj != null) {
@@ -1197,7 +1219,7 @@ public class HallPanel extends PlayablePanel{
         }
     }
 
-    public void checkInventoryForReveal() {
+    public void checkInventoryForReveal() { 
 
         boolean hasEnchantment = false;
 
@@ -1205,11 +1227,15 @@ public class HallPanel extends PlayablePanel{
             if (enhancement instanceof ENCH_Reveal) {
                 hasEnchantment = true;
                 getPlayer().inventory.remove(enhancement);
+                getPlayer().updateInventory();
                 break;
             }
         }
         System.out.println("Checked " + hasEnchantment);
-        this.checkInventoryForReveal = hasEnchantment;
+        this.checkInventoryForReveal = hasEnchantment; 
+        
+       
+        
     }
 
     public void checkInventoryForCloak() {
@@ -1220,6 +1246,7 @@ public class HallPanel extends PlayablePanel{
             if (enhancement instanceof ENCH_Cloak) {
                 hasEnchantment = true;
                 getPlayer().inventory.remove(enhancement);
+                getPlayer().updateInventory();
                 getPlayer().invincibleCloak = true;
                 break;
             }
@@ -1236,6 +1263,7 @@ public class HallPanel extends PlayablePanel{
                 hasEnchantment = true;
 
                 getPlayer().inventory.remove(enhancement);
+                getPlayer().updateInventory();
 
                 break;
             }

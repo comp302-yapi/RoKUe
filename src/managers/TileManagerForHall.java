@@ -251,4 +251,5 @@ public class TileManagerForHall implements Serializable {
 		
 		objects.remove(obj);
 	}
+
 }

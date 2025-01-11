@@ -2356,6 +2356,23 @@ public class Player extends Entity{
 			}
 		}
 	}
+
+	public void updateInventory() {
+		// TODO Auto-generated method stub
+		
+		for(int num = 0;num < inventory.size();num++) {
+	
+             int numForX = num % 5;
+             int numForY = num / 5;
+
+             inventory.get(num).worldX = (48 * (23 + numForX)) + 16;
+             inventory.get(num).worldY = (48 * (7 + (numForY)));
+		}
+		
+	}
+
+
+
 }
 
 
