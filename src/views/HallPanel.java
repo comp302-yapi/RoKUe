@@ -1356,7 +1356,13 @@ public class HallPanel extends PlayablePanel{
 
     public void updateLightningEffect() {
         if (!lightningTargets.isEmpty() && lightningCounter % 60 == 0) { // 60 frames = 1 second
-            playSE(11);
+            //TODO: Fix sound effect playing bug
+            try {
+                playSE(11);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             Entity targetMonster = lightningTargets.remove(0);
 
             PRTCL_Lightning newLightningParticle = new PRTCL_Lightning(lightningAnimation, targetMonster);
