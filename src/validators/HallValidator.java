@@ -9,9 +9,9 @@ public class HallValidator implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final int EARTH_HALL_MIN_OBJECTS = 1;
-    private static final int AIR_HALL_MIN_OBJECTS = 2;
-    private static final int WATER_HALL_MIN_OBJECTS = 3;
-    private static final int FIRE_HALL_MIN_OBJECTS = 4;
+    private static final int AIR_HALL_MIN_OBJECTS = 1;
+    private static final int WATER_HALL_MIN_OBJECTS = 1;
+    private static final int FIRE_HALL_MIN_OBJECTS = 1;
 
     public static boolean validateHall(Hall hall, int hallObjectsCount) {
         switch (hall) {

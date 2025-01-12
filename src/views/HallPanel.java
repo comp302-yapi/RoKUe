@@ -258,6 +258,8 @@ public class HallPanel extends PlayablePanel{
         HallContainer.getHallOfFire().enchantments = data.enchantmentsFire;
 
         this.timeLeft = data.timeLeftSave;
+        TimeManager.getInstance().stopTimer();
+        TimeManager.getInstance().timer = null;
         TimeManager.getInstance().startTimer(this.timeLeft);
         this.isPaused = data.isPaused;
 
@@ -346,7 +348,7 @@ public class HallPanel extends PlayablePanel{
     public void update() {
         if (!isPaused()) {
         	
-            if (TimeManager.getInstance().timer == null && !TimeManager.getInstance().timeStopped) {
+            if (TimeManager.getInstance().timer == null) {
 
             	timeLeft = this.getSuperObjectLength() * secondPerObject;
                 

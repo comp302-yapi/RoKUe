@@ -111,6 +111,7 @@ public class HallPanelMouseListener extends BaseMouseListener implements Seriali
             else if (clickedEnchantment instanceof ENCH_AddTime) {
                 int tempTime = TimeManager.getInstance().timeLeft;
                 TimeManager.getInstance().stopTimer();
+                TimeManager.getInstance().timer = null;
                 TimeManager.getInstance().startTimer(tempTime + 5);
                 hallPanel.getTileM().enchantments.remove(clickedEnchantment);
 
