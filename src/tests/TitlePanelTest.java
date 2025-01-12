@@ -11,6 +11,7 @@ import views.TitlePanel;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 /**
  * written by Bekir Alegoz<br>
@@ -37,11 +38,14 @@ class TitlePanelTest {
 
     private TitlePanel titlePanel;
     private ViewManager mockViewManager;
+    private TitlePanelKeyListener keyListener;
 
     @BeforeEach
     void setUp() {
         mockViewManager = mock(ViewManager.class);
         titlePanel = new TitlePanel(mockViewManager);
+        keyListener = new TitlePanelKeyListener(titlePanel);
+
     }
 
     @Test
@@ -72,6 +76,19 @@ class TitlePanelTest {
 
         // Assert
         verify(mockViewManager).switchTo("LoadPanel", true); // Ensure ViewManager switches to LoadPanel
+    }
+
+    @Test
+    void testInvalidMenuNavigationDown() {
+        // Set commandNum to the last option
+        titlePanel.setCommandNum(2);
+
+        // Simulate pressing the "S" key to move down
+        KeyEvent keyEvent = new KeyEvent(titlePanel, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_S, 'S');
+        keyListener.keyPressed(keyEvent);
+
+        // Verify commandNum does not go beyond the last option
+        assertEquals(2, titlePanel.getCommandNum());
     }
 
 
