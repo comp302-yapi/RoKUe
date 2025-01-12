@@ -8,6 +8,21 @@ import org.junit.jupiter.api.Test;
 import javax.swing.*;
 
 public class ViewManagerClassTest {
+    /**
+     * Test Class for  {@link ViewManager} class
+     *
+     * Overview
+     * AbstractFunction
+     * RepresentationInvariant
+     *
+     * setUp
+     * repOk
+     *
+     * testRepOk
+     * testAddPanel
+     * testSwitchPanel
+     * testIllegalSwitch
+     */
 
     // Overview
     // The ViewManager class is used to manage a GUI interface with single JFrame and associated JPanels.

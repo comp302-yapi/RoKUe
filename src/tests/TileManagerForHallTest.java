@@ -10,6 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class TileManagerForHallTest {
+    /**
+     * written by Zeynep Yorulmaz
+     * <p>
+     * Test Class for TileManager.convertToGrid() method
+     */
 
     private TileManagerForHall tileManager;
 
