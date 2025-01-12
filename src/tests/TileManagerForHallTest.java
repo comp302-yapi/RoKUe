@@ -5,19 +5,22 @@ import managers.TileManagerForHall;
 import object.SuperObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import views.HallPanel;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
-
 class TileManagerForHallTest {
+    /**
+     * written by Zeynep Yorulmaz
+     * <p>
+     * Test Class for {@link TileManagerForHall#convertToGrid} method
+     */
 
     private TileManagerForHall tileManager;
 
     @BeforeEach
     void setUp() {
+        System.out.println("Init");
         tileManager = new TileManagerForHall(Hall.HallOfEarth, "/res/maps/hallOfAir.txt", 13, 14);
     }
 

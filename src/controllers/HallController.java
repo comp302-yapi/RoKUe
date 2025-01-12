@@ -40,7 +40,7 @@ public class HallController implements Serializable {
         switch (currentHall.hall) {
             case HallOfEarth -> {
                 if (direction == BuildDirection.Backward) {
-                    return true;
+                    return false;
                 }
                 else if(HallValidator.validateHall(currentHall.hall, getNonNullElementCount(currentHall))) {
                     buildPanel.setCurrentHall(Hall.HallOfAir);

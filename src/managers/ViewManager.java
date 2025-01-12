@@ -311,4 +311,16 @@ public class ViewManager implements Runnable, Serializable {
             }
         }
     }
+
+    public JPanel getCurrentPanel() {
+        return currentPanel;
+    }
+
+    public Thread getGameThread() {
+        return gameThread;
+    }
+
+    public Map<String, JPanel> getPanels() {
+        return panels;
+    }
 }
