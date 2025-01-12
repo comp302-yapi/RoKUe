@@ -109,7 +109,7 @@ public class ViewManager implements Runnable, Serializable {
             }
 
             if (panelToSwitch instanceof HallPanel hallPanel) {
-                hallPanel.timeLeft = hallPanel.getSuperObjectLength() * 10;
+                hallPanel.timeLeft = hallPanel.getSuperObjectLength() * hallPanel.secondPerObject;
                 hallPanel.getPlayer().life = hallPanel.getPlayer().maxLife;
 
                 HallPanelKeyListener hallKeyListener = new HallPanelKeyListener(hallPanel);
@@ -118,6 +118,7 @@ public class ViewManager implements Runnable, Serializable {
 
                 player.keyH = hallKeyListener;
             } else if (panelToSwitch instanceof HomePanel homePanel) {
+            	
                 TimeManager.getInstance().stopTimer();
                 TimeManager.getInstance().timer = null;
 
