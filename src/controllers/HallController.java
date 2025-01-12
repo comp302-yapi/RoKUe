@@ -15,6 +15,7 @@ import views.BuildPanel;
 import views.HallPanel;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import managers.TimeManager;
@@ -173,11 +174,42 @@ public class HallController implements Serializable {
                 }
                 case HallOfFire -> {
                     System.out.println("SWITCH3");
-                    assignRunesToObjects(hallPanel.tileM);
-                    HallContainer.getHallOfEarth().closeDoor();
+
+                    HallContainer.getHallOfEarth().enchantments.clear();
+                    HallContainer.getHallOfAir().enchantments.clear();
+                    HallContainer.getHallOfWater().enchantments.clear();
+                    HallContainer.getHallOfFire().enchantments.clear();
+
+                    if (hallPanel.tileM.objectsEarth != null) hallPanel.tileM.objectsEarth.clear();
+                    if (hallPanel.getSuperObjects() != null) Arrays.fill(hallPanel.getSuperObjects(), null);
+                    if (hallPanel.tileM.objectsAir != null) hallPanel.tileM.objectsAir.clear();
+                    if (hallPanel.tileM.objectsWater != null) hallPanel.tileM.objectsWater.clear();
+                    if (hallPanel.tileM.objectsFire != null) hallPanel.tileM.objectsFire.clear();
+                    if (hallPanel.tileM.enchantments != null) hallPanel.tileM.enchantments.clear();
+                    if (hallPanel.getHallMonsters() != null) hallPanel.getHallMonsters().clear();
+
+
+
+                    Player.getInstance(hallPanel).inventory.clear();
+
+                    HallContainer.getHallOfAir().objects.clear();
+                    HallContainer.getHallOfEarth().objects.clear();
+                    HallContainer.getHallOfWater().objects.clear();
+                    HallContainer.getHallOfFire().objects.clear();
+
+                    HallContainer.getHallOfAir().gridWorld =  new SuperObject[13][14];
+                    HallContainer.getHallOfEarth().gridWorld =  new SuperObject[13][14];
+                    HallContainer.getHallOfWater().gridWorld =  new SuperObject[13][14];
+                    HallContainer.getHallOfFire().gridWorld =  new SuperObject[13][14];
+
+                    hallPanel.getPlayer().screenX = BasePanel.screenWidth/2 - (BasePanel.tileSize/2);
+                    hallPanel.getPlayer().screenY = BasePanel.screenHeight/2 - (BasePanel.tileSize/2);
+
                     HallContainer.getHallOfAir().closeDoor();
+                    HallContainer.getHallOfEarth().closeDoor();
                     HallContainer.getHallOfWater().closeDoor();
                     HallContainer.getHallOfFire().closeDoor();
+
                     hallPanel.currentHall = Hall.HallOfEarth;
 
                     hallPanel.getPlayer().screenX = player.defaultScreenX;

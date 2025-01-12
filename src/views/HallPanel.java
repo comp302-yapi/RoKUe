@@ -98,6 +98,8 @@ public class HallPanel extends PlayablePanel{
     // EASTER EGG
     public boolean easter1, easter2, easter3, easter4;
 
+    public boolean spawnedEnch;
+
     // Set the new time
 
     private TimeManager timeManager;
@@ -110,6 +112,7 @@ public class HallPanel extends PlayablePanel{
     public int spawnCounter;
 
     public int spawnEnchantmentCounter;
+    public int deleteEnchantmentCounter;
 
     String[] monsterTypes = new String[3];
 
@@ -409,10 +412,25 @@ public class HallPanel extends PlayablePanel{
                 spawnCounter = 0;
             }
 
+            // Delete Enchantment
+            if (spawnedEnch){
+                deleteEnchantmentCounter++;
+            }
+
+
+            if (deleteEnchantmentCounter >= 60 * 6) {
+                if (!HallContainer.getHallOfEarth().enchantments.isEmpty()) {
+                    HallContainer.getHallOfEarth().enchantments.clear();
+                    deleteEnchantmentCounter = 0;
+                    spawnedEnch = false;
+                }
+            }
+
             // Generate Enchantment
             spawnEnchantmentCounter++;
 
-            if (spawnEnchantmentCounter >= 60 * 3) {
+            if (spawnEnchantmentCounter >= 60 * 12) {
+                spawnedEnch = true;
                 tileM.generateEnchantment();
                 tileM.generateGold();
                 spawnEnchantmentCounter = 0;
@@ -661,6 +679,9 @@ public class HallPanel extends PlayablePanel{
                 // Draw tiles
                 HallContainer.getHallOfAir().draw(g2);
 
+                // Draw superpowers
+                drawSuperPowers(g2);
+
                 // Draw super objects
                 for (SuperObject superObject : HallContainer.getHallOfAir().objects) {
                     if (superObject != null) {
@@ -698,6 +719,9 @@ public class HallPanel extends PlayablePanel{
                 // Draw tiles
                 HallContainer.getHallOfWater().draw(g2);
 
+                // Draw superpowers
+                drawSuperPowers(g2);
+
                 // Draw super objects
                 for (SuperObject superObject : HallContainer.getHallOfWater().objects) {
                     if (superObject != null) {
@@ -732,6 +756,9 @@ public class HallPanel extends PlayablePanel{
 
                 // Draw tiles
                 HallContainer.getHallOfFire().draw(g2);
+
+                // Draw superpowers
+                drawSuperPowers(g2);
 
                 // Draw super objects
                 for (SuperObject superObject : HallContainer.getHallOfFire().objects) {
@@ -1290,6 +1317,18 @@ public class HallPanel extends PlayablePanel{
                 System.out.println("Invalid direction! Use 'up', 'down', 'left', or 'right'.");
                 return;
             }
+        }
+
+        int mapStartX = 336;
+        int mapStartY = 96;
+        int mapWidth = 13 * 48;
+        int mapHeight = 14 * 48;
+
+        // Check if the gem is within map boundaries
+        if (lg.worldX < mapStartX || lg.worldX >= mapStartX + mapWidth ||
+                lg.worldY < mapStartY || lg.worldY >= mapStartY + mapHeight) {
+            System.out.println("Cannot throw gem outside of map boundaries.");
+            return;
         }
 
         switch (currentHall) {

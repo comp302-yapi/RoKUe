@@ -230,7 +230,6 @@ public class MON_Wizard extends Entity {
 		}
 	}
 
-
 	@Override
 	public void update() {
 		// Override the parent update to remove movement logic

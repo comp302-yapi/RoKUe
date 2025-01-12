@@ -1072,7 +1072,7 @@ public class Player extends Entity{
 					invincibleCounterCloak++;
 				}
 
-				if (invincibleCounterCloak >= 2) {
+				if (invincibleCounterCloak >= 20 * 60) {
 					invincibleCloak = false;
 					invincibleCounterCloak = 0;
 				}
@@ -1162,7 +1162,7 @@ public class Player extends Entity{
 					invincibleCounterCloak++;
 				}
 
-				if (invincibleCounterCloak >= 2) {
+				if (invincibleCounterCloak >= 20 * 60) {
 					invincibleCloak = false;
 					invincibleCounterCloak = 0;
 				}
@@ -1251,7 +1251,7 @@ public class Player extends Entity{
 					invincibleCounterCloak++;
 				}
 
-				if (invincibleCounterCloak >= 2) {
+				if (invincibleCounterCloak >= 20 * 6) {
 					invincibleCloak = false;
 					invincibleCounterCloak = 0;
 				}
