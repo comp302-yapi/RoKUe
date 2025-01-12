@@ -11,10 +11,26 @@ import static org.mockito.Mockito.*;
 
 class TileManagerForHallTest {
     /**
-     * written by Zeynep Yorulmaz
-     * <p>
-     * Test Class for {@link TileManagerForHall#convertToGrid} method
+     * written by Zeynep Yorulmaz<br>
+     * {@link TileManagerForHall#convertToGrid(java.util.List)}<br>
+     * Maps a list of objects with world coordinates to their corresponding positions on the grid.<br>
+     * <br><br>
+     * Requires:<br>
+     * objects != null<br>
+     * All elements in objects are non-null and instances of {@link SuperObject}<br>
+     * Each object has valid worldX and worldY properties representing its coordinates<br>
+     * gridWorld is initialized and has dimensions that match the expected grid<br>
+     * <br><br>
+     * Modifies:<br>
+     * gridWorld by assigning objects to their respective grid positions<br>
+     * Overwrites gridWorld cells if multiple objects map to the same grid index<br>
+     * <br><br>
+     * Effects:<br>
+     * Populates gridWorld with objects from the provided list based on their worldX and worldY coordinates<br>
+     * Leaves positions in gridWorld as null if no object maps to them or if an object is out of bounds<br>
+     * Overwrites the grid cell with the last object in the list if multiple objects map to the same position<br>
      */
+
 
     private TileManagerForHall tileManager;
 
