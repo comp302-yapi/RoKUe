@@ -28,8 +28,8 @@ public class BOSS_Sorcerer extends Entity {
     public int loadCountWalk, loadCountAttacking;
 
     public boolean firstAttackCall;
-    private int attackTimer = 0;
-    private int randomAttackInterval = 60 + new Random().nextInt(181);
+    public int attackTimer = 0;
+    public int randomAttackInterval = 60 + new Random().nextInt(181);
     private int attackDuration = 48; // Frames for attack animation to complete
     private int attackAnimationCounter = 0;
 
