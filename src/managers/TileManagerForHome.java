@@ -20,6 +20,8 @@ public class TileManagerForHome implements Serializable {
     public int mapTileNum[][];
     public int maxCol,maxRow,idx;
     public ArrayList<SuperObject> objects = new ArrayList<>();
+    public SuperObject[][] gridWorld = new SuperObject[13][14];
+
 
     public TileManagerForHome(BasePanel panel, String path, int maxCol, int maxRow) {
 
@@ -29,6 +31,22 @@ public class TileManagerForHome implements Serializable {
         idx = 0;
         mapTileNum = new int[BasePanel.maxWorldCol][BasePanel.maxWorldRow];
         loadMap(path);
+    }
+
+    public void convertToGrid(ArrayList<SuperObject> superObjects) {
+
+        int row, column;
+
+        for (SuperObject object : objects) {
+            if (object != null) {
+
+                column = (object.worldY - 96) / 48;
+                row =  (object.worldX - 336) / 48;
+                gridWorld[row][column] = object;
+
+            }
+        }
+
     }
 
 

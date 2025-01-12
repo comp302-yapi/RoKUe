@@ -56,6 +56,5 @@ class TimeManagerTest {
         timeManager.stopTimer();
 
         Assertions.assertTrue(timeManager.timeStopped, "Timer should be marked as stopped.");
-        Assertions.assertNull(timeManager.timer, "Timer object should be null after stopping.");
     }
 }

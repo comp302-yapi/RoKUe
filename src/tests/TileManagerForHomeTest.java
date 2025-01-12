@@ -41,7 +41,7 @@ class TileManagerForHomeTest {
     @BeforeEach
     void setUp() {
         panel = new HomePanel(null); // Replace null with required parameters if necessary
-        tileManager = new TileManagerForHome(panel, "/res/maps/Home.txt", 26, 28);
+        tileManager = new TileManagerForHome(panel, "/res/maps/Home.txt", 13, 14);
     }
 
     @Test
