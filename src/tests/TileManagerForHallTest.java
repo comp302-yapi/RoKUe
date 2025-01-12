@@ -13,7 +13,7 @@ class TileManagerForHallTest {
     /**
      * written by Zeynep Yorulmaz
      * <p>
-     * Test Class for TileManager.convertToGrid() method
+     * Test Class for {@link TileManagerForHall#convertToGrid} method
      */
 
     private TileManagerForHall tileManager;
