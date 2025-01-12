@@ -26,6 +26,8 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
     boolean isLureModeActive = false;
     private soundManager soundManager;
 
+    public boolean luringGemCounter;
+
     public HallPanelKeyListener(HallPanel hallPanel) {
         super();
         this.soundManager = managers.soundManager.getInstance();
@@ -87,52 +89,60 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
         }
 
         if (e.getKeyCode() == KeyEvent.VK_1) {
-            if (hallPanel.getPlayer().level >= 2) {
-                hallPanel.activateGroundSlam();
-            } else {
-                hallPanel.triggerShake(0);
+            if (!hallPanel.isPaused()) {
+                if (hallPanel.getPlayer().level >= 2) {
+                    hallPanel.activateGroundSlam();
+                } else {
+                    hallPanel.triggerShake(0);
+                }
             }
         }
 
         if (e.getKeyCode() == KeyEvent.VK_G) {
-            Player player = hallPanel.getPlayer();
+            if (!hallPanel.isPaused()) {
 
-            player.level = player.maxLevel;
-            player.xpCurrent = player.xpMax - 1;
-            player.gold = 9999;
-            player.life = 100;
-            hallPanel.easter1 = true;
-            hallPanel.easter2 = true;
-            hallPanel.easter3 = true;
-            hallPanel.easter4 = true;
+                Player player = hallPanel.getPlayer();
 
-        }
-
-        
-        if (code == KeyEvent.VK_E) {
-        	monsterSpawn = true;
+                player.level = player.maxLevel;
+                player.xpCurrent = player.xpMax - 1;
+                player.gold = 9999;
+                player.life = 100;
+                hallPanel.easter1 = true;
+                hallPanel.easter2 = true;
+                hallPanel.easter3 = true;
+                hallPanel.easter4 = true;
+            }
         }
 
         if (code == KeyEvent.VK_R) {
-            System.out.println("Check R");
-            hallPanel.checkInventoryForReveal();
+            if (!hallPanel.isPaused()) {
+
+                System.out.println("Check R");
+                hallPanel.checkInventoryForReveal();
+            }
         }
 
-        if (code == KeyEvent.VK_C) {
-            hallPanel.checkInventoryForCloak();
+        if (code == KeyEvent.VK_P) {
+            if (!hallPanel.isPaused()) {
+                hallPanel.checkInventoryForCloak();
+            }
         }
 
         if (code == KeyEvent.VK_B) {
-            boolean checker = hallPanel.checkInventoryForLuringGem();
-            if (checker) {
-                isLureModeActive = true;
+            if (!hallPanel.isPaused()) {
+                boolean checker = hallPanel.checkInventoryForLuringGem();
+                if (checker) {
+                    isLureModeActive = true;
+                }
             }
-        } else if (isLureModeActive) {
+        }
+
+        if (isLureModeActive) {
             switch (code) {
                 case KeyEvent.VK_A -> {
                     isLureModeActive = false;
+                    System.out.println("THROWING");
                     hallPanel.throwGem("Left");
-
                 }
                 case KeyEvent.VK_D -> {
                     hallPanel.throwGem("Right");
@@ -148,10 +158,6 @@ public class HallPanelKeyListener extends BaseKeyListener implements Serializabl
                 }
                 default -> System.out.println("Invalid direction! Use A, D, W, or S.");
             }
-        }
-
-        if (code == KeyEvent.VK_P) {
-            hallPanel.setPaused(!hallPanel.isPaused());
         }
     }
 

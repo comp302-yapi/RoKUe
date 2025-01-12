@@ -164,7 +164,9 @@ public class ViewManager implements Runnable, Serializable {
 
                 if (currentPanel instanceof HallPanel hallPanel) {
                     if (hallPanel.easter1 && hallPanel.easter2 && hallPanel.easter3 && hallPanel.easter4) {
-                        managers.soundManager.getInstance().activeClips.get(1).stop();
+                        if (managers.soundManager.getInstance().activeClips.get(1) != null) {
+                            managers.soundManager.getInstance().activeClips.get(1).stop();
+                        }
                         managers.soundManager.getInstance().setFile(18);
                         managers.soundManager.getInstance().play();
                         managers.soundManager.getInstance().loop();
