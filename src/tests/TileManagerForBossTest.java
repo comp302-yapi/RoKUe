@@ -71,8 +71,8 @@ class TileManagerForBossTest {
     @Test
     void testOutOfBoundsObject() {
         SuperObject obj1 = new OBJ_Cactus();
-        obj1.worldX = 1000;
-        obj1.worldY = 1000;
+        obj1.worldX = 500;
+        obj1.worldY = 500;
 
         SuperObject obj2 = new OBJ_Cactus();
         obj2.worldX = 384;
