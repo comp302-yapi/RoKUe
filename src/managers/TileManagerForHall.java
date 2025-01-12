@@ -197,9 +197,6 @@ public class TileManagerForHall implements Serializable {
 			objects.add(obj);
 
 		}
-
-
-
 	}
 
 	public void generateEnchantment() {
@@ -208,7 +205,6 @@ public class TileManagerForHall implements Serializable {
 		// Randomly pick a type of object
 		SuperObject obj;
 		int randomType = random.nextInt(5);
-		randomType = 2;
 
 		switch (randomType) {
 			case 0 -> obj = new ENCH_Reveal();
