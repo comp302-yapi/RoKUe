@@ -85,8 +85,6 @@ public class ViewManager implements Runnable, Serializable {
             JPanel loadPanel = new LoadPanel(this);
             JPanel HelpPanel = new HelpPanel(this);
 
-
-
             addPanel("TitlePanel", titlePanel);
             addPanel("BuildPanel", buildPanel);
             addPanel("HomePanel", homePanel);
@@ -109,8 +107,12 @@ public class ViewManager implements Runnable, Serializable {
             }
 
             if (panelToSwitch instanceof HallPanel hallPanel) {
+                hallPanel.getTileM().hall = Hall.HallOfEarth;
+                System.out.println("Changed");
                 hallPanel.timeLeft = hallPanel.getSuperObjectLength() * hallPanel.secondPerObject;
                 hallPanel.getPlayer().life = hallPanel.getPlayer().maxLife;
+
+                hallPanel.currentHall = Hall.HallOfEarth;
 
                 HallPanelKeyListener hallKeyListener = new HallPanelKeyListener(hallPanel);
                 panelToSwitch.addKeyListener(hallKeyListener);
@@ -171,6 +173,7 @@ public class ViewManager implements Runnable, Serializable {
                         managers.soundManager.getInstance().play();
                         managers.soundManager.getInstance().loop();
                         bossPanel.easterEggFinal = true;
+                        hallPanel.currentHall = Hall.HallOfEarth;
                     }
                 }
 
@@ -182,6 +185,7 @@ public class ViewManager implements Runnable, Serializable {
                 player.addKeyListener(bossPanelKeyListener);
 
                 player.keyH = bossPanelKeyListener;
+
             }
         }
         else if(panelToSwitch instanceof BuildPanel buildPanel) {

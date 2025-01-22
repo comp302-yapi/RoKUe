@@ -168,8 +168,7 @@ public class TileManagerForHall implements Serializable {
 		return true;
 	}
 	
-	public void addObject(SuperObject obj, int x, int y) {
-
+	public boolean addObject(SuperObject obj, int x, int y) {
 		int rx = x % 48;
 		int ry = y % 48;
 
@@ -182,21 +181,22 @@ public class TileManagerForHall implements Serializable {
 		int px = BasePanel.screenWidth/2 - (BasePanel.tileSize/2);
 		int py = BasePanel.screenHeight/2 - (BasePanel.tileSize/2);
 
-		System.out.println(y - py);
-		System.out.println(y + " y " + py);
-		System.out.println(x - px);
-		System.out.println(x + " x " + px);
+//		System.out.println(y - py);
+//		System.out.println(y + " y " + py);
+//		System.out.println(x - px);
+//		System.out.println(x + " x " + px);
 		if (Math.abs(x - px) > 48 || Math.abs(y - py) > 48){
 
-			System.out.println(y - py);
-			System.out.println(y + " y " + py);
-
+//			System.out.println(y - py);
+//			System.out.println(y + " y " + py);
 
 			obj.worldX = x;
 			obj.worldY = y;
 			objects.add(obj);
 
+			return true;
 		}
+		return false;
 	}
 
 	public void generateEnchantment() {

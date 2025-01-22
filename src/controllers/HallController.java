@@ -188,8 +188,6 @@ public class HallController implements Serializable {
                     if (hallPanel.tileM.enchantments != null) hallPanel.tileM.enchantments.clear();
                     if (hallPanel.getHallMonsters() != null) hallPanel.getHallMonsters().clear();
 
-
-
                     Player.getInstance(hallPanel).inventory.clear();
 
                     HallContainer.getHallOfAir().objects.clear();
