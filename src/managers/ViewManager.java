@@ -123,6 +123,7 @@ public class ViewManager implements Runnable, Serializable {
 
                 if (homePanel.getPanelName().equals("HomePanel1")) {
                    homePanel.getTileManagerHome().objects.clear();
+                   homePanel.getTileManagerHome().loadMap("/res/maps/Home2.txt");
                 } else {
                     System.out.println(homePanel.getPanelName());
                 }
