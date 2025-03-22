@@ -79,22 +79,21 @@ public class ViewManager implements Runnable, Serializable {
 
             JPanel titlePanel = new TitlePanel(this);
             JPanel buildPanel = new BuildPanel(this);
-            JPanel homePanel = new HomePanel(this);
+            JPanel homePanel = new HomePanel(this, "HomePanel1");
+            JPanel homePanel2 = new HomePanel(this, "HomePanel2");
             JPanel hallPanel = new HallPanel(this);
             JPanel bossPanel = new BossPanel(this);
             JPanel loadPanel = new LoadPanel(this);
             JPanel HelpPanel = new HelpPanel(this);
 
-
-
             addPanel("TitlePanel", titlePanel);
             addPanel("BuildPanel", buildPanel);
             addPanel("HomePanel", homePanel);
+            addPanel("HomePanel2", homePanel2);
             addPanel("HallPanel", hallPanel);
             addPanel("BossPanel", bossPanel);
             addPanel("LoadPanel", loadPanel);
             addPanel("HelpPanel", HelpPanel);
-
 
             panelToSwitch = titlePanel;
         }
@@ -121,6 +120,12 @@ public class ViewManager implements Runnable, Serializable {
             	
                 TimeManager.getInstance().stopTimer();
                 TimeManager.getInstance().timer = null;
+
+                if (homePanel.getPanelName().equals("HomePanel1")) {
+                   homePanel.getTileManagerHome().objects.clear();
+                } else {
+                    System.out.println(homePanel.getPanelName());
+                }
 
 
                 if (currentPanel instanceof HallPanel hallPanel) {

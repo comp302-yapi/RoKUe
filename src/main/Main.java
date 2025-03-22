@@ -21,7 +21,7 @@ public class Main {
 		//JPanel gamePanel = new GamePanel(viewManager);
 		JPanel titlePanel = new TitlePanel(viewManager);
 		JPanel buildPanel = new BuildPanel(viewManager);
-		JPanel homePanel = new HomePanel(viewManager);
+		JPanel homePanel = new HomePanel(viewManager, "HomePanel1");
 		JPanel hallPanel = new HallPanel(viewManager);
 		JPanel bossPanel = new BossPanel(viewManager);
 		JPanel loadPanel = new LoadPanel(viewManager);

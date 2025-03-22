@@ -39,6 +39,14 @@ public class HomePanelKeyListener extends BaseKeyListener implements Serializabl
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
+        if (code == KeyEvent.VK_M) {
+            if (homePanel.getPanelName().equals("HomePanel1")) {
+                homePanel.getViewManager().switchTo("HomePanel2", true);
+            } else {
+                homePanel.getViewManager().switchTo("HomePanel", true);
+            }
+        }
+
         if (code == KeyEvent.VK_UP) {
             upPressed = true;
         }

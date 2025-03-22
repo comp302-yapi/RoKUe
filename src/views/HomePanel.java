@@ -24,6 +24,7 @@ public class HomePanel extends PlayablePanel {
     private final HomePanelKeyListener keyListener;
     private final TileManagerForHome tileM;
     final CollisionCheckerForHome cChecker;
+    private final String panelName;
 
     SuperObject leatherHelmet = new ARMOR_LeatherArmorHead();
     SuperObject leatherArmorTorso = new ARMOR_LeatherArmorTorso();
@@ -42,8 +43,9 @@ public class HomePanel extends PlayablePanel {
     SuperObject armor = new OBJ_Armor();
     public Font maruMonica;
 
-    public HomePanel(ViewManager viewManager) {
+    public HomePanel(ViewManager viewManager, String panelName) {
         super(viewManager);
+        this.panelName = panelName;
         setLayout(null); // No layout, fully customizable space
         getPlayer().panel = this; // Associate the player with this panel
 
@@ -93,6 +95,10 @@ public class HomePanel extends PlayablePanel {
 
         tileM.addObject(ironArmorLeg, 1110, 350);
         tileM.addObject(leatherArmorLeg, 1110, 450);
+    }
+
+    public String getPanelName() {
+        return panelName;
     }
 
     @Override
