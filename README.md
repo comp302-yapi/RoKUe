@@ -1,7 +1,9 @@
 # RoKUe
 
-[![Watch the video]](https://github.com/Thasismanoglu/comp302-yapi/blob/main/GameJam.mp4)
-
+<video width="640" controls>
+  <source src="https://raw.githubusercontent.com/Thasismanoglu/comp302-yapi/main/GameJam.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 Goal of the game:
 
 There are 4 halls. When you start a new game, place minimum of 3 objects to each hall. Each object gives you 10 more seconds to exit the hall. For example, if you place 3 objects, you will have 10 x 3 seconds to exit the hall.
