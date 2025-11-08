@@ -1,6 +1,6 @@
-# RoKUe
+j# RoKUe
 
-[![Watch the demo](https://raw.githubusercontent.com/Thasismanoglu/comp302-yapi/main/thumbnail.png)](https://github.com/Thasismanoglu/comp302-yapi/blob/main/GameJam.mp4)
+[![Watch the Demo](https://img.youtube.com/vi/j0GnJSQUd1g/0.jpg)](https://www.youtube.com/watch?v=j0GnJSQUd1g)
 
 Goal of the game:
 
